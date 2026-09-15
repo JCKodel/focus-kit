@@ -1,0 +1,230 @@
+#!/usr/bin/env bash
+# focus-kit: install the FOCUS delivery process into a repository.
+#
+#   focus-kit install [path]   install or update the kit in a repository (default: .)
+#   focus-kit update  [path]   same as install; kept as a verb people expect
+#   focus-kit doctor  [path]   report what is installed, and what is missing
+#   focus-kit version          print the kit version
+#
+# What install does, in order:
+#   1. dependencies on this machine: uv, then graphify (uv tool), then the
+#      global graphify skill for Claude Code (graphify install --platform claude)
+#   2. in the target repository:
+#      .claude/skills/{initialize,propose,apply}   copied, overwriting (kit-owned)
+#      docs/manuals/{process,focus,graphify}.md    copied, overwriting (kit-owned)
+#      .mcp.json                                   graphify server merged in
+#      .claude/settings.json                       baseline permissions merged in
+#      .gitignore                                  kit fragment appended once
+#      work/done/.gitkeep                          created if absent
+#   3. prints the next step: open Claude Code in the repository and run /initialize
+#
+# Everything the kit owns is overwritten on update. Everything the project owns
+# (docs/00 to 06, CLAUDE.md, ADRs, work/) is never touched here: that is
+# /initialize's job, and it merges instead of overwriting.
+#
+# Runs on macOS (bash 3.2) and Linux. Needs curl and python3 (or uv, which can
+# supply a python).
+
+set -euo pipefail
+
+# Resolve the script's real location, through symlinks (readlink -f is not
+# on every macOS; this loop is).
+SELF="${BASH_SOURCE[0]}"
+while [ -L "$SELF" ]; do
+  DIR="$(cd "$(dirname "$SELF")" && pwd)"
+  SELF="$(readlink "$SELF")"
+  case "$SELF" in /*) ;; *) SELF="$DIR/$SELF" ;; esac
+done
+KIT_DIR="$(cd "$(dirname "$SELF")/.." && pwd)"
+KIT_VERSION="$(cat "$KIT_DIR/VERSION")"
+
+say()  { printf '%s\n' "$*"; }
+ok()   { printf '  \033[32m✓\033[0m %s\n' "$*"; }
+warn() { printf '  \033[33m!\033[0m %s\n' "$*"; }
+die()  { printf '\033[31merror:\033[0m %s\n' "$*" >&2; exit 1; }
+
+python_bin() {
+  if command -v python3 >/dev/null 2>&1; then echo python3; return; fi
+  if command -v uv >/dev/null 2>&1; then echo "uv run --python 3.12 python"; return; fi
+  die "python3 not found (and uv is not installed to supply one)"
+}
+
+# ---------------------------------------------------------------- dependencies
+
+ensure_uv() {
+  if command -v uv >/dev/null 2>&1; then ok "uv $(uv --version | awk '{print $2}')"; return; fi
+  say "  installing uv (https://astral.sh/uv)"
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  export PATH="$HOME/.local/bin:$PATH"
+  command -v uv >/dev/null 2>&1 || die "uv installed but not on PATH; open a new shell and run again"
+  ok "uv installed"
+}
+
+ensure_graphify() {
+  if command -v graphify >/dev/null 2>&1; then
+    ok "graphify $(graphify --version 2>/dev/null || echo '(version unknown)') (to upgrade: uv tool upgrade graphifyy)"
+  else
+    say "  installing graphify (uv tool install graphifyy)"
+    uv tool install graphifyy
+    export PATH="$HOME/.local/bin:$PATH"
+    command -v graphify >/dev/null 2>&1 || die "graphify installed but not on PATH; open a new shell and run again"
+    ok "graphify $(graphify --version)"
+  fi
+  command -v graphify-mcp >/dev/null 2>&1 || warn "graphify-mcp not on PATH; the MCP server in .mcp.json needs it"
+  # The global /graphify skill for Claude Code. Only when absent: the
+  # installer also appends a "# graphify" section to ~/.claude/CLAUDE.md,
+  # and repeating it on every run would keep touching that file.
+  if [ -f "$HOME/.claude/skills/graphify/SKILL.md" ]; then
+    ok "global /graphify skill for Claude Code"
+  elif graphify install --platform claude >/dev/null 2>&1; then
+    ok "global /graphify skill for Claude Code (installed; it also added a graphify section to ~/.claude/CLAUDE.md)"
+  else
+    warn "could not install the global /graphify skill (graphify install --platform claude)"
+  fi
+}
+
+# ---------------------------------------------------------------- repository
+
+copy_tree() { # src dst  (overwrite, kit-owned)
+  rm -rf "$2"
+  mkdir -p "$(dirname "$2")"
+  cp -R "$1" "$2"
+}
+
+merge_json() { # file  python-expression-that-mutates-`d`
+  local file="$1" expr="$2" py
+  py="$(python_bin)"
+  mkdir -p "$(dirname "$file")"
+  [ -f "$file" ] || echo '{}' > "$file"
+  $py - "$file" "$expr" <<'PY'
+import json, sys
+path, expr = sys.argv[1], sys.argv[2]
+with open(path) as f:
+    d = json.load(f)
+exec(expr)
+with open(path, "w") as f:
+    json.dump(d, f, indent=2, ensure_ascii=False)
+    f.write("\n")
+PY
+}
+
+install_repo() {
+  local target="$1"
+  [ -d "$target" ] || die "no such directory: $target"
+  target="$(cd "$target" && pwd)"
+  [ -d "$target/.git" ] || warn "$target is not a git repository (git init is recommended before /initialize)"
+
+  say "installing focus-kit $KIT_VERSION into $target"
+
+  # skills (kit-owned)
+  local s
+  for s in initialize propose apply; do
+    copy_tree "$KIT_DIR/skills/$s" "$target/.claude/skills/$s"
+  done
+  printf '%s\n' "$KIT_VERSION" > "$target/.claude/skills/.focus-kit-version"
+  ok ".claude/skills/{initialize,propose,apply}"
+
+  # manuals (kit-owned)
+  mkdir -p "$target/docs/manuals"
+  local m
+  for m in "$KIT_DIR"/manuals/*.md; do
+    cp "$m" "$target/docs/manuals/$(basename "$m")"
+  done
+  ok "docs/manuals/{process,focus,graphify}.md"
+
+  # work queue folder (project-owned, created only if absent)
+  if [ ! -d "$target/work/done" ]; then
+    mkdir -p "$target/work/done"
+    touch "$target/work/done/.gitkeep"
+    ok "work/done/"
+  fi
+
+  # .mcp.json: graphify server, by executable name, never by absolute path
+  merge_json "$target/.mcp.json" \
+    'd.setdefault("mcpServers", {})["graphify"] = {"command": "graphify-mcp", "args": ["graphify-out/graph.json"]}'
+  ok ".mcp.json (graphify server)"
+
+  # .claude/settings.json: baseline permissions, merged (never removes what is there)
+  local baseline
+  baseline="$(cat "$KIT_DIR/config/settings.baseline.json")"
+  merge_json "$target/.claude/settings.json" "
+import json
+base = json.loads('''$baseline''')
+p = d.setdefault('permissions', {})
+for k in ('allow', 'ask', 'deny'):
+    cur = p.setdefault(k, [])
+    for item in base['permissions'][k]:
+        if item not in cur:
+            cur.append(item)
+d.setdefault('enabledMcpjsonServers', [])
+if 'graphify' not in d['enabledMcpjsonServers']:
+    d['enabledMcpjsonServers'].append('graphify')
+"
+  ok ".claude/settings.json (baseline permissions merged)"
+
+  # .gitignore fragment, appended once
+  local marker='# --- focus-kit ---'
+  if ! grep -qF "$marker" "$target/.gitignore" 2>/dev/null; then
+    { [ -s "$target/.gitignore" ] && printf '\n'; cat "$KIT_DIR/config/gitignore.fragment"; } >> "$target/.gitignore"
+    ok ".gitignore (kit fragment appended)"
+  fi
+
+  say
+  if [ -f "$target/docs/00-Product.md" ]; then
+    say "docs/ already exists. Next: open Claude Code in $target and run /initialize to review it,"
+    say "or go straight to /propose <slug>."
+  else
+    say "Next: open Claude Code in $target and run /initialize."
+  fi
+}
+
+doctor() {
+  local target="${1:-.}"
+  target="$(cd "$target" && pwd)"
+  say "focus-kit $KIT_VERSION doctor: $target"
+  command -v uv >/dev/null 2>&1        && ok "uv"          || warn "uv missing"
+  command -v graphify >/dev/null 2>&1  && ok "graphify"    || warn "graphify missing"
+  command -v graphify-mcp >/dev/null 2>&1 && ok "graphify-mcp" || warn "graphify-mcp missing"
+  [ -f "$HOME/.claude/skills/graphify/SKILL.md" ] && ok "global /graphify skill" || warn "global /graphify skill missing"
+  local s
+  for s in initialize propose apply; do
+    [ -f "$target/.claude/skills/$s/SKILL.md" ] && ok "/$s" || warn "/$s missing"
+  done
+  if [ -f "$target/.claude/skills/.focus-kit-version" ]; then
+    local v; v="$(cat "$target/.claude/skills/.focus-kit-version")"
+    [ "$v" = "$KIT_VERSION" ] && ok "kit version $v" || warn "kit version $v installed, $KIT_VERSION available (run focus-kit update)"
+  fi
+  local f
+  for f in docs/00-Product.md docs/01-Architecture.md docs/02-Backend.md docs/03-Domain.md \
+           docs/04-Conventions.md docs/05-Process.md docs/06-Queue.md CLAUDE.md \
+           docs/manuals/process.md docs/manuals/focus.md docs/manuals/graphify.md .mcp.json; do
+    [ -f "$target/$f" ] && ok "$f" || warn "$f missing"
+  done
+  [ -f "$target/graphify-out/graph.json" ] && ok "graphify-out/graph.json" || warn "graphify-out/graph.json missing (run /initialize or /graphify .)"
+  if [ -d "$target/.git" ]; then
+    if (cd "$target" && graphify hook status 2>/dev/null | grep -i '^post-commit' | grep -qiv 'not installed'); then
+      ok "graphify post-commit hook"
+    else
+      warn "graphify post-commit hook not installed (graphify hook install)"
+    fi
+  fi
+}
+
+# ---------------------------------------------------------------- main
+
+cmd="${1:-}"
+case "$cmd" in
+  install|update)
+    say "dependencies"
+    ensure_uv
+    ensure_graphify
+    say
+    install_repo "${2:-.}"
+    ;;
+  doctor)  doctor "${2:-.}" ;;
+  version) say "$KIT_VERSION" ;;
+  ""|-h|--help|help)
+    sed -n '2,25p' "$0" | sed 's/^# \{0,1\}//'
+    ;;
+  *) die "unknown command: $cmd (try: focus-kit help)" ;;
+esac
