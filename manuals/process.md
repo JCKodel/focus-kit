@@ -129,8 +129,14 @@ per-project vote, which is why `/initialize` does not ask about them.
 * **Docs are living.** A delivery that changes behaviour updates the doc
   that owns it, in the same delivery. A new term enters `docs/03` before
   it enters code.
-* **Everything is written in English.** The conversation follows the
-  language of whoever is writing.
+* **Prose in the project's language, identifiers in English.** The
+  documentation language is chosen once, by `/initialize`, and declared on
+  the language line of `CLAUDE.md` and in `docs/04-Conventions.md` §1;
+  documents, deliveries and commit messages follow it, and English is the
+  default. Identifiers never follow it: `docs/03-Domain.md` translates each
+  concept into its English code name once, so it is not renegotiated file by
+  file. The conversation follows the language of whoever is writing, which
+  is a third thing again.
 
 ## 7. The queue
 

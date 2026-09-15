@@ -2,6 +2,9 @@
 
 <!-- init: one sentence: what the product is and for whom. -->
 
+<!-- init: the documentation language settled in Step 0, in the form
+     "Prose in <language>; identifiers in English." Every session reads this
+     line, and /propose and /apply obey it. Detail in docs/04-Conventions.md §1. -->
 Prose in English; identifiers in English.
 
 ## Read before acting

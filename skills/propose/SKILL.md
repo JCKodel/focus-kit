@@ -56,5 +56,9 @@ Do not write, edit or generate code, migration, test or configuration.
 Separating deciding from doing is what keeps scope from growing during
 implementation.
 
-Every file you write is in English. Talk to the person in the language
-they write in. No em dash anywhere in the delivery file.
+Every file you write is in the project's documentation language, the one
+`docs/05-Process.md` §0 declares (`CLAUDE.md` repeats it on its language
+line, `docs/04-Conventions.md` §1 has the detail). English when nothing
+says otherwise. Identifiers stay in
+English regardless. Talk to the person in the language they write in. No em
+dash anywhere in the delivery file.

@@ -6,6 +6,14 @@ is specific to this project: the slots `/apply` reads every time.
 
 ---
 
+## 0. Language
+
+<!-- init: one line, the documentation language settled in Step 0, matching
+     CLAUDE.md and docs/04-Conventions.md §1. Keep the second sentence. -->
+
+The delivery page and the commit message are written in English.
+Identifiers are in English regardless (`docs/04-Conventions.md` §1).
+
 ## 1. The rule
 
 **A delivery is a one-page file.** If it does not fit on one page, it is

@@ -7,8 +7,19 @@ How the code looks and where it is tested. The architecture is in
 
 ## 1. Language
 
-**Prose in English; identifiers in English.** Code, comments, migrations,
-file names, commit messages.
+<!-- init: fill the two paragraphs below from the documentation language
+     settled in Step 0, and keep the same wording in CLAUDE.md and in
+     docs/05-Process.md §0. If the project is not in English, this whole
+     document is written in the project's language, this heading included. -->
+
+**Prose in English.** Documents, ADRs, `work/<slug>.md`,
+`work/done/<slug>.md` and commit messages. This is the project's
+documentation language. The conversation is a separate matter: it follows
+the language of whoever is writing.
+
+**Identifiers in English**, whatever the prose language. Types, methods,
+columns, migrations, file names, branches. `docs/03-Domain.md` holds the
+table that translates each concept into its code name, once.
 
 <!-- init: the language(s) of the user interface, and where UI text lives.
      If the product speaks more than one language, the mechanism, and the
@@ -96,7 +107,9 @@ The agent stages (`git add`) and **suggests** the message; a person
 commits, after reviewing. The commit is the delivery, and the delivery
 passes through human review.
 
-Message in the imperative, in English, with the slug as scope:
+Message in the imperative, in the documentation language of §1, with the
+slug as scope. The type, the scope and the slug stay as they are, because
+they are identifiers:
 `feat(place-order): order placed with idempotency key`.
 
 **With a ceiling.** Subject up to 72 characters; body up to five one-line

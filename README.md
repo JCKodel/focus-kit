@@ -18,8 +18,12 @@ It installs three commands into a repository:
 And three manuals into `docs/manuals/`: the process, the FOCUS reference
 for coding agents, and graphify in the repository.
 
-Everything it writes is in English. The conversation follows whoever is
-writing.
+`/initialize` asks which language the project documents itself in, and
+everything written afterwards follows it: docs, deliveries, commit
+messages. English is the default. Identifiers are always in English, so a
+Portuguese project still names its types and columns in English, with
+`docs/03-Domain.md` holding the translation. The conversation follows
+whoever is writing.
 
 ## Install the kit on this machine
 

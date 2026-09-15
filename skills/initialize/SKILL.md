@@ -2,9 +2,10 @@
 name: initialize
 description: >-
   Set up the focus-kit process in this repository. Writes docs/00 to 06,
-  docs/adr, CLAUDE.md and the work queue. On a greenfield project it asks;
-  on a brownfield project it reads the code, builds the graphify graph and
-  asks only what the code cannot answer.
+  docs/adr, CLAUDE.md and the work queue, in the documentation language the
+  project chooses. On a greenfield project it asks; on a brownfield project
+  it reads the code, builds the graphify graph and asks only what the code
+  cannot answer.
 argument-hint: "[green|brown]"
 ---
 
@@ -17,9 +18,26 @@ the comment. Never leave a template comment in a finished document.
 
 ## Language
 
-Every file you write is in English: documents, ADRs, CLAUDE.md, the queue,
-commit messages you suggest. Identifiers are in English. Talk to the person
-in the language they write to you in.
+Three languages live here and they are not the same thing. Keep them apart.
+
+* **The documentation language** is what you write the prose in: `docs/00`
+  to `06`, the ADRs, `CLAUDE.md`, `work/<slug>.md` and the commit messages
+  you suggest. It is a per-project choice, asked in Step 0 and recorded in
+  `CLAUDE.md` and `docs/04-Conventions.md` §1. The default is English.
+* **Identifiers are always in English**, whatever the documentation
+  language: types, methods, columns, migrations, file names, branches.
+  `docs/03-Domain.md` is the table that translates each concept into its
+  English code name once, so the translation is not renegotiated file by
+  file.
+* **The conversation** follows the language the person writes to you in,
+  and has nothing to do with either of the two above.
+
+When the documentation language is not English, translate the templates as
+you fill them: headings, fixed prose, table columns, the lot. The finished
+document reads as if it had been written in that language, with no seam.
+Keep the template structure, the section order and the technical terms this
+kit defines (FOCUS, use case, orchestrator, repository, slice, `/propose`,
+`/apply`), and keep every path and file name as it is.
 
 ## Two house rules that shape everything you write
 
@@ -32,17 +50,39 @@ in the language they write to you in.
   domain doc so it need not define terms, the conventions so it need not
   say how code looks.
 
-## Step 0: which kind of project
+## Step 0: which kind of project, and in which language
 
 If `$ARGUMENTS` says `green` or `brown`, trust it. Otherwise count source
 files (anything that is not docs, config, lockfile or asset). A repository
 with real code is brownfield; a repository with none, or only scaffolding,
-is greenfield. Say which you detected and confirm with one question before
-going on.
+is greenfield.
 
 In both cases, if `docs/00-Product.md` already exists, this is a **review**
 run: read what is there, compare it with the code and the person's
 answers, and propose edits section by section instead of rewriting.
+
+Then settle the documentation language, before you write anything, because
+it shapes every document that follows. One `AskUserQuestion` carries both
+questions:
+
+1. **Kind of project.** Say which you detected and let them confirm.
+2. **Documentation language.** Offer English and Portuguese (Brazil) as
+   options; any other language the person names is valid. On a brownfield
+   repository, look first at `README*`, the existing `docs/` and
+   `git log --oneline -30`: if the prose there is already in one language,
+   offer that one first and say what you saw it in. Remind them, in the
+   option's description, that identifiers stay in English either way.
+
+On a **review** run, do not ask: read the declared language from
+`docs/05-Process.md` §0, the language line of `CLAUDE.md` or
+`docs/04-Conventions.md` §1, and keep it. A repository set up before this
+declaration existed has none of the three: treat the language the existing
+documents are written in as the answer, say which you assumed, and add the
+declaration to all three places as part of the review.
+
+Record the answer in `docs/05-Process.md` §0, on the language line of
+`CLAUDE.md` and in `docs/04-Conventions.md` §1, so `/propose` and `/apply`
+know it without asking again.
 
 ## Step 1 (brownfield): read the repository before asking anything
 
@@ -141,6 +181,11 @@ Write them in this order, because each one leans on the previous:
 
 Rules while writing:
 
+* **Every document goes out in the documentation language settled in Step
+  0.** The templates are in English; if the project is not, translate the
+  headings and the fixed prose as you fill each one, and do not leave a
+  half-translated page. The code names in the `docs/03-Domain.md` table
+  stay in English, and so do paths, file names and the kit's own terms.
 * **Brownfield: describe what is, then what should be, and keep them
   apart.** If the code is organized by layer and the house architecture
   is by feature, `01-Architecture.md` says both, and the queue gets a
@@ -162,8 +207,9 @@ Rules while writing:
 ## Step 3: CLAUDE.md
 
 If there is no `CLAUDE.md`, write it from the template. If there is one,
-**merge**: keep everything that is there, add the "Read before acting",
-"Non-negotiables" and "How to work" blocks, and move any rule you found in
+**merge**: keep everything that is there, add the language line and the
+"Read before acting", "Non-negotiables" and "How to work" blocks, and move
+any rule you found in
 the existing file that belongs in a doc (a naming rule, a test command) into
 that doc, leaving a pointer. Show the person the diff before writing it.
 

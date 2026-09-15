@@ -18,9 +18,9 @@ one meaning, and the same concept never receives two names.
 ## Term in code
 
 Concepts are defined in prose; every identifier in code, schema and API is
-written in English. So that the translation from concept to identifier is
-made once and not renegotiated file by file, each term declares its
-canonical code name. The table is normative: no delivery may name in code a
+written in English, whatever language this document is in. So that the
+translation from concept to identifier is made once and not renegotiated
+file by file, each term declares its canonical code name. The table is normative: no delivery may name in code a
 concept that is not here.
 
 The listed form uses `camelCase`. The concrete casing follows the artifact:

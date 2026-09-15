@@ -72,5 +72,8 @@ others.
    (post-commit hook); if the hook is missing, say so and suggest
    `graphify hook install`.
 
-Every file you write is in English. Talk to the person in the language
-they write in.
+Every file you write is in the project's documentation language, the one
+`docs/05-Process.md` §0 declares (`CLAUDE.md` repeats it on its language
+line, `docs/04-Conventions.md` §1 has the detail), and so is the commit
+message you suggest. English when nothing says otherwise. Identifiers stay in English regardless. Talk to the person
+in the language they write in.
