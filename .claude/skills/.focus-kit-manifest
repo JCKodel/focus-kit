@@ -2,6 +2,7 @@
 1520734114 .claude/skills/initialize/templates/docs/05-Process.md
 1876343346 .claude/skills/initialize/SKILL.md
 1880246249 .claude/skills/initialize/templates/CLAUDE.md
+1888958068 docs/manuals/graphify.md
 1947018123 .claude/skills/initialize/templates/docs/06-Queue.md
 2017787862 .claude/skills/initialize/templates/docs/03-Domain.md
 2032140063 .claude/skills/propose/SKILL.md
@@ -9,7 +10,6 @@
 2998358794 .claude/skills/initialize/templates/docs/01-Architecture.md
 3632340232 .claude/skills/initialize/templates/docs/02-Backend.md
 3976358691 .claude/skills/initialize/templates/docs/04-Conventions.md
-4019416188 docs/manuals/graphify.md
 571537966 docs/manuals/focus.md
 854444904 .claude/skills/apply/SKILL.md
 892715747 .claude/skills/initialize/templates/docs/adr/ADR-0000-template.md

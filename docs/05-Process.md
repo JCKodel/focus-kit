@@ -101,13 +101,17 @@ It runs six checks, in this order, and stops at the first red:
    `docs/00` to `06`, `CLAUDE.md`, the graph and the hook are missing.
    Those ten warnings are the expected output, and the selftest must not
    treat them as failures.
-   Then the check **reads the two merged files** in the scratch, which
-   `doctor` only counts: `.mcp.json` must contain `"graphify-mcp"`, and
-   `.claude/settings.json` must contain `"enabledMcpjsonServers"` and one
-   baseline permission, `"Bash(graphify *)"`. Absent is red, with a `die`
-   naming the file. The assertion is a `grep -qF` and not python, because
-   the failure it exists to catch is python missing: an empty `.mcp.json`
-   satisfies a check that only asks whether the file is there.
+   The **two merged files** are `doctor`'s to read, not the check's:
+   `doctor` asks `.mcp.json` for `"graphify-mcp"` and `.claude/settings.json`
+   for `"enabledMcpjsonServers"` and `"graphify"` with a `grep -qF` behind an
+   `-f` guard, and the check asserts its two lines the way it asserts every
+   other, so the assertion and the reporter cannot drift. The reader is a
+   `grep` and not python because the failure it exists to catch is python
+   missing: an empty `.mcp.json` satisfies a check that only asks whether the
+   file is there. Then one probe for the other branch: both files are moved
+   aside, rewritten as `{}`, and one `doctor` run must name both, which
+   proves the warn of each on any machine. Both are moved back byte-exact,
+   because check 3 installs into this same scratch.
    Then one probe: the scratch's `.focus-kit-version` is rewritten as CRLF,
    the way a Windows clone with `core.autocrlf=true` checks it out, `doctor`
    runs again and must still print the same green version line; the stamp is

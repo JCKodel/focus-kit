@@ -393,7 +393,7 @@ doctor() {
   local f
   for f in docs/00-Product.md docs/01-Architecture.md docs/02-Backend.md docs/03-Domain.md \
            docs/04-Conventions.md docs/05-Process.md docs/06-Queue.md CLAUDE.md \
-           docs/manuals/process.md docs/manuals/focus.md docs/manuals/graphify.md .mcp.json; do
+           docs/manuals/process.md docs/manuals/focus.md docs/manuals/graphify.md; do
     if [ -f "$target/$f" ]; then
       ok "$f"
     else
@@ -402,6 +402,34 @@ doctor() {
 "
     fi
   done
+  # The two Merged files (docs/03-Domain.md), in install order, each read back
+  # for the entry its baseline put there. Presence is not the question: an
+  # empty .mcp.json and a .claude/settings.json that never enables the server
+  # both exist and both leave the session without the graph. Neither path goes
+  # into $missing: merged files are not in the manifest, so the drift pass has
+  # nothing to say about them twice.
+  #
+  # A fixed-string grep behind an -f guard, because grep on an absent file
+  # exits 2 and prints, and a grep and not python, because the failure to
+  # catch is python missing: that is the choice check 2 of selftest made and
+  # the reason is the same one. The strings are a heuristic, they cannot see
+  # under which key "graphify" sits, and that is accepted. No without_cr: a
+  # carriage return at the end of a line does not touch a substring inside it.
+  if [ ! -f "$target/.mcp.json" ]; then
+    warn ".mcp.json missing (run focus-kit update)"
+  elif ! grep -qF -- '"graphify-mcp"' "$target/.mcp.json"; then
+    warn ".mcp.json has no graphify server (run focus-kit update)"
+  else
+    ok ".mcp.json"
+  fi
+  if [ ! -f "$target/.claude/settings.json" ]; then
+    warn ".claude/settings.json missing (run focus-kit update)"
+  elif ! grep -qF -- '"enabledMcpjsonServers"' "$target/.claude/settings.json" ||
+       ! grep -qF -- '"graphify"' "$target/.claude/settings.json"; then
+    warn ".claude/settings.json does not enable the graphify server (run focus-kit update)"
+  else
+    ok ".claude/settings.json"
+  fi
   # Drift (docs/03-Domain.md): a kit-owned file that is not as install wrote
   # it. The question is only asked of a target that has a stamp, because a
   # target with no stamp has no kit in it. A file that is absent is drift
@@ -479,7 +507,7 @@ check_parses() {
 }
 
 check_install() { # scratch
-  local scratch="$1" out expected line key
+  local scratch="$1" out expected line
   git init -q "$scratch" >/dev/null 2>&1 || die "check 2: git init failed in $scratch"
   out="$(install_repo "$scratch" 2>&1)" || {
     printf '%s\n' "$out"
@@ -494,7 +522,7 @@ check_install() { # scratch
   # produces (docs/00 to 06, CLAUDE.md, the graph, the hook) are ignored.
   for expected in /initialize /propose /apply \
                   docs/manuals/process.md docs/manuals/focus.md \
-                  docs/manuals/graphify.md .mcp.json \
+                  docs/manuals/graphify.md .mcp.json .claude/settings.json \
                   "kit version $KIT_VERSION" \
                   "kit-owned files as install wrote them"; do
     line="$(ok "$expected")"
@@ -503,16 +531,31 @@ check_install() { # scratch
       die "check 2: doctor did not report $expected in the scratch repository"
     }
   done
-  # What the two JSON merges wrote, read back from the scratch. doctor asks
-  # whether .mcp.json exists, which an empty one satisfies. A grep and not
-  # python, because the assertion has to hold when python is exactly what is
-  # missing; merge_json wrote both files with json.dump, so a fixed string is
-  # enough and validating the JSON is merge_json's business, not this check's.
-  grep -qF -- '"graphify-mcp"' "$scratch/.mcp.json" 2>/dev/null ||
-    die "check 2: .mcp.json in the scratch repository has no graphify server (the JSON merge did not run)"
-  for key in '"enabledMcpjsonServers"' '"Bash(graphify *)"'; do
-    grep -qF -- "$key" "$scratch/.claude/settings.json" 2>/dev/null ||
-      die "check 2: .claude/settings.json in the scratch repository was not merged (the JSON merge did not run)"
+  # What the two JSON merges wrote is asserted through doctor and not read
+  # here: the two green lines above already say that each merged file carries
+  # the entry its baseline put there, and this probe proves the other branch.
+  # Both files are moved aside and rewritten as {}, which is what a target
+  # holds when the merge never ran, and one doctor run has to name both. The
+  # move back is byte-exact, because check 3 snapshots this scratch next; the
+  # two files wait beside it, as the fake home does, and the trap removes
+  # whatever a red left there.
+  mv "$scratch/.mcp.json"             "$SELFTEST_DIR/mcp.json.aside"
+  mv "$scratch/.claude/settings.json" "$SELFTEST_DIR/settings.json.aside"
+  printf '%s\n' '{}' > "$scratch/.mcp.json"
+  printf '%s\n' '{}' > "$scratch/.claude/settings.json"
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  mv "$SELFTEST_DIR/mcp.json.aside"      "$scratch/.mcp.json"
+  mv "$SELFTEST_DIR/settings.json.aside" "$scratch/.claude/settings.json"
+  for expected in ".mcp.json has no graphify server (run focus-kit update)" \
+                  ".claude/settings.json does not enable the graphify server (run focus-kit update)"; do
+    line="$(warn "$expected")"
+    printf '%s\n' "$out" | grep -qF -- "$line" || {
+      printf '%s\n' "$out"
+      die "check 2: doctor did not report $expected in the scratch repository"
+    }
   done
   # The stamp as a Windows clone with core.autocrlf=true checks it out. The
   # probe runs on every platform because nothing on macOS or Linux ever writes

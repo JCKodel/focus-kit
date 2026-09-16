@@ -88,7 +88,7 @@ personal data.
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:754`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:797`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify with its `mcp` extra as a uv tool, then the

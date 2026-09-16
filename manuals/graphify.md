@@ -134,8 +134,11 @@ skill measures the corpus and asks before running it on a large tree.
   first session in a clone, not an accident: `graphify-out/graph.json` is
   not versioned and does not exist yet. §Ensuring the graph is what fixes
   it, and `/propose` and `/apply` run it on their own. The server connects
-  from the next session on. If it still fails once the graph is there,
-  `graphify-mcp` is not on PATH (`focus-kit doctor`).
+  from the next session on. If it still fails once the graph is there, two
+  causes are left: `graphify-mcp` is not on PATH, or `.claude/settings.json`
+  does not enable the server, which is what a file edited by hand or written
+  before the kit arrived looks like. `focus-kit doctor` says which of the two
+  it is, and `focus-kit update` merges the entry back.
 * **`graphify-mcp` starts and dies with `ImportError: mcp not installed`.**
   graphify is installed without its `mcp` extra, which is the case on every
   machine whose graphify predates that version of the kit. `focus-kit update`

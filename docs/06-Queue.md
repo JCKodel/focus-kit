@@ -78,7 +78,7 @@ about brownfield repositories is untested.
                               it is; graphify says on every invocation that the skill is from 0.9.10 and
                               the package from 0.9.63, and ensure_graphify drops that stderr while doctor
                               asks only whether SKILL.md exists
-[ ] doctor-checks-settings-json
+[x] doctor-checks-settings-json
                               doctor has no line for .claude/settings.json, the file install writes and
                               the one that carries enabledMcpjsonServers, without which the server in the
                               .mcp.json it does report is never enabled; check 2 reads both merged files
