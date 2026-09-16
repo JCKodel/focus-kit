@@ -87,8 +87,28 @@ about brownfield repositories is untested.
                               every other warn doctor prints names its command in parentheses; after a
                               green install the person infers alone that eight of the ten are the normal
                               state of a target /initialize has not run in
-[ ] first-target-initialize   run /initialize there and record every question it should have
+[x] first-target-initialize   run /initialize there and record every question it should have
                               asked, and every one it asked that the code could have answered
+[ ] graph-cost-is-confirmed   the graph procedure's first branch spends the session's tokens with no
+                              number shown and no question asked; docs/manuals/graphify.md says the cost
+                              is declined in /graphify, which measured 44,185 words, applied a threshold
+                              of its own and extracted 433,524 input tokens without asking
+[ ] graph-staleness-without-a-stamp
+                              a graph built through that first branch writes a GRAPH_REPORT.md with no
+                              Built from commit line, so the third branch of the same procedure can never
+                              be evaluated in exactly the repositories that took the first, and every
+                              /propose and /apply there decides alone whether the graph is stale
+[ ] initialize-asks-for-the-proof-tool
+                              the brownfield path fills docs/05 §6 with viewports, themes and references
+                              read off the repository and leaves out the tool, the one part of that slot
+                              no file can answer; round 4 of the skill's list and the template's own
+                              comment both name it, and /apply reaches "screenshot the changed screen"
+                              with nothing that takes one
+[ ] every-term-enters-03-first
+                              nothing in /initialize checks the queue it writes against the terms table
+                              it wrote first, so docs/06 named VaultRepository, LoadResult and SaveResult
+                              while docs/03 said of itself that no delivery may name in code a concept
+                              that is not in the table
 [ ] first-target-delivery     one delivery through /propose and /apply, start to finish
 ```
 
