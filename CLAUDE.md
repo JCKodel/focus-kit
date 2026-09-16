@@ -4,28 +4,60 @@ The installable delivery process (propose/apply) plus the FOCUS
 architecture reference, for repositories worked on with Claude Code. This
 repository is the kit, not a project that uses it.
 
-Everything here is in English. No em dash anywhere: the kit forbids it in
-user-facing text, and the kit's own text sets the example.
+Prose in English; identifiers in English. Everything here is in English,
+including every string the kit ships, because a target repository chooses
+its own documentation language and the kit's text sets the example.
+Detail in docs/04-Conventions.md §1.
+
+No em dash anywhere: the kit forbids it in user-facing text, and the kit's
+own text sets the example.
+
+## Read before acting
+- the product: docs/00-Product.md · the vocabulary: docs/03-Domain.md
+- how it is built: docs/01-Architecture.md · the server: docs/02-Backend.md (none)
+- style and tests: docs/04-Conventions.md · process: docs/05-Process.md
+- queue: docs/06-Queue.md · decisions: docs/adr/ · manuals: docs/manuals/
+- the codebase graph: graphify-out/ (ask it before grepping; docs/manuals/graphify.md)
 
 ## Layout
 - `bin/focus-kit`: the CLI. bash 3.2 (macOS default); no associative
-  arrays, no `mapfile`. JSON merging goes through python3.
+  arrays, no `mapfile`. JSON merging goes through python3. Why:
+  docs/adr/ADR-0001-bash-and-python3.md. The functions: docs/01-Architecture.md §3.
 - `skills/<name>/SKILL.md`: the three commands copied into target repos.
   Frontmatter `description` uses a `>-` block: a bare colon in the value
-  breaks the YAML and the skill silently disappears.
+  breaks the YAML and the skill silently disappears (docs/04-Conventions.md §3).
 - `skills/initialize/templates/`: what `/initialize` fills. Guidance to the
   command lives in `<!-- init: ... -->` comments, which it removes.
 - `manuals/`: kit-owned files copied to `docs/manuals/` of every target.
 - `config/`: settings baseline and `.gitignore` fragment, merged on install.
+- The whole tree, and which part owns what: docs/01-Architecture.md §4.
 
-## Rules
-- Kit-owned files are overwritten on `focus-kit update`; project-owned
-  files (`docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`) are never
-  touched by the CLI. Keep that line sharp.
+## Non-negotiables
+- One delivery = one page in work/<slug>.md. /propose to define, /apply to build.
+- Every file is kit-owned, project-owned, merged or appended once. Kit-owned
+  files are overwritten on `focus-kit update`; project-owned files (`docs/00`
+  to `06`, `CLAUDE.md`, `docs/adr/`, `work/`) are never touched by the CLI.
+  Keep that line sharp (docs/adr/ADR-0002-file-ownership.md).
 - The three skills are stack-agnostic. Anything project-specific (verify
   command, environments, publish policy, git policy, proof) is a slot in
   `docs/05-Process.md`, filled by `/initialize`, read by `/apply`.
-- Bump `VERSION` on any change a target repo would want.
-- Test a change by installing into a scratch repository and running
-  `focus-kit doctor` there; there is no test suite beyond that yet.
-- Stage with `git add`; suggest the commit message; never commit.
+- FOCUS (docs/manuals/focus.md) is what the kit teaches, not how the kit is
+  built. Do not refactor `bin/focus-kit` into four pieces for consistency
+  (docs/adr/ADR-0003-focus-is-taught-not-applied-here.md).
+- Errors are values. In bash that is `warn` for a failure inside the flow and
+  `die` for a defect (docs/01-Architecture.md §6).
+- No em dash in any text a user reads, and none anywhere in this repository.
+- The agent stages (`git add`) and suggests the commit message. It never commits.
+
+## How to work
+- Verify: `bin/focus-kit selftest` before declaring anything done. It does not
+  exist yet; until it lands, run the six checks in docs/05-Process.md §4 by hand.
+- Bump `VERSION` on any change a target repo would want: a skill, a manual, a
+  template, or the CLI's behaviour. Not for this repository's own docs.
+- Any delivery that touches `skills/` or `manuals/` ends by running
+  `focus-kit install .` here, so the dogfood copy in `.claude/skills/` and
+  `docs/manuals/` matches its source (docs/05-Process.md §5).
+- Ambiguity → AskUserQuestion. Abstraction on the second concrete
+  occurrence, and the delivery says which was the first.
+- Docs are living: a delivery that changes behaviour updates the doc that
+  owns it, in the same delivery.

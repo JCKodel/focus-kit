@@ -1,0 +1,240 @@
+# Domain and ubiquitous language
+
+**Project:** focus-kit
+**Status:** active
+**Last updated:** 2026-09-16
+
+---
+
+## Purpose
+
+This document defines the entities of focus-kit, their invariants and the
+**ubiquitous language** of the project.
+
+It is the pivot document: every delivery in `work/`, every identifier in
+code and every test uses the terms defined here. Each concept has exactly
+one meaning, and the same concept never receives two names.
+
+focus-kit is unusual in one way worth stating here: most of its domain is
+made of files and paths rather than records in a database. A term's code
+name is therefore often a path, a bash function, or a marker string. That
+does not make it less normative. A delivery that invents a second name for
+`work/done/` has broken the same rule as one that invents a second name for
+an aggregate.
+
+## Term in code
+
+Concepts are defined in prose; every identifier in code, schema and API is
+written in English, whatever language this document is in. So that the
+translation from concept to identifier is made once and not renegotiated
+file by file, each term declares its canonical code name. The table is
+normative: no delivery may name in code a concept that is not here.
+
+The listed form uses `camelCase` where a symbol is meant. The concrete
+casing follows the artifact: `snake_case` for bash functions, lowercase
+hyphenated for slugs and file names, uppercase for `VERSION`.
+
+**A new concept enters here first**, with its code term, and only then
+appears in a delivery.
+
+### The kit and its parts
+
+| Term | Code | Short meaning |
+|---|---|---|
+| Kit | `focus-kit` | This repository, and the thing it installs. Both senses are the same artifact: the repository is the kit's source, the installed files are the kit in a target. |
+| CLI | `bin/focus-kit` | The single executable. Four verbs: `install`, `update`, `doctor`, `version`. |
+| Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:39`). |
+| Installed version | `.claude/skills/.focus-kit-version` | The kit version stamped into a target at install time. `doctor` compares it with `VERSION` to say whether the target is stale. |
+| Command | `skills/<name>/SKILL.md` | One of the three things a person types in Claude Code: `/initialize`, `/propose`, `/apply`. Called a skill by Claude Code and a command by this project; the two words mean the same thing here. |
+| Manual | `manuals/<name>.md` | A kit-owned how-to document: `process.md`, `focus.md`, `graphify.md`. Copied to `docs/manuals/` of every target. |
+| Template | `skills/initialize/templates/` | The skeleton of a document `/initialize` fills. Mirrors the target layout: `CLAUDE.md` and `docs/`. |
+| Init comment | `<!-- init: ... -->` | Guidance written to `/initialize` inside a template. It says what goes in the section. `/initialize` fills the section and removes the comment; none may survive into a finished document. |
+| Settings baseline | `config/settings.baseline.json` | The permissions merged into a target's `.claude/settings.json`. Never replaces what is there. |
+| Gitignore fragment | `config/gitignore.fragment` | The block appended once to a target's `.gitignore`, guarded by the marker `# --- focus-kit ---`. |
+
+### Ownership
+
+| Term | Code | Short meaning |
+|---|---|---|
+| Kit-owned | `copy_tree()` | A file the CLI overwrites on every `install` or `update`: the three skills, the three manuals. Editing one inside a target is a change that the next update erases. It is edited in this repository. |
+| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:173`). |
+| Merged | `merge_json()` | A file the CLI adds to without removing: `.mcp.json`, `.claude/settings.json`. The merge goes through python3 and is idempotent. |
+| Appended once | (the marker test) | `.gitignore`: the fragment goes in the first time and never again, because the marker is already there. |
+| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:114`). |
+| Dogfood copy | `.claude/skills/`, `docs/manuals/` | This repository is also a target of itself. Those two paths hold copies of `skills/` and `manuals/`. They are versioned, and keeping them equal to their sources is a rule, not a habit (`docs/05-Process.md` §5). |
+
+### The delivery process
+
+| Term | Code | Short meaning |
+|---|---|---|
+| Delivery | `work/<slug>.md` | One unit of work, defined on one page. The page is the scope. |
+| Slug | `<slug>` | A delivery's name: short, lowercase, hyphenated, naming what the user gains rather than the technique. It is an identifier, so it stays in English whatever the documentation language is. |
+| Queue | `docs/06-Queue.md` | One line per delivery, in order, grouped by milestone. |
+| Mark | `[ ]` `[>]` `[x]` | Where a queue line stands: not yet defined, defined in `work/<slug>.md`, done. A line never leaves the queue; it changes mark. |
+| Milestone | (a heading in the queue) | A group of deliveries that together make something a person can use end to end. The unit at which the whole-branch review happens. |
+| Done page | `work/done/<slug>.md` | The delivery page after it shipped, carrying what actually happened: what diverged, what was dropped, what the proof found, the state of each environment. |
+| Propose | `/propose <slug>` | The conversation that writes the delivery page. Writes no code. |
+| Apply | `/apply <slug>` | The clean session that builds the page end to end, and never commits. |
+| Initialize | `/initialize` | The command that writes a target's `docs/` and `CLAUDE.md`. Run once, then again as a review. |
+| Verify command | (see `docs/05-Process.md` §4) | The one command that must come back green before anything is declared done. In this project it will be `bin/focus-kit selftest`, which does not exist yet. |
+| Scratch repository | `mktemp -d` plus `git init` | The disposable target the verify command installs into, checks with `doctor`, and removes at the end whether the run passed or failed. It has exactly this name everywhere: not a temp repo, not a temporary directory, not a test fixture. |
+| Proof | (see `docs/05-Process.md` §6) | How a delivery is shown to work beyond the verify command. Here it is an install into a scratch repository, since the kit has no screen. |
+| House rule | (prose, in the manuals) | A rule fixed in every project the kit installs, not open to a per-project vote: one delivery is one page, FOCUS, errors are values, no em dash, the agent never commits, abstraction on the second occurrence, docs are living, prose in the project's language and identifiers in English. |
+| Slot | (a section of `docs/05-Process.md`) | The part of the process that is per-project: the verify command, the environments table, the publish policy, the git policy, the proof. `/initialize` fills a slot; `/apply` reads it. |
+| ADR | `docs/adr/ADR-NNNN-<slug>.md` | A decision that is expensive to reverse, numbered, never renumbered, never deleted. |
+
+### Language
+
+| Term | Code | Short meaning |
+|---|---|---|
+| Documentation language | (declared in three places) | The language the prose is written in: `docs/00` to `06`, the ADRs, `work/<slug>.md`, commit messages. Chosen once by `/initialize` and declared on the language line of `CLAUDE.md`, in `docs/04-Conventions.md` §1 and in `docs/05-Process.md` §0. For this repository it is English. |
+| Identifier | (always English) | A name in code, schema, API, file name or branch. Never follows the documentation language. |
+| Conversation language | (not recorded anywhere) | The language the person and the agent speak in. A third thing, tied to whoever is writing, and it has no effect on either of the two above. |
+| Em dash | `U+2014` | The character forbidden in any text a user reads. In this repository the rule is stricter than the house rule: no em dash anywhere at all, because the kit's own text sets the example (`CLAUDE.md`). It is named by its codepoint here, never written, so that the verify command's grep needs no exception. |
+
+### The graph
+
+| Term | Code | Short meaning |
+|---|---|---|
+| Graph | `graphify-out/graph.json` | The knowledge graph of the repository. Built by graphify, queried before grepping. |
+| Graph report | `graphify-out/GRAPH_REPORT.md` | The plain-language audit of the graph: god nodes, communities, surprising connections, token cost. |
+| God node | (a section of the report) | The most connected node in the graph. Reading the list is the fastest map of what a codebase is made of. |
+| Graph hook | `.git/hooks/post-commit` | The graphify hook that rebuilds the graph after each commit, so it never goes stale. Installed by `graphify hook install`. |
+| MCP server | `graphify-mcp` | The server declared in `.mcp.json` that exposes the graph to a session. It fails to start until `graphify-out/graph.json` exists. |
+
+### FOCUS
+
+These terms belong to the architecture the kit teaches, not to the kit's own
+code. They are listed because `docs/00`, `docs/01` and the manuals use them,
+and the rule is that every term used in a document is defined here.
+
+| Term | Code | Short meaning |
+|---|---|---|
+| FOCUS | `FOCUS` | Feature-Oriented, Clean, Unidirectional, Scalable. The four-piece architecture the kit installs a reference for. The book is *FOCUS* by J.C. Ködel. |
+| View | (per stack) | Fires events, renders state. Forbids business rules and data access. |
+| Orchestrator | (per stack) | Converts one event into one state; fetches, calls use cases, publishes. Forbids deciding rules and persisting. |
+| Use case | (per stack) | The only place for business rules. A pure function: takes data, returns a Result. Forbids IO, framework and domain exceptions. |
+| Repository | (per stack) | CRUD, and the only place an infrastructure exception becomes a Result. Forbids business rules. |
+| Result | (per stack) | A return type carrying either success or one named failure, never both. The mechanism behind "errors are values". |
+| Slice | (per stack) | One flat folder per feature, holding the four pieces of that feature. The unit of change. |
+
+---
+
+## Entities and invariants
+
+There are four things in this project that have rules about them. None of
+them is a row in a database; all four are sets of files, and the invariants
+are the sentences a reviewer can check by looking.
+
+### The kit
+
+What it is: this repository. Source of everything installed elsewhere.
+
+Invariants:
+
+* `VERSION` is bumped by any change a target repository would want. A
+  change to a skill, a manual, a template or the CLI's behaviour is such a
+  change; a change to this repository's own `docs/` is not.
+* Every file is either kit-owned, project-owned, merged or appended once.
+  There is no fifth category, and a new file declares which it is in the
+  delivery that adds it.
+* The three commands are stack-agnostic. A command that names a language, a
+  framework, a test runner or a deploy target has leaked a slot; the slot
+  belongs in the target's `docs/05-Process.md`.
+* Nothing the kit writes contains an em dash.
+
+Transitions: a version ships when a person commits. There is no release
+artifact, no tag flow, no package registry. A target gets the new version by
+running `focus-kit update`.
+
+What it is not: a library, a framework, or a runtime dependency of the
+target. After `install`, nothing in the target imports or calls the kit.
+`bin/focus-kit` is needed again only to update.
+
+### The target repository
+
+What it is: any git repository the kit is installed into, including this one.
+
+Invariants:
+
+* After `install`, `doctor` reports every kit-owned path present and the
+  installed version equal to `VERSION`.
+* `install` is idempotent. Running it twice leaves the same tree: the trees
+  are overwritten, the JSON merges are by key, the gitignore fragment is
+  guarded by its marker.
+* `install` never removes anything from a target's `.claude/settings.json`
+  or `.mcp.json`, and never edits a project-owned file.
+* A target whose `docs/00-Product.md` exists is a repository `/initialize`
+  reviews, not one it rewrites.
+
+Transitions: absent, installed, initialized, stale (installed version below
+`VERSION`), updated.
+
+What it is not: a fork or a clone of the kit. A target holds copies of nine
+kit-owned files and nothing else of the kit's.
+
+### A delivery
+
+What it is: one page in `work/<slug>.md`, and the work it names.
+
+Invariants:
+
+* It fits on one page. If it does not, it is two deliveries. The page is the
+  test that the scope was understood.
+* Its **Contract** section is exact. It is the only section that is
+  expensive to reverse, so it is the only one precision is demanded of.
+* It is defined before it is built, in a separate session. Deciding and
+  doing are separated on purpose.
+* Its "Done when" is mechanical: every line is something a person can check
+  without judgement.
+* A delivery that changes behaviour updates the document that owns that
+  behaviour, in the same delivery.
+
+Transitions: `[ ]` in the queue, `[>]` once `/propose` wrote the page, `[x]`
+once `/apply` finished and moved the page to `work/done/`.
+
+What it is not: a task, a ticket, or a unit of time. It carries no estimate
+and no assignee.
+
+### The queue
+
+What it is: `docs/06-Queue.md`, the ordered list of deliveries.
+
+Invariants:
+
+* One line per delivery, in the order they will be done.
+* A line never leaves. It changes mark. A cancelled delivery is struck
+  through with a reason, not deleted, because the reason is the value.
+* The order is the decision. A line moved up is a decision someone took, and
+  it is taken in conversation, not by an agent rearranging the file.
+* Every finding confirmed by a milestone review becomes a line, named after
+  what it fixes.
+
+What it is not: a schedule, a narrative, or a backlog of ideas. Ideas that
+are wanted but not ordered live under "Later, not scheduled".
+
+---
+
+## Language of the interface
+
+The kit has no graphical interface. The text a user reads is the terminal
+output of `bin/focus-kit` and the three manuals it installs, plus whatever
+the three commands say in a session.
+
+All of it is in English, including for a target repository whose
+documentation language is something else: the kit's own strings are not
+translated, only the documents `/initialize` writes. The no em dash rule
+applies to every line of that output.
+
+The terminal output has four shapes and no others (`bin/focus-kit:41`):
+`say` for plain lines, `ok` for a green check, `warn` for a yellow warning
+that does not stop the run, `die` for a red error that exits. A new message
+picks one of the four.
+
+---
+
+## Related documents
+
+* `docs/00-Product.md`: what the product is.
+* `docs/01-Architecture.md`: how it is built.
+* `docs/02-Backend.md`: the server, which this project does not have.

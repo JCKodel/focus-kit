@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
+      "Bash(graphify *)",
+      "Bash(git add *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(bash -n *)",
+      "Bash(focus-kit *)",
+      "Bash(./bin/focus-kit *)",
+      "Bash(diff *)",
+      "Bash(grep *)",
+      "Bash(mktemp *)",
+      "Bash(wc *)",
+      "Bash(ls *)"
+    ],
+    "ask": [
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git * commit *)",
+      "Bash(git * push *)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "graphify"
+  ]
+}
