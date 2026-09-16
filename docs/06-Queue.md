@@ -109,7 +109,25 @@ about brownfield repositories is untested.
                               it wrote first, so docs/06 named VaultRepository, LoadResult and SaveResult
                               while docs/03 said of itself that no delivery may name in code a concept
                               that is not in the table
-[ ] first-target-delivery     one delivery through /propose and /apply, start to finish
+[x] first-target-delivery     one delivery through /propose and /apply, start to finish
+[ ] propose-asks-only-what-no-file-answers
+                              /propose asked which test libraries to install when the queue line it was
+                              expanding named one package and docs/04 §5 said when each of the others
+                              arrives; it had read both files and quoted the rule from one of them inside
+                              the option text, and still put a decided matter in front of a person
+[ ] propose-ends-by-naming-the-next-session
+                              /propose ends at "/apply <slug> implements" and skills/propose/SKILL.md has
+                              no closing section at all, so the person types /apply in the same session;
+                              the kit asks for a clean session in three places and says it in none of
+                              them at the moment the person decides where to type, and the graph is the
+                              first casualty: /apply reused a freshness check another command had run in
+                              that session and never asked the graph at all
+[ ] propose-does-not-fix-what-it-cannot-run
+                              /propose pins in the Contract tooling detail only a run can verify, so npm
+                              resolved vitest@5.0.1 against the project's @types/node@^20 and /apply had
+                              to ask; the page had pre-answered the conflict in the wrong direction and
+                              contradicted its own "one devDependency and nothing else", and the same
+                              pattern turned vitest.config.ts into .mts
 ```
 
 ## Milestone 3: the kit explains itself
