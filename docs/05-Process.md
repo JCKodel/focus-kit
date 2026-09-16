@@ -132,6 +132,17 @@ It runs six checks, in this order, and stops at the first red:
    caught: ten of the sixteen paths the manifest names are templates and no
    presence line covers them. It is restored by a copy alone, because a
    deletion does not change the manifest.
+   Last, the **global skill**: four `doctor` runs against a fake home holding
+   `.claude/skills/graphify/SKILL.md` and a fake `graphify` on PATH that
+   prints `graphify 9.9.9` whatever its arguments, so every line the state
+   table can print is proven on any machine, with no network, without
+   graphify installed and without touching the real `~/.claude`. A stamp of
+   `9.9.10` must print the `newer` warn, which is the run that proves the
+   order is numeric and not lexical; `9.9.8` the `older` warn; no stamp the
+   `unknown` warn; `9.9.9` the green line. Each run is a command
+   substitution, so the `HOME=` and `PATH=` in front of `doctor` die with the
+   subshell. Both fakes live beside the scratch and not in it, because check
+   3 snapshots the scratch, and the existing `trap` removes them.
 3. The same install again into the same scratch repository, trees compared.
    The install is idempotent.
 4. The frontmatter of each of the three `SKILL.md` files, against four
@@ -187,7 +198,7 @@ prints the detail of what broke, one `die` naming it, and exits 1.
 |---|---|---|
 | Kit source (`skills/`, `manuals/`, `config/`, `bin/`) | at the delivery's version, always. It is the truth. | the edit itself |
 | Dogfood copy (`.claude/skills/`, `docs/manuals/`) | in sync with the kit source, always, when the delivery touched a skill or a manual, or bumped `VERSION` | `focus-kit install .` |
-| Machine (`~/.local/bin/focus-kit`) | untouched. It is a symlink to the kit source and follows it automatically. | none; verify with `focus-kit version` |
+| Machine (`~/.local/bin/focus-kit`) | the CLI untouched: it is a symlink to the kit source and follows it automatically. The global `/graphify` skill left at the graphify package's version, which `focus-kit install` anywhere does on its own and `focus-kit doctor` reports. | none for the CLI; verify with `focus-kit version` and the skill line of `focus-kit doctor .` |
 | Target repositories (anyone else's) | untouched. They move only when their owner runs `focus-kit update`. | `focus-kit update <path>`, run by that person |
 | First target (`~/Downloads/vaulted`) | installed at the delivery's version while milestone 2 is open; nothing committed there, ever, because it is a clone of someone else's repository. This row leaves with milestone 2 (`docs/03-Domain.md`, First target). | `focus-kit update ~/Downloads/vaulted` |
 

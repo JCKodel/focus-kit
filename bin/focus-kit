@@ -10,7 +10,8 @@
 #
 # What install does, in order:
 #   1. dependencies on this machine: uv, then graphify with its mcp extra
-#      (uv tool), then the global graphify skill for Claude Code
+#      (uv tool), then the global graphify skill for Claude Code, installed
+#      when absent and refreshed when it is older than the package
 #      (graphify install --platform claude)
 #   2. in the target repository:
 #      .claude/skills/{initialize,propose,apply}   copied, overwriting (kit-owned)
@@ -82,6 +83,41 @@ ensure_uv() {
   ok "uv installed"
 }
 
+# The state of the Global skill against the graphify package
+# (docs/03-Domain.md, Global skill and Skill stamp). One line,
+# "<state> <skill> <package>", a number it could not read written as "-":
+#
+#   missing   ~/.claude/skills/graphify/SKILL.md is not there
+#   unknown   the skill is there and the stamp is not, or graphify is not on PATH
+#   equal     the stamp and the second word of "graphify --version" are the same
+#   older     they differ and the stamp is the lower of the two
+#   newer     they differ and the package is the lower of the two
+#
+# The order is numeric field by field and not a string comparison, or 0.9.10
+# would sort before 0.9.8 and a newer skill would read as older. The stamp is
+# the same file graphify reads to print its own stale-skill notice, so the kit
+# reaches graphify's verdict without reading graphify's stderr
+# (docs/04-Conventions.md §1).
+#
+# It reads and never dies: its output is captured, and a die inside $(...)
+# ends only the subshell (docs/01-Architecture.md §6).
+global_skill_state() {
+  local dir="$HOME/.claude/skills/graphify" skill="-" package="-" lower
+  [ -f "$dir/SKILL.md" ] || { echo "missing - -"; return; }
+  if [ -s "$dir/.graphify_version" ]; then
+    skill="$(without_cr "$dir/.graphify_version")"
+    [ -n "$skill" ] || skill="-"
+  fi
+  if command -v graphify >/dev/null 2>&1; then
+    package="$(graphify --version 2>/dev/null | head -1 | awk '{print $2}')"
+    [ -n "$package" ] || package="-"
+  fi
+  if [ "$skill" = "-" ] || [ "$package" = "-" ]; then echo "unknown $skill $package"; return; fi
+  if [ "$skill" = "$package" ]; then echo "equal $skill $package"; return; fi
+  lower="$(printf '%s\n%s\n' "$skill" "$package" | sort -t. -k1,1n -k2,2n -k3,3n | head -1)"
+  if [ "$lower" = "$skill" ]; then echo "older $skill $package"; else echo "newer $skill $package"; fi
+}
+
 # graphify is installed with its mcp extra, always. Without the extra
 # graphify-mcp starts and dies with "ImportError: mcp not installed", so the
 # server declared in .mcp.json never connects. The install runs
@@ -109,16 +145,30 @@ ensure_graphify() {
   # business in the middle of the dependency block (docs/04-Conventions.md §1).
   ok "$(graphify --version 2>/dev/null) with the mcp extra (to upgrade: uv tool upgrade graphifyy)"
   command -v graphify-mcp >/dev/null 2>&1 || warn "graphify-mcp not on PATH; the MCP server in .mcp.json needs it"
-  # The global /graphify skill for Claude Code. Only when absent: the
-  # installer also appends a "# graphify" section to ~/.claude/CLAUDE.md,
-  # and repeating it on every run would keep touching that file.
-  if [ -f "$HOME/.claude/skills/graphify/SKILL.md" ]; then
-    ok "global /graphify skill for Claude Code"
-  elif graphify install --platform claude >/dev/null 2>&1; then
-    ok "global /graphify skill for Claude Code (installed; it also added a graphify section to ~/.claude/CLAUDE.md)"
-  else
-    warn "could not install the global /graphify skill (graphify install --platform claude)"
-  fi
+  # The global /graphify skill for Claude Code: installed when absent,
+  # refreshed when it is older than the package or carries no stamp, left
+  # alone when it is newer, because graphify's own installer would downgrade
+  # it. A refresh is not a file the kit keeps rewriting: graphify's installer
+  # copies the skill, its references/ and the stamp, and appends its section
+  # to ~/.claude/CLAUDE.md only when that file does not mention graphify yet.
+  # graphify is on PATH by here, so "unknown" in this block means no stamp.
+  local state skill package
+  read -r state skill package <<< "$(global_skill_state)"
+  case "$state" in
+    equal) ok "global /graphify skill for Claude Code" ;;
+    newer) warn "global /graphify skill $skill is newer than graphify $package (uv tool upgrade graphifyy)" ;;
+    *)
+      if graphify install --platform claude >/dev/null 2>&1; then
+        case "$state" in
+          missing) ok "global /graphify skill for Claude Code (installed; it also added a graphify section to ~/.claude/CLAUDE.md)" ;;
+          unknown) ok "global /graphify skill for Claude Code (refreshed from an unknown version)" ;;
+          *)       ok "global /graphify skill for Claude Code (refreshed from $skill)" ;;
+        esac
+      else
+        warn "could not install the global /graphify skill (graphify install --platform claude)"
+      fi
+      ;;
+  esac
 }
 
 # ---------------------------------------------------------------- repository
@@ -180,8 +230,9 @@ PY
 # The one place a carriage return is forgiven. A target cloned on Windows
 # with core.autocrlf=true has every kit-owned file, the stamp and the
 # manifest checked out as CRLF, and it receives no .gitattributes, so the
-# tolerance has to live in the readers. Its three callers are
-# installed_version, fingerprint and the manifest reader inside doctor. It
+# tolerance has to live in the readers. Its four callers are
+# installed_version, fingerprint, the manifest reader inside doctor and
+# global_skill_state, which reads a stamp graphify wrote on this machine. It
 # reads and never dies: its output is captured (docs/01-Architecture.md §6),
 # and the callers keep their own -f guard on the file.
 without_cr() { # file
@@ -311,7 +362,18 @@ doctor() {
   else
     warn "graphify-mcp installed without the mcp extra (run focus-kit update)"
   fi
-  [ -f "$HOME/.claude/skills/graphify/SKILL.md" ] && ok "global /graphify skill" || warn "global /graphify skill missing"
+  # The Global skill against the package, one line whatever the state. On a
+  # machine without graphify the line above already says so, and this one
+  # reports the skill as of unknown version, which is what it is.
+  local gstate gskill gpackage
+  read -r gstate gskill gpackage <<< "$(global_skill_state)"
+  case "$gstate" in
+    equal)   ok   "global /graphify skill" ;;
+    missing) warn "global /graphify skill missing (run focus-kit update)" ;;
+    unknown) warn "global /graphify skill of unknown version (run focus-kit update)" ;;
+    older)   warn "global /graphify skill $gskill installed, $gpackage available (run focus-kit update)" ;;
+    newer)   warn "global /graphify skill $gskill is newer than graphify $gpackage (uv tool upgrade graphifyy)" ;;
+  esac
   # Every path reported missing below, in the form the manifest holds it. The
   # drift pass reads it to avoid saying a second time what these lines said.
   local s missing=""
@@ -533,6 +595,41 @@ check_install() { # scratch
   # Restored by copy alone: a deletion does not change the manifest, so the
   # one write_manifest above still describes this tree byte for byte.
   cp "$KIT_DIR/skills/initialize/templates/CLAUDE.md" "$scratch/$template"
+  # The Global skill (docs/03-Domain.md), four doctor runs against a fake home
+  # and a fake graphify on PATH: every line the state table can print, on any
+  # machine, with no network, without graphify and without touching the real
+  # ~/.claude. Both fakes live beside the scratch and not in it, because check
+  # 3 snapshots the scratch, and the trap that removes SELFTEST_DIR removes
+  # them. Each run is a command substitution, so the two assignments in front
+  # of doctor die with the subshell instead of outliving the call.
+  local home="$SELFTEST_DIR/home" bin="$SELFTEST_DIR/bin" stamp expected
+  mkdir -p "$home/.claude/skills/graphify" "$bin"
+  printf '%s\n' "A fake global skill, for the probe below." > "$home/.claude/skills/graphify/SKILL.md"
+  printf '%s\n' '#!/bin/sh' 'echo "graphify 9.9.9"' > "$bin/graphify"
+  chmod +x "$bin/graphify"
+  stamp="$home/.claude/skills/graphify/.graphify_version"
+  # 9.9.10 first: it is the run that proves the order is numeric, because a
+  # string comparison puts 9.9.10 before 9.9.9 and calls the newer skill older.
+  # "-" is no stamp at all. Each expected line is built through ok or warn, as
+  # every other assertion here is, so the check and the reporter cannot drift.
+  local v
+  for v in 9.9.10 9.9.8 - 9.9.9; do
+    if [ "$v" = "-" ]; then rm -f "$stamp"; else printf '%s\n' "$v" > "$stamp"; fi
+    case "$v" in
+      9.9.10) expected="$(warn "global /graphify skill 9.9.10 is newer than graphify 9.9.9 (uv tool upgrade graphifyy)")" ;;
+      9.9.8)  expected="$(warn "global /graphify skill 9.9.8 installed, 9.9.9 available (run focus-kit update)")" ;;
+      -)      expected="$(warn "global /graphify skill of unknown version (run focus-kit update)")" ;;
+      9.9.9)  expected="$(ok "global /graphify skill")" ;;
+    esac
+    out="$(HOME="$home" PATH="$bin:$PATH" doctor "$scratch" 2>&1)" || {
+      printf '%s\n' "$out"
+      die "check 2: doctor failed against the fake home with the skill stamp at $v"
+    }
+    printf '%s\n' "$out" | grep -qF -- "$expected" || {
+      printf '%s\n' "$out"
+      die "check 2: doctor did not report the global skill as expected with the stamp at $v and graphify at 9.9.9"
+    }
+  done
   ok "2 install into a scratch repository, doctor agrees"
 }
 

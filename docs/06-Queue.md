@@ -74,7 +74,7 @@ about brownfield repositories is untested.
 
 ```
 [x] first-target-install      install into a real repository and record what doctor missed
-[ ] doctor-sees-a-stale-skill install and doctor print the global /graphify skill green whatever version
+[x] doctor-sees-a-stale-skill install and doctor print the global /graphify skill green whatever version
                               it is; graphify says on every invocation that the skill is from 0.9.10 and
                               the package from 0.9.63, and ensure_graphify drops that stderr while doctor
                               asks only whether SKILL.md exists

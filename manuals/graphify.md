@@ -148,6 +148,14 @@ skill measures the corpus and asks before running it on a large tree.
   `uv tool upgrade graphifyy` fixes it, which is what the `ok` line of the
   dependency phase already suggests. The kit never runs it: an upgrade is
   the person's call, not a side effect of installing the kit.
+* **Every graphify command warns that the skill is from an older version.**
+  The global `/graphify` skill under `~/.claude/skills/graphify/` was written
+  by a graphify older than the one installed, and graphify says so on every
+  invocation. `focus-kit update` fixes it: the dependency phase runs
+  `graphify install --platform claude` and names the version it came from,
+  and `focus-kit doctor` says so before you try. When the warning is the
+  other way round, a skill newer than the package, the kit leaves the skill
+  alone and names `uv tool upgrade graphifyy`, which is the person's call.
 * **Hook missing after a clone.** Also normal: git does not transfer
   `.git/hooks/`, and there is no hook that fires at clone time. §Ensuring
   the graph installs it, or run `graphify hook install` by hand.

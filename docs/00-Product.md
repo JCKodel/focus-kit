@@ -88,17 +88,27 @@ personal data.
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:399`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:754`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify with its `mcp` extra as a uv tool, then the
 global `/graphify` skill for Claude Code. uv is skipped when already present;
 graphify is reinstalled on every run and uv decides whether that changes
 anything, which is how a machine that installed graphify before the extra
-existed gains it. The global skill is installed only when absent, because
-installing it also appends a section to the user's `~/.claude/CLAUDE.md`, and
-repeating that on every run would keep touching a file the kit does not own
-(`bin/focus-kit:100`).
+existed gains it. The global skill is installed when absent and **refreshed
+when it is older than the graphify package**, or when it carries no stamp
+saying which version wrote it; a skill newer than the package is left alone,
+because graphify's own installer would downgrade it, and both commands say so
+and name `uv tool upgrade graphifyy` (`bin/focus-kit:156`).
+
+The refresh was once withheld, on the grounds that graphify's installer also
+appends a section to the user's `~/.claude/CLAUDE.md` and that repeating it
+would keep touching a file the kit does not own. That reason no longer holds:
+graphify appends the section only when `~/.claude/CLAUDE.md` does not mention
+graphify yet, so a refresh writes the skill, its `references/` and the stamp
+and nothing else. What the old rule cost was worse than the file it protected:
+graphify prints a warning on **every** invocation while the skill is stale,
+and the kit printed a green line over it.
 
 In the repository: the three skills and the three manuals are copied over
 whatever is there; `.mcp.json` and `.claude/settings.json` are merged into,
