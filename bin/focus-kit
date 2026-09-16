@@ -312,9 +312,17 @@ doctor() {
     warn "graphify-mcp installed without the mcp extra (run focus-kit update)"
   fi
   [ -f "$HOME/.claude/skills/graphify/SKILL.md" ] && ok "global /graphify skill" || warn "global /graphify skill missing"
-  local s
+  # Every path reported missing below, in the form the manifest holds it. The
+  # drift pass reads it to avoid saying a second time what these lines said.
+  local s missing=""
   for s in initialize propose apply; do
-    [ -f "$target/.claude/skills/$s/SKILL.md" ] && ok "/$s" || warn "/$s missing"
+    if [ -f "$target/.claude/skills/$s/SKILL.md" ]; then
+      ok "/$s"
+    else
+      warn "/$s missing"
+      missing="$missing.claude/skills/$s/SKILL.md
+"
+    fi
   done
   if [ -f "$target/.claude/skills/.focus-kit-version" ]; then
     local v; v="$(installed_version "$target")"
@@ -324,13 +332,22 @@ doctor() {
   for f in docs/00-Product.md docs/01-Architecture.md docs/02-Backend.md docs/03-Domain.md \
            docs/04-Conventions.md docs/05-Process.md docs/06-Queue.md CLAUDE.md \
            docs/manuals/process.md docs/manuals/focus.md docs/manuals/graphify.md .mcp.json; do
-    [ -f "$target/$f" ] && ok "$f" || warn "$f missing"
+    if [ -f "$target/$f" ]; then
+      ok "$f"
+    else
+      warn "$f missing"
+      missing="$missing$f
+"
+    fi
   done
   # Drift (docs/03-Domain.md): a kit-owned file that is not as install wrote
   # it. The question is only asked of a target that has a stamp, because a
-  # target with no stamp has no kit in it. A file that is absent is not
-  # drift: update restores it and the presence lines above already said
-  # missing, so the manifest pass skips it.
+  # target with no stamp has no kit in it. A file that is absent is drift
+  # too, although update restores it: the manifest is the only complete list
+  # of kit-owned files a target holds, so a green line that skipped an entry
+  # was never earned. A path the presence lines above already named is not
+  # repeated here, and the rule is by position in the output, not a list of
+  # paths.
   if [ -f "$target/.claude/skills/.focus-kit-version" ]; then
     local manifest="$target/.claude/skills/.focus-kit-manifest"
     if [ ! -f "$manifest" ]; then
@@ -345,7 +362,12 @@ doctor() {
       # and drift would come back 0 however many lines were printed.
       while read -r crc path; do
         [ -n "$path" ] || continue
-        [ -f "$target/$path" ] || continue
+        if [ ! -f "$target/$path" ]; then
+          drift=1
+          printf '%s\n' "$missing" | grep -qxF -- "$path" ||
+            warn "$path missing (focus-kit update restores it)"
+          continue
+        fi
         if [ "$(fingerprint "$target/$path")" != "$crc" ]; then
           warn "$path edited locally (focus-kit update overwrites it)"
           drift=1
@@ -445,7 +467,7 @@ check_install() { # scratch
   # this scratch and installs into it again, and a CRLF stamp left behind
   # would come back as a false idempotency failure.
   printf '%s\n' "$KIT_VERSION" > "$scratch/.claude/skills/.focus-kit-version"
-  # The three drift probes, on the same scratch, each restored before check 3
+  # The four drift probes, on the same scratch, each restored before check 3
   # snapshots it. First the whole Windows checkout: a manual and the manifest
   # itself with CRLF line ends. doctor must still report no drift, which it
   # does only while both the fingerprint and the manifest reader go through
@@ -485,6 +507,32 @@ check_install() { # scratch
   cp "$KIT_DIR/manuals/focus.md" "$manual"
   rm -f "$scratch/.claude/skills/apply/extra.md"
   write_manifest "$scratch"
+  # The fourth kind of drift: a kit-owned file the target no longer has. A
+  # template, because ten of the sixteen paths the manifest names are
+  # templates and no presence line anywhere covers them, so this is the only
+  # place the deletion can be caught. Both assertions in one doctor run: the
+  # warn has to be there and the green line has not to be.
+  local template=".claude/skills/initialize/templates/CLAUDE.md"
+  rm "$scratch/$template"
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  line="$(warn "$template missing (focus-kit update restores it)")"
+  printf '%s\n' "$out" | grep -qF -- "$line" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor did not report a kit-owned file deleted from the scratch repository"
+  }
+  # An if and not an && list: under set -e an && list whose last command
+  # fails ends the script, and here the grep failing is the green case.
+  line="$(ok "kit-owned files as install wrote them")"
+  if printf '%s\n' "$out" | grep -qF -- "$line"; then
+    printf '%s\n' "$out"
+    die "check 2: doctor printed the drift ok line with a kit-owned file deleted from the scratch repository"
+  fi
+  # Restored by copy alone: a deletion does not change the manifest, so the
+  # one write_manifest above still describes this tree byte for byte.
+  cp "$KIT_DIR/skills/initialize/templates/CLAUDE.md" "$scratch/$template"
   ok "2 install into a scratch repository, doctor agrees"
 }
 
@@ -571,6 +619,19 @@ check_dogfood() {
   out="$(diff -r manuals docs/manuals 2>&1)" || {
     printf '%s\n' "$out"
     die "check 6: docs/manuals differs from manuals (run focus-kit install .)"
+  }
+  # After both diffs, so it fires only on the gap they leave: the two copies
+  # equal to their sources and the manifest stale against them, which is what
+  # a source and a copy edited by hand in step produce. Only the presence of
+  # the ok line is asserted; the warn lines this repository legitimately
+  # produces are ignored, the way check 2 ignores a scratch repository's.
+  out="$(doctor "$KIT_DIR" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 6: doctor failed on this repository"
+  }
+  printf '%s\n' "$out" | grep -qF -- "$(ok "kit-owned files as install wrote them")" || {
+    printf '%s\n' "$out"
+    die "check 6: doctor reports drift in the dogfood copy (run focus-kit install .)"
   }
   ok "6 the dogfood copies match their sources"
 }

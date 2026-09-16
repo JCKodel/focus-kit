@@ -115,7 +115,7 @@ It runs six checks, in this order, and stops at the first red:
    a CRLF left behind would come back as a false idempotency failure. The
    probe runs on every platform: nothing on macOS or Linux writes that byte
    on its own, so a regression here would otherwise be invisible forever.
-   Last, three probes on drift, on the same scratch. **CRLF:**
+   Last, four probes on drift, on the same scratch. **CRLF:**
    `docs/manuals/focus.md` and `.claude/skills/.focus-kit-manifest` are both
    rewritten with `\r\n` line ends and `doctor` must still print `kit-owned
    files as install wrote them`, which it does only while the fingerprint and
@@ -126,7 +126,12 @@ It runs six checks, in this order, and stops at the first red:
    the manifest included, which `write_manifest` rewrites byte for byte
    because it is deterministic over the same tree; check 3 snapshots this
    scratch next and any leftover would come back as a false idempotency
-   failure.
+   failure. **Missing:** `.claude/skills/initialize/templates/CLAUDE.md` is
+   deleted and one `doctor` run must both name it as missing and not print
+   the drift `ok` line, which is the only way a deleted template is ever
+   caught: ten of the sixteen paths the manifest names are templates and no
+   presence line covers them. It is restored by a copy alone, because a
+   deletion does not change the manifest.
 3. The same install again into the same scratch repository, trees compared.
    The install is idempotent.
 4. The frontmatter of each of the three `SKILL.md` files, against four
@@ -157,6 +162,13 @@ It runs six checks, in this order, and stops at the first red:
    a target, which receives no `.gitattributes`.
    The `die` names both numbers and the command
    that fixes it; an absent stamp is red too, with a `die` naming the file.
+   Then `doctor` is run on this repository and must print `kit-owned files as
+   install wrote them`. Only that line is asserted; the warns this repository
+   legitimately produces are ignored, as check 2 ignores a scratch
+   repository's. It comes after the two `diff` calls because it exists for
+   the gap they leave: both copies equal to their sources and the manifest
+   stale against them, which is what editing a manual and its dogfood copy by
+   hand, without `focus-kit install .`, produces.
 
 It takes a few seconds. There is nothing slow and nothing that runs only in
 CI, because there is no CI. A red means a target repository would receive a

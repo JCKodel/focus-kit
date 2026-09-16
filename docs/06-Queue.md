@@ -54,9 +54,15 @@ documents were written.
                               into the source it execs; a quote in the JSON breaks the install
 [x] doctor-reports-drift      doctor says when a kit-owned file in a target was edited locally,
                               so the person knows update is about to overwrite their edit
+[x] manifest-is-the-whole-list
+                              two green lines printed without reading the manifest to the end:
+                              doctor skips a manifest entry whose file is gone, so deleting one of
+                              the ten templates leaves it green, and check 6 excludes the manifest
+                              from its diff, so a stale dogfood manifest commits with selftest green
 ```
 
-Close of milestone 1: whole-branch review (`docs/05-Process.md` §9).
+Close of milestone 1: the whole-branch review (`docs/05-Process.md` §9) ran
+and produced the line above, which is the last one.
 
 ## Milestone 2: the kit used on something real
 

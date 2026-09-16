@@ -88,8 +88,8 @@ Three verbs and eight helpers, all in `bin/focus-kit`:
 | Function | Line | What it does |
 |---|---|---|
 | `install_repo` | 226 | The whole install into a target: skills, manuals, the manifest, `work/done/`, the two JSON merges, the gitignore fragment, the closing message. |
-| `doctor` | 298 | Reports what is present on the machine and in the target, whether the installed version matches `VERSION`, and which kit-owned files are not as `install` wrote them: it fingerprints every file the manifest names and looks for files added inside the three skill folders. Reports only; it changes nothing. |
-| `selftest` | 578 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
+| `doctor` | 298 | Reports what is present on the machine and in the target, whether the installed version matches `VERSION`, and which kit-owned files are not as `install` wrote them: it fingerprints every file the manifest names, reports a file the manifest names and the target does not have, and looks for files added inside the three skill folders. A path the presence lines above already named missing is not named a second time. Reports only; it changes nothing. |
+| `selftest` | 639 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
 | `copy_tree` | 126 | Overwrite a kit-owned tree: `rm -rf` the destination, then `cp -R`. |
 | `merge_json` | 144 | Merge a baseline file into a target file, through a python heredoc that takes two paths and nothing else, so a baseline holding a quote, a backslash or the sequence `'''` is data and never syntax. One rule decides every key: an entry directly under `mcpServers` is replaced whole, an absent key is taken, two objects merge recursively, two lists concatenate without duplicates, anything else is the baseline's; a key the baseline says nothing about is never reached. The heredoc names its encodings, UTF-8 in and UTF-8 with LF out, because python otherwise follows the system locale and writes CRLF in the code page on Windows. It is also where a missing python dies, because `python_bin` cannot. |
 | `without_cr` | 187 | `tr -d '\r'` over a file: the one place a carriage return is forgiven. A target cloned on Windows with `core.autocrlf=true` has every kit-owned file, the stamp and the manifest checked out as CRLF, and it receives no `.gitattributes`, so the tolerance belongs to the readers. Three callers: `installed_version`, `fingerprint`, and the manifest reader inside `doctor`. It reads and never dies (§6). |
@@ -100,14 +100,14 @@ Three verbs and eight helpers, all in `bin/focus-kit`:
 | `ensure_uv`, `ensure_graphify` | 76, 92 | Make the machine ready. `ensure_uv` is a no-op when uv is there. `ensure_graphify` always runs `uv tool install 'graphifyy[mcp]'`: the `mcp` extra is what makes `graphify-mcp` start, and a machine that installed graphify without it gains it here. uv makes the step idempotent, not a branch in the script. |
 
 Plus one function per check, between `doctor` and the dispatch, each ending
-in an `ok` line or a `die`: `check_parses` (388), `check_install` (397),
-`check_idempotent` (491), `check_frontmatter` (508), `check_no_em_dash`
-(547), `check_dogfood` (559). They are the six checks of
+in an `ok` line or a `die`: `check_parses` (410), `check_install` (419),
+`check_idempotent` (539), `check_frontmatter` (556), `check_no_em_dash`
+(595), `check_dogfood` (607). They are the six checks of
 `docs/05-Process.md` §4 in that order, and `selftest` is nothing but the
 list of calls.
 
 The dispatch is a `case` over `$1` at the bottom of the file
-(`bin/focus-kit:596`), and `--help` prints the script's own header comment
+(`bin/focus-kit:657`), and `--help` prints the script's own header comment
 through `awk`, every comment line after the shebang up to the first line
 that is not one, so the usage text and the documentation are the same bytes
 however long the header grows.
