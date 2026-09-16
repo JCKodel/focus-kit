@@ -19,8 +19,9 @@ Implement `work/$ARGUMENTS.md` in this session, completely.
    policy, and how a screen is proven.
 4. `docs/manuals/focus.md`: the four pieces and the review rules. Every
    line of code you write is reviewable against that table.
-5. The slice you are touching. Ask the graph first
-   (`graphify query "<slice or entity>"`), then read the files it names.
+5. The slice you are touching. Ensure the graph first, per
+   `docs/manuals/graphify.md` §Ensuring the graph, then ask it
+   (`graphify query "<slice or entity>"`) and read the files it names.
 
 If the delivery contradicts a doc, stop and say which; the doc changes in
 the same delivery or the delivery is wrong. Do not resolve it silently.
@@ -70,8 +71,7 @@ others.
    `docs/05-Process.md` defines: subject up to 72 characters, body up to
    five one-line bullets, last line pointing at `work/done/<slug>.md`.
    **Do not commit.** The graph rebuilds itself on the person's commit
-   (post-commit hook); if the hook is missing, say so and suggest
-   `graphify hook install`.
+   (post-commit hook).
 
 Every file you write is in the project's documentation language, the one
 `docs/05-Process.md` §0 declares (`CLAUDE.md` repeats it on its language

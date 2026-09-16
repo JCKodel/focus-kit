@@ -98,11 +98,11 @@ appears in a delivery.
 
 | Term | Code | Short meaning |
 |---|---|---|
-| Graph | `graphify-out/graph.json` | The knowledge graph of the repository. Built by graphify, queried before grepping. |
+| Graph | `graphify-out/graph.json` | The knowledge graph of the repository. Built by graphify, queried before grepping. Derived, not authored: the whole of `graphify-out/` is ignored by git and rebuilt on demand (`ADR-0005`). |
 | Graph report | `graphify-out/GRAPH_REPORT.md` | The plain-language audit of the graph: god nodes, communities, surprising connections, token cost. |
 | God node | (a section of the report) | The most connected node in the graph. Reading the list is the fastest map of what a codebase is made of. |
 | Ensuring the graph | `docs/manuals/graphify.md` §Ensuring the graph | The procedure `/propose` and `/apply` run before reading the graph, written in exactly one place. Four branches, in order: graph absent and the CLI refuses for want of a model, graph absent on a code-only corpus, graph stale, hook absent. |
-| Graph hook | `.git/hooks/post-commit` | The graphify hook that rebuilds the graph after each commit, so it never goes stale. Installed by `graphify hook install`. |
+| Graph hook | `.git/hooks/post-commit` | The graphify hook that rebuilds the graph after each commit, so it never goes stale. Installed by `graphify hook install`. Never versioned: a clone starts without one, and "Ensuring the graph" puts it back. |
 | MCP server | `graphify-mcp` | The server declared in `.mcp.json` that exposes the graph to a session. It fails to start until `graphify-out/graph.json` exists. |
 
 ### FOCUS

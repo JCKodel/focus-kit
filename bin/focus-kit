@@ -202,7 +202,7 @@ doctor() {
            docs/manuals/process.md docs/manuals/focus.md docs/manuals/graphify.md .mcp.json; do
     [ -f "$target/$f" ] && ok "$f" || warn "$f missing"
   done
-  [ -f "$target/graphify-out/graph.json" ] && ok "graphify-out/graph.json" || warn "graphify-out/graph.json missing (run /initialize or /graphify .)"
+  [ -f "$target/graphify-out/graph.json" ] && ok "graphify-out/graph.json" || warn "graphify-out/graph.json missing (/propose and /apply rebuild it; docs/manuals/graphify.md)"
   if [ -d "$target/.git" ]; then
     if (cd "$target" && graphify hook status 2>/dev/null | grep -i '^post-commit' | grep -qiv 'not installed'); then
       ok "graphify post-commit hook"

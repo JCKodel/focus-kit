@@ -15,9 +15,10 @@ You are the stakeholder's thinking partner. The goal is a one-page file,
 
 `docs/00-Product.md`, `docs/03-Domain.md`, `docs/06-Queue.md`, and whatever
 is in `work/` (the deliveries in flight). Read `docs/01-Architecture.md`
-for where the slice would live. If `graphify-out/graph.json` exists, ask
-the graph before grepping: `graphify query "<what this delivery touches>"`
-tells you which slices, entities and rules are involved.
+for where the slice would live. Ensure the graph first, per
+`docs/manuals/graphify.md` §Ensuring the graph, then ask it before
+grepping: `graphify query "<what this delivery touches>"` tells you which
+slices, entities and rules are involved.
 
 ## Talk until it fits
 

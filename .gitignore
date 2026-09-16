@@ -5,9 +5,7 @@
 # Claude Code: what belongs to the session, not to the project
 .claude/settings.local.json
 
-# graphify: the graph and its extraction cache (graphify-out/) are
-# versioned, so a clone does not pay the extraction again; machine-specific
-# paths and the local cost ledger are not
-graphify-out/cost.json
-graphify-out/.graphify_python
-graphify-out/.graphify_root
+# graphify: the graph is derived, not authored. It is rebuilt on demand by
+# /propose and /apply (docs/manuals/graphify.md), so no commit carries a
+# graph diff and the post-commit hook never leaves the worktree dirty
+graphify-out/
