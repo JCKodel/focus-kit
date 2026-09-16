@@ -44,7 +44,7 @@ appears in a delivery.
 | Kit | `focus-kit` | This repository, and the thing it installs. Both senses are the same artifact: the repository is the kit's source, the installed files are the kit in a target. |
 | CLI | `bin/focus-kit` | The single executable. Five verbs: `install`, `update`, `doctor`, `version`, `selftest`. |
 | Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:42`). |
-| Installed version | `.claude/skills/.focus-kit-version` | The kit version stamped into a target at install time. `doctor` compares it with `VERSION` to say whether the target is stale. |
+| Installed version | `.claude/skills/.focus-kit-version` | The kit version stamped into a target at install time. `doctor` compares it with `VERSION` to say whether the target is stale. In this repository it equals `VERSION` at every commit (check 6 of `selftest`). |
 | Command | `skills/<name>/SKILL.md` | One of the three things a person types in Claude Code: `/initialize`, `/propose`, `/apply`. Called a skill by Claude Code and a command by this project; the two words mean the same thing here. |
 | Manual | `manuals/<name>.md` | A kit-owned how-to document: `process.md`, `focus.md`, `graphify.md`. Copied to `docs/manuals/` of every target. |
 | Template | `skills/initialize/templates/` | The skeleton of a document `/initialize` fills. Mirrors the target layout: `CLAUDE.md` and `docs/`. |

@@ -367,7 +367,13 @@ check_no_em_dash() {
 }
 
 check_dogfood() {
-  local out
+  local out stamp installed
+  stamp="$KIT_DIR/.claude/skills/.focus-kit-version"
+  [ -f "$stamp" ] || \
+    die "check 6: the dogfood copy has no .focus-kit-version (run focus-kit install .)"
+  installed="$(cat "$stamp")"
+  [ "$installed" = "$KIT_VERSION" ] || \
+    die "check 6: the dogfood copy is at $installed and VERSION is $KIT_VERSION (run focus-kit install .)"
   out="$(diff -r -x .focus-kit-version skills .claude/skills 2>&1)" || {
     printf '%s\n' "$out"
     die "check 6: .claude/skills differs from skills (run focus-kit install .)"

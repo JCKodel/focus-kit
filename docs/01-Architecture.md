@@ -79,7 +79,7 @@ Three verbs and four helpers, all in `bin/focus-kit`:
 |---|---|---|
 | `install_repo` | 134 | The whole install into a target: skills, manuals, `work/done/`, the two JSON merges, the gitignore fragment, the closing message. |
 | `doctor` | 204 | Reports what is present on the machine and in the target, and whether the installed version matches `VERSION`. Reports only; it changes nothing. |
-| `selftest` | 382 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
+| `selftest` | 388 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
 | `copy_tree` | 111 | Overwrite a kit-owned tree: `rm -rf` the destination, then `cp -R`. |
 | `merge_json` | 117 | Add to a JSON file without removing from it, through a python3 heredoc that takes an expression mutating `d`. It is also where a missing python3 dies, because `python_bin` cannot. |
 | `python_bin` | 53 | Find a python3, falling back to `uv run`. It echoes the interpreter and returns 0, or prints nothing and returns 1; it never dies, because its output is captured (§6). |

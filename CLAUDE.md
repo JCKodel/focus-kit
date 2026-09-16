@@ -54,9 +54,10 @@ own text sets the example.
   a few seconds, no arguments; what each one is: docs/05-Process.md §4.
 - Bump `VERSION` on any change a target repo would want: a skill, a manual, a
   template, or the CLI's behaviour. Not for this repository's own docs.
-- Any delivery that touches `skills/` or `manuals/` ends by running
-  `focus-kit install .` here, so the dogfood copy in `.claude/skills/` and
-  `docs/manuals/` matches its source (docs/05-Process.md §5).
+- Any delivery that touches `skills/` or `manuals/`, or bumps `VERSION`, ends
+  by running `focus-kit install .` here, so the dogfood copy in
+  `.claude/skills/` and `docs/manuals/` matches its source, at its version
+  (docs/05-Process.md §5).
 - Ambiguity → AskUserQuestion. Abstraction on the second concrete
   occurrence, and the delivery says which was the first.
 - Docs are living: a delivery that changes behaviour updates the doc that

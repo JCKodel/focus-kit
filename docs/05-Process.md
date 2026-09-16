@@ -123,8 +123,12 @@ It runs six checks, in this order, and stops at the first red:
    excluded because it is generated: `GRAPH_REPORT.md` and `graph.html`
    contain em dashes that graphify writes, and they come back on every
    rebuild.
-6. `diff -r skills .claude/skills` and `diff -r manuals docs/manuals`, both
-   empty except for `.focus-kit-version`.
+6. `.claude/skills/.focus-kit-version` equal to `VERSION`, then `diff -r
+   skills .claude/skills` and `diff -r manuals docs/manuals`, both empty
+   except for `.focus-kit-version`. The stamp is compared by value and not
+   by bytes against `skills/`, because it is not a copy of anything: it is
+   what the install writes. The `die` names both numbers and the command
+   that fixes it; an absent stamp is red too, with a `die` naming the file.
 
 It takes a few seconds. There is nothing slow and nothing that runs only in
 CI, because there is no CI. A red means a target repository would receive a
@@ -142,7 +146,7 @@ prints the detail of what broke, one `die` naming it, and exits 1.
 | Environment | A delivery must leave it | Command |
 |---|---|---|
 | Kit source (`skills/`, `manuals/`, `config/`, `bin/`) | at the delivery's version, always. It is the truth. | the edit itself |
-| Dogfood copy (`.claude/skills/`, `docs/manuals/`) | in sync with the kit source, always, when the delivery touched a skill or a manual | `focus-kit install .` |
+| Dogfood copy (`.claude/skills/`, `docs/manuals/`) | in sync with the kit source, always, when the delivery touched a skill or a manual, or bumped `VERSION` | `focus-kit install .` |
 | Machine (`~/.local/bin/focus-kit`) | untouched. It is a symlink to the kit source and follows it automatically. | none; verify with `focus-kit version` |
 | Target repositories (anyone else's) | untouched. They move only when their owner runs `focus-kit update`. | `focus-kit update <path>`, run by that person |
 
@@ -155,9 +159,16 @@ Here that risk is concrete and easy to miss. A Claude Code session reads
 `.claude/skills/initialize/SKILL.md`, not `skills/initialize/SKILL.md`. Edit
 the source and the session you are in keeps running the old version until
 `focus-kit install .` has been run. So: **any delivery that touches
-`skills/` or `manuals/` ends by running `focus-kit install .` in this
-repository**, and its "Done when" includes check 6 of the verify command
-coming back empty.
+`skills/` or `manuals/`, or bumps `VERSION`, ends by running `focus-kit
+install .` in this repository**, and its "Done when" includes check 6 of the
+verify command coming back empty.
+
+The `VERSION` bump is in that rule because the dogfood copy is a target, and
+a target one version behind is what `doctor` exists to flag. A delivery that
+bumps `VERSION` and touches no skill and no manual still leaves
+`.claude/skills/.focus-kit-version` one number behind, and `focus-kit doctor
+.` here warns about the kit's own version. The install brings the stamp to
+the same number in the same commit.
 
 **Publish policy.** There is nothing to publish. The kit has no registry, no
 release artifact and no deploy. A version becomes available to other people

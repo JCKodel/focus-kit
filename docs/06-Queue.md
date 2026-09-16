@@ -35,7 +35,7 @@ documents were written.
                               check 2 reads the two merged files and merge_json dies when no
                               python runs; today a die inside $(python_bin) leaves selftest green
                               over an .mcp.json that reads {}
-[>] version-bump-ends-with-install
+[x] version-bump-ends-with-install
                               any delivery that bumps VERSION ends with focus-kit install ., and
                               check 6 compares the installed version with VERSION; today the
                               dogfood copy is one version behind and only doctor notices
