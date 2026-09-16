@@ -52,7 +52,7 @@ documents were written.
                               cannot fix it in a target, because no .gitattributes is shipped
 [x] merge-json-by-argument    the settings baseline reaches python3 as data, not interpolated
                               into the source it execs; a quote in the JSON breaks the install
-[ ] doctor-reports-drift      doctor says when a kit-owned file in a target was edited locally,
+[x] doctor-reports-drift      doctor says when a kit-owned file in a target was edited locally,
                               so the person knows update is about to overwrite their edit
 ```
 

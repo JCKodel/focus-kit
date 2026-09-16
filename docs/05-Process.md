@@ -108,13 +108,25 @@ It runs six checks, in this order, and stops at the first red:
    naming the file. The assertion is a `grep -qF` and not python, because
    the failure it exists to catch is python missing: an empty `.mcp.json`
    satisfies a check that only asks whether the file is there.
-   Last, one probe: the scratch's `.focus-kit-version` is rewritten as CRLF,
+   Then one probe: the scratch's `.focus-kit-version` is rewritten as CRLF,
    the way a Windows clone with `core.autocrlf=true` checks it out, `doctor`
    runs again and must still print the same green version line; the stamp is
    then restored with LF, because check 3 installs into this same scratch and
    a CRLF left behind would come back as a false idempotency failure. The
    probe runs on every platform: nothing on macOS or Linux writes that byte
    on its own, so a regression here would otherwise be invisible forever.
+   Last, three probes on drift, on the same scratch. **CRLF:**
+   `docs/manuals/focus.md` and `.claude/skills/.focus-kit-manifest` are both
+   rewritten with `\r\n` line ends and `doctor` must still print `kit-owned
+   files as install wrote them`, which it does only while the fingerprint and
+   the manifest reader both go through `without_cr`. **Edited:** a line is
+   appended to that same manual and `doctor` must name it as edited locally.
+   **Added:** `.claude/skills/apply/extra.md` is created and the same
+   `doctor` run must name it as not the kit's. Then everything is restored,
+   the manifest included, which `write_manifest` rewrites byte for byte
+   because it is deterministic over the same tree; check 3 snapshots this
+   scratch next and any leftover would come back as a false idempotency
+   failure.
 3. The same install again into the same scratch repository, trees compared.
    The install is idempotent.
 4. The frontmatter of each of the three `SKILL.md` files, against four
@@ -132,7 +144,10 @@ It runs six checks, in this order, and stops at the first red:
    rebuild.
 6. `.claude/skills/.focus-kit-version` equal to `VERSION`, then `diff -r
    skills .claude/skills` and `diff -r manuals docs/manuals`, both empty
-   except for `.focus-kit-version`. The stamp is compared by value and not
+   except for `.focus-kit-version` and `.focus-kit-manifest`. Both are
+   excluded because neither is a copy of anything under `skills/`: they are
+   what the install writes, and `skills/` has no source for either. The stamp
+   is compared by value and not
    by bytes against `skills/`, because it is not a copy of anything: it is
    what the install writes. By value also forgives a trailing carriage
    return, because the stamp is read through the same `installed_version`

@@ -4,7 +4,7 @@
 #
 #   focus-kit install [path]   install or update the kit in a repository (default: .)
 #   focus-kit update  [path]   same as install; kept as a verb people expect
-#   focus-kit doctor  [path]   report what is installed, and what is missing
+#   focus-kit doctor  [path]   report what is installed, what is missing, and what was edited locally
 #   focus-kit version          print the kit version
 #   focus-kit selftest         run the six checks that say the kit is deliverable
 #
@@ -15,6 +15,7 @@
 #   2. in the target repository:
 #      .claude/skills/{initialize,propose,apply}   copied, overwriting (kit-owned)
 #      docs/manuals/{process,focus,graphify}.md    copied, overwriting (kit-owned)
+#      .claude/skills/.focus-kit-manifest          what install wrote, for doctor (kit-owned)
 #      .mcp.json                                   graphify server merged in
 #      .claude/settings.json                       baseline permissions merged in
 #      .gitignore                                  kit fragment appended once
@@ -176,6 +177,52 @@ with open(path, "w", encoding="utf-8", newline="\n") as f:
 PY
 }
 
+# The one place a carriage return is forgiven. A target cloned on Windows
+# with core.autocrlf=true has every kit-owned file, the stamp and the
+# manifest checked out as CRLF, and it receives no .gitattributes, so the
+# tolerance has to live in the readers. Its three callers are
+# installed_version, fingerprint and the manifest reader inside doctor. It
+# reads and never dies: its output is captured (docs/01-Architecture.md §6),
+# and the callers keep their own -f guard on the file.
+without_cr() { # file
+  tr -d '\r' < "$1"
+}
+
+# The Fingerprint of docs/03-Domain.md: the POSIX cksum CRC of a file read
+# through without_cr, the size column dropped. cksum because POSIX specifies
+# it and macOS, Linux and Git Bash all have it with no probe, which is what
+# makes the manifest a Mac writes the one those three read back.
+fingerprint() { # file
+  without_cr "$1" | cksum | cut -d' ' -f1
+}
+
+# The Manifest: what install wrote into this target, one line per kit-owned
+# file, "<crc> <path relative to the target>". doctor reads it to tell an
+# edited file from a stale one, which comparing the target with the kit
+# source cannot do: once the kit has moved on, every kit-owned file in a
+# stale target differs from its source, and a stale target is exactly when
+# someone is about to run update.
+#
+# The stamp and the manifest are not in it. The sort is over the whole line,
+# so the order is by CRC and not by path; what matters is that it is the same
+# order on every run of the same tree, which check 3 requires.
+write_manifest() { # target
+  local target="$1" s m f
+  {
+    for s in initialize propose apply; do
+      [ -d "$target/.claude/skills/$s" ] || continue
+      (cd "$target" && find ".claude/skills/$s" -type f) | while IFS= read -r f; do
+        printf '%s %s\n' "$(fingerprint "$target/$f")" "$f"
+      done
+    done
+    for m in "$KIT_DIR"/manuals/*.md; do
+      f="docs/manuals/$(basename "$m")"
+      [ -f "$target/$f" ] || continue
+      printf '%s %s\n' "$(fingerprint "$target/$f")" "$f"
+    done
+  } | LC_ALL=C sort > "$target/.claude/skills/.focus-kit-manifest"
+}
+
 install_repo() {
   local target="$1"
   [ -d "$target" ] || die "no such directory: $target"
@@ -199,6 +246,10 @@ install_repo() {
     cp "$m" "$target/docs/manuals/$(basename "$m")"
   done
   ok "docs/manuals/{process,focus,graphify}.md"
+
+  # the manifest (kit-owned), over the files just written
+  write_manifest "$target"
+  ok ".claude/skills/.focus-kit-manifest"
 
   # work queue folder (project-owned, created only if absent)
   if [ ! -d "$target/work/done" ]; then
@@ -234,13 +285,14 @@ install_repo() {
 # The reader of the Installed version (docs/03-Domain.md). Every carriage
 # return is removed and nothing else is trimmed: a target cloned on Windows
 # with core.autocrlf=true has the stamp checked out as CRLF, and 0.5.2\r is
-# not 0.5.2 to a string comparison, with the \r invisible on the terminal. A
-# target receives no .gitattributes, so the tolerance has to be in the reader.
+# not 0.5.2 to a string comparison, with the \r invisible on the terminal. It
+# was the first place that needed the tolerance and is now one caller of
+# without_cr, which is the only place a carriage return is forgiven.
 # It reads and never dies: its output is captured, and a die inside $(...)
 # ends only the subshell (docs/01-Architecture.md §6). The callers keep their
 # own -f guard on the file.
 installed_version() { # target
-  tr -d '\r' < "$1/.claude/skills/.focus-kit-version"
+  without_cr "$1/.claude/skills/.focus-kit-version"
 }
 
 doctor() {
@@ -274,6 +326,46 @@ doctor() {
            docs/manuals/process.md docs/manuals/focus.md docs/manuals/graphify.md .mcp.json; do
     [ -f "$target/$f" ] && ok "$f" || warn "$f missing"
   done
+  # Drift (docs/03-Domain.md): a kit-owned file that is not as install wrote
+  # it. The question is only asked of a target that has a stamp, because a
+  # target with no stamp has no kit in it. A file that is absent is not
+  # drift: update restores it and the presence lines above already said
+  # missing, so the manifest pass skips it.
+  if [ -f "$target/.claude/skills/.focus-kit-version" ]; then
+    local manifest="$target/.claude/skills/.focus-kit-manifest"
+    if [ ! -f "$manifest" ]; then
+      warn ".claude/skills/.focus-kit-manifest missing: cannot tell whether a kit-owned file was edited locally (run focus-kit update)"
+    else
+      local lines listed drift=0 crc path d
+      # Read through without_cr, or a CRLF checkout of the manifest itself
+      # gives every path a trailing byte that matches no file on disk.
+      lines="$(without_cr "$manifest")"
+      listed="$(printf '%s\n' "$lines" | cut -d' ' -f2-)"
+      # A herestring and not a pipe: a pipe would run the loop in a subshell
+      # and drift would come back 0 however many lines were printed.
+      while read -r crc path; do
+        [ -n "$path" ] || continue
+        [ -f "$target/$path" ] || continue
+        if [ "$(fingerprint "$target/$path")" != "$crc" ]; then
+          warn "$path edited locally (focus-kit update overwrites it)"
+          drift=1
+        fi
+      done <<< "$lines"
+      # A file added inside a kit skill is as lost as an edit: copy_tree is
+      # rm -rf then cp -R. Each folder is guarded, so a target with /propose
+      # missing gets no find error in the middle of doctor.
+      for d in initialize propose apply; do
+        [ -d "$target/.claude/skills/$d" ] || continue
+        while IFS= read -r path; do
+          [ -n "$path" ] || continue
+          printf '%s\n' "$listed" | grep -qxF -- "$path" && continue
+          warn "$path is not the kit's (focus-kit update removes it)"
+          drift=1
+        done <<< "$(cd "$target" && find ".claude/skills/$d" -type f)"
+      done
+      [ "$drift" -eq 1 ] || ok "kit-owned files as install wrote them"
+    fi
+  fi
   [ -f "$target/graphify-out/graph.json" ] && ok "graphify-out/graph.json" || warn "graphify-out/graph.json missing (/propose and /apply rebuild it; docs/manuals/graphify.md)"
   if [ -d "$target/.git" ]; then
     if (cd "$target" && graphify hook status 2>/dev/null | grep -i '^post-commit' | grep -qiv 'not installed'); then
@@ -319,7 +411,8 @@ check_install() { # scratch
   for expected in /initialize /propose /apply \
                   docs/manuals/process.md docs/manuals/focus.md \
                   docs/manuals/graphify.md .mcp.json \
-                  "kit version $KIT_VERSION"; do
+                  "kit version $KIT_VERSION" \
+                  "kit-owned files as install wrote them"; do
     line="$(ok "$expected")"
     printf '%s\n' "$out" | grep -qF -- "$line" || {
       printf '%s\n' "$out"
@@ -352,6 +445,46 @@ check_install() { # scratch
   # this scratch and installs into it again, and a CRLF stamp left behind
   # would come back as a false idempotency failure.
   printf '%s\n' "$KIT_VERSION" > "$scratch/.claude/skills/.focus-kit-version"
+  # The three drift probes, on the same scratch, each restored before check 3
+  # snapshots it. First the whole Windows checkout: a manual and the manifest
+  # itself with CRLF line ends. doctor must still report no drift, which it
+  # does only while both the fingerprint and the manifest reader go through
+  # without_cr; keep the byte in either one and a Windows target reads as
+  # entirely edited.
+  local manual="$scratch/docs/manuals/focus.md"
+  local manifest="$scratch/.claude/skills/.focus-kit-manifest"
+  awk '{ printf "%s\r\n", $0 }' "$manual"   > "$manual.crlf"   && mv "$manual.crlf" "$manual"
+  awk '{ printf "%s\r\n", $0 }' "$manifest" > "$manifest.crlf" && mv "$manifest.crlf" "$manifest"
+  line="$(ok "kit-owned files as install wrote them")"
+  if ! out="$(doctor "$scratch" 2>&1)" || ! printf '%s\n' "$out" | grep -qF -- "$line"; then
+    printf '%s\n' "$out"
+    die "check 2: doctor reported drift on a CRLF checkout of the scratch repository (a Windows clone with core.autocrlf=true writes one)"
+  fi
+  # Then the two kinds of drift, in one doctor run: a kit-owned file edited
+  # in place and a file added inside a kit skill. Both are erased by the next
+  # update, and the point of the command is to say so before it happens.
+  printf '%s\n' "A line a person added to their copy of the manual." >> "$manual"
+  printf '%s\n' "A file a person added inside a kit skill." > "$scratch/.claude/skills/apply/extra.md"
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  line="$(warn "docs/manuals/focus.md edited locally (focus-kit update overwrites it)")"
+  printf '%s\n' "$out" | grep -qF -- "$line" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor did not report an edited manual in the scratch repository"
+  }
+  line="$(warn ".claude/skills/apply/extra.md is not the kit's (focus-kit update removes it)")"
+  printf '%s\n' "$out" | grep -qF -- "$line" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor did not report a file added to a kit skill in the scratch repository"
+  }
+  # Restored, manifest included: write_manifest is deterministic over the
+  # same tree, so what it writes here is byte for byte what the install
+  # wrote, and check 3 sees the tree it would have seen.
+  cp "$KIT_DIR/manuals/focus.md" "$manual"
+  rm -f "$scratch/.claude/skills/apply/extra.md"
+  write_manifest "$scratch"
   ok "2 install into a scratch repository, doctor agrees"
 }
 
@@ -431,7 +564,7 @@ check_dogfood() {
   installed="$(installed_version "$KIT_DIR")"
   [ "$installed" = "$KIT_VERSION" ] || \
     die "check 6: the dogfood copy is at $installed and VERSION is $KIT_VERSION (run focus-kit install .)"
-  out="$(diff -r -x .focus-kit-version skills .claude/skills 2>&1)" || {
+  out="$(diff -r -x .focus-kit-version -x .focus-kit-manifest skills .claude/skills 2>&1)" || {
     printf '%s\n' "$out"
     die "check 6: .claude/skills differs from skills (run focus-kit install .)"
   }

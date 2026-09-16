@@ -59,8 +59,11 @@ constraint on skill design, and it is the reason the three skills name no
 language, framework or test runner.
 
 Forbidden: a write that removes a key from a merged file; an edit to a
-project-owned file from the CLI; a kit-owned file without its banner; a
-second marker style for appended content.
+project-owned file from the CLI; a kit-owned file without its banner, unless
+it is data `doctor` reads; a second marker style for appended content. The
+qualifier covers exactly two files, `.claude/skills/.focus-kit-version` and
+`.claude/skills/.focus-kit-manifest`: a banner in either one would be a line
+the reader has to skip, and neither is a document anybody opens.
 
 Revisit when: a kit-owned file needs to change shape between versions in a
 way that makes a target's documents point at a section that no longer

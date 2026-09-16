@@ -177,4 +177,7 @@ Details in work/done/place-order.md
 `focus-kit update <repo>` overwrites the three skills and the three
 manuals and merges configuration. It never touches `docs/00` to `06`,
 `CLAUDE.md`, `docs/adr/` or `work/`. `focus-kit doctor <repo>` says what is
-installed and what is missing.
+installed and what is missing, and it names the kit-owned files that were
+edited locally, or added inside a skill folder, before the next update
+overwrites or removes them. Run it first when a kit-owned file matters to
+you: it is the only warning you get.

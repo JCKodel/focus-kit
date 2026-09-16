@@ -68,6 +68,7 @@ This installs the dependencies on the machine (uv, graphify, the global
 |---|---|---|
 | `.claude/skills/{initialize,propose,apply}/` | kit | the three commands; overwritten on update |
 | `docs/manuals/{process,focus,graphify}.md` | kit | the manuals; overwritten on update |
+| `.claude/skills/.focus-kit-manifest` | kit | what the install wrote, so `doctor` can tell an edited file from a stale one |
 | `.mcp.json` | merged | the graphify MCP server, by executable name |
 | `.claude/settings.json` | merged | baseline permissions: git commit and push always ask |
 | `.gitignore` | appended once | session settings, graphify cost and machine paths |
@@ -77,7 +78,8 @@ Then open Claude Code in the repository and run `/initialize`.
 
 `focus-kit update .` repeats the install (kit-owned files are overwritten,
 project-owned files are never touched). `focus-kit doctor .` lists what is
-installed and what is missing.
+installed, what is missing, and which kit-owned files were edited locally,
+which is what the next update would erase.
 
 ## What the process is
 

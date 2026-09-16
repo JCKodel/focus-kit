@@ -43,8 +43,10 @@ appears in a delivery.
 |---|---|---|
 | Kit | `focus-kit` | This repository, and the thing it installs. Both senses are the same artifact: the repository is the kit's source, the installed files are the kit in a target. |
 | CLI | `bin/focus-kit` | The single executable. Five verbs: `install`, `update`, `doctor`, `version`, `selftest`. |
-| Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:43`). |
-| Installed version | `.claude/skills/.focus-kit-version`, read by `installed_version()` | The kit version stamped into a target at install time. Written with LF; read with every carriage return removed, so a target cloned on Windows with `core.autocrlf=true` compares equal instead of reading `0.5.2` as not `0.5.2`. Nothing else is trimmed: a leading or trailing space is still a difference. `doctor` compares it with `VERSION` to say whether the target is stale. In this repository it equals `VERSION` at every commit (check 6 of `selftest`). |
+| Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:44`). |
+| Installed version | `.claude/skills/.focus-kit-version`, read by `installed_version()` | The kit version stamped into a target at install time. Written with LF; read with every carriage return removed, so a target cloned on Windows with `core.autocrlf=true` compares equal instead of reading `0.5.2` as not `0.5.2`. Nothing else is trimmed: a leading or trailing space is still a difference. The read goes through `without_cr()`, the one place a carriage return is forgiven. `doctor` compares it with `VERSION` to say whether the target is stale. In this repository it equals `VERSION` at every commit (check 6 of `selftest`). |
+| Manifest | `.claude/skills/.focus-kit-manifest`, written by `write_manifest()` | What `install` wrote into a target: one line per kit-owned file, its fingerprint and its path relative to the target, sorted with `LC_ALL=C sort`, LF. Read by `doctor` to tell an edited file from a stale one, which comparing the target with the kit source cannot do once the kit has moved on. Kit-owned: rewritten on every install, never edited by hand. A target installed before it existed has none, and `doctor` says so. |
+| Fingerprint | `fingerprint()` | The POSIX `cksum` CRC of a file's content read through `without_cr()`, so a Windows checkout with `core.autocrlf=true` fingerprints the same as the install that wrote the manifest. `cksum` because it is specified by POSIX and present on macOS, Linux and Git Bash without a probe. Written by `write_manifest`, compared by `doctor`. |
 | Command | `skills/<name>/SKILL.md` | One of the three things a person types in Claude Code: `/initialize`, `/propose`, `/apply`. Called a skill by Claude Code and a command by this project; the two words mean the same thing here. |
 | Manual | `manuals/<name>.md` | A kit-owned how-to document: `process.md`, `focus.md`, `graphify.md`. Copied to `docs/manuals/` of every target. |
 | Template | `skills/initialize/templates/` | The skeleton of a document `/initialize` fills. Mirrors the target layout: `CLAUDE.md` and `docs/`. |
@@ -59,11 +61,12 @@ appears in a delivery.
 
 | Term | Code | Short meaning |
 |---|---|---|
-| Kit-owned | `copy_tree()` | A file the CLI overwrites on every `install` or `update`: the three skills, the three manuals. Editing one inside a target is a change that the next update erases. It is edited in this repository. |
-| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:226`). |
+| Kit-owned | `copy_tree()` | A file the CLI overwrites on every `install` or `update`: the three skills, the three manuals, the installed version and the manifest. Editing one inside a target is a change that the next update erases, and `doctor` reports it as drift. It is edited in this repository. The two data files carry no banner, because `doctor` reads them. |
+| Drift | (two `warn` lines of `doctor`) | A kit-owned file in a target that is not as `install` wrote it: a file in the manifest whose fingerprint changed, or a file added inside one of the three skill folders. Both are lost on the next `update`, and `doctor` says which: `<path> edited locally (focus-kit update overwrites it)` and `<path> is not the kit's (focus-kit update removes it)`. A missing file is not drift: `update` restores it and nothing is lost. A stale target is not drift either: the kit moved, the file did not. |
+| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:277`). |
 | Merged | `merge_json()` | A file the CLI adds to without removing: `.mcp.json`, `.claude/settings.json`. One rule decides every key a baseline holds: an entry directly under `mcpServers` replaces the file's whole, an absent key is taken, two objects merge recursively, two lists concatenate without duplicates, anything else is the baseline's, and a key the baseline says nothing about is untouched. The merge goes through python3 and is idempotent. |
 | Appended once | (the marker test) | `.gitignore`: the fragment goes in the first time and never again, because the marker is already there. |
-| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:182`). |
+| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:229`). |
 | Dogfood copy | `.claude/skills/`, `docs/manuals/` | This repository is also a target of itself. Those two paths hold copies of `skills/` and `manuals/`. They are versioned, and keeping them equal to their sources is a rule, not a habit (`docs/05-Process.md` §5). |
 
 ### The delivery process
@@ -161,8 +164,8 @@ What it is: any git repository the kit is installed into, including this one.
 
 Invariants:
 
-* After `install`, `doctor` reports every kit-owned path present and the
-  installed version equal to `VERSION`.
+* After `install`, `doctor` reports every kit-owned path present, no
+  drift, and the installed version equal to `VERSION`.
 * `install` is idempotent. Running it twice leaves the same tree: the trees
   are overwritten, the JSON merges are by key, the gitignore fragment is
   guarded by its marker.
@@ -176,8 +179,9 @@ Invariants:
 Transitions: absent, installed, initialized, stale (installed version below
 `VERSION`), updated.
 
-What it is not: a fork or a clone of the kit. A target holds copies of nine
-kit-owned files and nothing else of the kit's.
+What it is not: a fork or a clone of the kit. A target holds copies of the
+kit-owned files, the installed version and the manifest, and nothing else
+of the kit's.
 
 ### A delivery
 
@@ -232,7 +236,7 @@ documentation language is something else: the kit's own strings are not
 translated, only the documents `/initialize` writes. The no em dash rule
 applies to every line of that output.
 
-The terminal output has four shapes and no others (`bin/focus-kit:45`):
+The terminal output has four shapes and no others (`bin/focus-kit:46`):
 `say` for plain lines, `ok` for a green check, `warn` for a yellow warning
 that does not stop the run, `die` for a red error that exits. A new message
 picks one of the four.

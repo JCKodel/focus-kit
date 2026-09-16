@@ -20,7 +20,7 @@ script moves.
 ```
 Language    bash 3.2 (the macOS default) · one script, bin/focus-kit
 Platforms   macOS · Linux · Windows through WSL (as Linux) or Git Bash
-JSON        a python 3, invoked inline via a heredoc (bin/focus-kit:143)
+JSON        a python 3, invoked inline via a heredoc (bin/focus-kit:153)
 Content     markdown: 3 skills, 3 manuals, 10 templates, 3 config fragments
 Deps (host) uv · graphify (uv tool) · git · curl
 Deps (kit)  none. Nothing is imported, nothing is linked, nothing is vendored
@@ -83,33 +83,36 @@ that ships the table.
 
 ### What does exist
 
-Three verbs and five helpers, all in `bin/focus-kit`:
+Three verbs and eight helpers, all in `bin/focus-kit`:
 
 | Function | Line | What it does |
 |---|---|---|
-| `install_repo` | 179 | The whole install into a target: skills, manuals, `work/done/`, the two JSON merges, the gitignore fragment, the closing message. |
-| `doctor` | 246 | Reports what is present on the machine and in the target, and whether the installed version matches `VERSION`. Reports only; it changes nothing. |
-| `selftest` | 445 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
-| `copy_tree` | 125 | Overwrite a kit-owned tree: `rm -rf` the destination, then `cp -R`. |
-| `merge_json` | 143 | Merge a baseline file into a target file, through a python heredoc that takes two paths and nothing else, so a baseline holding a quote, a backslash or the sequence `'''` is data and never syntax. One rule decides every key: an entry directly under `mcpServers` is replaced whole, an absent key is taken, two objects merge recursively, two lists concatenate without duplicates, anything else is the baseline's; a key the baseline says nothing about is never reached. The heredoc names its encodings, UTF-8 in and UTF-8 with LF out, because python otherwise follows the system locale and writes CRLF in the code page on Windows. It is also where a missing python dies, because `python_bin` cannot. |
-| `installed_version` | 242 | Read the Installed version out of a target: the stamp with every carriage return removed, and nothing else trimmed. A target cloned on Windows with `core.autocrlf=true` has the stamp checked out as CRLF, and it receives no `.gitattributes`, so the tolerance belongs to the reader. Its two callers are `doctor` and `check_dogfood`; it reads and never dies (§6). |
-| `python_bin` | 62 | Find a python that runs. It probes `python3` then `python` by executing each one, because a name on PATH is not an interpreter: on Windows `python3` is often the Microsoft Store stub. Falls back to `uv run --no-project`. It echoes the interpreter and returns 0, or prints nothing and returns 1; it never dies, because its output is captured (§6). |
-| `ensure_uv`, `ensure_graphify` | 75, 91 | Make the machine ready. `ensure_uv` is a no-op when uv is there. `ensure_graphify` always runs `uv tool install 'graphifyy[mcp]'`: the `mcp` extra is what makes `graphify-mcp` start, and a machine that installed graphify without it gains it here. uv makes the step idempotent, not a branch in the script. |
+| `install_repo` | 226 | The whole install into a target: skills, manuals, the manifest, `work/done/`, the two JSON merges, the gitignore fragment, the closing message. |
+| `doctor` | 298 | Reports what is present on the machine and in the target, whether the installed version matches `VERSION`, and which kit-owned files are not as `install` wrote them: it fingerprints every file the manifest names and looks for files added inside the three skill folders. Reports only; it changes nothing. |
+| `selftest` | 578 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
+| `copy_tree` | 126 | Overwrite a kit-owned tree: `rm -rf` the destination, then `cp -R`. |
+| `merge_json` | 144 | Merge a baseline file into a target file, through a python heredoc that takes two paths and nothing else, so a baseline holding a quote, a backslash or the sequence `'''` is data and never syntax. One rule decides every key: an entry directly under `mcpServers` is replaced whole, an absent key is taken, two objects merge recursively, two lists concatenate without duplicates, anything else is the baseline's; a key the baseline says nothing about is never reached. The heredoc names its encodings, UTF-8 in and UTF-8 with LF out, because python otherwise follows the system locale and writes CRLF in the code page on Windows. It is also where a missing python dies, because `python_bin` cannot. |
+| `without_cr` | 187 | `tr -d '\r'` over a file: the one place a carriage return is forgiven. A target cloned on Windows with `core.autocrlf=true` has every kit-owned file, the stamp and the manifest checked out as CRLF, and it receives no `.gitattributes`, so the tolerance belongs to the readers. Three callers: `installed_version`, `fingerprint`, and the manifest reader inside `doctor`. It reads and never dies (§6). |
+| `fingerprint` | 195 | The POSIX `cksum` CRC of a file read through `without_cr`, the size column dropped. `cksum` because POSIX specifies it and macOS, Linux and Git Bash all have it with no probe, so the manifest a Mac writes is the one those three read back. Written by `write_manifest`, compared by `doctor`. |
+| `write_manifest` | 209 | Write `.claude/skills/.focus-kit-manifest`: one line per regular file under the three skill folders and per manual copied, `<crc> <path relative to the target>`, through `LC_ALL=C sort`. The stamp and the manifest are not in it. The sort is over the whole line, so the order is by CRC; what matters is that the same tree produces the same bytes, which check 3 requires. |
+| `installed_version` | 294 | Read the Installed version out of a target: the stamp through `without_cr`, and nothing else trimmed. Its two callers are `doctor` and `check_dogfood`; it reads and never dies (§6). |
+| `python_bin` | 63 | Find a python that runs. It probes `python3` then `python` by executing each one, because a name on PATH is not an interpreter: on Windows `python3` is often the Microsoft Store stub. Falls back to `uv run --no-project`. It echoes the interpreter and returns 0, or prints nothing and returns 1; it never dies, because its output is captured (§6). |
+| `ensure_uv`, `ensure_graphify` | 76, 92 | Make the machine ready. `ensure_uv` is a no-op when uv is there. `ensure_graphify` always runs `uv tool install 'graphifyy[mcp]'`: the `mcp` extra is what makes `graphify-mcp` start, and a machine that installed graphify without it gains it here. uv makes the step idempotent, not a branch in the script. |
 
 Plus one function per check, between `doctor` and the dispatch, each ending
-in an `ok` line or a `die`: `check_parses` (296), `check_install` (305),
-`check_idempotent` (358), `check_frontmatter` (375), `check_no_em_dash`
-(414), `check_dogfood` (426). They are the six checks of
+in an `ok` line or a `die`: `check_parses` (388), `check_install` (397),
+`check_idempotent` (491), `check_frontmatter` (508), `check_no_em_dash`
+(547), `check_dogfood` (559). They are the six checks of
 `docs/05-Process.md` §4 in that order, and `selftest` is nothing but the
 list of calls.
 
 The dispatch is a `case` over `$1` at the bottom of the file
-(`bin/focus-kit:463`), and `--help` prints the script's own header comment
+(`bin/focus-kit:596`), and `--help` prints the script's own header comment
 through `awk`, every comment line after the shebang up to the first line
 that is not one, so the usage text and the documentation are the same bytes
 however long the header grows.
 
-The four message shapes are `say`, `ok`, `warn`, `die` (`bin/focus-kit:45`).
+The four message shapes are `say`, `ok`, `warn`, `die` (`bin/focus-kit:46`).
 `warn` does not stop the run; `die` exits non-zero. A new message picks one
 of the four rather than calling `echo` directly.
 
@@ -176,13 +179,13 @@ except the two dependency installers, no database, no state between runs.
 
 | Situation | How |
 |---|---|
-| Read the kit's own files | Relative to `KIT_DIR`, resolved from the script's real path through symlinks (`bin/focus-kit:36`). Never relative to the caller's working directory. |
-| Write a kit-owned file into a target | `copy_tree`: destination removed, then copied. Overwriting is the contract. |
+| Read the kit's own files | Relative to `KIT_DIR`, resolved from the script's real path through symlinks (`bin/focus-kit:37`). Never relative to the caller's working directory. |
+| Write a kit-owned file into a target | `copy_tree`: destination removed, then copied. Overwriting is the contract. The install then records what it wrote in `.claude/skills/.focus-kit-manifest` through `write_manifest`, which is kit-owned itself and rewritten on every run. It is the only record that tells a file someone edited from a file the kit has moved past, because a stale target differs from the kit source in every kit-owned file. |
 | Write a merged file into a target | `merge_json`: read the file, read the baseline, merge, write. Never removes a key it did not add, with one carve-out: the entry under `mcpServers` that `config/mcp.baseline.json` names is the kit's and is replaced whole. |
 | Write an appended file | `.gitignore` only, guarded by the marker `# --- focus-kit ---`. |
-| Touch a project-owned file | Never. The single read is `[ -f "$target/docs/00-Product.md" ]`, to choose which closing message to print (`bin/focus-kit:226`). |
+| Touch a project-owned file | Never. The single read is `[ -f "$target/docs/00-Product.md" ]`, to choose which closing message to print (`bin/focus-kit:277`). |
 | Install a machine dependency | `ensure_uv`, a no-op when uv is present and piping a remote script to `sh` when it is not, which is the installer uv publishes. `ensure_graphify` calls `uv tool install 'graphifyy[mcp]'` on every run and lets uv decide: already installed with the extra is a no-op, anything else is a reinstall that adds it. |
-| Touch the user's home | Only `graphify install --platform claude`, and only when `~/.claude/skills/graphify/SKILL.md` is absent, because it also appends to `~/.claude/CLAUDE.md` (`bin/focus-kit:116`). |
+| Touch the user's home | Only `graphify install --platform claude`, and only when `~/.claude/skills/graphify/SKILL.md` is absent, because it also appends to `~/.claude/CLAUDE.md` (`bin/focus-kit:117`). |
 
 The privacy boundary is trivial and worth stating anyway: the kit sends
 nothing anywhere. `curl` appears once, to fetch the uv installer. Nothing is
@@ -193,7 +196,7 @@ uploaded, logged or reported.
 bash has no Result type, and the kit does not pretend otherwise. What it has
 instead is a discipline with the same shape:
 
-* `set -euo pipefail` at the top (`bin/focus-kit:32`). An unhandled failure
+* `set -euo pipefail` at the top (`bin/focus-kit:33`). An unhandled failure
   stops the script rather than continuing with a half-installed target.
 * `die` is the only exit path for a failure the user has to fix: a missing
   python, a missing directory, an unknown command. It prints in red to
@@ -204,15 +207,18 @@ instead is a discipline with the same shape:
   continues and the message stays on screen.
 * `doctor` never fails. It reports. Its whole output is `ok` and `warn`
   lines, and a missing file is a `warn`, not a `die`, because the point of
-  the command is to list what is missing.
+  the command is to list what is missing. A drifted file is a `warn` for the
+  same reason: it reports, and what to do about it is the person's call.
 * **A function whose output is captured never calls `die`; it returns
   non-zero and the caller dies.** A `die` inside `$(...)` exits the subshell
   and nothing else, so the caller reads an empty string and carries on as if
   nothing had happened. `python_bin` returns 1 and `merge_json` dies
-  (`bin/focus-kit:62`, `bin/focus-kit:145`); `installed_version` returns the
-  status of its `tr` and the two callers keep their own `-f` guard on the
-  stamp; `check_install` captures `install_repo` and `doctor` the same way,
-  and dies on their status.
+  (`bin/focus-kit:63`, `bin/focus-kit:146`); `without_cr`, `fingerprint` and
+  `installed_version` return the status of their `tr` and their callers keep
+  their own `-f` guard on the file; `write_manifest` returns the status of
+  the pipeline it writes and `install_repo` carries it, which `check_install`
+  captures; `check_install` captures `install_repo` and `doctor` the same
+  way, and dies on their status.
 
 The distinction is the book's (`docs/manuals/focus.md` §5): a failure that
 is part of the flow becomes a value, and a failure that is a defect crashes.
