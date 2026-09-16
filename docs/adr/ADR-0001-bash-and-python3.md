@@ -26,10 +26,10 @@ those is awkward in shell.
 `bin/focus-kit` is a single bash script written for bash 3.2, with no
 associative arrays, no `mapfile`, no `${var,,}` and no `readlink -f`. The
 symlink resolution at the top of the file is a hand-written loop for exactly
-this reason (`bin/focus-kit:33`).
+this reason (`bin/focus-kit:34`).
 
 JSON merging goes through **python3**, called inline with a heredoc
-(`merge_json`, `bin/focus-kit:95`). python3 is already present on macOS and
+(`merge_json`, `bin/focus-kit:96`). python3 is already present on macOS and
 on every Linux the kit targets, and `python_bin` falls back to `uv run`
 when it is not, dying with a clear message if neither exists.
 

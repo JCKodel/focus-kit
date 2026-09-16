@@ -19,7 +19,7 @@ script moves.
 
 ```
 Language    bash 3.2 (the macOS default) · one script, bin/focus-kit
-JSON        python3, invoked inline via a heredoc (bin/focus-kit:95)
+JSON        python3, invoked inline via a heredoc (bin/focus-kit:96)
 Content     markdown: 3 skills, 3 manuals, 10 templates, 2 config fragments
 Deps (host) uv · graphify (uv tool) · git · curl
 Deps (kit)  none. Nothing is imported, nothing is linked, nothing is vendored
@@ -93,10 +93,10 @@ in an `ok` line or a `die`: `check_parses` (223), `check_install` (232),
 list of calls.
 
 The dispatch is a `case` over `$1` at the bottom of the file
-(`bin/focus-kit:358`), and `--help` prints the script's own header comment
+(`bin/focus-kit:359`), and `--help` prints the script's own header comment
 through `sed`, so the usage text and the documentation are the same bytes.
 
-The four message shapes are `say`, `ok`, `warn`, `die` (`bin/focus-kit:42`).
+The four message shapes are `say`, `ok`, `warn`, `die` (`bin/focus-kit:43`).
 `warn` does not stop the run; `die` exits non-zero. A new message picks one
 of the four rather than calling `echo` directly.
 
@@ -121,6 +121,7 @@ manuals/<name>.md                 the three manuals, kit-owned
 config/settings.baseline.json     permissions merged into a target
 config/gitignore.fragment         the block appended once to a target
 VERSION                           one line
+LICENSE                           AGPL-3.0-only, verbatim; never copied to a target
 docs/                             this project's own documents (project-owned)
 work/                             this project's own deliveries (project-owned)
 .claude/skills/                   the dogfood copy of skills/
@@ -151,13 +152,13 @@ except the two dependency installers, no database, no state between runs.
 
 | Situation | How |
 |---|---|
-| Read the kit's own files | Relative to `KIT_DIR`, resolved from the script's real path through symlinks (`bin/focus-kit:33`). Never relative to the caller's working directory. |
+| Read the kit's own files | Relative to `KIT_DIR`, resolved from the script's real path through symlinks (`bin/focus-kit:34`). Never relative to the caller's working directory. |
 | Write a kit-owned file into a target | `copy_tree`: destination removed, then copied. Overwriting is the contract. |
 | Write a merged file into a target | `merge_json`: read, mutate, write. Never removes a key it did not add. |
 | Write an appended file | `.gitignore` only, guarded by the marker `# --- focus-kit ---`. |
-| Touch a project-owned file | Never. The single read is `[ -f "$target/docs/00-Product.md" ]`, to choose which closing message to print (`bin/focus-kit:174`). |
+| Touch a project-owned file | Never. The single read is `[ -f "$target/docs/00-Product.md" ]`, to choose which closing message to print (`bin/focus-kit:175`). |
 | Install a machine dependency | `ensure_uv` and `ensure_graphify`, both no-ops when the dependency is present. `ensure_uv` pipes a remote script to `sh`, which is the installer uv publishes. |
-| Touch the user's home | Only `graphify install --platform claude`, and only when `~/.claude/skills/graphify/SKILL.md` is absent, because it also appends to `~/.claude/CLAUDE.md` (`bin/focus-kit:75`). |
+| Touch the user's home | Only `graphify install --platform claude`, and only when `~/.claude/skills/graphify/SKILL.md` is absent, because it also appends to `~/.claude/CLAUDE.md` (`bin/focus-kit:76`). |
 
 The privacy boundary is trivial and worth stating anyway: the kit sends
 nothing anywhere. `curl` appears once, to fetch the uv installer. Nothing is
@@ -168,7 +169,7 @@ uploaded, logged or reported.
 bash has no Result type, and the kit does not pretend otherwise. What it has
 instead is a discipline with the same shape:
 
-* `set -euo pipefail` at the top (`bin/focus-kit:29`). An unhandled failure
+* `set -euo pipefail` at the top (`bin/focus-kit:30`). An unhandled failure
   stops the script rather than continuing with a half-installed target.
 * `die` is the only exit path for a failure the user has to fix: a missing
   python3, a missing directory, an unknown command. It prints in red to

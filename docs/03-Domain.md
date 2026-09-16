@@ -43,7 +43,7 @@ appears in a delivery.
 |---|---|---|
 | Kit | `focus-kit` | This repository, and the thing it installs. Both senses are the same artifact: the repository is the kit's source, the installed files are the kit in a target. |
 | CLI | `bin/focus-kit` | The single executable. Five verbs: `install`, `update`, `doctor`, `version`, `selftest`. |
-| Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:40`). |
+| Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:41`). |
 | Installed version | `.claude/skills/.focus-kit-version` | The kit version stamped into a target at install time. `doctor` compares it with `VERSION` to say whether the target is stale. |
 | Command | `skills/<name>/SKILL.md` | One of the three things a person types in Claude Code: `/initialize`, `/propose`, `/apply`. Called a skill by Claude Code and a command by this project; the two words mean the same thing here. |
 | Manual | `manuals/<name>.md` | A kit-owned how-to document: `process.md`, `focus.md`, `graphify.md`. Copied to `docs/manuals/` of every target. |
@@ -51,16 +51,18 @@ appears in a delivery.
 | Init comment | `<!-- init: ... -->` | Guidance written to `/initialize` inside a template. It says what goes in the section. `/initialize` fills the section and removes the comment; none may survive into a finished document. |
 | Settings baseline | `config/settings.baseline.json` | The permissions merged into a target's `.claude/settings.json`. Never replaces what is there. |
 | Gitignore fragment | `config/gitignore.fragment` | The block appended once to a target's `.gitignore`, guarded by the marker `# --- focus-kit ---`. |
+| License | `LICENSE` | The terms the kit is published under: GNU AGPL-3.0-only, verbatim so GitHub detects it. Lives only in this repository; the CLI never copies it. Terms outside it are granted only by the author (`docs/adr/ADR-0004`). |
+| License notice | (one HTML comment line) | The single line naming the copyright holder, the license and the source repository. Carried by every kit-owned file a target receives and by the CLI's header, so a copy names its author wherever it is seen. |
 
 ### Ownership
 
 | Term | Code | Short meaning |
 |---|---|---|
 | Kit-owned | `copy_tree()` | A file the CLI overwrites on every `install` or `update`: the three skills, the three manuals. Editing one inside a target is a change that the next update erases. It is edited in this repository. |
-| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:174`). |
+| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:175`). |
 | Merged | `merge_json()` | A file the CLI adds to without removing: `.mcp.json`, `.claude/settings.json`. The merge goes through python3 and is idempotent. |
 | Appended once | (the marker test) | `.gitignore`: the fragment goes in the first time and never again, because the marker is already there. |
-| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:115`). |
+| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:116`). |
 | Dogfood copy | `.claude/skills/`, `docs/manuals/` | This repository is also a target of itself. Those two paths hold copies of `skills/` and `manuals/`. They are versioned, and keeping them equal to their sources is a rule, not a habit (`docs/05-Process.md` §5). |
 
 ### The delivery process
@@ -99,6 +101,7 @@ appears in a delivery.
 | Graph | `graphify-out/graph.json` | The knowledge graph of the repository. Built by graphify, queried before grepping. |
 | Graph report | `graphify-out/GRAPH_REPORT.md` | The plain-language audit of the graph: god nodes, communities, surprising connections, token cost. |
 | God node | (a section of the report) | The most connected node in the graph. Reading the list is the fastest map of what a codebase is made of. |
+| Ensuring the graph | `docs/manuals/graphify.md` §Ensuring the graph | The procedure `/propose` and `/apply` run before reading the graph, written in exactly one place. Four branches, in order: graph absent and the CLI refuses for want of a model, graph absent on a code-only corpus, graph stale, hook absent. |
 | Graph hook | `.git/hooks/post-commit` | The graphify hook that rebuilds the graph after each commit, so it never goes stale. Installed by `graphify hook install`. |
 | MCP server | `graphify-mcp` | The server declared in `.mcp.json` that exposes the graph to a session. It fails to start until `graphify-out/graph.json` exists. |
 
@@ -226,7 +229,7 @@ documentation language is something else: the kit's own strings are not
 translated, only the documents `/initialize` writes. The no em dash rule
 applies to every line of that output.
 
-The terminal output has four shapes and no others (`bin/focus-kit:42`):
+The terminal output has four shapes and no others (`bin/focus-kit:43`):
 `say` for plain lines, `ok` for a green check, `warn` for a yellow warning
 that does not stop the run, `die` for a red error that exits. A new message
 picks one of the four.

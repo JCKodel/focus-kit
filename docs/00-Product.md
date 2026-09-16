@@ -58,6 +58,10 @@ Name: `focus-kit`, lowercase, one word with a hyphen, both as the repository
 and as the command. No domain, no brand, no package on any registry. It is
 installed by cloning and symlinking (`README.md`).
 
+It is published under the GNU AGPL-3.0-only, so a fork stays open and a
+hosted version owes its source, while terms outside those are granted only
+by the author (`docs/adr/ADR-0004`).
+
 ## Audience
 
 One side, and it is worth being exact about who: **a developer who already
@@ -84,7 +88,7 @@ personal data.
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:359`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:360`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify as a uv tool, then the global `/graphify`
@@ -92,7 +96,7 @@ skill for Claude Code. Each step is skipped when already present, and the
 global skill is installed only when absent because installing it also
 appends a section to the user's `~/.claude/CLAUDE.md`, and repeating that on
 every run would keep touching a file the kit does not own
-(`bin/focus-kit:75`).
+(`bin/focus-kit:76`).
 
 In the repository: the three skills and the three manuals are copied over
 whatever is there; `.mcp.json` and `.claude/settings.json` are merged into,

@@ -5,6 +5,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 ---
+<!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: https://github.com/JCKodel/focus-kit -->
 
 You are the stakeholder's thinking partner. The goal is a one-page file,
 `work/$ARGUMENTS.md`, in the format `docs/05-Process.md` §3 defines, that

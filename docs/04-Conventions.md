@@ -51,19 +51,19 @@ is scoped to authored paths rather than given exceptions
 Beyond that, the copy rules this project needs:
 
 * **A terminal line picks one of four shapes.** `say`, `ok`, `warn`, `die`
-  (`bin/focus-kit:42`). Never a bare `echo` or `printf` for a message a
+  (`bin/focus-kit:43`). Never a bare `echo` or `printf` for a message a
   person reads. The shape carries the meaning, so a message whose shape is
   wrong lies even when its words are right.
 * **A `warn` says what to do next.** "graphify-mcp not on PATH" is half a
   message; the line adds why it matters and what fixes it. Compare
-  `bin/focus-kit:74`.
+  `bin/focus-kit:75`.
 * **A `die` names the thing that is missing, not the step that failed.**
   "python3 not found (and uv is not installed to supply one)" tells the
   person what to install. A red check of the verify command follows the same
   rule: `check 6: .claude/skills differs from skills (run focus-kit install
   .)` names the thing and what fixes it, not the step.
 * **The help text is the script's own header.** `--help` prints lines 2 to
-  27 of the file through `sed` (`bin/focus-kit:370`). Documentation and
+  28 of the file through `sed` (`bin/focus-kit:371`). Documentation and
   usage are the same bytes, so they cannot drift. A change to the header is
   a change to the help text, and that is the point. The range is still a
   literal that a new header line makes wrong; fixing that is
@@ -90,6 +90,7 @@ Beyond that, the copy rules this project needs:
 | Marker in a file | a comment line, fixed string, never a regex | `# --- focus-kit ---` |
 | Init comment | `<!-- init: ... -->`, removed by the command | see any template |
 | Kit-owned banner | first line of a manual, fixed wording. The three `SKILL.md` files do not carry one: their first line is YAML frontmatter | `<!-- kit-owned: focus-kit update overwrites this file. -->` |
+| License notice | one line, identical in every kit-owned file and in the CLI's header. Line 2 of a manual, the first line after the frontmatter of a `SKILL.md`, line 2 of `bin/focus-kit` as a `#` comment | `<!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: ... -->` |
 
 The domain vocabulary is `docs/03-Domain.md` and is not translated
 independently: if a document says "dogfood copy", nothing else in the
@@ -103,7 +104,7 @@ about instead:
 
 * **bash 3.2 or it does not ship.** No associative arrays, no `mapfile`, no
   `${var,,}`, no `readlink -f`. macOS ships bash 3.2 and the script runs
-  there unchanged. The symlink resolution loop at `bin/focus-kit:33` exists
+  there unchanged. The symlink resolution loop at `bin/focus-kit:34` exists
   for exactly this reason.
 * **`set -euo pipefail`, and every variable expansion quoted.** Paths in
   this project contain spaces often enough (`/Volumes/Data/...` does not,

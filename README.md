@@ -156,6 +156,25 @@ then apply, the agent never commits, machine-checked house rules) is the
 part the kit generalizes, and Ninjobs is the proof that it holds for
 twelve days of daily deliveries up to a public release.
 
+## License
+
+focus-kit is licensed under the GNU Affero General Public License, version 3
+only (`LICENSE`). A fork stays under the same terms and keeps the copyright
+notices, and running a modified version so that people use it over a network
+counts as distribution: the source of that version has to be offered to them.
+
+**Additional permission under AGPL-3.0 section 7.** The documents that
+`/initialize`, `/propose` and `/apply` write into a target repository
+(`docs/00` to `06`, `docs/adr/`, `CLAUDE.md`, `work/`) are not covered works
+of focus-kit. They belong to that repository, under whatever license its
+owner chooses. The kit-owned copies in `.claude/skills/` and `docs/manuals/`
+remain under the AGPL, and holding them in a repository is aggregation,
+which does not extend the AGPL to that repository's own code.
+
+Terms outside the AGPL, for anyone who wants to use or redistribute the kit
+without its obligations, are granted only by the author, J.C. Ködel, on
+request through this repository's GitHub issues.
+
 ## Layout of this repository
 
 ```

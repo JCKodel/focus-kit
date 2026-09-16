@@ -10,8 +10,10 @@ built · `[x]` done, in `work/done/`. The process is `docs/05-Process.md`.
 
 When this milestone closes, a change to focus-kit can be made without fear,
 because one command says whether a target repository would still receive a
-working kit. That command now exists; the defects below are ones it reports
-rather than fixes. Before it, the answer came from installing into a scratch
+working kit. That command now exists; most of the lines below are defects it
+reports rather than fixes. Three are not: the license, the graph policy and
+the queue's front door, which are friction the process itself produces and
+no check would catch. Before it, the answer came from installing into a scratch
 directory by hand and looking, which is why they went unnoticed until the
 documents were written.
 
@@ -19,7 +21,12 @@ documents were written.
 [x] kit-selftest              one command that parses, installs into a scratch repository, runs doctor,
                               repeats to prove idempotency, checks the three SKILL.md frontmatters,
                               greps for the em dash and diffs the dogfood copies
-[ ] open-source license       add an adequate open-source license to the project
+[>] graph-rebuilds-on-demand  graphify-out/ stops being versioned and /propose and /apply ensure the graph
+                              instead, so the post-commit hook no longer leaves the worktree dirty after
+                              every delivery
+[x] open-source-license       AGPL-3.0-only verbatim so GitHub detects it, the notice line in every
+                              kit-owned file and in the CLI's header, and README saying what a target
+                              repository's own documents are and how to ask for other terms
 [ ] help-text-follows-header  focus-kit --help prints the whole header, however long it grows;
                               today sed -n '2,27p' is a literal the next header line makes wrong
 [ ] gitignore-no-duplicates   the fragment skips lines the target already ignores;
@@ -28,6 +35,11 @@ documents were written.
                               into the source it execs; a quote in the JSON breaks the install
 [ ] doctor-reports-drift      doctor says when a kit-owned file in a target was edited locally,
                               so the person knows update is about to overwrite their edit
+[ ] discuss-adds-queue-line   /discuss takes a description and, by conversation, writes one line
+                              where it belongs in the queue, and a term in docs/03 if the concept
+                              is new; today an idea outside the queue is a page too early through
+                              /propose or a hand edit with no placement. Fourth skill: selftest
+                              check 4 and every "three" in the docs stop being literals
 ```
 
 Close of milestone 1: whole-branch review (`docs/05-Process.md` §9).
@@ -62,6 +74,13 @@ about brownfield repositories is untested.
   keys, so a repository can stop using the kit without unpicking it by hand.
 * Distribution beyond clone and symlink: a curl installer, or a package.
   Blocked on open decision 3.
+* The gitignore fragment in a target that installed an earlier version.
+  It is appended once and guarded by its marker, so `update` deliberately
+  leaves it alone and a target keeps whatever block it first received.
+  `graph-rebuilds-on-demand` is the first time the block's content changed,
+  and every target that predates it edits `.gitignore` by hand. Related to
+  the line below, but a different mechanism: that one overwrites, this one
+  refuses to.
 * A kit-owned file in a target that changed shape between versions: today
   `update` overwrites and a target's documents may reference a section that
   moved. Blocked on open decision 5.

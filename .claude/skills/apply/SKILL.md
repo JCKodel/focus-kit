@@ -5,6 +5,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 ---
+<!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: https://github.com/JCKodel/focus-kit -->
 
 Implement `work/$ARGUMENTS.md` in this session, completely.
 

@@ -8,6 +8,7 @@ description: >-
   cannot answer.
 argument-hint: "[green|brown]"
 ---
+<!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: https://github.com/JCKodel/focus-kit -->
 
 You are setting up the delivery process described in `docs/manuals/process.md`
 and the architecture described in `docs/manuals/focus.md`. Read both first.

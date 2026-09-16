@@ -26,3 +26,4 @@ ADR, in the same delivery.
 | 0001 | bash 3.2 and python3, and no other dependency | accepted |
 | 0002 | Every file is kit-owned, project-owned, merged or appended once | accepted |
 | 0003 | FOCUS is what the kit teaches, not how the kit is built | accepted |
+| 0004 | AGPL-3.0-only, with terms outside it granted by the author | accepted |
