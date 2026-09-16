@@ -231,6 +231,18 @@ install_repo() {
   fi
 }
 
+# The reader of the Installed version (docs/03-Domain.md). Every carriage
+# return is removed and nothing else is trimmed: a target cloned on Windows
+# with core.autocrlf=true has the stamp checked out as CRLF, and 0.5.2\r is
+# not 0.5.2 to a string comparison, with the \r invisible on the terminal. A
+# target receives no .gitattributes, so the tolerance has to be in the reader.
+# It reads and never dies: its output is captured, and a die inside $(...)
+# ends only the subshell (docs/01-Architecture.md §6). The callers keep their
+# own -f guard on the file.
+installed_version() { # target
+  tr -d '\r' < "$1/.claude/skills/.focus-kit-version"
+}
+
 doctor() {
   local target="${1:-.}"
   target="$(cd "$target" && pwd)"
@@ -253,7 +265,7 @@ doctor() {
     [ -f "$target/.claude/skills/$s/SKILL.md" ] && ok "/$s" || warn "/$s missing"
   done
   if [ -f "$target/.claude/skills/.focus-kit-version" ]; then
-    local v; v="$(cat "$target/.claude/skills/.focus-kit-version")"
+    local v; v="$(installed_version "$target")"
     [ "$v" = "$KIT_VERSION" ] && ok "kit version $v" || warn "kit version $v installed, $KIT_VERSION available (run focus-kit update)"
   fi
   local f
@@ -325,6 +337,21 @@ check_install() { # scratch
     grep -qF -- "$key" "$scratch/.claude/settings.json" 2>/dev/null ||
       die "check 2: .claude/settings.json in the scratch repository was not merged (the JSON merge did not run)"
   done
+  # The stamp as a Windows clone with core.autocrlf=true checks it out. The
+  # probe runs on every platform because nothing on macOS or Linux ever writes
+  # that byte: without it, a regression in installed_version would be
+  # invisible on the two platforms the kit is developed on, and this defect
+  # actually happened.
+  printf '%s\r\n' "$KIT_VERSION" > "$scratch/.claude/skills/.focus-kit-version"
+  line="$(ok "kit version $KIT_VERSION")"
+  if ! out="$(doctor "$scratch" 2>&1)" || ! printf '%s\n' "$out" | grep -qF -- "$line"; then
+    printf '%s\n' "$out"
+    die "check 2: doctor did not tolerate a CRLF .focus-kit-version in the scratch repository (a Windows clone with core.autocrlf=true writes one)"
+  fi
+  # Restored to the byte-exact line install_repo writes: check 3 snapshots
+  # this scratch and installs into it again, and a CRLF stamp left behind
+  # would come back as a false idempotency failure.
+  printf '%s\n' "$KIT_VERSION" > "$scratch/.claude/skills/.focus-kit-version"
   ok "2 install into a scratch repository, doctor agrees"
 }
 
@@ -401,7 +428,7 @@ check_dogfood() {
   stamp="$KIT_DIR/.claude/skills/.focus-kit-version"
   [ -f "$stamp" ] || \
     die "check 6: the dogfood copy has no .focus-kit-version (run focus-kit install .)"
-  installed="$(cat "$stamp")"
+  installed="$(installed_version "$KIT_DIR")"
   [ "$installed" = "$KIT_VERSION" ] || \
     die "check 6: the dogfood copy is at $installed and VERSION is $KIT_VERSION (run focus-kit install .)"
   out="$(diff -r -x .focus-kit-version skills .claude/skills 2>&1)" || {

@@ -83,27 +83,28 @@ that ships the table.
 
 ### What does exist
 
-Three verbs and four helpers, all in `bin/focus-kit`:
+Three verbs and five helpers, all in `bin/focus-kit`:
 
 | Function | Line | What it does |
 |---|---|---|
 | `install_repo` | 179 | The whole install into a target: skills, manuals, `work/done/`, the two JSON merges, the gitignore fragment, the closing message. |
-| `doctor` | 234 | Reports what is present on the machine and in the target, and whether the installed version matches `VERSION`. Reports only; it changes nothing. |
-| `selftest` | 418 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
+| `doctor` | 246 | Reports what is present on the machine and in the target, and whether the installed version matches `VERSION`. Reports only; it changes nothing. |
+| `selftest` | 445 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
 | `copy_tree` | 125 | Overwrite a kit-owned tree: `rm -rf` the destination, then `cp -R`. |
 | `merge_json` | 143 | Merge a baseline file into a target file, through a python heredoc that takes two paths and nothing else, so a baseline holding a quote, a backslash or the sequence `'''` is data and never syntax. One rule decides every key: an entry directly under `mcpServers` is replaced whole, an absent key is taken, two objects merge recursively, two lists concatenate without duplicates, anything else is the baseline's; a key the baseline says nothing about is never reached. The heredoc names its encodings, UTF-8 in and UTF-8 with LF out, because python otherwise follows the system locale and writes CRLF in the code page on Windows. It is also where a missing python dies, because `python_bin` cannot. |
+| `installed_version` | 242 | Read the Installed version out of a target: the stamp with every carriage return removed, and nothing else trimmed. A target cloned on Windows with `core.autocrlf=true` has the stamp checked out as CRLF, and it receives no `.gitattributes`, so the tolerance belongs to the reader. Its two callers are `doctor` and `check_dogfood`; it reads and never dies (§6). |
 | `python_bin` | 62 | Find a python that runs. It probes `python3` then `python` by executing each one, because a name on PATH is not an interpreter: on Windows `python3` is often the Microsoft Store stub. Falls back to `uv run --no-project`. It echoes the interpreter and returns 0, or prints nothing and returns 1; it never dies, because its output is captured (§6). |
 | `ensure_uv`, `ensure_graphify` | 75, 91 | Make the machine ready. `ensure_uv` is a no-op when uv is there. `ensure_graphify` always runs `uv tool install 'graphifyy[mcp]'`: the `mcp` extra is what makes `graphify-mcp` start, and a machine that installed graphify without it gains it here. uv makes the step idempotent, not a branch in the script. |
 
 Plus one function per check, between `doctor` and the dispatch, each ending
-in an `ok` line or a `die`: `check_parses` (284), `check_install` (293),
-`check_idempotent` (331), `check_frontmatter` (348), `check_no_em_dash`
-(387), `check_dogfood` (399). They are the six checks of
+in an `ok` line or a `die`: `check_parses` (296), `check_install` (305),
+`check_idempotent` (358), `check_frontmatter` (375), `check_no_em_dash`
+(414), `check_dogfood` (426). They are the six checks of
 `docs/05-Process.md` §4 in that order, and `selftest` is nothing but the
 list of calls.
 
 The dispatch is a `case` over `$1` at the bottom of the file
-(`bin/focus-kit:436`), and `--help` prints the script's own header comment
+(`bin/focus-kit:463`), and `--help` prints the script's own header comment
 through `awk`, every comment line after the shebang up to the first line
 that is not one, so the usage text and the documentation are the same bytes
 however long the header grows.
@@ -208,8 +209,10 @@ instead is a discipline with the same shape:
   non-zero and the caller dies.** A `die` inside `$(...)` exits the subshell
   and nothing else, so the caller reads an empty string and carries on as if
   nothing had happened. `python_bin` returns 1 and `merge_json` dies
-  (`bin/focus-kit:62`, `bin/focus-kit:145`); `check_install` captures
-  `install_repo` and `doctor` the same way, and dies on their status.
+  (`bin/focus-kit:62`, `bin/focus-kit:145`); `installed_version` returns the
+  status of its `tr` and the two callers keep their own `-f` guard on the
+  stamp; `check_install` captures `install_repo` and `doctor` the same way,
+  and dies on their status.
 
 The distinction is the book's (`docs/manuals/focus.md` §5): a failure that
 is part of the flow becomes a value, and a failure that is a defect crashes.

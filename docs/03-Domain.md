@@ -43,8 +43,8 @@ appears in a delivery.
 |---|---|---|
 | Kit | `focus-kit` | This repository, and the thing it installs. Both senses are the same artifact: the repository is the kit's source, the installed files are the kit in a target. |
 | CLI | `bin/focus-kit` | The single executable. Five verbs: `install`, `update`, `doctor`, `version`, `selftest`. |
-| Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:42`). |
-| Installed version | `.claude/skills/.focus-kit-version` | The kit version stamped into a target at install time. `doctor` compares it with `VERSION` to say whether the target is stale. In this repository it equals `VERSION` at every commit (check 6 of `selftest`). |
+| Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:43`). |
+| Installed version | `.claude/skills/.focus-kit-version`, read by `installed_version()` | The kit version stamped into a target at install time. Written with LF; read with every carriage return removed, so a target cloned on Windows with `core.autocrlf=true` compares equal instead of reading `0.5.2` as not `0.5.2`. Nothing else is trimmed: a leading or trailing space is still a difference. `doctor` compares it with `VERSION` to say whether the target is stale. In this repository it equals `VERSION` at every commit (check 6 of `selftest`). |
 | Command | `skills/<name>/SKILL.md` | One of the three things a person types in Claude Code: `/initialize`, `/propose`, `/apply`. Called a skill by Claude Code and a command by this project; the two words mean the same thing here. |
 | Manual | `manuals/<name>.md` | A kit-owned how-to document: `process.md`, `focus.md`, `graphify.md`. Copied to `docs/manuals/` of every target. |
 | Template | `skills/initialize/templates/` | The skeleton of a document `/initialize` fills. Mirrors the target layout: `CLAUDE.md` and `docs/`. |
@@ -232,7 +232,7 @@ documentation language is something else: the kit's own strings are not
 translated, only the documents `/initialize` writes. The no em dash rule
 applies to every line of that output.
 
-The terminal output has four shapes and no others (`bin/focus-kit:44`):
+The terminal output has four shapes and no others (`bin/focus-kit:45`):
 `say` for plain lines, `ok` for a green check, `warn` for a yellow warning
 that does not stop the run, `die` for a red error that exits. A new message
 picks one of the four.

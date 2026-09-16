@@ -108,6 +108,13 @@ It runs six checks, in this order, and stops at the first red:
    naming the file. The assertion is a `grep -qF` and not python, because
    the failure it exists to catch is python missing: an empty `.mcp.json`
    satisfies a check that only asks whether the file is there.
+   Last, one probe: the scratch's `.focus-kit-version` is rewritten as CRLF,
+   the way a Windows clone with `core.autocrlf=true` checks it out, `doctor`
+   runs again and must still print the same green version line; the stamp is
+   then restored with LF, because check 3 installs into this same scratch and
+   a CRLF left behind would come back as a false idempotency failure. The
+   probe runs on every platform: nothing on macOS or Linux writes that byte
+   on its own, so a regression here would otherwise be invisible forever.
 3. The same install again into the same scratch repository, trees compared.
    The install is idempotent.
 4. The frontmatter of each of the three `SKILL.md` files, against four
@@ -127,7 +134,13 @@ It runs six checks, in this order, and stops at the first red:
    skills .claude/skills` and `diff -r manuals docs/manuals`, both empty
    except for `.focus-kit-version`. The stamp is compared by value and not
    by bytes against `skills/`, because it is not a copy of anything: it is
-   what the install writes. The `die` names both numbers and the command
+   what the install writes. By value also forgives a trailing carriage
+   return, because the stamp is read through the same `installed_version`
+   `doctor` uses: the second occurrence of that read, and the two have to
+   agree on what the number is. `.gitattributes` keeps this repository's own
+   stamp at LF, so the tolerance is never exercised here; it is exercised in
+   a target, which receives no `.gitattributes`.
+   The `die` names both numbers and the command
    that fixes it; an absent stamp is red too, with a `die` naming the file.
 
 It takes a few seconds. There is nothing slow and nothing that runs only in

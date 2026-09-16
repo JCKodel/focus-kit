@@ -44,7 +44,7 @@ documents were written.
                               merge, --no-project on the uv fallback, and the docs name WSL and
                               Git Bash; proven on the Windows host over SSH. MSYS did not rewrite
                               the expression argv, so merge-json-by-argument keeps only its own reason
-[ ] version-stamp-tolerates-cr
+[x] version-stamp-tolerates-cr
                               doctor and check 6 strip a trailing carriage return from
                               .focus-kit-version; a target cloned on Windows with core.autocrlf=true
                               gets a CRLF stamp and doctor warns that 0.5.0 is not 0.5.0. Found by
