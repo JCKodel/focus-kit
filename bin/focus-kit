@@ -350,13 +350,15 @@ doctor() {
   local target="${1:-.}"
   target="$(cd "$target" && pwd)"
   say "focus-kit $KIT_VERSION doctor: $target"
-  command -v uv >/dev/null 2>&1        && ok "uv"          || warn "uv missing"
-  command -v graphify >/dev/null 2>&1  && ok "graphify"    || warn "graphify missing"
+  # focus-kit update is the fix named by the three tool lines because it is the
+  # command that installs both: ensure_uv and ensure_graphify run inside it.
+  command -v uv >/dev/null 2>&1        && ok "uv"          || warn "uv missing (run focus-kit update)"
+  command -v graphify >/dev/null 2>&1  && ok "graphify"    || warn "graphify missing (run focus-kit update)"
   # graphify-mcp is an entry point of graphifyy, so it is on PATH whether or
   # not the mcp extra is there. What decides is the extra, and uv tool list is
   # the only place that records it.
   if ! command -v graphify >/dev/null 2>&1; then
-    warn "graphify-mcp missing"
+    warn "graphify-mcp missing (run focus-kit update)"
   elif uv tool list --show-extras 2>/dev/null | grep -q '^graphifyy .*\[extras: mcp\]'; then
     ok "graphify-mcp (mcp extra)"
   else
@@ -381,7 +383,7 @@ doctor() {
     if [ -f "$target/.claude/skills/$s/SKILL.md" ]; then
       ok "/$s"
     else
-      warn "/$s missing"
+      warn "/$s missing (focus-kit update restores it)"
       missing="$missing.claude/skills/$s/SKILL.md
 "
     fi
@@ -390,14 +392,28 @@ doctor() {
     local v; v="$(installed_version "$target")"
     [ "$v" = "$KIT_VERSION" ] && ok "kit version $v" || warn "kit version $v installed, $KIT_VERSION available (run focus-kit update)"
   fi
+  # Two loops over the eleven paths and not one, because the fix differs: the
+  # eight project-owned files are what /initialize writes, and the three
+  # manuals are kit-owned, so their line carries the drift wording verbatim.
+  # The order of the output is the order of the single loop these two replace.
+  # Both feed $missing, as the one loop did: the drift pass reads it to avoid
+  # naming a second time what a presence line named.
   local f
   for f in docs/00-Product.md docs/01-Architecture.md docs/02-Backend.md docs/03-Domain.md \
-           docs/04-Conventions.md docs/05-Process.md docs/06-Queue.md CLAUDE.md \
-           docs/manuals/process.md docs/manuals/focus.md docs/manuals/graphify.md; do
+           docs/04-Conventions.md docs/05-Process.md docs/06-Queue.md CLAUDE.md; do
     if [ -f "$target/$f" ]; then
       ok "$f"
     else
-      warn "$f missing"
+      warn "$f missing (run /initialize)"
+      missing="$missing$f
+"
+    fi
+  done
+  for f in docs/manuals/process.md docs/manuals/focus.md docs/manuals/graphify.md; do
+    if [ -f "$target/$f" ]; then
+      ok "$f"
+    else
+      warn "$f missing (focus-kit update restores it)"
       missing="$missing$f
 "
     fi
@@ -518,14 +534,34 @@ check_install() { # scratch
     die "check 2: doctor failed in the scratch repository"
   }
   # The expected line is built by calling ok, so the assertion and the
-  # reporter cannot drift. The warnings a scratch repository legitimately
-  # produces (docs/00 to 06, CLAUDE.md, the graph, the hook) are ignored.
+  # reporter cannot drift.
   for expected in /initialize /propose /apply \
                   docs/manuals/process.md docs/manuals/focus.md \
                   docs/manuals/graphify.md .mcp.json .claude/settings.json \
                   "kit version $KIT_VERSION" \
                   "kit-owned files as install wrote them"; do
     line="$(ok "$expected")"
+    printf '%s\n' "$out" | grep -qF -- "$line" || {
+      printf '%s\n' "$out"
+      die "check 2: doctor did not report $expected in the scratch repository"
+    }
+  done
+  # The ten warns of the same run. A scratch repository has not had
+  # /initialize run in it, so these are the expected output and not a failure,
+  # and each one has to name the command that puts it right
+  # (docs/04-Conventions.md §1). Asserted through warn, as the green lines are
+  # through ok: a parenthesis edited in doctor and not here turns check 2 red.
+  for expected in "docs/00-Product.md missing (run /initialize)" \
+                  "docs/01-Architecture.md missing (run /initialize)" \
+                  "docs/02-Backend.md missing (run /initialize)" \
+                  "docs/03-Domain.md missing (run /initialize)" \
+                  "docs/04-Conventions.md missing (run /initialize)" \
+                  "docs/05-Process.md missing (run /initialize)" \
+                  "docs/06-Queue.md missing (run /initialize)" \
+                  "CLAUDE.md missing (run /initialize)" \
+                  "graphify-out/graph.json missing (/propose and /apply rebuild it; docs/manuals/graphify.md)" \
+                  "graphify post-commit hook not installed (graphify hook install)"; do
+    line="$(warn "$expected")"
     printf '%s\n' "$out" | grep -qF -- "$line" || {
       printf '%s\n' "$out"
       die "check 2: doctor did not report $expected in the scratch repository"
@@ -638,6 +674,33 @@ check_install() { # scratch
   # Restored by copy alone: a deletion does not change the manifest, so the
   # one write_manifest above still describes this tree byte for byte.
   cp "$KIT_DIR/skills/initialize/templates/CLAUDE.md" "$scratch/$template"
+  # A kit-owned file a presence line does name: a manual. Its presence line
+  # and the drift pass would say the same thing about the same path, and the
+  # drift pass stays silent because $missing holds it. The two say the same
+  # thing word for word, so counting is the only way to prove there is one of
+  # them: a count, not a grep -q. The green drift line is still forbidden,
+  # exactly as for the template.
+  local manualpath="docs/manuals/process.md"
+  rm "$scratch/$manualpath"
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  line="$(warn "$manualpath missing (focus-kit update restores it)")"
+  # The substitution inside the test and not in an assignment: grep -c exits 1
+  # on a count of zero, and under set -e a failing assignment ends the script
+  # before the die that explains it.
+  if [ "$(printf '%s\n' "$out" | grep -cF -- "$line")" -ne 1 ]; then
+    printf '%s\n' "$out"
+    die "check 2: doctor did not report a deleted manual exactly once in the scratch repository"
+  fi
+  line="$(ok "kit-owned files as install wrote them")"
+  if printf '%s\n' "$out" | grep -qF -- "$line"; then
+    printf '%s\n' "$out"
+    die "check 2: doctor printed the drift ok line with a manual deleted from the scratch repository"
+  fi
+  # Restored by copy alone, as the template above and for the same reason.
+  cp "$KIT_DIR/manuals/process.md" "$scratch/$manualpath"
   # The Global skill (docs/03-Domain.md), four doctor runs against a fake home
   # and a fake graphify on PATH: every line the state table can print, on any
   # machine, with no network, without graphify and without touching the real

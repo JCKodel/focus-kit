@@ -83,7 +83,7 @@ about brownfield repositories is untested.
                               the one that carries enabledMcpjsonServers, without which the server in the
                               .mcp.json it does report is never enabled; check 2 reads both merged files
                               in the scratch and a real target's doctor asks neither question
-[ ] every-warn-names-its-fix  the eight warns for docs/00 to 06 and CLAUDE.md end at "missing", while
+[x] every-warn-names-its-fix  the eight warns for docs/00 to 06 and CLAUDE.md end at "missing", while
                               every other warn doctor prints names its command in parentheses; after a
                               green install the person infers alone that eight of the ten are the normal
                               state of a target /initialize has not run in
@@ -187,6 +187,10 @@ overwrites them like the skills.
   the next update erases it (`docs/adr/ADR-0002-file-ownership.md`).
 * `focus-kit uninstall`: remove the kit-owned files and unmerge the two JSON
   keys, so a repository can stop using the kit without unpicking it by hand.
+* The `install` warn `graphify-mcp not on PATH; the MCP server in .mcp.json
+  needs it` names why and not what fixes it (open a new shell), against
+  `docs/04-Conventions.md` §1. Left out of `every-warn-names-its-fix`, which
+  is about `doctor`.
 * Distribution beyond clone and symlink: a curl installer, or a package.
   Blocked on open decision 3.
 * The gitignore fragment in a target that installed an earlier version.

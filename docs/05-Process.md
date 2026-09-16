@@ -99,8 +99,11 @@ It runs six checks, in this order, and stops at the first red:
    `VERSION`, **not** a doctor with no warnings. A scratch repository has
    not had `/initialize` run in it, so `doctor` correctly warns that
    `docs/00` to `06`, `CLAUDE.md`, the graph and the hook are missing.
-   Those ten warnings are the expected output, and the selftest must not
-   treat them as failures.
+   Those ten warnings are the expected output, and the check **asserts**
+   them, each line built by calling `warn`, the way it builds every green
+   line by calling `ok`: they carry the command that fixes each one
+   (`docs/04-Conventions.md` §1), and a parenthesis edited in `doctor` and
+   nowhere else has to turn the check red.
    The **two merged files** are `doctor`'s to read, not the check's:
    `doctor` asks `.mcp.json` for `"graphify-mcp"` and `.claude/settings.json`
    for `"enabledMcpjsonServers"` and `"graphify"` with a `grep -qF` behind an
@@ -135,7 +138,15 @@ It runs six checks, in this order, and stops at the first red:
    the drift `ok` line, which is the only way a deleted template is ever
    caught: ten of the sixteen paths the manifest names are templates and no
    presence line covers them. It is restored by a copy alone, because a
-   deletion does not change the manifest.
+   deletion does not change the manifest. Then the other half of that rule,
+   on a kit-owned path a presence line **does** name:
+   `docs/manuals/process.md` is deleted and one `doctor` run must carry its
+   line **exactly once** and, again, not the drift `ok` line. The two
+   passes would word it identically, which is the point, so counting is the
+   only assertion that can tell one line from two; the count goes inside
+   the test and not into an assignment, because `grep -c` exits 1 on a
+   count of zero and `set -e` would end the script before the `die`.
+   Restored by a copy from `manuals/`, as the template is.
    Last, the **global skill**: four `doctor` runs against a fake home holding
    `.claude/skills/graphify/SKILL.md` and a fake `graphify` on PATH that
    prints `graphify 9.9.9` whatever its arguments, so every line the state
@@ -179,8 +190,9 @@ It runs six checks, in this order, and stops at the first red:
    that fixes it; an absent stamp is red too, with a `die` naming the file.
    Then `doctor` is run on this repository and must print `kit-owned files as
    install wrote them`. Only that line is asserted; the warns this repository
-   legitimately produces are ignored, as check 2 ignores a scratch
-   repository's. It comes after the two `diff` calls because it exists for
+   legitimately produces are ignored. Check 2 does assert a scratch
+   repository's ten, because a scratch is the same tree every time and this
+   repository is not. It comes after the two `diff` calls because it exists for
    the gap they leave: both copies equal to their sources and the manifest
    stale against them, which is what editing a manual and its dogfood copy by
    hand, without `focus-kit install .`, produces.

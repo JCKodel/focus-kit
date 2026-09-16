@@ -54,16 +54,17 @@ Beyond that, the copy rules this project needs:
   (`bin/focus-kit:47`). Never a bare `echo` or `printf` for a message a
   person reads. The shape carries the meaning, so a message whose shape is
   wrong lies even when its words are right.
-* **A `warn` says what to do next.** "graphify-mcp not on PATH" is half a
-  message; the line adds why it matters and what fixes it. Compare
-  `bin/focus-kit:146`.
+* **A `warn` says what to do next.** "uv missing" is half a message; the line
+  adds the command that puts it right. Compare `bin/focus-kit:355`, and every
+  other warn of `doctor` with it: a person reading one `!` line, without the
+  rest of the output, knows what to type.
 * **A `die` names the thing that is missing, not the step that failed.**
   "python3 not found (and uv is not installed to supply one)" tells the
   person what to install. A red check of the verify command follows the same
   rule: `check 6: .claude/skills differs from skills (run focus-kit install
   .)` names the thing and what fixes it, not the step.
 * **The help text is the script's own header.** `--help` prints it through
-  `awk` (`bin/focus-kit:797`), by a rule and not a range: the shebang is
+  `awk` (`bin/focus-kit:860`), by a rule and not a range: the shebang is
   skipped, then every consecutive line beginning with `#` is printed until
   the first line that does not, each one losing its `#` and one following
   space. A bare `#` becomes an empty line, which is how the header's blank
