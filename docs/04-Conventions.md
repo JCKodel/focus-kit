@@ -62,12 +62,14 @@ Beyond that, the copy rules this project needs:
   person what to install. A red check of the verify command follows the same
   rule: `check 6: .claude/skills differs from skills (run focus-kit install
   .)` names the thing and what fixes it, not the step.
-* **The help text is the script's own header.** `--help` prints lines 2 to
-  28 of the file through `sed` (`bin/focus-kit:371`). Documentation and
-  usage are the same bytes, so they cannot drift. A change to the header is
-  a change to the help text, and that is the point. The range is still a
-  literal that a new header line makes wrong; fixing that is
-  `help-text-follows-header` in the queue.
+* **The help text is the script's own header.** `--help` prints it through
+  `awk` (`bin/focus-kit:371`), by a rule and not a range: the shebang is
+  skipped, then every consecutive line beginning with `#` is printed until
+  the first line that does not, each one losing its `#` and one following
+  space. A bare `#` becomes an empty line, which is how the header's blank
+  lines survive. Documentation and usage are the same bytes, so they cannot
+  drift, and a header that grows a line needs no other edit. A change to the
+  header is a change to the help text, and that is the point.
 * **A document says what is, not what is wished for.** When the code and the
   intention differ, both are written, and which is which is marked.
 

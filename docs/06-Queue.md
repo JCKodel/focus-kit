@@ -27,7 +27,7 @@ documents were written.
 [x] open-source-license       AGPL-3.0-only verbatim so GitHub detects it, the notice line in every
                               kit-owned file and in the CLI's header, and README saying what a target
                               repository's own documents are and how to ask for other terms
-[ ] help-text-follows-header  focus-kit --help prints the whole header, however long it grows;
+[x] help-text-follows-header  focus-kit --help prints the whole header, however long it grows;
                               today sed -n '2,27p' is a literal the next header line makes wrong
 [ ] gitignore-no-duplicates   the fragment skips lines the target already ignores;
                               today .gitignore:2 and :6 are the same line

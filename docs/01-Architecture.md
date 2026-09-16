@@ -94,7 +94,9 @@ list of calls.
 
 The dispatch is a `case` over `$1` at the bottom of the file
 (`bin/focus-kit:359`), and `--help` prints the script's own header comment
-through `sed`, so the usage text and the documentation are the same bytes.
+through `awk`, every comment line after the shebang up to the first line
+that is not one, so the usage text and the documentation are the same bytes
+however long the header grows.
 
 The four message shapes are `say`, `ok`, `warn`, `die` (`bin/focus-kit:43`).
 `warn` does not stop the run; `die` exits non-zero. A new message picks one

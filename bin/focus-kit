@@ -368,7 +368,7 @@ case "$cmd" in
   version)  say "$KIT_VERSION" ;;
   selftest) selftest ;;
   ""|-h|--help|help)
-    sed -n '2,28p' "$0" | sed 's/^# \{0,1\}//'
+    awk 'NR == 1 { next } !/^#/ { exit } { sub(/^# ?/, ""); print }' "$0"
     ;;
   *) die "unknown command: $cmd (try: focus-kit help)" ;;
 esac
