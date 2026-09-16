@@ -1,0 +1,6 @@
+bin/focus-kit                 text eol=lf
+VERSION                       text eol=lf
+config/gitignore.fragment     text eol=lf
+config/settings.baseline.json text eol=lf
+*.md                          text eol=lf
+.claude/skills/.focus-kit-version text eol=lf

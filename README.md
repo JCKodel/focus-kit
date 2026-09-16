@@ -37,6 +37,23 @@ ln -s ~/Projects/focus-kit/bin/focus-kit ~/.local/bin/focus-kit
 
 `~/.local/bin` must be on your PATH (it is, if uv is installed).
 
+**On Windows**, in Git Bash. `ln -s` there copies the file instead of
+linking it, and the copy cannot find the kit it came from, so the line on
+PATH is a wrapper that calls the clone:
+
+```
+printf '#!/usr/bin/env bash\nexec bash "$HOME/Projects/focus-kit/bin/focus-kit" "$@"\n' > ~/.local/bin/focus-kit
+chmod +x ~/.local/bin/focus-kit
+```
+
+The first `focus-kit install` on a Windows machine installs uv into
+`~/.local/bin`, which is not yet on that shell's PATH. The install itself
+finishes, but the `focus-kit doctor` you run next reports uv and graphify
+missing until you open a new shell or run `. ~/.local/bin/env`.
+
+Under WSL nothing is different: it is Linux, and the clone lives on the WSL
+side of the filesystem, not under `/mnt/c`.
+
 ## Install into a repository
 
 ```
@@ -178,7 +195,7 @@ request through this repository's GitHub issues.
 ## Layout of this repository
 
 ```
-bin/focus-kit                  the CLI (bash 3.2 compatible; macOS and Linux)
+bin/focus-kit                  the CLI (bash 3.2 compatible; macOS, Linux, Windows)
 skills/<name>/SKILL.md         the three commands
 skills/initialize/templates/   CLAUDE.md and docs/ templates the command fills
 manuals/                       the three kit-owned manuals
@@ -188,5 +205,7 @@ VERSION
 
 ## Requirements
 
-macOS or Linux, `curl`, `python3` (or uv, which supplies one), git, Claude
-Code. Node is not required by the kit; the target project's stack is.
+The kit runs on macOS (bash 3.2), Linux, and Windows through WSL or Git
+Bash. It needs `curl`, a python 3 on PATH as `python3` or as `python` (or
+uv, which supplies one), git, and Claude Code. Node is not required by the
+kit; the target project's stack is.

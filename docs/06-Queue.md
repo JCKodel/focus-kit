@@ -39,12 +39,18 @@ documents were written.
                               any delivery that bumps VERSION ends with focus-kit install ., and
                               check 6 compares the installed version with VERSION; today the
                               dogfood copy is one version behind and only doctor notices
-[>] windows-git-bash          the kit runs from Git for Windows: LF through .gitattributes, a
+[x] windows-git-bash          the kit runs from Git for Windows: LF through .gitattributes, a
                               python that is probed rather than found, UTF-8 and LF from the
                               merge, --no-project on the uv fallback, and the docs name WSL and
-                              Git Bash; proven on the Windows host over SSH. If that run shows
-                              MSYS rewriting the expression argv, it waits on merge-json-by-argument
-[ ] merge-json-by-argument    the settings baseline reaches python3 as data, not interpolated
+                              Git Bash; proven on the Windows host over SSH. MSYS did not rewrite
+                              the expression argv, so merge-json-by-argument keeps only its own reason
+[ ] version-stamp-tolerates-cr
+                              doctor and check 6 strip a trailing carriage return from
+                              .focus-kit-version; a target cloned on Windows with core.autocrlf=true
+                              gets a CRLF stamp and doctor warns that 0.5.0 is not 0.5.0. Found by
+                              windows-git-bash, which fixes it here through .gitattributes and
+                              cannot fix it in a target, because no .gitattributes is shipped
+[>] merge-json-by-argument    the settings baseline reaches python3 as data, not interpolated
                               into the source it execs; a quote in the JSON breaks the install
 [ ] doctor-reports-drift      doctor says when a kit-owned file in a target was edited locally,
                               so the person knows update is about to overwrite their edit

@@ -25,8 +25,9 @@
 # (docs/00 to 06, CLAUDE.md, ADRs, work/) is never touched here: that is
 # /initialize's job, and it merges instead of overwriting.
 #
-# Runs on macOS (bash 3.2) and Linux. Needs curl and python3 (or uv, which can
-# supply a python).
+# Runs on macOS (bash 3.2), Linux, and Windows through WSL or Git Bash. Needs
+# curl and a python 3 on PATH, as python3 or as python (or uv, which can
+# supply one).
 
 set -euo pipefail
 
@@ -50,9 +51,22 @@ die()  { printf '\033[31merror:\033[0m %s\n' "$*" >&2; exit 1; }
 # does not die: its output is captured, and a die inside $(...) ends only the
 # subshell, so the caller would carry on with an empty answer
 # (docs/01-Architecture.md §6). merge_json is where the failure becomes a die.
+#
+# Each candidate is probed by running it, not by asking command -v whether it
+# is on PATH. On Windows, python3 is usually the Microsoft Store stub: on
+# PATH, and a failure when executed. And python.org installs python, not
+# python3. The probe also skips a python that is 2.7. uv stays a PATH
+# question, because probing it would download an interpreter to answer which
+# interpreter to use; --no-project keeps it from creating a .venv and a
+# uv.lock inside a target that has a pyproject.toml.
 python_bin() {
-  if command -v python3 >/dev/null 2>&1; then echo python3; return; fi
-  if command -v uv >/dev/null 2>&1; then echo "uv run --python 3.12 python"; return; fi
+  local cand
+  for cand in python3 python; do
+    if "$cand" -c 'import json, sys; sys.exit(sys.version_info[0] != 3)' >/dev/null 2>&1; then
+      echo "$cand"; return
+    fi
+  done
+  if command -v uv >/dev/null 2>&1; then echo "uv run --no-project --python 3.12 python"; return; fi
   return 1
 }
 
@@ -119,13 +133,17 @@ merge_json() { # file  python-expression-that-mutates-`d`
   py="$(python_bin)" || die "python3 not found (and uv is not installed to supply one)"
   mkdir -p "$(dirname "$file")"
   [ -f "$file" ] || echo '{}' > "$file"
+  # The encodings are explicit because python follows the system locale
+  # otherwise, and a native python on Windows reads and writes the code page
+  # and ends every line with CRLF. Both files are UTF-8 with LF on every
+  # platform, whoever wrote them.
   $py - "$file" "$expr" <<'PY'
 import json, sys
 path, expr = sys.argv[1], sys.argv[2]
-with open(path) as f:
+with open(path, encoding="utf-8") as f:
     d = json.load(f)
 exec(expr)
-with open(path, "w") as f:
+with open(path, "w", encoding="utf-8", newline="\n") as f:
     json.dump(d, f, indent=2, ensure_ascii=False)
     f.write("\n")
 PY

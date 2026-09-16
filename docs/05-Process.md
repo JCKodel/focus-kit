@@ -202,6 +202,12 @@ line of reason rather than editing the expectation quietly.
 For a change to `bin/focus-kit` alone, the verify command is the proof and
 nothing further is needed.
 
+**A change that claims a platform is proven by the verify command on that
+platform.** Reading the script and reasoning about what a shell there would
+do is not proof: the delivery runs `bin/focus-kit selftest` on that machine
+and the transcript goes into `work/done/<slug>.md`. Until it has, the
+platform is not claimed anywhere a user reads.
+
 ## 7. Git
 
 **Trunk.** Work goes straight to `main`. No branches, no pull requests, no
