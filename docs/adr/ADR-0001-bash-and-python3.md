@@ -29,7 +29,7 @@ symlink resolution at the top of the file is a hand-written loop for exactly
 this reason (`bin/focus-kit:35`).
 
 JSON merging goes through **python3**, called inline with a heredoc
-(`merge_json`, `bin/focus-kit:113`). python3 is already present on macOS and
+(`merge_json`, `bin/focus-kit:117`). python3 is already present on macOS and
 on every Linux the kit targets, and `python_bin` falls back to `uv run`
 when it is not, dying with a clear message if neither exists.
 

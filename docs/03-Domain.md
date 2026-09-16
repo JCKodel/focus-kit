@@ -59,10 +59,10 @@ appears in a delivery.
 | Term | Code | Short meaning |
 |---|---|---|
 | Kit-owned | `copy_tree()` | A file the CLI overwrites on every `install` or `update`: the three skills, the three manuals. Editing one inside a target is a change that the next update erases. It is edited in this repository. |
-| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:192`). |
+| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:196`). |
 | Merged | `merge_json()` | A file the CLI adds to without removing: `.mcp.json`, `.claude/settings.json`. The merge goes through python3 and is idempotent. |
 | Appended once | (the marker test) | `.gitignore`: the fragment goes in the first time and never again, because the marker is already there. |
-| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:133`). |
+| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:137`). |
 | Dogfood copy | `.claude/skills/`, `docs/manuals/` | This repository is also a target of itself. Those two paths hold copies of `skills/` and `manuals/`. They are versioned, and keeping them equal to their sources is a rule, not a habit (`docs/05-Process.md` §5). |
 
 ### The delivery process
@@ -79,7 +79,7 @@ appears in a delivery.
 | Apply | `/apply <slug>` | The clean session that builds the page end to end, and never commits. |
 | Initialize | `/initialize` | The command that writes a target's `docs/` and `CLAUDE.md`. Run once, then again as a review. |
 | Verify command | `bin/focus-kit selftest` | The one command that must come back green before anything is declared done. Six checks, in order, stopping at the first red (`docs/05-Process.md` §4). |
-| Scratch repository | `mktemp -d` plus `git init` | The disposable target the verify command installs into, checks with `doctor`, and removes at the end whether the run passed or failed. It has exactly this name everywhere: not a temp repo, not a temporary directory, not a test fixture. |
+| Scratch repository | `mktemp -d` plus `git init` | The disposable target the verify command installs into, checks with `doctor`, greps for what the two JSON merges wrote, and removes at the end whether the run passed or failed. It has exactly this name everywhere: not a temp repo, not a temporary directory, not a test fixture. |
 | Proof | (see `docs/05-Process.md` §6) | How a delivery is shown to work beyond the verify command. Here it is an install into a scratch repository, since the kit has no screen. |
 | House rule | (prose, in the manuals) | A rule fixed in every project the kit installs, not open to a per-project vote: one delivery is one page, FOCUS, errors are values, no em dash, the agent never commits, abstraction on the second occurrence, docs are living, prose in the project's language and identifiers in English. |
 | Slot | (a section of `docs/05-Process.md`) | The part of the process that is per-project: the verify command, the environments table, the publish policy, the git policy, the proof. `/initialize` fills a slot; `/apply` reads it. |

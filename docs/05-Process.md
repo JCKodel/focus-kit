@@ -101,6 +101,13 @@ It runs six checks, in this order, and stops at the first red:
    `docs/00` to `06`, `CLAUDE.md`, the graph and the hook are missing.
    Those ten warnings are the expected output, and the selftest must not
    treat them as failures.
+   Then the check **reads the two merged files** in the scratch, which
+   `doctor` only counts: `.mcp.json` must contain `"graphify-mcp"`, and
+   `.claude/settings.json` must contain `"enabledMcpjsonServers"` and one
+   baseline permission, `"Bash(graphify *)"`. Absent is red, with a `die`
+   naming the file. The assertion is a `grep -qF` and not python, because
+   the failure it exists to catch is python missing: an empty `.mcp.json`
+   satisfies a check that only asks whether the file is there.
 3. The same install again into the same scratch repository, trees compared.
    The install is idempotent.
 4. The frontmatter of each of the three `SKILL.md` files, against four

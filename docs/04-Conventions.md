@@ -56,14 +56,14 @@ Beyond that, the copy rules this project needs:
   wrong lies even when its words are right.
 * **A `warn` says what to do next.** "graphify-mcp not on PATH" is half a
   message; the line adds why it matters and what fixes it. Compare
-  `bin/focus-kit:92`.
+  `bin/focus-kit:96`.
 * **A `die` names the thing that is missing, not the step that failed.**
   "python3 not found (and uv is not installed to supply one)" tells the
   person what to install. A red check of the verify command follows the same
   rule: `check 6: .claude/skills differs from skills (run focus-kit install
   .)` names the thing and what fixes it, not the step.
 * **The help text is the script's own header.** `--help` prints it through
-  `awk` (`bin/focus-kit:397`), by a rule and not a range: the shebang is
+  `awk` (`bin/focus-kit:412`), by a rule and not a range: the shebang is
   skipped, then every consecutive line beginning with `#` is printed until
   the first line that does not, each one losing its `#` and one following
   space. A bare `#` becomes an empty line, which is how the header's blank
@@ -141,6 +141,17 @@ The question is the book's (`docs/manuals/focus.md` §5): is this failure part
 of the normal flow? A target that is not a git repository is normal, so it
 warns and continues. A missing python3 makes everything after it wrong, so
 it dies.
+
+And the rule about where it may die: **a function whose output is captured
+never calls `die`; it returns non-zero and the caller dies.** A `die` inside
+`$(...)` exits the subshell, not the script, so the caller reads an empty
+string and continues. The first occurrence was `check_install`, which
+captures `install_repo` and `doctor` and dies on their status
+(`work/done/kit-selftest.md`, Two mechanics the page did not name); the
+second was `python_bin`, which returned nothing and let an install run on
+with no interpreter. `python_bin` now returns 1 and `merge_json` carries the
+message, unchanged: `python3 not found (and uv is not installed to supply
+one)`. It names the thing that is missing, which is the rule above it.
 
 ## 5. Where things are tested
 

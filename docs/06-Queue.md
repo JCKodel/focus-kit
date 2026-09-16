@@ -31,7 +31,7 @@ documents were written.
                               today sed -n '2,27p' is a literal the next header line makes wrong
 [x] graphify-mcp-starts       install adds the mcp extra of graphifyy and doctor sees when it is
                               missing; today graphify-mcp dies with ImportError on every machine
-[>] selftest-reads-the-merged-json
+[x] selftest-reads-the-merged-json
                               check 2 reads the two merged files and merge_json dies when no
                               python runs; today a die inside $(python_bin) leaves selftest green
                               over an .mcp.json that reads {}

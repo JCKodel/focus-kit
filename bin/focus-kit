@@ -46,10 +46,14 @@ ok()   { printf '  \033[32m✓\033[0m %s\n' "$*"; }
 warn() { printf '  \033[33m!\033[0m %s\n' "$*"; }
 die()  { printf '\033[31merror:\033[0m %s\n' "$*" >&2; exit 1; }
 
+# Echoes the interpreter and returns 0, or prints nothing and returns 1. It
+# does not die: its output is captured, and a die inside $(...) ends only the
+# subshell, so the caller would carry on with an empty answer
+# (docs/01-Architecture.md §6). merge_json is where the failure becomes a die.
 python_bin() {
   if command -v python3 >/dev/null 2>&1; then echo python3; return; fi
   if command -v uv >/dev/null 2>&1; then echo "uv run --python 3.12 python"; return; fi
-  die "python3 not found (and uv is not installed to supply one)"
+  return 1
 }
 
 # ---------------------------------------------------------------- dependencies
@@ -112,7 +116,7 @@ copy_tree() { # src dst  (overwrite, kit-owned)
 
 merge_json() { # file  python-expression-that-mutates-`d`
   local file="$1" expr="$2" py
-  py="$(python_bin)"
+  py="$(python_bin)" || die "python3 not found (and uv is not installed to supply one)"
   mkdir -p "$(dirname "$file")"
   [ -f "$file" ] || echo '{}' > "$file"
   $py - "$file" "$expr" <<'PY'
@@ -257,7 +261,7 @@ check_parses() {
 }
 
 check_install() { # scratch
-  local scratch="$1" out expected line
+  local scratch="$1" out expected line key
   git init -q "$scratch" >/dev/null 2>&1 || die "check 2: git init failed in $scratch"
   out="$(install_repo "$scratch" 2>&1)" || {
     printf '%s\n' "$out"
@@ -279,6 +283,17 @@ check_install() { # scratch
       printf '%s\n' "$out"
       die "check 2: doctor did not report $expected in the scratch repository"
     }
+  done
+  # What the two JSON merges wrote, read back from the scratch. doctor asks
+  # whether .mcp.json exists, which an empty one satisfies. A grep and not
+  # python, because the assertion has to hold when python is exactly what is
+  # missing; merge_json wrote both files with json.dump, so a fixed string is
+  # enough and validating the JSON is merge_json's business, not this check's.
+  grep -qF -- '"graphify-mcp"' "$scratch/.mcp.json" 2>/dev/null ||
+    die "check 2: .mcp.json in the scratch repository has no graphify server (the JSON merge did not run)"
+  for key in '"enabledMcpjsonServers"' '"Bash(graphify *)"'; do
+    grep -qF -- "$key" "$scratch/.claude/settings.json" 2>/dev/null ||
+      die "check 2: .claude/settings.json in the scratch repository was not merged (the JSON merge did not run)"
   done
   ok "2 install into a scratch repository, doctor agrees"
 }
