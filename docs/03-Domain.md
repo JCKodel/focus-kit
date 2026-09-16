@@ -49,7 +49,8 @@ appears in a delivery.
 | Manual | `manuals/<name>.md` | A kit-owned how-to document: `process.md`, `focus.md`, `graphify.md`. Copied to `docs/manuals/` of every target. |
 | Template | `skills/initialize/templates/` | The skeleton of a document `/initialize` fills. Mirrors the target layout: `CLAUDE.md` and `docs/`. |
 | Init comment | `<!-- init: ... -->` | Guidance written to `/initialize` inside a template. It says what goes in the section. `/initialize` fills the section and removes the comment; none may survive into a finished document. |
-| Settings baseline | `config/settings.baseline.json` | The permissions merged into a target's `.claude/settings.json`. Never replaces what is there. |
+| Settings baseline | `config/settings.baseline.json` | The permissions and the `enabledMcpjsonServers` entry merged into a target's `.claude/settings.json`. Never replaces what is there. |
+| MCP baseline | `config/mcp.baseline.json` | The graphify server entry merged into a target's `.mcp.json`. The entry it names under `mcpServers` is the kit's and is replaced whole; every other key in the file, other servers included, is kept. |
 | Gitignore fragment | `config/gitignore.fragment` | The block appended once to a target's `.gitignore`, guarded by the marker `# --- focus-kit ---`. |
 | License | `LICENSE` | The terms the kit is published under: GNU AGPL-3.0-only, verbatim so GitHub detects it. Lives only in this repository; the CLI never copies it. Terms outside it are granted only by the author (`docs/adr/ADR-0004`). |
 | License notice | (one HTML comment line) | The single line naming the copyright holder, the license and the source repository. Carried by every kit-owned file a target receives and by the CLI's header, so a copy names its author wherever it is seen. |
@@ -59,10 +60,10 @@ appears in a delivery.
 | Term | Code | Short meaning |
 |---|---|---|
 | Kit-owned | `copy_tree()` | A file the CLI overwrites on every `install` or `update`: the three skills, the three manuals. Editing one inside a target is a change that the next update erases. It is edited in this repository. |
-| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:196`). |
-| Merged | `merge_json()` | A file the CLI adds to without removing: `.mcp.json`, `.claude/settings.json`. The merge goes through python3 and is idempotent. |
+| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:226`). |
+| Merged | `merge_json()` | A file the CLI adds to without removing: `.mcp.json`, `.claude/settings.json`. One rule decides every key a baseline holds: an entry directly under `mcpServers` replaces the file's whole, an absent key is taken, two objects merge recursively, two lists concatenate without duplicates, anything else is the baseline's, and a key the baseline says nothing about is untouched. The merge goes through python3 and is idempotent. |
 | Appended once | (the marker test) | `.gitignore`: the fragment goes in the first time and never again, because the marker is already there. |
-| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:137`). |
+| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:182`). |
 | Dogfood copy | `.claude/skills/`, `docs/manuals/` | This repository is also a target of itself. Those two paths hold copies of `skills/` and `manuals/`. They are versioned, and keeping them equal to their sources is a rule, not a habit (`docs/05-Process.md` §5). |
 
 ### The delivery process
@@ -166,7 +167,9 @@ Invariants:
   are overwritten, the JSON merges are by key, the gitignore fragment is
   guarded by its marker.
 * `install` never removes anything from a target's `.claude/settings.json`
-  or `.mcp.json`, and never edits a project-owned file.
+  or `.mcp.json`, except the entry under `mcpServers` the MCP baseline names,
+  which is the kit's and is replaced whole. It never edits a project-owned
+  file.
 * A target whose `docs/00-Product.md` exists is a repository `/initialize`
   reviews, not one it rewrites.
 

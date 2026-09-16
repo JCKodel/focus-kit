@@ -20,8 +20,8 @@ script moves.
 ```
 Language    bash 3.2 (the macOS default) · one script, bin/focus-kit
 Platforms   macOS · Linux · Windows through WSL (as Linux) or Git Bash
-JSON        a python 3, invoked inline via a heredoc (bin/focus-kit:131)
-Content     markdown: 3 skills, 3 manuals, 10 templates, 2 config fragments
+JSON        a python 3, invoked inline via a heredoc (bin/focus-kit:143)
+Content     markdown: 3 skills, 3 manuals, 10 templates, 3 config fragments
 Deps (host) uv · graphify (uv tool) · git · curl
 Deps (kit)  none. Nothing is imported, nothing is linked, nothing is vendored
 Tests       bin/focus-kit selftest, six checks in the script itself
@@ -87,23 +87,23 @@ Three verbs and four helpers, all in `bin/focus-kit`:
 
 | Function | Line | What it does |
 |---|---|---|
-| `install_repo` | 152 | The whole install into a target: skills, manuals, `work/done/`, the two JSON merges, the gitignore fragment, the closing message. |
-| `doctor` | 222 | Reports what is present on the machine and in the target, and whether the installed version matches `VERSION`. Reports only; it changes nothing. |
-| `selftest` | 406 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
+| `install_repo` | 179 | The whole install into a target: skills, manuals, `work/done/`, the two JSON merges, the gitignore fragment, the closing message. |
+| `doctor` | 234 | Reports what is present on the machine and in the target, and whether the installed version matches `VERSION`. Reports only; it changes nothing. |
+| `selftest` | 418 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
 | `copy_tree` | 125 | Overwrite a kit-owned tree: `rm -rf` the destination, then `cp -R`. |
-| `merge_json` | 131 | Add to a JSON file without removing from it, through a python heredoc that takes an expression mutating `d`. The heredoc names its encodings, UTF-8 in and UTF-8 with LF out, because python otherwise follows the system locale and writes CRLF in the code page on Windows. It is also where a missing python dies, because `python_bin` cannot. |
+| `merge_json` | 143 | Merge a baseline file into a target file, through a python heredoc that takes two paths and nothing else, so a baseline holding a quote, a backslash or the sequence `'''` is data and never syntax. One rule decides every key: an entry directly under `mcpServers` is replaced whole, an absent key is taken, two objects merge recursively, two lists concatenate without duplicates, anything else is the baseline's; a key the baseline says nothing about is never reached. The heredoc names its encodings, UTF-8 in and UTF-8 with LF out, because python otherwise follows the system locale and writes CRLF in the code page on Windows. It is also where a missing python dies, because `python_bin` cannot. |
 | `python_bin` | 62 | Find a python that runs. It probes `python3` then `python` by executing each one, because a name on PATH is not an interpreter: on Windows `python3` is often the Microsoft Store stub. Falls back to `uv run --no-project`. It echoes the interpreter and returns 0, or prints nothing and returns 1; it never dies, because its output is captured (§6). |
 | `ensure_uv`, `ensure_graphify` | 75, 91 | Make the machine ready. `ensure_uv` is a no-op when uv is there. `ensure_graphify` always runs `uv tool install 'graphifyy[mcp]'`: the `mcp` extra is what makes `graphify-mcp` start, and a machine that installed graphify without it gains it here. uv makes the step idempotent, not a branch in the script. |
 
 Plus one function per check, between `doctor` and the dispatch, each ending
-in an `ok` line or a `die`: `check_parses` (272), `check_install` (281),
-`check_idempotent` (319), `check_frontmatter` (336), `check_no_em_dash`
-(375), `check_dogfood` (387). They are the six checks of
+in an `ok` line or a `die`: `check_parses` (284), `check_install` (293),
+`check_idempotent` (331), `check_frontmatter` (348), `check_no_em_dash`
+(387), `check_dogfood` (399). They are the six checks of
 `docs/05-Process.md` §4 in that order, and `selftest` is nothing but the
 list of calls.
 
 The dispatch is a `case` over `$1` at the bottom of the file
-(`bin/focus-kit:424`), and `--help` prints the script's own header comment
+(`bin/focus-kit:436`), and `--help` prints the script's own header comment
 through `awk`, every comment line after the shebang up to the first line
 that is not one, so the usage text and the documentation are the same bytes
 however long the header grows.
@@ -123,6 +123,16 @@ that produced. There is no rule to extract, nothing to call with literals,
 and so the table stays empty. `check_frontmatter` is the closest, and it
 reads a file line by line rather than deciding anything about one.
 
+`merge_json` is the second closest, and `merge-json-by-argument` is where it
+was looked at. It does hold a rule now, five ordered cases over a key, and
+the rule is callable with literals: two dictionaries in, one dictionary out,
+no filesystem. It still does not earn a row. A use case is where a business
+rule lives, and merging two JSON files is not a rule of this business: it is
+how a file gets written, which is the repository's work, and the repository
+here is the filesystem itself. Extracting it would produce a second bash
+function calling the same heredoc, and ADR-0003 is the standing answer to
+that shape of consistency.
+
 ## 4. The layout
 
 ```
@@ -131,6 +141,7 @@ skills/<name>/SKILL.md            the three commands, kit-owned
 skills/initialize/templates/      CLAUDE.md and docs/, mirrors the target tree
 manuals/<name>.md                 the three manuals, kit-owned
 config/settings.baseline.json     permissions merged into a target
+config/mcp.baseline.json          the graphify server merged into a target
 config/gitignore.fragment         the block appended once to a target
 VERSION                           one line
 LICENSE                           AGPL-3.0-only, verbatim; never copied to a target
@@ -166,11 +177,11 @@ except the two dependency installers, no database, no state between runs.
 |---|---|
 | Read the kit's own files | Relative to `KIT_DIR`, resolved from the script's real path through symlinks (`bin/focus-kit:36`). Never relative to the caller's working directory. |
 | Write a kit-owned file into a target | `copy_tree`: destination removed, then copied. Overwriting is the contract. |
-| Write a merged file into a target | `merge_json`: read, mutate, write. Never removes a key it did not add. |
+| Write a merged file into a target | `merge_json`: read the file, read the baseline, merge, write. Never removes a key it did not add, with one carve-out: the entry under `mcpServers` that `config/mcp.baseline.json` names is the kit's and is replaced whole. |
 | Write an appended file | `.gitignore` only, guarded by the marker `# --- focus-kit ---`. |
-| Touch a project-owned file | Never. The single read is `[ -f "$target/docs/00-Product.md" ]`, to choose which closing message to print (`bin/focus-kit:214`). |
+| Touch a project-owned file | Never. The single read is `[ -f "$target/docs/00-Product.md" ]`, to choose which closing message to print (`bin/focus-kit:226`). |
 | Install a machine dependency | `ensure_uv`, a no-op when uv is present and piping a remote script to `sh` when it is not, which is the installer uv publishes. `ensure_graphify` calls `uv tool install 'graphifyy[mcp]'` on every run and lets uv decide: already installed with the extra is a no-op, anything else is a reinstall that adds it. |
-| Touch the user's home | Only `graphify install --platform claude`, and only when `~/.claude/skills/graphify/SKILL.md` is absent, because it also appends to `~/.claude/CLAUDE.md` (`bin/focus-kit:114`). |
+| Touch the user's home | Only `graphify install --platform claude`, and only when `~/.claude/skills/graphify/SKILL.md` is absent, because it also appends to `~/.claude/CLAUDE.md` (`bin/focus-kit:116`). |
 
 The privacy boundary is trivial and worth stating anyway: the kit sends
 nothing anywhere. `curl` appears once, to fetch the uv installer. Nothing is
@@ -197,7 +208,7 @@ instead is a discipline with the same shape:
   non-zero and the caller dies.** A `die` inside `$(...)` exits the subshell
   and nothing else, so the caller reads an empty string and carries on as if
   nothing had happened. `python_bin` returns 1 and `merge_json` dies
-  (`bin/focus-kit:62`, `bin/focus-kit:133`); `check_install` captures
+  (`bin/focus-kit:62`, `bin/focus-kit:145`); `check_install` captures
   `install_repo` and `doctor` the same way, and dies on their status.
 
 The distinction is the book's (`docs/manuals/focus.md` §5): a failure that

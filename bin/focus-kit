@@ -128,8 +128,20 @@ copy_tree() { # src dst  (overwrite, kit-owned)
   cp -R "$1" "$2"
 }
 
-merge_json() { # file  python-expression-that-mutates-`d`
-  local file="$1" expr="$2" py
+# Both arguments are paths, so nothing reaches python as source: a baseline
+# holding a quote, a backslash, a \uXXXX escape or the sequence ''' is data
+# and never syntax. The rule, for every key the baseline holds, in this order:
+#
+#   directly under mcpServers   the baseline's entry, replacing the file's whole
+#   a key the file lacks        the baseline's value
+#   an object on both sides     the two merged key by key, by this same rule
+#   a list on both sides        the file's list, then every baseline item absent
+#   anything else               the baseline's value
+#
+# A key the baseline says nothing about is never reached, which is what makes
+# the merge additive and idempotent.
+merge_json() { # file  baseline, both paths
+  local file="$1" baseline="$2" py
   py="$(python_bin)" || die "python3 not found (and uv is not installed to supply one)"
   mkdir -p "$(dirname "$file")"
   [ -f "$file" ] || echo '{}' > "$file"
@@ -137,12 +149,27 @@ merge_json() { # file  python-expression-that-mutates-`d`
   # otherwise, and a native python on Windows reads and writes the code page
   # and ends every line with CRLF. Both files are UTF-8 with LF on every
   # platform, whoever wrote them.
-  $py - "$file" "$expr" <<'PY'
+  $py - "$file" "$baseline" <<'PY'
 import json, sys
-path, expr = sys.argv[1], sys.argv[2]
+
+def merge(d, b, parent=None):
+    for k, v in b.items():
+        if parent == "mcpServers":
+            d[k] = v
+        elif k not in d:
+            d[k] = v
+        elif isinstance(d[k], dict) and isinstance(v, dict):
+            merge(d[k], v, k)
+        elif isinstance(d[k], list) and isinstance(v, list):
+            d[k].extend(x for x in v if x not in d[k])
+        else:
+            d[k] = v
+
+path, baseline = sys.argv[1], sys.argv[2]
 with open(path, encoding="utf-8") as f:
     d = json.load(f)
-exec(expr)
+with open(baseline, encoding="utf-8") as f:
+    merge(d, json.load(f))
 with open(path, "w", encoding="utf-8", newline="\n") as f:
     json.dump(d, f, indent=2, ensure_ascii=False)
     f.write("\n")
@@ -181,26 +208,11 @@ install_repo() {
   fi
 
   # .mcp.json: graphify server, by executable name, never by absolute path
-  merge_json "$target/.mcp.json" \
-    'd.setdefault("mcpServers", {})["graphify"] = {"command": "graphify-mcp", "args": ["graphify-out/graph.json"]}'
+  merge_json "$target/.mcp.json" "$KIT_DIR/config/mcp.baseline.json"
   ok ".mcp.json (graphify server)"
 
   # .claude/settings.json: baseline permissions, merged (never removes what is there)
-  local baseline
-  baseline="$(cat "$KIT_DIR/config/settings.baseline.json")"
-  merge_json "$target/.claude/settings.json" "
-import json
-base = json.loads('''$baseline''')
-p = d.setdefault('permissions', {})
-for k in ('allow', 'ask', 'deny'):
-    cur = p.setdefault(k, [])
-    for item in base['permissions'][k]:
-        if item not in cur:
-            cur.append(item)
-d.setdefault('enabledMcpjsonServers', [])
-if 'graphify' not in d['enabledMcpjsonServers']:
-    d['enabledMcpjsonServers'].append('graphify')
-"
+  merge_json "$target/.claude/settings.json" "$KIT_DIR/config/settings.baseline.json"
   ok ".claude/settings.json (baseline permissions merged)"
 
   # .gitignore fragment, appended once

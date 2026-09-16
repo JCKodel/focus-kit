@@ -50,7 +50,7 @@ documents were written.
                               gets a CRLF stamp and doctor warns that 0.5.0 is not 0.5.0. Found by
                               windows-git-bash, which fixes it here through .gitattributes and
                               cannot fix it in a target, because no .gitattributes is shipped
-[>] merge-json-by-argument    the settings baseline reaches python3 as data, not interpolated
+[x] merge-json-by-argument    the settings baseline reaches python3 as data, not interpolated
                               into the source it execs; a quote in the JSON breaks the install
 [ ] doctor-reports-drift      doctor says when a kit-owned file in a target was edited locally,
                               so the person knows update is about to overwrite their edit
@@ -137,7 +137,12 @@ own documents.
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
                               the only host, and the README promise made in readme-makes-the-case
-                              becomes true
+                              becomes true. Hooks are necessary and available on copilot?
+[ ] codex-port                the three commands as Codex repository instructions and
+                              reusable prompts, installed by focus-kit install alongside the skills,
+                              same ownership rules; docs/00 Positioning stops naming Claude Code as
+                              the only host, and the README promise made in readme-makes-the-case
+                              becomes true. Hooks are necessary and available on codex?
 [ ] update-alert              alert users when new versions are available on github so the user can
                               update (and run `focus-kit update`)
 ```

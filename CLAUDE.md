@@ -29,7 +29,9 @@ own text sets the example.
 - `skills/initialize/templates/`: what `/initialize` fills. Guidance to the
   command lives in `<!-- init: ... -->` comments, which it removes.
 - `manuals/`: kit-owned files copied to `docs/manuals/` of every target.
-- `config/`: settings baseline and `.gitignore` fragment, merged on install.
+- `config/`: the settings and MCP baselines and the `.gitignore` fragment,
+  merged on install. `merge_json` takes two paths, never source, so a
+  baseline may hold any JSON escape.
 - The whole tree, and which part owns what: docs/01-Architecture.md §4.
 
 ## Non-negotiables
