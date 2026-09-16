@@ -72,6 +72,7 @@ This installs the dependencies on the machine (uv, graphify, the global
 | `.mcp.json` | merged | the graphify MCP server, by executable name |
 | `.claude/settings.json` | merged | baseline permissions: git commit and push always ask |
 | `.gitignore` | appended once | session settings, graphify cost and machine paths |
+| `.graphifyignore` | appended once | keeps the kit's own skills and manuals out of your graph |
 | `work/done/` | project | created if absent |
 
 Then open Claude Code in the repository and run `/initialize`.
@@ -201,7 +202,7 @@ bin/focus-kit                  the CLI (bash 3.2 compatible; macOS, Linux, Windo
 skills/<name>/SKILL.md         the three commands
 skills/initialize/templates/   CLAUDE.md and docs/ templates the command fills
 manuals/                       the three kit-owned manuals
-config/                        the two JSON baselines and the .gitignore fragment
+config/                        the two JSON baselines and the two ignore fragments
 VERSION
 ```
 

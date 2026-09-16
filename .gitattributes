@@ -1,6 +1,7 @@
 bin/focus-kit                 text eol=lf
 VERSION                       text eol=lf
 config/gitignore.fragment     text eol=lf
+config/graphifyignore.fragment text eol=lf
 config/settings.baseline.json text eol=lf
 config/mcp.baseline.json      text eol=lf
 *.md                          text eol=lf

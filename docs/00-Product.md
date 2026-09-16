@@ -112,8 +112,11 @@ and the kit printed a green line over it.
 
 In the repository: the three skills and the three manuals are copied over
 whatever is there; `.mcp.json` and `.claude/settings.json` are merged into,
-never replaced; the `.gitignore` fragment is appended once; `work/done/` is
-created if absent. The script then prints the next step, and which next step
+never replaced; the `.gitignore` and `.graphifyignore` fragments are each
+appended once, the second one keeping the kit's own skills and manuals out
+of the graph, so a question asked of a target's graph comes back as the
+target's code and not as the kit's documentation; `work/done/` is created if
+absent. The script then prints the next step, and which next step
 depends on whether `docs/00-Product.md` already exists.
 
 **Rule of product:** the script never touches a project-owned file. Not to

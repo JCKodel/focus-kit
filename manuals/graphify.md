@@ -119,11 +119,44 @@ The full extraction uses the model in the session and costs tokens; the
 skill measures the corpus and asks before running it on a large tree.
 `graphify-out/cost.json` keeps the local ledger, on this machine only.
 
+## What the graph leaves out
+
+`.graphifyignore`, at the repository root, holds the patterns graphify skips.
+It is gitignore syntax, it is read on top of `.gitignore`, and it only ever
+excludes more.
+
+`focus-kit install` appends a block to it once, under the marker `# ---
+focus-kit ---`, naming the six files the kit itself put in the repository:
+the three skills and the three manuals. They are the kit's documentation,
+not the project's code, and without the block they answer questions asked
+about the project. In the first two repositories this ran on they were 214
+of 498 nodes and 139 of 502, so more than a quarter of the graph was the
+kit describing itself, and a query about one function of the install script
+came back with chapter headings from the FOCUS manual.
+
+The block names files, not the two folders. A `.claude/skills/deploy/` or a
+`docs/manuals/runbook.md` of the project's own stays in the graph.
+
+**The rest of the file is yours.** Add what the graph should not answer
+about: generated clients, vendored code, fixtures, a migrations folder
+nobody asks questions about. A second `focus-kit install` or `update`
+appends nothing, because the marker is already there, and it never touches
+what you added.
+
+Adding a pattern takes effect on the next rebuild. `graphify update .` is
+enough today: it prunes the nodes of a file that a live ignore rule now
+matches, and it does so without `--force` even when the graph ends up
+smaller. The block above removed 139 nodes from 16 files in one `update`,
+on graphify 0.9.63. An older graphify that keeps them needs a full rebuild.
+
 ## Rules
 
 * `.mcp.json` names the server by executable (`graphify-mcp`), never by an
   absolute path. A path to one machine's Python breaks on the next machine
   and the server silently fails to connect.
+* The corpus is what `.gitignore` and `.graphifyignore` leave. A question
+  the graph answers badly is often a corpus question first, not a query
+  question (§What the graph leaves out).
 * The graph is a map, not a source of truth. When the graph and the code
   disagree, the code wins and the graph is rebuilt.
 * Do not hand-edit `graphify-out/`.

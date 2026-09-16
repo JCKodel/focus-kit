@@ -89,7 +89,7 @@ about brownfield repositories is untested.
                               state of a target /initialize has not run in
 [x] first-target-initialize   run /initialize there and record every question it should have
                               asked, and every one it asked that the code could have answered
-[ ] graph-cost-is-confirmed   the graph procedure's first branch spends the session's tokens with no
+[>] graph-cost-is-confirmed   the graph procedure's first branch spends the session's tokens with no
                               number shown and no question asked; docs/manuals/graphify.md says the cost
                               is declined in /graphify, which measured 44,185 words, applied a threshold
                               of its own and extracted 433,524 input tokens without asking
@@ -98,6 +98,21 @@ about brownfield repositories is untested.
                               Built from commit line, so the third branch of the same procedure can never
                               be evaluated in exactly the repositories that took the first, and every
                               /propose and /apply there decides alone whether the graph is stale
+[x] graph-ignores-the-kit     install leaves a .graphifyignore in the target, appended once, that keeps
+                              the six kit-owned files out of the graph; measured before, 214 of
+                              the first target's 498 nodes and 139 of this repository's 487 came from the
+                              kit's own files, and a query for a rule came back as manual headings
+[ ] mcp-leaves-the-baseline   the graphify MCP server is declared in .mcp.json, spawned every session and
+                              named by nothing the kit ships: the three skills call the CLI, and 38
+                              sessions here plus 347 in two targets made zero MCP calls; the server, its
+                              baseline, the enabledMcpjsonServers entry, the mcp extra and the doctor and
+                              check 2 lines that read them back leave, twelve places
+[ ] graph-answers-structure   the skills ask the graph "what this delivery touches" and expect slices,
+                              entities and rules; measured, that question comes back as every function of
+                              the one code file plus headings, while `graphify path` answers a call in one
+                              hop, and 18 of 21 consulting sessions grepped first anyway; /initialize brown
+                              reads god nodes and communities once, /apply asks structure, /propose stops
+                              promising rules
 [ ] initialize-asks-for-the-proof-tool
                               the brownfield path fills docs/05 §6 with viewports, themes and references
                               read off the repository and leaves out the tool, the one part of that slot

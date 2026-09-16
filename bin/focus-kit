@@ -227,6 +227,22 @@ with open(path, "w", encoding="utf-8", newline="\n") as f:
 PY
 }
 
+# Appended once (docs/03-Domain.md), for both files that are. The marker is
+# the fragment's own first line rather than a literal here, so the test and
+# the text it tests cannot drift: a fragment that changes its marker changes
+# both at once. Returns 0 when it appended and 1 when the marker was already
+# there, and the ok line stays with the caller, because the two callers name
+# two different files. The blank line goes in only when the target file has
+# something in it already.
+append_once() { # file fragment
+  local file="$1" fragment="$2" marker
+  marker="$(head -n 1 "$fragment")"
+  if grep -qF "$marker" "$file" 2>/dev/null; then
+    return 1
+  fi
+  { [ -s "$file" ] && printf '\n'; cat "$fragment"; } >> "$file"
+}
+
 # The one place a carriage return is forgiven. A target cloned on Windows
 # with core.autocrlf=true has every kit-owned file, the stamp and the
 # manifest checked out as CRLF, and it receives no .gitattributes, so the
@@ -317,11 +333,13 @@ install_repo() {
   merge_json "$target/.claude/settings.json" "$KIT_DIR/config/settings.baseline.json"
   ok ".claude/settings.json (baseline permissions merged)"
 
-  # .gitignore fragment, appended once
-  local marker='# --- focus-kit ---'
-  if ! grep -qF "$marker" "$target/.gitignore" 2>/dev/null; then
-    { [ -s "$target/.gitignore" ] && printf '\n'; cat "$KIT_DIR/config/gitignore.fragment"; } >> "$target/.gitignore"
+  # the two fragments, appended once each: what git does not carry, and what
+  # the graph does not answer questions about
+  if append_once "$target/.gitignore" "$KIT_DIR/config/gitignore.fragment"; then
     ok ".gitignore (kit fragment appended)"
+  fi
+  if append_once "$target/.graphifyignore" "$KIT_DIR/config/graphifyignore.fragment"; then
+    ok ".graphifyignore (kit fragment appended)"
   fi
 
   say
