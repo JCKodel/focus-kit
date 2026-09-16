@@ -189,6 +189,7 @@ prints the detail of what broke, one `die` naming it, and exits 1.
 | Dogfood copy (`.claude/skills/`, `docs/manuals/`) | in sync with the kit source, always, when the delivery touched a skill or a manual, or bumped `VERSION` | `focus-kit install .` |
 | Machine (`~/.local/bin/focus-kit`) | untouched. It is a symlink to the kit source and follows it automatically. | none; verify with `focus-kit version` |
 | Target repositories (anyone else's) | untouched. They move only when their owner runs `focus-kit update`. | `focus-kit update <path>`, run by that person |
+| First target (`~/Downloads/vaulted`) | installed at the delivery's version while milestone 2 is open; nothing committed there, ever, because it is a clone of someone else's repository. This row leaves with milestone 2 (`docs/03-Domain.md`, First target). | `focus-kit update ~/Downloads/vaulted` |
 
 **A delivery never ends silent about environments.** The last thing `/apply`
 says is which environment is at which version and the command that updates

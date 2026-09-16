@@ -73,7 +73,20 @@ back here as a queue line. Until that happens, every claim the kit makes
 about brownfield repositories is untested.
 
 ```
-[ ] first-target-install      install into a real repository and record what doctor missed
+[x] first-target-install      install into a real repository and record what doctor missed
+[ ] doctor-sees-a-stale-skill install and doctor print the global /graphify skill green whatever version
+                              it is; graphify says on every invocation that the skill is from 0.9.10 and
+                              the package from 0.9.63, and ensure_graphify drops that stderr while doctor
+                              asks only whether SKILL.md exists
+[ ] doctor-checks-settings-json
+                              doctor has no line for .claude/settings.json, the file install writes and
+                              the one that carries enabledMcpjsonServers, without which the server in the
+                              .mcp.json it does report is never enabled; check 2 reads both merged files
+                              in the scratch and a real target's doctor asks neither question
+[ ] every-warn-names-its-fix  the eight warns for docs/00 to 06 and CLAUDE.md end at "missing", while
+                              every other warn doctor prints names its command in parentheses; after a
+                              green install the person infers alone that eight of the ten are the normal
+                              state of a target /initialize has not run in
 [ ] first-target-initialize   run /initialize there and record every question it should have
                               asked, and every one it asked that the code could have answered
 [ ] first-target-delivery     one delivery through /propose and /apply, start to finish

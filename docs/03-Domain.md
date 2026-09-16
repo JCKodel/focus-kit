@@ -68,6 +68,7 @@ appears in a delivery.
 | Appended once | (the marker test) | `.gitignore`: the fragment goes in the first time and never again, because the marker is already there. |
 | Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:229`). |
 | Dogfood copy | `.claude/skills/`, `docs/manuals/` | This repository is also a target of itself. Those two paths hold copies of `skills/` and `manuals/`. They are versioned, and keeping them equal to their sources is a rule, not a habit (`docs/05-Process.md` §5). |
+| First target | `~/Downloads/vaulted` | The one target repository that is not this one and that milestone 2 runs the whole cycle on: a clone of someone else's public repository, installed by `first-target-install`, initialized by `first-target-initialize`, taken through one delivery by `first-target-delivery`. Every friction it produces comes back to the queue as a line. Nothing is staged, committed or pushed there, ever: it is a clone, not a repository this project owns. It is a row of `docs/05-Process.md` §5 while milestone 2 is open and leaves with it. |
 
 ### The delivery process
 
