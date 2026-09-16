@@ -193,8 +193,10 @@ It is someone opening an environment believing it is current.
 
 graphify builds a knowledge graph of the repository and a post-commit hook
 rebuilds it after every commit. `/propose` and `/apply` ask the graph before
-grepping. The graph is a map, not a source of truth: when it disagrees with
-the code, the code wins and the graph gets rebuilt.
+grepping. An extraction is billed only after a person has confirmed it: the
+commands quote what graphify found and ask before anything reaches a model.
+The graph is a map, not a source of truth: when it disagrees with the code,
+the code wins and the graph gets rebuilt.
 
 ## Non-goals
 

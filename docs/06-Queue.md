@@ -89,7 +89,7 @@ about brownfield repositories is untested.
                               state of a target /initialize has not run in
 [x] first-target-initialize   run /initialize there and record every question it should have
                               asked, and every one it asked that the code could have answered
-[>] graph-cost-is-confirmed   the graph procedure's first branch spends the session's tokens with no
+[x] graph-cost-is-confirmed   the graph procedure's first branch spends the session's tokens with no
                               number shown and no question asked; docs/manuals/graphify.md says the cost
                               is declined in /graphify, which measured 44,185 words, applied a threshold
                               of its own and extracted 433,524 input tokens without asking

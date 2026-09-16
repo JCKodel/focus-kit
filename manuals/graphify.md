@@ -32,7 +32,7 @@ seen.
 ## Everyday use
 
 ```
-/graphify                      # build or rebuild (asks before an expensive extraction)
+/graphify                      # build or rebuild (asks nothing below graphify's own threshold)
 /graphify --update             # re-extract only changed files
 graphify query "<question>"    # broad context on a question
 graphify query "<q>" --dfs     # trace one path
@@ -48,37 +48,62 @@ enough: the global skill treats it as a graph query first when
 ## Ensuring the graph
 
 `graphify-out/` is not versioned, so a clone starts without a graph and
-without a hook. `/propose` and `/apply` run the procedure below before they
-read the graph, and it is written here and nowhere else. Four branches,
+without a hook. `/propose`, `/apply` and `/initialize` run the procedure
+below before they read the graph, and it is written here and nowhere else.
+Four branches,
 checked in this order, each one announced out loud. When all four are
 already satisfied, the command says nothing.
 
 | Condition | Action | Cost |
 |---|---|---|
-| `graphify-out/graph.json` absent, and `graphify .` exits with `error: no LLM API key found` | `/graphify .` in the session | the session's tokens |
-| `graphify-out/graph.json` absent, and `graphify .` succeeds | nothing further; the CLI already built it | none |
+| `graphify-out/graph.json` absent, and `env -u GEMINI_API_KEY -u GOOGLE_API_KEY -u MOONSHOT_API_KEY -u ANTHROPIC_API_KEY -u OPENAI_API_KEY -u DEEPSEEK_API_KEY graphify .` exits with `error: no LLM API key found` | the Graph confirmation, then what its answer names | the session's tokens or the exported key's, only after "Build now" |
+| `graphify-out/graph.json` absent, and the same attempt succeeds | nothing further; the CLI already built it | none |
 | `Built from commit` in `graphify-out/GRAPH_REPORT.md` differs from `git rev-parse HEAD` | `graphify update .` | none |
 | `graphify hook status` says the post-commit hook is absent | `graphify hook install` | none |
 
-The first two branches are one attempt, not an inspection: run `graphify .`
-and let the exit decide. A corpus that has docs, papers or images makes it
-refuse in graphify's own words, `error: no LLM API key found (N
-doc/paper/image file(s) need semantic extraction)`; a code-only corpus makes
-it succeed for free. Never scan extensions to guess which.
+The first two branches are one attempt, not an inspection: run the command
+the first row names and let the exit decide. A corpus that has docs, papers
+or images makes it refuse in graphify's own words, `error: no LLM API key
+found (N doc/paper/image file(s) need semantic extraction)`, and print the
+count line `found N code, N docs, N papers, N images`; a code-only corpus
+makes it succeed for free. Never scan extensions to guess which.
 
-That attempt has one trap. `graphify .` looks for a backend key in the
-environment, and when one is exported it does not refuse: it extracts every
-doc against that provider and bills it. On a corpus whose size you have not
-measured, look at the environment first.
+The six variables are the ones the refusal line names today (verified on
+graphify 0.9.63), unset for the attempt alone, so that a corpus with docs
+always refuses and prints its count line; a key the line names later joins
+the row.
 
-The first branch's action is not a judgement call. A command that reaches it
-runs `/graphify .`; it does not weigh the extraction against the size of the
-delivery and carry on without a graph, because the next session would weigh
-the same trade again and the clone would never get one. The place where the
-cost is declined is `/graphify` itself, which measures the corpus and asks a
-person before an expensive extraction. What the procedure forbids is
-skipping the branch and reading, or grepping in place of, a graph nobody
-confirmed.
+The first branch's action is not a judgement call, and the judgement is not
+the agent's to make. The agent has no discretion here: it asks the Graph
+confirmation, as written below, and does what the answer names. The person
+has all of it, "Not now" included, which is an answer the command records
+out loud and not a branch it skipped. What the procedure forbids is reaching
+this branch and reading, or grepping in place of, a graph nobody was asked
+about.
+
+The question is written here once and the commands ask it as written. One
+`AskUserQuestion`, the question `graphify refused: <the found line>. Build
+the graph?`, where `<the found line>` is the count line above without its
+`[graphify extract]` prefix, and three options, in this order:
+
+* **Build now.** `/graphify .` in this session, billed as its tokens. When
+  one of the six keys is exported, `graphify .` instead, billed to that
+  key's account. Two runs from the Cost ledger, for scale: 38 files cost
+  187,743 input tokens, 62 files cost 433,524.
+* **Code only.** `graphify . --code-only`, free, no model. Docs, papers and
+  images stay out of the graph until you run `/graphify --update`.
+* **Not now.** Nothing is built. This command reads files directly and says
+  so; the next command that needs the graph asks again.
+
+Then the command says what the answer cost, one line:
+
+* After **Build now**: `graph built: <N> input tokens
+  (graphify-out/cost.json)`, N read from the last entry of `runs` in that
+  file, or `graph built; graphify-out/cost.json absent` when the run wrote
+  none.
+* After **Code only**: `graph built from code only; docs enter with
+  /graphify --update`.
+* After **Not now**: `no graph this session; reading files directly`.
 
 The third branch covers code only. `graphify update .` re-extracts every
 code file and rewrites `Built from commit`, so after a pull that changed
@@ -115,8 +140,10 @@ writers on `graph.json`.
 * **By you**, with `/graphify --update` after a large refactor, or
   `/graphify` from scratch when the report no longer describes the code.
 
-The full extraction uses the model in the session and costs tokens; the
-skill measures the corpus and asks before running it on a large tree.
+The full extraction uses the model in the session and costs tokens.
+`/graphify` by hand asks nothing below graphify's own threshold of 2,000,000
+words or 500 files, and above it asks which subfolder to run on, never
+whether to run at all; the kit's commands ask, through §Ensuring the graph.
 `graphify-out/cost.json` keeps the local ledger, on this machine only.
 
 ## What the graph leaves out

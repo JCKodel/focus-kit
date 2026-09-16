@@ -111,24 +111,17 @@ in this order, and keep notes as you go:
 7. `git log --oneline -30` and `git shortlog -sn | head`: who works here,
    what the commit messages look like, whether there are branches and PRs.
 
-Then build the knowledge graph:
+Then ensure the knowledge graph, following `docs/manuals/graphify.md`
+§Ensuring the graph to the letter. That is where the person is asked what an
+extraction may cost, and where the post-commit hook gets installed.
 
-```
-/graphify .
-```
-
-The graphify skill measures the corpus and asks before an expensive
-extraction; let it. When it finishes, read `graphify-out/GRAPH_REPORT.md`:
-the god nodes and communities are your map of what the product is made of.
-Use `graphify query "<question>"` for anything the report leaves open, for
+When a graph came out of it, read `graphify-out/GRAPH_REPORT.md`: the god
+nodes and communities are your map of what the product is made of. Use
+`graphify query "<question>"` for anything the report leaves open, for
 example "what are the main entities and how do they relate" or "where do
-business rules live".
-
-Install the post-commit hook so the graph never goes stale:
-
-```
-graphify hook install
-```
+business rules live". When the answer was "Not now", there is no report:
+keep reading the repository directly, as the seven points above already do,
+and say so.
 
 ## Step 1 (greenfield): ask in rounds
 
@@ -160,9 +153,11 @@ option whenever you have one. Suggested rounds:
    line, that together make something a person can use end to end. This
    becomes `docs/06-Queue.md`.
 
-After the rounds, still build the graph and install the hook: the docs
-you are about to write are content too, and the graph must exist for the
-MCP server in `.mcp.json` to start.
+After the rounds, still ensure the graph, the same way: follow
+`docs/manuals/graphify.md` §Ensuring the graph, which asks the person before
+anything is billed and installs the post-commit hook. The docs you are about
+to write are content too, and the graph is what the MCP server in
+`.mcp.json` reads from the next session on.
 
 ## Step 2: write the documents
 
