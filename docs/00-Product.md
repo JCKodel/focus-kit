@@ -88,15 +88,17 @@ personal data.
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:360`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:385`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
-On the machine: uv, then graphify as a uv tool, then the global `/graphify`
-skill for Claude Code. Each step is skipped when already present, and the
-global skill is installed only when absent because installing it also
-appends a section to the user's `~/.claude/CLAUDE.md`, and repeating that on
-every run would keep touching a file the kit does not own
-(`bin/focus-kit:76`).
+On the machine: uv, then graphify with its `mcp` extra as a uv tool, then the
+global `/graphify` skill for Claude Code. uv is skipped when already present;
+graphify is reinstalled on every run and uv decides whether that changes
+anything, which is how a machine that installed graphify before the extra
+existed gains it. The global skill is installed only when absent, because
+installing it also appends a section to the user's `~/.claude/CLAUDE.md`, and
+repeating that on every run would keep touching a file the kit does not own
+(`bin/focus-kit:96`).
 
 In the repository: the three skills and the three manuals are copied over
 whatever is there; `.mcp.json` and `.claude/settings.json` are merged into,

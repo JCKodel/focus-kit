@@ -9,8 +9,9 @@
 #   focus-kit selftest         run the six checks that say the kit is deliverable
 #
 # What install does, in order:
-#   1. dependencies on this machine: uv, then graphify (uv tool), then the
-#      global graphify skill for Claude Code (graphify install --platform claude)
+#   1. dependencies on this machine: uv, then graphify with its mcp extra
+#      (uv tool), then the global graphify skill for Claude Code
+#      (graphify install --platform claude)
 #   2. in the target repository:
 #      .claude/skills/{initialize,propose,apply}   copied, overwriting (kit-owned)
 #      docs/manuals/{process,focus,graphify}.md    copied, overwriting (kit-owned)
@@ -62,16 +63,32 @@ ensure_uv() {
   ok "uv installed"
 }
 
+# graphify is installed with its mcp extra, always. Without the extra
+# graphify-mcp starts and dies with "ImportError: mcp not installed", so the
+# server declared in .mcp.json never connects. The install runs
+# unconditionally rather than behind a "command -v graphify": that is the only
+# way a machine whose graphify predates the extra ever gains it. uv makes the
+# step idempotent, because "uv tool install" on a tool already installed with
+# the same requirement prints "is already installed" and changes nothing.
 ensure_graphify() {
-  if command -v graphify >/dev/null 2>&1; then
-    ok "graphify $(graphify --version 2>/dev/null || echo '(version unknown)') (to upgrade: uv tool upgrade graphifyy)"
+  local out
+  if out="$(uv tool install 'graphifyy[mcp]' 2>&1)"; then
+    case "$out" in
+      *"is already installed"*) ;;
+      *) say "  installing graphify with the mcp extra (uv tool install 'graphifyy[mcp]')"
+         printf '%s\n' "$out" ;;
+    esac
   else
-    say "  installing graphify (uv tool install graphifyy)"
-    uv tool install graphifyy
-    export PATH="$HOME/.local/bin:$PATH"
-    command -v graphify >/dev/null 2>&1 || die "graphify installed but not on PATH; open a new shell and run again"
-    ok "graphify $(graphify --version)"
+    printf '%s\n' "$out"
+    die "graphify could not be installed (uv tool install 'graphifyy[mcp]')"
   fi
+  export PATH="$HOME/.local/bin:$PATH"
+  command -v graphify >/dev/null 2>&1 || die "graphify installed but not on PATH; open a new shell and run again"
+  # graphify --version already prints the word "graphify", so the line uses it
+  # as it comes and does not repeat the name. Its stderr is dropped: graphify
+  # writes its own notices there, and a line the kit did not shape has no
+  # business in the middle of the dependency block (docs/04-Conventions.md §1).
+  ok "$(graphify --version 2>/dev/null) with the mcp extra (to upgrade: uv tool upgrade graphifyy)"
   command -v graphify-mcp >/dev/null 2>&1 || warn "graphify-mcp not on PATH; the MCP server in .mcp.json needs it"
   # The global /graphify skill for Claude Code. Only when absent: the
   # installer also appends a "# graphify" section to ~/.claude/CLAUDE.md,
@@ -186,7 +203,16 @@ doctor() {
   say "focus-kit $KIT_VERSION doctor: $target"
   command -v uv >/dev/null 2>&1        && ok "uv"          || warn "uv missing"
   command -v graphify >/dev/null 2>&1  && ok "graphify"    || warn "graphify missing"
-  command -v graphify-mcp >/dev/null 2>&1 && ok "graphify-mcp" || warn "graphify-mcp missing"
+  # graphify-mcp is an entry point of graphifyy, so it is on PATH whether or
+  # not the mcp extra is there. What decides is the extra, and uv tool list is
+  # the only place that records it.
+  if ! command -v graphify >/dev/null 2>&1; then
+    warn "graphify-mcp missing"
+  elif uv tool list --show-extras 2>/dev/null | grep -q '^graphifyy .*\[extras: mcp\]'; then
+    ok "graphify-mcp (mcp extra)"
+  else
+    warn "graphify-mcp installed without the mcp extra (run focus-kit update)"
+  fi
   [ -f "$HOME/.claude/skills/graphify/SKILL.md" ] && ok "global /graphify skill" || warn "global /graphify skill missing"
   local s
   for s in initialize propose apply; do

@@ -19,7 +19,7 @@ script moves.
 
 ```
 Language    bash 3.2 (the macOS default) · one script, bin/focus-kit
-JSON        python3, invoked inline via a heredoc (bin/focus-kit:96)
+JSON        python3, invoked inline via a heredoc (bin/focus-kit:113)
 Content     markdown: 3 skills, 3 manuals, 10 templates, 2 config fragments
 Deps (host) uv · graphify (uv tool) · git · curl
 Deps (kit)  none. Nothing is imported, nothing is linked, nothing is vendored
@@ -77,28 +77,28 @@ Three verbs and four helpers, all in `bin/focus-kit`:
 
 | Function | Line | What it does |
 |---|---|---|
-| `install_repo` | 112 | The whole install into a target: skills, manuals, `work/done/`, the two JSON merges, the gitignore fragment, the closing message. |
-| `doctor` | 182 | Reports what is present on the machine and in the target, and whether the installed version matches `VERSION`. Reports only; it changes nothing. |
-| `selftest` | 340 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
-| `copy_tree` | 89 | Overwrite a kit-owned tree: `rm -rf` the destination, then `cp -R`. |
-| `merge_json` | 95 | Add to a JSON file without removing from it, through a python3 heredoc that takes an expression mutating `d`. |
-| `python_bin` | 47 | Find a python3, falling back to `uv run`, and die with a clear message if there is none. |
-| `ensure_uv`, `ensure_graphify` | 55, 64 | Make the machine ready. Each is a no-op when the dependency is already there. |
+| `install_repo` | 130 | The whole install into a target: skills, manuals, `work/done/`, the two JSON merges, the gitignore fragment, the closing message. |
+| `doctor` | 200 | Reports what is present on the machine and in the target, and whether the installed version matches `VERSION`. Reports only; it changes nothing. |
+| `selftest` | 367 | The verify command: creates the scratch repository, calls the six checks in order, removes the scratch through a `trap ... EXIT`. |
+| `copy_tree` | 107 | Overwrite a kit-owned tree: `rm -rf` the destination, then `cp -R`. |
+| `merge_json` | 113 | Add to a JSON file without removing from it, through a python3 heredoc that takes an expression mutating `d`. |
+| `python_bin` | 49 | Find a python3, falling back to `uv run`, and die with a clear message if there is none. |
+| `ensure_uv`, `ensure_graphify` | 57, 73 | Make the machine ready. `ensure_uv` is a no-op when uv is there. `ensure_graphify` always runs `uv tool install 'graphifyy[mcp]'`: the `mcp` extra is what makes `graphify-mcp` start, and a machine that installed graphify without it gains it here. uv makes the step idempotent, not a branch in the script. |
 
 Plus one function per check, between `doctor` and the dispatch, each ending
-in an `ok` line or a `die`: `check_parses` (223), `check_install` (232),
-`check_idempotent` (259), `check_frontmatter` (276), `check_no_em_dash`
-(315), `check_dogfood` (327). They are the six checks of
+in an `ok` line or a `die`: `check_parses` (250), `check_install` (259),
+`check_idempotent` (286), `check_frontmatter` (303), `check_no_em_dash`
+(342), `check_dogfood` (354). They are the six checks of
 `docs/05-Process.md` §4 in that order, and `selftest` is nothing but the
 list of calls.
 
 The dispatch is a `case` over `$1` at the bottom of the file
-(`bin/focus-kit:359`), and `--help` prints the script's own header comment
+(`bin/focus-kit:385`), and `--help` prints the script's own header comment
 through `awk`, every comment line after the shebang up to the first line
 that is not one, so the usage text and the documentation are the same bytes
 however long the header grows.
 
-The four message shapes are `say`, `ok`, `warn`, `die` (`bin/focus-kit:43`).
+The four message shapes are `say`, `ok`, `warn`, `die` (`bin/focus-kit:44`).
 `warn` does not stop the run; `die` exits non-zero. A new message picks one
 of the four rather than calling `echo` directly.
 
@@ -154,13 +154,13 @@ except the two dependency installers, no database, no state between runs.
 
 | Situation | How |
 |---|---|
-| Read the kit's own files | Relative to `KIT_DIR`, resolved from the script's real path through symlinks (`bin/focus-kit:34`). Never relative to the caller's working directory. |
+| Read the kit's own files | Relative to `KIT_DIR`, resolved from the script's real path through symlinks (`bin/focus-kit:35`). Never relative to the caller's working directory. |
 | Write a kit-owned file into a target | `copy_tree`: destination removed, then copied. Overwriting is the contract. |
 | Write a merged file into a target | `merge_json`: read, mutate, write. Never removes a key it did not add. |
 | Write an appended file | `.gitignore` only, guarded by the marker `# --- focus-kit ---`. |
-| Touch a project-owned file | Never. The single read is `[ -f "$target/docs/00-Product.md" ]`, to choose which closing message to print (`bin/focus-kit:175`). |
-| Install a machine dependency | `ensure_uv` and `ensure_graphify`, both no-ops when the dependency is present. `ensure_uv` pipes a remote script to `sh`, which is the installer uv publishes. |
-| Touch the user's home | Only `graphify install --platform claude`, and only when `~/.claude/skills/graphify/SKILL.md` is absent, because it also appends to `~/.claude/CLAUDE.md` (`bin/focus-kit:76`). |
+| Touch a project-owned file | Never. The single read is `[ -f "$target/docs/00-Product.md" ]`, to choose which closing message to print (`bin/focus-kit:192`). |
+| Install a machine dependency | `ensure_uv`, a no-op when uv is present and piping a remote script to `sh` when it is not, which is the installer uv publishes. `ensure_graphify` calls `uv tool install 'graphifyy[mcp]'` on every run and lets uv decide: already installed with the extra is a no-op, anything else is a reinstall that adds it. |
+| Touch the user's home | Only `graphify install --platform claude`, and only when `~/.claude/skills/graphify/SKILL.md` is absent, because it also appends to `~/.claude/CLAUDE.md` (`bin/focus-kit:96`). |
 
 The privacy boundary is trivial and worth stating anyway: the kit sends
 nothing anywhere. `curl` appears once, to fetch the uv installer. Nothing is
@@ -171,7 +171,7 @@ uploaded, logged or reported.
 bash has no Result type, and the kit does not pretend otherwise. What it has
 instead is a discipline with the same shape:
 
-* `set -euo pipefail` at the top (`bin/focus-kit:30`). An unhandled failure
+* `set -euo pipefail` at the top (`bin/focus-kit:31`). An unhandled failure
   stops the script rather than continuing with a half-installed target.
 * `die` is the only exit path for a failure the user has to fix: a missing
   python3, a missing directory, an unknown command. It prints in red to

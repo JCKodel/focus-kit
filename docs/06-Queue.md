@@ -29,8 +29,21 @@ documents were written.
                               repository's own documents are and how to ask for other terms
 [x] help-text-follows-header  focus-kit --help prints the whole header, however long it grows;
                               today sed -n '2,27p' is a literal the next header line makes wrong
-[ ] gitignore-no-duplicates   the fragment skips lines the target already ignores;
-                              today .gitignore:2 and :6 are the same line
+[x] graphify-mcp-starts       install adds the mcp extra of graphifyy and doctor sees when it is
+                              missing; today graphify-mcp dies with ImportError on every machine
+[>] selftest-reads-the-merged-json
+                              check 2 reads the two merged files and merge_json dies when no
+                              python runs; today a die inside $(python_bin) leaves selftest green
+                              over an .mcp.json that reads {}
+[>] version-bump-ends-with-install
+                              any delivery that bumps VERSION ends with focus-kit install ., and
+                              check 6 compares the installed version with VERSION; today the
+                              dogfood copy is one version behind and only doctor notices
+[>] windows-git-bash          the kit runs from Git for Windows: LF through .gitattributes, a
+                              python that is probed rather than found, UTF-8 and LF from the
+                              merge, --no-project on the uv fallback, and the docs name WSL and
+                              Git Bash; proven on the Windows host over SSH. If that run shows
+                              MSYS rewriting the expression argv, it waits on merge-json-by-argument
 [ ] merge-json-by-argument    the settings baseline reaches python3 as data, not interpolated
                               into the source it execs; a quote in the JSON breaks the install
 [ ] doctor-reports-drift      doctor says when a kit-owned file in a target was edited locally,
@@ -119,6 +132,8 @@ own documents.
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
                               the only host, and the README promise made in readme-makes-the-case
                               becomes true
+[ ] update-alert              alert users when new versions are available on github so the user can
+                              update (and run `focus-kit update`)
 ```
 
 `readme-makes-the-case` depends on nothing here and can be pulled ahead of

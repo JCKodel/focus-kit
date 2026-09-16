@@ -136,6 +136,18 @@ skill measures the corpus and asks before running it on a large tree.
   it, and `/propose` and `/apply` run it on their own. The server connects
   from the next session on. If it still fails once the graph is there,
   `graphify-mcp` is not on PATH (`focus-kit doctor`).
+* **`graphify-mcp` starts and dies with `ImportError: mcp not installed`.**
+  graphify is installed without its `mcp` extra, which is the case on every
+  machine whose graphify predates that version of the kit. `focus-kit update`
+  fixes it: the dependency phase reinstalls `graphifyy[mcp]`, and
+  `focus-kit doctor` says so before you try.
+* **`graphify-mcp` starts and dies with `ImportError: cannot import name
+  'AnyUrl' from 'mcp.types'`.** The extra is there and graphify is too old
+  for it. graphifyy asks for `mcp` with no upper bound, so adding the extra
+  to a graphify installed long ago pairs old code with the current MCP SDK.
+  `uv tool upgrade graphifyy` fixes it, which is what the `ok` line of the
+  dependency phase already suggests. The kit never runs it: an upgrade is
+  the person's call, not a side effect of installing the kit.
 * **Hook missing after a clone.** Also normal: git does not transfer
   `.git/hooks/`, and there is no hook that fires at clone time. §Ensuring
   the graph installs it, or run `graphify hook install` by hand.

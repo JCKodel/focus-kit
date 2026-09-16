@@ -1,5 +1,4 @@
 .DS_Store
-.claude/settings.local.json
 
 # --- focus-kit ---
 # Claude Code: what belongs to the session, not to the project
