@@ -50,8 +50,8 @@ own text sets the example.
 - The agent stages (`git add`) and suggests the commit message. It never commits.
 
 ## How to work
-- Verify: `bin/focus-kit selftest` before declaring anything done. It does not
-  exist yet; until it lands, run the six checks in docs/05-Process.md §4 by hand.
+- Verify: `bin/focus-kit selftest` before declaring anything done. Six checks,
+  a few seconds, no arguments; what each one is: docs/05-Process.md §4.
 - Bump `VERSION` on any change a target repo would want: a skill, a manual, a
   template, or the CLI's behaviour. Not for this repository's own docs.
 - Any delivery that touches `skills/` or `manuals/` ends by running

@@ -10,16 +10,18 @@ built · `[x]` done, in `work/done/`. The process is `docs/05-Process.md`.
 
 When this milestone closes, a change to focus-kit can be made without fear,
 because one command says whether a target repository would still receive a
-working kit. Today that answer comes from installing into a scratch
-directory by hand and looking, which is why the three defects below went
-unnoticed until the documents were written.
+working kit. That command now exists; the defects below are ones it reports
+rather than fixes. Before it, the answer came from installing into a scratch
+directory by hand and looking, which is why they went unnoticed until the
+documents were written.
 
 ```
-[ ] kit-selftest              one command that parses, installs into a scratch repository, runs doctor,
-                              repeats to prove idempotency, parses the three SKILL.md frontmatters,
+[x] kit-selftest              one command that parses, installs into a scratch repository, runs doctor,
+                              repeats to prove idempotency, checks the three SKILL.md frontmatters,
                               greps for the em dash and diffs the dogfood copies
+[ ] open-source license       add an adequate open-source license to the project
 [ ] help-text-follows-header  focus-kit --help prints the whole header, however long it grows;
-                              today sed -n '2,25p' cuts the last line mid-sentence
+                              today sed -n '2,27p' is a literal the next header line makes wrong
 [ ] gitignore-no-duplicates   the fragment skips lines the target already ignores;
                               today .gitignore:2 and :6 are the same line
 [ ] merge-json-by-argument    the settings baseline reaches python3 as data, not interpolated
@@ -74,9 +76,10 @@ These are the decisions from `docs/00-Product.md` that affect what order
 things happen in. Each one is the stakeholder's call, taken in conversation,
 never by an agent's assumption.
 
-1. **Does the kit get a test suite beyond `doctor`?** `kit-selftest` is
-   scoped as one script. If the answer is a real suite, that line grows into
-   several and milestone 1 changes shape. Decides: the stakeholder.
+1. **Does the kit get a test suite beyond `selftest`?** `kit-selftest`
+   shipped as six checks inside `bin/focus-kit`. If the answer is a real
+   suite, with a framework and cases per function, that is new lines in this
+   queue, not a change to the ones already here. Decides: the stakeholder.
 2. **Do the dogfood copies stay versioned?** If they stop being versioned,
    check 6 of the verify command and the second row of the environments
    table both disappear. Decides: the stakeholder.

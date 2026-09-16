@@ -42,8 +42,8 @@ appears in a delivery.
 | Term | Code | Short meaning |
 |---|---|---|
 | Kit | `focus-kit` | This repository, and the thing it installs. Both senses are the same artifact: the repository is the kit's source, the installed files are the kit in a target. |
-| CLI | `bin/focus-kit` | The single executable. Four verbs: `install`, `update`, `doctor`, `version`. |
-| Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:39`). |
+| CLI | `bin/focus-kit` | The single executable. Five verbs: `install`, `update`, `doctor`, `version`, `selftest`. |
+| Kit version | `VERSION` | One line, semantic version. Read at startup into `KIT_VERSION` (`bin/focus-kit:40`). |
 | Installed version | `.claude/skills/.focus-kit-version` | The kit version stamped into a target at install time. `doctor` compares it with `VERSION` to say whether the target is stale. |
 | Command | `skills/<name>/SKILL.md` | One of the three things a person types in Claude Code: `/initialize`, `/propose`, `/apply`. Called a skill by Claude Code and a command by this project; the two words mean the same thing here. |
 | Manual | `manuals/<name>.md` | A kit-owned how-to document: `process.md`, `focus.md`, `graphify.md`. Copied to `docs/manuals/` of every target. |
@@ -57,10 +57,10 @@ appears in a delivery.
 | Term | Code | Short meaning |
 |---|---|---|
 | Kit-owned | `copy_tree()` | A file the CLI overwrites on every `install` or `update`: the three skills, the three manuals. Editing one inside a target is a change that the next update erases. It is edited in this repository. |
-| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:173`). |
+| Project-owned | (never written by the CLI) | A file only `/initialize` and the people working in the target may touch: `docs/00` to `06`, `CLAUDE.md`, `docs/adr/`, `work/`. The CLI never reads or writes them, with one exception: it checks whether `docs/00-Product.md` exists, to decide which next step to print (`bin/focus-kit:174`). |
 | Merged | `merge_json()` | A file the CLI adds to without removing: `.mcp.json`, `.claude/settings.json`. The merge goes through python3 and is idempotent. |
 | Appended once | (the marker test) | `.gitignore`: the fragment goes in the first time and never again, because the marker is already there. |
-| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:114`). |
+| Target repository | `target` | The repository the kit is installed into. Inside the CLI it is always an absolute path (`bin/focus-kit:115`). |
 | Dogfood copy | `.claude/skills/`, `docs/manuals/` | This repository is also a target of itself. Those two paths hold copies of `skills/` and `manuals/`. They are versioned, and keeping them equal to their sources is a rule, not a habit (`docs/05-Process.md` §5). |
 
 ### The delivery process
@@ -76,7 +76,7 @@ appears in a delivery.
 | Propose | `/propose <slug>` | The conversation that writes the delivery page. Writes no code. |
 | Apply | `/apply <slug>` | The clean session that builds the page end to end, and never commits. |
 | Initialize | `/initialize` | The command that writes a target's `docs/` and `CLAUDE.md`. Run once, then again as a review. |
-| Verify command | (see `docs/05-Process.md` §4) | The one command that must come back green before anything is declared done. In this project it will be `bin/focus-kit selftest`, which does not exist yet. |
+| Verify command | `bin/focus-kit selftest` | The one command that must come back green before anything is declared done. Six checks, in order, stopping at the first red (`docs/05-Process.md` §4). |
 | Scratch repository | `mktemp -d` plus `git init` | The disposable target the verify command installs into, checks with `doctor`, and removes at the end whether the run passed or failed. It has exactly this name everywhere: not a temp repo, not a temporary directory, not a test fixture. |
 | Proof | (see `docs/05-Process.md` §6) | How a delivery is shown to work beyond the verify command. Here it is an install into a scratch repository, since the kit has no screen. |
 | House rule | (prose, in the manuals) | A rule fixed in every project the kit installs, not open to a per-project vote: one delivery is one page, FOCUS, errors are values, no em dash, the agent never commits, abstraction on the second occurrence, docs are living, prose in the project's language and identifiers in English. |
@@ -226,7 +226,7 @@ documentation language is something else: the kit's own strings are not
 translated, only the documents `/initialize` writes. The no em dash rule
 applies to every line of that output.
 
-The terminal output has four shapes and no others (`bin/focus-kit:41`):
+The terminal output has four shapes and no others (`bin/focus-kit:42`):
 `say` for plain lines, `ok` for a green check, `warn` for a yellow warning
 that does not stop the run, `die` for a red error that exits. A new message
 picks one of the four.

@@ -1,8 +1,8 @@
 {
   ".claude/settings.json": {
-    "mtime": 1789564889.4823022,
-    "ast_hash": "3323d5bf1aeaa296ebe2e81f65f6a775",
-    "semantic_hash": ""
+    "mtime": 1789562655.595988,
+    "ast_hash": "d9dab8c8fab9dd236628dd7068a34ccf",
+    "semantic_hash": "d9dab8c8fab9dd236628dd7068a34ccf"
   },
   ".mcp.json": {
     "mtime": 1789562655.5499492,
@@ -85,9 +85,9 @@
     "semantic_hash": "f35cff8de42a62818a9873b6079be604"
   },
   "CLAUDE.md": {
-    "mtime": 1789564753.0453272,
-    "ast_hash": "e1540984a81af997311fc0ea4b1bd880",
-    "semantic_hash": ""
+    "mtime": 1789483763.4177558,
+    "ast_hash": "5d506e1af30c1d71372bbb4034086ca7",
+    "semantic_hash": "5d506e1af30c1d71372bbb4034086ca7"
   },
   "README.md": {
     "mtime": 1789503115.7305455,
@@ -188,65 +188,5 @@
     "mtime": 1789503127.1080432,
     "ast_hash": "f35cff8de42a62818a9873b6079be604",
     "semantic_hash": "f35cff8de42a62818a9873b6079be604"
-  },
-  "docs/00-Product.md": {
-    "mtime": 1789564920.3821623,
-    "ast_hash": "81598284c61f3437ed80f9381eff99b6",
-    "semantic_hash": ""
-  },
-  "docs/01-Architecture.md": {
-    "mtime": 1789564453.2699974,
-    "ast_hash": "07884fc7559a03f65472007c2d7664ac",
-    "semantic_hash": ""
-  },
-  "docs/02-Backend.md": {
-    "mtime": 1789564457.3259125,
-    "ast_hash": "9e5d7da6ba3891eb4c9ccfe1bdf23631",
-    "semantic_hash": ""
-  },
-  "docs/03-Domain.md": {
-    "mtime": 1789564917.098342,
-    "ast_hash": "2da42f3b2e792986ab9d48e4314e1e68",
-    "semantic_hash": ""
-  },
-  "docs/04-Conventions.md": {
-    "mtime": 1789564914.9966395,
-    "ast_hash": "d91c6a0ce01ed74904f8566267da258a",
-    "semantic_hash": ""
-  },
-  "docs/05-Process.md": {
-    "mtime": 1789564935.800871,
-    "ast_hash": "f16bc7a9525162ab8a273b4afd36adf5",
-    "semantic_hash": ""
-  },
-  "docs/06-Queue.md": {
-    "mtime": 1789564923.005769,
-    "ast_hash": "e7a181eee0672f3a75f7be2d6ce883b8",
-    "semantic_hash": ""
-  },
-  "docs/adr/ADR-0000-template.md": {
-    "mtime": 1789564737.1673243,
-    "ast_hash": "cbc3a902bb2df020600a48a898a43761",
-    "semantic_hash": ""
-  },
-  "docs/adr/ADR-0001-bash-and-python3.md": {
-    "mtime": 1789564907.4413812,
-    "ast_hash": "eef3b359948340817283abdbb3a5f734",
-    "semantic_hash": ""
-  },
-  "docs/adr/ADR-0002-file-ownership.md": {
-    "mtime": 1789564909.5215812,
-    "ast_hash": "449ed986f6d2b407a1d2b4fc04e79f2d",
-    "semantic_hash": ""
-  },
-  "docs/adr/ADR-0003-focus-is-taught-not-applied-here.md": {
-    "mtime": 1789564533.723746,
-    "ast_hash": "af7443e9d135e5880a90fb035a21dc05",
-    "semantic_hash": ""
-  },
-  "docs/adr/README.md": {
-    "mtime": 1789564511.4147503,
-    "ast_hash": "1bc61aced06215c0f79d38aca10ed704",
-    "semantic_hash": ""
   }
 }

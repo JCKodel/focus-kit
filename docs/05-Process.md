@@ -103,14 +103,19 @@ It runs six checks, in this order, and stops at the first red:
    treat them as failures.
 3. The same install again into the same scratch repository, trees compared.
    The install is idempotent.
-4. The `description` frontmatter of each of the three `SKILL.md` files
-   parsed as YAML. A bare colon in that value breaks the YAML and the skill
-   disappears with no error, which has happened.
+4. The frontmatter of each of the three `SKILL.md` files, against four
+   structural rules: line 1 is `---` and a closing `---` exists; `name:`
+   equals the folder name; one line reads exactly `description: >-`; every
+   line of that block is indented until the next top-level key. The rules
+   are checked in pure bash, because python3 has no YAML parser in its
+   standard library. A bare colon in the description value breaks the YAML
+   and the skill disappears with no error, which has happened.
 5. A grep for the em dash across the paths this repository authors:
-   `bin/`, `skills/`, `manuals/`, `config/`, `docs/` except `docs/manuals/`,
-   `CLAUDE.md`, `README.md`. No hits. `graphify-out/` is excluded because
-   it is generated: `GRAPH_REPORT.md` and `graph.html` contain em dashes
-   that graphify writes, and they come back on every rebuild.
+   `bin/`, `skills/`, `manuals/`, `config/`, `work/`, `docs/` except
+   `docs/manuals/`, `CLAUDE.md`, `README.md`. No hits. `graphify-out/` is
+   excluded because it is generated: `GRAPH_REPORT.md` and `graph.html`
+   contain em dashes that graphify writes, and they come back on every
+   rebuild.
 6. `diff -r skills .claude/skills` and `diff -r manuals docs/manuals`, both
    empty except for `.focus-kit-version`.
 
@@ -119,9 +124,11 @@ CI, because there is no CI. A red means a target repository would receive a
 broken kit, which is the only failure mode this project has that someone
 else pays for.
 
-**The script does not exist yet.** It is the first line of the queue. Until
-it lands, `/apply` runs the six checks by hand in that order and says so in
-the delivery page.
+The command takes no path argument: four of the six checks are about the
+kit's own sources, and a target repository never receives `bin/focus-kit`.
+It creates a scratch repository for checks 2 and 3 and removes it through a
+`trap ... EXIT`, green or red. Green prints six `ok` lines and exits 0; red
+prints the detail of what broke, one `die` naming it, and exits 1.
 
 ## 5. Environments
 

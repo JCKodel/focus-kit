@@ -84,7 +84,7 @@ personal data.
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:217`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:359`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify as a uv tool, then the global `/graphify`
@@ -92,7 +92,7 @@ skill for Claude Code. Each step is skipped when already present, and the
 global skill is installed only when absent because installing it also
 appends a section to the user's `~/.claude/CLAUDE.md`, and repeating that on
 every run would keep touching a file the kit does not own
-(`bin/focus-kit:74`).
+(`bin/focus-kit:75`).
 
 In the repository: the three skills and the three manuals are copied over
 whatever is there; `.mcp.json` and `.claude/settings.json` are merged into,
@@ -236,10 +236,10 @@ Every decision taken during development must answer yes to:
 
 Recorded here so that no agent closes them alone:
 
-1. **Whether the kit ever gets a test suite beyond `doctor`.** Today the
-   only check is installing into a scratch repository and looking. The
-   first queue line proposes `bin/focus-kit selftest`. Whether that grows
-   into a real suite, or stays a single script, is the stakeholder's call.
+1. **Whether the kit ever gets a test suite beyond `selftest`.**
+   `bin/focus-kit selftest` exists and runs six checks inside the script
+   itself. Whether that grows into a real suite, with a framework and cases
+   per function, or stays six checks in one file, is the stakeholder's call.
 2. **Whether the dogfood copies stay versioned.** `.claude/skills/` and
    `docs/manuals/` duplicate `skills/` and `manuals/` byte for byte. Keeping
    them means a clone gets a working kit immediately and every diff shows

@@ -51,19 +51,23 @@ is scoped to authored paths rather than given exceptions
 Beyond that, the copy rules this project needs:
 
 * **A terminal line picks one of four shapes.** `say`, `ok`, `warn`, `die`
-  (`bin/focus-kit:41`). Never a bare `echo` or `printf` for a message a
+  (`bin/focus-kit:42`). Never a bare `echo` or `printf` for a message a
   person reads. The shape carries the meaning, so a message whose shape is
   wrong lies even when its words are right.
 * **A `warn` says what to do next.** "graphify-mcp not on PATH" is half a
   message; the line adds why it matters and what fixes it. Compare
-  `bin/focus-kit:73`.
+  `bin/focus-kit:74`.
 * **A `die` names the thing that is missing, not the step that failed.**
   "python3 not found (and uv is not installed to supply one)" tells the
-  person what to install.
+  person what to install. A red check of the verify command follows the same
+  rule: `check 6: .claude/skills differs from skills (run focus-kit install
+  .)` names the thing and what fixes it, not the step.
 * **The help text is the script's own header.** `--help` prints lines 2 to
-  25 of the file through `sed` (`bin/focus-kit:227`). Documentation and
+  27 of the file through `sed` (`bin/focus-kit:370`). Documentation and
   usage are the same bytes, so they cannot drift. A change to the header is
-  a change to the help text, and that is the point.
+  a change to the help text, and that is the point. The range is still a
+  literal that a new header line makes wrong; fixing that is
+  `help-text-follows-header` in the queue.
 * **A document says what is, not what is wished for.** When the code and the
   intention differ, both are written, and which is which is marked.
 
@@ -72,9 +76,10 @@ Beyond that, the copy rules this project needs:
 | Thing | Form | Example |
 |---|---|---|
 | Bash function | `snake_case`, a verb or a noun the verb produces | `install_repo`, `merge_json`, `python_bin` |
+| Verify check | `check_<what it proves>`, one per check of `docs/05-Process.md` §4 | `check_idempotent`, `check_dogfood` |
 | Bash local | `snake_case`, short, always declared `local` | `local target`, `local baseline` |
 | Bash constant | `UPPER_SNAKE`, set once near the top | `KIT_DIR`, `KIT_VERSION`, `SELF` |
-| CLI verb | one lowercase word, no flags | `install`, `update`, `doctor`, `version` |
+| CLI verb | one lowercase word, no flags | `install`, `update`, `doctor`, `version`, `selftest` |
 | Skill folder | one lowercase word, matching the command | `skills/propose/` gives `/propose` |
 | Manual | one lowercase word plus `.md` | `manuals/process.md` |
 | Template | the exact name of the file it produces | `templates/docs/05-Process.md` |
@@ -98,7 +103,7 @@ about instead:
 
 * **bash 3.2 or it does not ship.** No associative arrays, no `mapfile`, no
   `${var,,}`, no `readlink -f`. macOS ships bash 3.2 and the script runs
-  there unchanged. The symlink resolution loop at `bin/focus-kit:32` exists
+  there unchanged. The symlink resolution loop at `bin/focus-kit:33` exists
   for exactly this reason.
 * **`set -euo pipefail`, and every variable expansion quoted.** Paths in
   this project contain spaces often enough (`/Volumes/Data/...` does not,
@@ -141,7 +146,7 @@ it dies.
 | The script parses | `bash -n bin/focus-kit` | always, first thing the verify command does |
 | An install produces a complete target | `focus-kit install` into a scratch repository, then `focus-kit doctor` there | every delivery that touches `bin/focus-kit`, `skills/`, `manuals/` or `config/` |
 | An install is idempotent | the same install run twice, trees compared | every delivery that touches `install_repo` |
-| A skill still loads | the `description` frontmatter of each `SKILL.md` parsed as YAML | every delivery that touches a `SKILL.md` |
+| A skill still loads | the frontmatter of each `SKILL.md` against four structural rules | every delivery that touches a `SKILL.md` |
 | No em dash in authored text | a grep over the authored paths | automatic, every run |
 | The dogfood copy matches its source | `diff -r skills .claude/skills` and `diff -r manuals docs/manuals` | automatic, every run |
 
@@ -149,15 +154,15 @@ it dies.
 bin/focus-kit selftest   = bash -n
                          + install into a scratch repository, then doctor there
                          + the same install again, trees compared
-                         + YAML parse of the three SKILL.md frontmatters
+                         + the structural rules of the three SKILL.md frontmatters
                          + grep for the em dash over authored paths
                          + diff of the dogfood copies against their sources
 ```
 
-**This script does not exist yet.** It is the first line of the queue
-(`docs/06-Queue.md`), and until it lands the verify command is those six
-checks run by hand, in that order. `docs/05-Process.md` §4 is the slot
-`/apply` reads, and it says the same thing.
+Each check is one bash function in `bin/focus-kit`, named `check_<what it
+proves>`, ending in an `ok` line or a `die`. `docs/05-Process.md` §4 is the
+slot `/apply` reads and holds the checks in detail; this section is where
+they live in the code.
 
 There are no fixtures and no test data. The scratch repository is created by
 `mktemp -d`, has `git init` run in it, and is removed at the end whether the
@@ -204,7 +209,7 @@ history is not worth rewriting for it, but no later commit repeats it.
 feat(kit-selftest): one command that proves an install still works
 
 * bin/focus-kit selftest: parse, install into a scratch repository, doctor, twice
-* checks the three SKILL.md frontmatters parse as YAML
+* checks the three SKILL.md frontmatters against four structural rules
 * greps the tree for the em dash and diffs the dogfood copies
 * VERSION 0.3.0; targets get it on the next focus-kit update
 

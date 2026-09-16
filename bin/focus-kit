@@ -5,6 +5,7 @@
 #   focus-kit update  [path]   same as install; kept as a verb people expect
 #   focus-kit doctor  [path]   report what is installed, and what is missing
 #   focus-kit version          print the kit version
+#   focus-kit selftest         run the six checks that say the kit is deliverable
 #
 # What install does, in order:
 #   1. dependencies on this machine: uv, then graphify (uv tool), then the
@@ -210,6 +211,147 @@ doctor() {
   fi
 }
 
+# ---------------------------------------------------------------- selftest
+
+# The six checks of docs/05-Process.md §4, in order, stopping at the first
+# red. They always run against KIT_DIR and take no path: four of them are
+# about the kit's own sources, and a target never receives bin/focus-kit.
+
+SELFTEST_DIR=""
+selftest_cleanup() { [ -z "$SELFTEST_DIR" ] || rm -rf "$SELFTEST_DIR"; }
+
+check_parses() {
+  local out
+  out="$(bash -n "$KIT_DIR/bin/focus-kit" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 1: bin/focus-kit does not parse"
+  }
+  ok "1 bin/focus-kit parses"
+}
+
+check_install() { # scratch
+  local scratch="$1" out expected line
+  git init -q "$scratch" >/dev/null 2>&1 || die "check 2: git init failed in $scratch"
+  out="$(install_repo "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: the install into the scratch repository failed"
+  }
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  # The expected line is built by calling ok, so the assertion and the
+  # reporter cannot drift. The warnings a scratch repository legitimately
+  # produces (docs/00 to 06, CLAUDE.md, the graph, the hook) are ignored.
+  for expected in /initialize /propose /apply \
+                  docs/manuals/process.md docs/manuals/focus.md \
+                  docs/manuals/graphify.md .mcp.json \
+                  "kit version $KIT_VERSION"; do
+    line="$(ok "$expected")"
+    printf '%s\n' "$out" | grep -qF -- "$line" || {
+      printf '%s\n' "$out"
+      die "check 2: doctor did not report $expected in the scratch repository"
+    }
+  done
+  ok "2 install into a scratch repository, doctor agrees"
+}
+
+check_idempotent() { # scratch snapshot
+  local scratch="$1" snapshot="$2" out
+  cp -R "$scratch" "$snapshot" || die "check 3: could not copy the scratch repository"
+  out="$(install_repo "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 3: the second install into the scratch repository failed"
+  }
+  out="$(diff -r -x .git "$snapshot" "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 3: the second install changed the tree (install is not idempotent)"
+  }
+  ok "3 the second install leaves the same tree"
+}
+
+# Structural rules, in pure bash. python3 has no YAML parser in its standard
+# library, and the failure this catches is structural: a bare colon in the
+# description value breaks the YAML and the skill disappears with no error.
+check_frontmatter() {
+  local s file line n closing name desc_at desc_body bad state
+  for s in initialize propose apply; do
+    file="$KIT_DIR/skills/$s/SKILL.md"
+    [ -f "$file" ] || die "check 4: skills/$s/SKILL.md is missing"
+    n=0; closing=0; name=""; desc_at=0; desc_body=0; bad=0; state=key
+    while IFS= read -r line || [ -n "$line" ]; do
+      n=$((n + 1))
+      [ "$closing" -eq 0 ] || break
+      if [ "$n" -eq 1 ]; then
+        [ "$line" = "---" ] || die "check 4: skills/$s/SKILL.md does not open with --- on line 1"
+        continue
+      fi
+      if [ "$line" = "---" ]; then closing=$n; continue; fi
+      if [ "$state" = desc ]; then
+        case "$line" in
+          " "*)      desc_body=$((desc_body + 1)); continue ;;
+          [A-Za-z]*) state=key ;;
+          *)         bad=$n; break ;;
+        esac
+      fi
+      case "$line" in
+        name:*)            name="${line#name:}"; name="${name# }" ;;
+        "description: >-") desc_at=$n; state=desc ;;
+        description:*)     die "check 4: skills/$s/SKILL.md line $n is a description that is not a >- block" ;;
+      esac
+    done < "$file"
+    [ "$closing" -gt 0 ]  || die "check 4: skills/$s/SKILL.md has no closing --- for its frontmatter"
+    [ "$bad" -eq 0 ]      || die "check 4: skills/$s/SKILL.md line $bad is in the description block and not indented"
+    [ "$name" = "$s" ]    || die "check 4: skills/$s/SKILL.md says name: $name, the folder is $s"
+    [ "$desc_at" -gt 0 ]  || die "check 4: skills/$s/SKILL.md has no line reading exactly 'description: >-'"
+    [ "$desc_body" -gt 0 ] || die "check 4: skills/$s/SKILL.md line $desc_at opens a description block with nothing in it"
+  done
+  ok "4 the three SKILL.md frontmatters are well formed"
+}
+
+# The character is built from its bytes and never written in this file, so
+# the grep needs no allowlist (docs/04-Conventions.md §1). graphify-out/ is
+# out of scope because graphify writes it.
+check_no_em_dash() {
+  local em hits
+  em="$(printf '\xe2\x80\x94')"
+  hits="$( { grep -rlF -- "$em" bin skills manuals config work CLAUDE.md README.md 2>/dev/null || true
+             grep -rlF -- "$em" docs 2>/dev/null | grep -v '^docs/manuals/' || true ; } )"
+  [ -z "$hits" ] || {
+    printf '%s\n' "$hits"
+    die "check 5: the em dash (U+2014) is in the files above"
+  }
+  ok "5 no em dash in the paths this repository authors"
+}
+
+check_dogfood() {
+  local out
+  out="$(diff -r -x .focus-kit-version skills .claude/skills 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 6: .claude/skills differs from skills (run focus-kit install .)"
+  }
+  out="$(diff -r manuals docs/manuals 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 6: docs/manuals differs from manuals (run focus-kit install .)"
+  }
+  ok "6 the dogfood copies match their sources"
+}
+
+selftest() {
+  cd "$KIT_DIR"
+  say "focus-kit $KIT_VERSION selftest"
+  SELFTEST_DIR="$(mktemp -d)" || die "could not create a scratch directory (mktemp -d)"
+  trap selftest_cleanup EXIT
+  check_parses
+  check_install    "$SELFTEST_DIR/scratch"
+  check_idempotent "$SELFTEST_DIR/scratch" "$SELFTEST_DIR/snapshot"
+  check_frontmatter
+  check_no_em_dash
+  check_dogfood
+  say
+  say "selftest green: a target repository would receive a working kit"
+}
+
 # ---------------------------------------------------------------- main
 
 cmd="${1:-}"
@@ -221,10 +363,11 @@ case "$cmd" in
     say
     install_repo "${2:-.}"
     ;;
-  doctor)  doctor "${2:-.}" ;;
-  version) say "$KIT_VERSION" ;;
+  doctor)   doctor "${2:-.}" ;;
+  version)  say "$KIT_VERSION" ;;
+  selftest) selftest ;;
   ""|-h|--help|help)
-    sed -n '2,25p' "$0" | sed 's/^# \{0,1\}//'
+    sed -n '2,27p' "$0" | sed 's/^# \{0,1\}//'
     ;;
   *) die "unknown command: $cmd (try: focus-kit help)" ;;
 esac
