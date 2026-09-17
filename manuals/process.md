@@ -102,8 +102,9 @@ Implements the page, in a clean session, one where `/apply` is the
 first thing typed; when it is not, it says so in one line and stops. End to
 end:
 
-1. reads the delivery, `CLAUDE.md`, `docs/01`, `docs/04`, `docs/05` and
-   the FOCUS manual; asks the graph the structure of the slice;
+1. reads the delivery, `CLAUDE.md`, `docs/01`, `docs/04`, `docs/05` and,
+   of the FOCUS manual, its table, its four pieces and its anti-patterns;
+   asks the graph the structure of the slice;
 2. builds every piece in its place: rules in a pure use case, the
    orchestrator converting one event into one state, exceptions becoming
    Results only in the repository; settling what the page left to the run

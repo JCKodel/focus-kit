@@ -117,6 +117,9 @@ in this order, and keep notes as you go:
 Then ensure the knowledge graph, following `docs/manuals/graphify.md`
 §Ensuring the graph to the letter. That is where the person is asked what an
 extraction may cost, and where the post-commit hook gets installed.
+Read the named section alone: one `grep -n '^#'` over the manual gives its
+heading's line and the next heading of the same level, and you read that
+range and nothing else of the manual.
 
 When a graph came out of it, read `graphify-out/GRAPH_REPORT.md` once: the
 god nodes and the community hubs are your map of what the product is made
@@ -185,7 +188,11 @@ option whenever you have one. Suggested rounds:
 
 After the rounds, still ensure the graph, the same way: follow
 `docs/manuals/graphify.md` §Ensuring the graph, which asks the person before
-anything is billed and installs the post-commit hook. The docs you are about
+anything is billed and installs the post-commit hook.
+Read the named section alone: one `grep -n '^#'` over the manual gives its
+heading's line and the next heading of the same level, and you read that
+range and nothing else of the manual.
+The docs you are about
 to write are content too, and the graph is what `/propose` and `/apply` read
 from the next session on.
 

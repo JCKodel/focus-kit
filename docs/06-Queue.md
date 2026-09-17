@@ -150,7 +150,7 @@ about brownfield repositories is untested.
                               and moved a Node pin on it, which /apply rechecks and which is stale the
                               day the runner publishes; the same run took the read-only probe the rule
                               before this one left out of scope, one occurrence, recorded and not counted
-[ ] commands-read-sections-not-manuals
+[x] commands-read-sections-not-manuals
                               measured over 194 sessions, the kit costs no more per session than the
                               hand-written original it came from: the first turn is 42k to 49k tokens in
                               ninjobs, here and in the first target alike, and a kit /apply runs 105
@@ -161,7 +161,7 @@ about brownfield repositories is untested.
                               the skills name the section they need, the page records the before and
                               after per command, and docs/00 gets the number, so the next comparison
                               with OpenSpec or SpecKit is measured and not feared
-[ ] focus-is-asked-not-imposed
+[>] focus-is-asked-not-imposed
                               FOCUS is a house rule (docs/manuals/process.md §6, the CLAUDE.md template,
                               /apply Build) and /initialize never asks: the first target's docs/01 wrote
                               a features/ target layout and a migration line per slice into a repository

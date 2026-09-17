@@ -54,6 +54,21 @@ project management tool, a linter, or a way to make an agent write code
 without review. The last one matters most. The kit's whole shape assumes a
 person reads the diff and commits it.
 
+**What it costs.** Measured over 194 sessions on 2026-09-17, counted by hand
+from the transcripts: a session that starts with one of the three commands
+opens at 42k to 49k tokens, the same range in this repository, in the first
+target and in the project the kit came from, whose process was hand written
+into `CLAUDE.md` and had no kit at all; a kit `/apply` ran 105 turns to a
+240k peak against 280 turns and a 530k peak there. So the kit costs no more
+per session than the hand-written original, and the case for it is not that
+it is cheaper. What each command reads of a manual is the part the kit
+controls, and it is pinned by a file rather than by a transcript, in words
+through `wc -w` at this commit: `graphify.md` fell from 2,626 words read
+whole to the 1,352 of §Ensuring the graph, in all three commands, and
+`focus.md` from 5,152 to 1,870 in `/apply`, 1,584 at Read first for §2, §3
+and §10 and 286 at Build for §8. A command reads the section it names and
+nothing else of the manual around it (`docs/03-Domain.md`, Named section).
+
 Name: `focus-kit`, lowercase, one word with a hyphen, both as the repository
 and as the command. No domain, no brand, no package on any registry. It is
 installed by cloning and symlinking (`README.md`).

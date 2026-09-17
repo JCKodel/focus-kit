@@ -16,7 +16,11 @@ You are the stakeholder's thinking partner. The goal is a one-page file,
 `docs/00-Product.md`, `docs/03-Domain.md`, `docs/06-Queue.md`, and whatever
 is in `work/` (the deliveries in flight). Read `docs/01-Architecture.md`
 for where the slice would live. Ensure the graph first, per
-`docs/manuals/graphify.md` §Ensuring the graph. Then ask it `graphify
+`docs/manuals/graphify.md` §Ensuring the graph.
+Read the named section alone: one `grep -n '^#'` over the manual gives its
+heading's line and the next heading of the same level, and you read that
+range and nothing else of the manual.
+Then ask it `graphify
 explain "<function, file or entity the queue line names>"` for what that
 node is connected to, and `graphify affected "<the same>"` for what depends
 on it and changes with it. That is what the graph answers, from the edges it

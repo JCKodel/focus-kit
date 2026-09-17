@@ -23,10 +23,18 @@ read, nothing built, nothing staged.
    them literally: the verify command, the environments table and what a
    delivery must leave up to date in each, the publish policy, the git
    policy, and how a screen is proven.
-4. `docs/manuals/focus.md`: the four pieces and the review rules. Every
-   line of code you write is reviewable against that table.
+4. `docs/manuals/focus.md`, three sections: §2, the canonical responsibility
+   table; §3, the four pieces; §10, the anti-patterns. Every line of code you
+   write is reviewable against that table.
+   Read the named section alone: one `grep -n '^#'` over the manual gives its
+   heading's line and the next heading of the same level, and you read that
+   range and nothing else of the manual.
 5. The slice you are touching. Ensure the graph first, per
-   `docs/manuals/graphify.md` §Ensuring the graph, then ask it `graphify
+   `docs/manuals/graphify.md` §Ensuring the graph.
+   Read the named section alone: one `grep -n '^#'` over the manual gives its
+   heading's line and the next heading of the same level, and you read that
+   range and nothing else of the manual.
+   Then ask it `graphify
    explain "<the slice's entry point or entity>"` and `graphify affected
    "<the same>"`, and read the files the two answers name. Who calls, uses
    or depends on a symbol is asked of the graph and never grepped. Say in
@@ -47,7 +55,8 @@ the same delivery or the delivery is wrong. Do not resolve it silently.
   becomes a Result in the repository and nowhere else.
 * **No em dash in any text a user reads**: label, message, email,
   aria-label, log line shown to users.
-* Write the test each piece asks for (`docs/manuals/focus.md` §Testing):
+* Write the test each piece asks for (`docs/manuals/focus.md` §8 Testing,
+  read the way item 4 of Read first says):
   use cases as units, the orchestrator as the integration, the view as
   event in and render out.
 * Abstraction on the second concrete occurrence, and the delivery file
