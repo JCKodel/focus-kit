@@ -73,8 +73,16 @@ Things that usually need a question:
 
 `work/$ARGUMENTS.md`, one page. The **Contract** section (data, API,
 migrations, message shapes) is the only one that must be exact: a wrong
-screen is fixed in a session, a wrong column is a migration. Name the
-slice the delivery lives in and the four pieces it touches (view,
+screen is fixed in a session, a wrong column is a migration.
+
+Exact is not pinned. Of a tool or a dependency the page holds what a
+document can hold: the name, and the constraint the choice has to satisfy,
+what may not change and what the project already pins. Never a version, a
+file's name or extension, a flag, or a guess at what the run will find:
+those are `/apply`'s to settle by running it. A page that pins one is
+fixing what it cannot run.
+
+Name the slice the delivery lives in and the four pieces it touches (view,
 orchestrator, use case, repository) using the vocabulary of
 `docs/manuals/focus.md`.
 

@@ -137,12 +137,19 @@ about brownfield repositories is untested.
                               them at the moment the person decides where to type, and the graph is the
                               first casualty: /apply reused a freshness check another command had run in
                               that session and never asked the graph at all
-[ ] propose-does-not-fix-what-it-cannot-run
+[x] propose-does-not-fix-what-it-cannot-run
                               /propose pins in the Contract tooling detail only a run can verify, so npm
                               resolved vitest@5.0.1 against the project's @types/node@^20 and /apply had
                               to ask; the page had pre-answered the conflict in the wrong direction and
                               contradicted its own "one devDependency and nothing else", and the same
                               pattern turned vitest.config.ts into .mts
+[ ] propose-holds-no-fact-the-run-rechecks
+                              the Contract stopped holding versions, config file names and guesses, and
+                              still holds a fact measured while the page was written: the first target's
+                              testing-setup page dated the runner's engines range "checked 2026-09-17"
+                              and moved a Node pin on it, which /apply rechecks and which is stale the
+                              day the runner publishes; the same run took the read-only probe the rule
+                              before this one left out of scope, one occurrence, recorded and not counted
 ```
 
 ## Milestone 3: the kit explains itself

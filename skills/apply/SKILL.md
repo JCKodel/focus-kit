@@ -53,6 +53,11 @@ the same delivery or the delivery is wrong. Do not resolve it silently.
 * Abstraction on the second concrete occurrence, and the delivery file
   says which was the first.
 * Do not add a dependency, a layer or a tool the delivery did not name.
+* What the page **leaves to the run**, a version, a file's name or
+  extension, a flag, you settle by running it, inside the constraint the
+  page states, and Close step 1 says what you chose. When no run satisfies
+  the constraint, stop and say which, the way you do with a doc the
+  delivery contradicts: do not pick a way out alone.
 
 ## Prove
 

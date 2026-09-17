@@ -74,7 +74,9 @@ A conversation that ends in `work/<slug>.md`, one page, in the format
 * **Goal**, one sentence, in user terms.
 * **Behaviour**, verifiable scenarios; each becomes a test or a check.
 * **Contract**, the data, API and migration shapes. The only section that
-  must be exact, because it is the only one that is expensive to reverse.
+  must be exact, because it is the only one that is expensive to reverse;
+  exact about what must hold, not about what only a run settles: of a tool
+  it names the tool and the constraint, and leaves the version to `/apply`.
 * **Slice**, the feature folder and the pieces it touches.
 * **States**, **Visual reference**, **Out of scope**, **Done when**.
 
@@ -100,7 +102,8 @@ end:
    the FOCUS manual; asks the graph the structure of the slice;
 2. builds every piece in its place: rules in a pure use case, the
    orchestrator converting one event into one state, exceptions becoming
-   Results only in the repository;
+   Results only in the repository; settling what the page left to the run
+   and recording the choice;
 3. runs the verify command until green; proves the screen the way
    `docs/05` §6 says;
 4. leaves each environment in the state `docs/05` §5 requires, and

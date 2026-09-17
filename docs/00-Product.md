@@ -167,7 +167,8 @@ in.
 
 The page has a fixed shape: goal, behaviour, contract, slice, states, visual
 reference, out of scope, done when. Of those, only the contract has to be
-exact, because it is the only one that is expensive to reverse.
+exact, because it is the only one that is expensive to reverse, and exact
+means what must hold, never what only a run settles.
 
 **Rule of product:** if the scope does not fit on one page, it is two
 deliveries. This is not a style preference about concision. A scope that
@@ -179,9 +180,9 @@ before the code is written rather than after.
 `/apply <slug>` implements the page in a clean session that reads only that
 page and the project documents, one in which it is the first thing typed,
 and when it is not it says so and stops. It builds each piece in its place,
-runs the verify command until green, proves the result the way the project's
-own `docs/05-Process.md` says to, and leaves each environment in the state
-that document requires.
+settling what the page left to the run, runs the verify command until green,
+proves the result the way the project's own `docs/05-Process.md` says to,
+and leaves each environment in the state that document requires.
 
 Then it writes back into the delivery file what actually happened: what
 diverged from the plan, what was dropped, what the proof found, what
