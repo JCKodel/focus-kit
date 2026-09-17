@@ -27,7 +27,7 @@ seen.
 | `/graphify` | the Claude Code skill that drives the CLI | `~/.claude/skills/graphify/` (global, installed by the kit) |
 | MCP server | lets the agent query the graph without shell calls | `.mcp.json`, command `graphify-mcp graphify-out/graph.json` |
 | post-commit hook | rebuilds the graph after every commit, no LLM needed | `.git/hooks/post-commit`, installed by `/initialize`, ensured by `/propose` and `/apply` |
-| `graphify-out/` | `graph.json` (the graph), `GRAPH_REPORT.md` (plain-language map), `graph.html` (interactive) | not versioned; rebuilt on demand by `/propose` and `/apply` |
+| `graphify-out/` | `graph.json` (the graph, stamped with the commit it was built from), `GRAPH_REPORT.md` (plain-language map), `graph.html` (interactive) | not versioned; rebuilt on demand by `/propose` and `/apply` |
 
 ## Everyday use
 
@@ -39,6 +39,7 @@ graphify query "<q>" --dfs     # trace one path
 graphify path "A" "B"          # shortest path between two concepts
 graphify explain "X"           # plain-language explanation of one node
 graphify hook status           # is the post-commit hook installed
+grep -o '"built_at_commit": "[0-9a-f]*"' graphify-out/graph.json   # which commit the graph describes
 ```
 
 From inside a Claude Code session, asking a question about the codebase is
@@ -52,13 +53,19 @@ without a hook. `/propose`, `/apply` and `/initialize` run the procedure
 below before they read the graph, and it is written here and nowhere else.
 Four branches,
 checked in this order, each one announced out loud. When all four are
-already satisfied, the command says nothing.
+already satisfied, the command says nothing. The third branch announces
+itself in one of two lines, `graph stale (built from <stamp>, HEAD <head>);
+graphify update .`, both SHAs cut to eight characters, or `graph has no
+stamp; graphify update .` when the grep printed nothing. Then one more line
+when `update` left the stamp where it was: `graph still has no stamp;
+graphify cluster-only . --no-label` after the second, and `graph agrees with
+the code; stamp stays at <stamp>` after the first, which acts no further.
 
 | Condition | Action | Cost |
 |---|---|---|
 | `graphify-out/graph.json` absent, and `env -u GEMINI_API_KEY -u GOOGLE_API_KEY -u MOONSHOT_API_KEY -u ANTHROPIC_API_KEY -u OPENAI_API_KEY -u DEEPSEEK_API_KEY graphify .` exits with `error: no LLM API key found` | the Graph confirmation, then what its answer names | the session's tokens or the exported key's, only after "Build now" |
 | `graphify-out/graph.json` absent, and the same attempt succeeds | nothing further; the CLI already built it | none |
-| `Built from commit` in `graphify-out/GRAPH_REPORT.md` differs from `git rev-parse HEAD` | `graphify update .` | none |
+| `grep -o '"built_at_commit": "[0-9a-f]*"' graphify-out/graph.json` prints nothing, or prints a SHA that is not `git rev-parse HEAD` | `graphify update .`, then, when the grep still prints nothing, `graphify cluster-only . --no-label` | none |
 | `graphify hook status` says the post-commit hook is absent | `graphify hook install` | none |
 
 The first two branches are one attempt, not an inspection: run the command
@@ -90,8 +97,13 @@ the graph?`, where `<the found line>` is the count line above without its
   one of the six keys is exported, `graphify .` instead, billed to that
   key's account. Two runs from the Cost ledger, for scale: 38 files cost
   187,743 input tokens, 62 files cost 433,524.
-* **Code only.** `graphify . --code-only`, free, no model. Docs, papers and
-  images stay out of the graph until you run `/graphify --update`.
+* **Code only.** `graphify . --code-only && graphify cluster-only .
+  --no-label`, free, no model; the second command writes the Graph report
+  with the stamp and numbered communities. Docs, papers and images stay out
+  of the graph until you run `/graphify --update`. `--no-label` is what keeps
+  the answer free: `graphify --help` says the labeling backend defaults to
+  auto-detect, and the flag keeps the `Community N` placeholders and skips
+  the naming.
 * **Not now.** Nothing is built. This command reads files directly and says
   so; the next command that needs the graph asks again.
 
@@ -106,12 +118,21 @@ Then the command says what the answer cost, one line:
 * After **Not now**: `no graph this session; reading files directly`.
 
 The third branch covers code only. `graphify update .` re-extracts every
-code file and rewrites `Built from commit`, so after a pull that changed
-only docs the SHA matches HEAD while the doc side of the graph is still old.
-That is what §When the graph is rebuilt means by "doc and image changes need
-`/graphify --update`", and it is today's behaviour, not something the
-branch introduces. A stale SHA is the normal state after `git pull`, which
-fires no hook.
+code file and rewrites the Graph stamp in `graph.json` and its copy in the
+report, so after a pull that changed only docs the SHA matches HEAD while
+the doc side of the graph is still old. That is what §When the graph is
+rebuilt means by "doc and image changes need `/graphify --update`", and it
+is today's behaviour, not something the branch introduces. A stale SHA is
+the normal state after `git pull`, which fires no hook.
+
+The stamp is read from `graph.json` and not from the report, because both
+builds the Graph confirmation can start leave the report without the line:
+`/graphify .` because graphify's skill calls the report generator without
+the commit, `--code-only` because it writes no report at all. Every write of
+`graph.json` carries a stamp, the one already in the graph or `git rev-parse
+HEAD` when there is none, so a graph that exists is a graph that is dated.
+One `grep` reads it because the key sits alone on the file's last line
+(measured in three repositories on graphify 0.9.63).
 
 The branch invokes `graphify update .`, not the incremental rebuild the hook
 runs. Both are free and neither needs a model, but they are not the same
@@ -121,6 +142,30 @@ on the focus-kit repository under `PYTHONHASHSEED=0`, which is what the hook
 pins, `update` gave 494 nodes in 110 communities and was a no-op on a second
 run; the hook's incremental rebuild gave 336 in 37. The branch wants the
 graph to agree with the code, so it takes the full one.
+
+`graphify update .` does not always move the stamp, which is why the branch
+has a second step and why it ends in a line rather than in a fix. It
+rewrites `graph.json` only when the re-extraction changes the topology, so a
+commit that touched no code leaves it a no-op and the stamp where it was;
+`--force` does not change that. `graphify cluster-only . --no-label`
+rewrites `graph.json`, the report and `graph.html` from the graph already
+there, free and without a model, but it carries the existing stamp forward
+and writes `HEAD` only when there is none. That is exactly what makes it the
+fix for a missing stamp and no fix at all for a stale one. It is the second
+step and not the first because re-clustering recomputes every community
+name, and a graph whose communities a model has named (§Troubleshooting)
+loses them.
+
+So a stale stamp that `update` did not move cannot be moved by any free
+command, and the branch says so instead of pretending. The graph agrees
+with the code at that point, because `update` has just re-extracted all of
+it; what is older than `HEAD` is the date on the graph, not the graph. The
+line comes back in the next session, and that is the honest state of
+graphify 0.9.63, not a failure of the command. Measured on a clone of this
+repository: two empty commits, the first making `update` rebuild from 30
+nodes to 458 and move the stamp, the second making it a no-op that neither
+`update --force` nor `cluster-only` moved, while `cluster-only` on the same
+graph with the key deleted wrote `HEAD` at once.
 
 A rebuild the hook launched may still be running when a command reaches the
 third branch, because the hook detaches and `git commit` returns before the
@@ -223,4 +268,6 @@ on graphify 0.9.63. An older graphify that keeps them needs a full rebuild.
   `.git/hooks/`, and there is no hook that fires at clone time. §Ensuring
   the graph installs it, or run `graphify hook install` by hand.
 * **Report names "Community 3".** Community naming needs the model; run
-  `graphify cluster-only .` inside a Claude Code session.
+  `graphify cluster-only .` inside a Claude Code session. This is also the
+  normal report after Code only, whose second command skips the naming on
+  purpose.

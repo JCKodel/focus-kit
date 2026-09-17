@@ -2,7 +2,7 @@
 
 **Project:** focus-kit
 **Status:** active
-**Last updated:** 2026-09-16
+**Last updated:** 2026-09-17
 
 ---
 
@@ -104,9 +104,10 @@ appears in a delivery.
 | Term | Code | Short meaning |
 |---|---|---|
 | Graph | `graphify-out/graph.json` | The knowledge graph of the repository. Built by graphify, queried before grepping. Derived, not authored: the whole of `graphify-out/` is ignored by git and rebuilt on demand (`ADR-0005`). |
-| Graph report | `graphify-out/GRAPH_REPORT.md` | The plain-language audit of the graph: god nodes, communities, surprising connections, token cost. |
+| Graph report | `graphify-out/GRAPH_REPORT.md` | The plain-language audit of the graph: god nodes, communities, surprising connections, token cost. Its `Built from commit` line is a copy of the Graph stamp, written by `graphify update` and `graphify cluster-only` and by neither of the two builds the Graph confirmation can start, so it is never where staleness is read. |
+| Graph stamp | `built_at_commit`, the last line of `graphify-out/graph.json` | The full SHA of the commit the graph was built from. Every write of `graph.json` carries a stamp, the one already in the graph or `git rev-parse HEAD` when there is none, so the SHA dates the build that made the graph's topology and not the last command that touched the file. A build from scratch stamps `HEAD`; `graphify update .` stamps it only when the re-extraction changes the topology; `graphify cluster-only .` carries it forward and writes `HEAD` only when it is absent, which is why the third branch of Ensuring the graph has a second step for the absent case and only a line for the stale one. That branch reads the stamp with one `grep`, which works because graphify writes the file indented and the key sits alone on its last line. Absent means stale: a graph nobody can date is rebuilt for free, never trusted. |
 | God node | (a section of the report) | The most connected node in the graph. Reading the list is the fastest map of what a codebase is made of. |
-| Ensuring the graph | `docs/manuals/graphify.md` §Ensuring the graph | The procedure `/propose`, `/apply` and `/initialize` run before reading the graph, written in exactly one place. Four branches, in order: graph absent and the CLI refuses for want of a model, which is where the Graph confirmation is asked; graph absent on a code-only corpus; graph stale; hook absent. |
+| Ensuring the graph | `docs/manuals/graphify.md` §Ensuring the graph | The procedure `/propose`, `/apply` and `/initialize` run before reading the graph, written in exactly one place. Four branches, in order: graph absent and the CLI refuses for want of a model, which is where the Graph confirmation is asked; graph absent on a code-only corpus; graph stale, which is the Graph stamp absent or not `HEAD`; hook absent. The third is the only one whose action can run and leave its condition standing, because no free command moves the stamp on a graph whose code did not change. |
 | Graph confirmation | (one `AskUserQuestion` in the first branch of Ensuring the graph) | The question a command asks before an extraction is billed: it quotes the count line `graphify .` printed when it refused, and offers three answers, build now, code only, not now. The agent has no discretion at that branch; the person has all of it, and "not now" is an answer, not a skipped branch. Asked again in every session that finds no graph, because the trigger is `graphify-out/graph.json` absent and nothing remembers a decline. |
 | Cost ledger | `graphify-out/cost.json` | graphify's record of what each extraction cost, on this machine only: one entry per run with its `input_tokens`, `output_tokens` and `files`. Never versioned, never edited by hand. A command that built the graph reads the last entry and says the number out loud, which is the only place a person sees what a build cost after saying yes to it. |
 | Graph hook | `.git/hooks/post-commit` | The graphify hook that rebuilds the graph after each commit, so it never goes stale. Installed by `graphify hook install`. Never versioned: a clone starts without one, and "Ensuring the graph" puts it back. |

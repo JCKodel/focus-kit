@@ -93,7 +93,7 @@ about brownfield repositories is untested.
                               number shown and no question asked; docs/manuals/graphify.md says the cost
                               is declined in /graphify, which measured 44,185 words, applied a threshold
                               of its own and extracted 433,524 input tokens without asking
-[ ] graph-staleness-without-a-stamp
+[x] graph-staleness-without-a-stamp
                               a graph built through that first branch writes a GRAPH_REPORT.md with no
                               Built from commit line, so the third branch of the same procedure can never
                               be evaluated in exactly the repositories that took the first, and every
