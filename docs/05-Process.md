@@ -159,6 +159,21 @@ It runs six checks, in this order, and stops at the first red:
    the test and not into an assignment, because `grep -c` exits 1 on a
    count of zero and `set -e` would end the script before the `die`.
    Restored by a copy from `manuals/`, as the template is.
+   Then the **Unbumped change** (`docs/03-Domain.md`), its three shapes in
+   one `doctor` run. The constraint is that the scratch and its manifest
+   agree with each other and not with the kit source, and that no byte of the
+   kit source is touched: `docs/manuals/focus.md` is edited and
+   `write_manifest` is run over the result, so the manifest records the edit
+   and the file is behind rather than drifted; `.claude/skills/apply/ghost.md`
+   is created and recorded the same way, which is a file the manifest lists
+   and the source does not hold; and the `docs/manuals/graphify.md` line is
+   cut out of the manifest, which is a file the source holds and the manifest
+   never listed. The run must carry the `behind the kit source` warn for each
+   of the three, must **not** carry the green `kit version` line, and must
+   carry the drift `ok` line, because the manifest agrees with the tree: the
+   two passes answer different questions and the assertions say so. The
+   restore happens before the assertions, so a red leaves the tree as check 3
+   needs it, and `write_manifest` puts the manifest back byte for byte.
    Last, the **global skill**: four `doctor` runs against a fake home holding
    `.claude/skills/graphify/SKILL.md` and a fake `graphify` on PATH that
    prints `graphify 9.9.9` whatever its arguments, so every line the state

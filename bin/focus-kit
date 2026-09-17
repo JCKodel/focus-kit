@@ -4,7 +4,7 @@
 #
 #   focus-kit install [path]   install or update the kit in a repository (default: .)
 #   focus-kit update  [path]   same as install; kept as a verb people expect
-#   focus-kit doctor  [path]   report what is installed, what is missing, and what was edited locally
+#   focus-kit doctor  [path]   report what is installed, what is missing, and what update would change
 #   focus-kit version          print the kit version
 #   focus-kit selftest         run the six checks that say the kit is deliverable
 #
@@ -388,9 +388,57 @@ doctor() {
 "
     fi
   done
+  # The number, and behind it the Unbumped change (docs/03-Domain.md): a
+  # target at the kit's own number whose kit-owned files are no longer what
+  # the source holds. The question is asked only when the number is equal,
+  # because a target stale by number already carries the one line that names
+  # the fix, and only when the manifest is there, because the manifest is
+  # what install wrote and the compare is against that and not against the
+  # file on disk. So a file both edited locally and behind gets two lines,
+  # each true. KIT_DIR is on every machine that runs doctor: the kit is
+  # installed by clone and symlink, and KIT_VERSION is read from it at
+  # startup.
   if [ -f "$target/.claude/skills/.focus-kit-version" ]; then
     local v; v="$(installed_version "$target")"
-    [ "$v" = "$KIT_VERSION" ] && ok "kit version $v" || warn "kit version $v installed, $KIT_VERSION available (run focus-kit update)"
+    if [ "$v" != "$KIT_VERSION" ]; then
+      warn "kit version $v installed, $KIT_VERSION available (run focus-kit update)"
+    else
+      # What install would write from today's source, in the manifest's own
+      # format, then the symmetric difference of the two: uniq -u keeps a
+      # line that appears once, and a path appears once when its fingerprint
+      # moved, when the source no longer has it, or when the source has it
+      # and the manifest never did. One mechanism, the three shapes the term
+      # names. The source side is enumerated the way write_manifest and
+      # install_repo enumerate it, three skill folders and manuals/*.md, so
+      # that behind means exactly what update would change: a .DS_Store
+      # beside skills/ is never copied, and a warn naming a command that
+      # would not clear it is a warn that lies (docs/04-Conventions.md §1).
+      local kitmanifest="$target/.claude/skills/.focus-kit-manifest" behind="" src rel
+      if [ -f "$kitmanifest" ]; then
+        behind="$( { without_cr "$kitmanifest"
+          for src in initialize propose apply; do
+            [ -d "$KIT_DIR/skills/$src" ] || continue
+            (cd "$KIT_DIR" && find "skills/$src" -type f) | while IFS= read -r rel; do
+              printf '%s .claude/skills/%s\n' "$(fingerprint "$KIT_DIR/$rel")" "${rel#skills/}"
+            done
+          done
+          for src in "$KIT_DIR"/manuals/*.md; do
+            [ -f "$src" ] || continue
+            printf '%s docs/manuals/%s\n' "$(fingerprint "$src")" "$(basename "$src")"
+          done
+        } | LC_ALL=C sort | uniq -u | cut -d' ' -f2- | LC_ALL=C sort -u)"
+      fi
+      if [ -n "$behind" ]; then
+        # The warns stand in place of the green line: green means the number
+        # and the content both, so it is printed only when nothing is behind.
+        while IFS= read -r rel; do
+          [ -n "$rel" ] || continue
+          warn "$rel behind the kit source (run focus-kit update)"
+        done <<< "$behind"
+      else
+        ok "kit version $v"
+      fi
+    fi
   fi
   # Two loops over the eleven paths and not one, because the fix differs: the
   # eight project-owned files are what /initialize writes, and the three
@@ -747,6 +795,58 @@ JSON
   fi
   # Restored by copy alone, as the template above and for the same reason.
   cp "$KIT_DIR/manuals/process.md" "$scratch/$manualpath"
+  # The Unbumped change (docs/03-Domain.md), the three shapes in one doctor
+  # run. The constraint is that the scratch and its manifest agree with each
+  # other and not with the source, without a byte of the kit source touched:
+  # the manual is edited and write_manifest is run over the result, so the
+  # manifest records the edit; a file listed in the manifest and absent from
+  # the source is a file created here and recorded the same way; and a source
+  # file the manifest never listed is one line cut out of the manifest.
+  printf '%s\n' "A line the kit source does not have." >> "$manual"
+  printf '%s\n' "A file the kit source does not have." > "$scratch/.claude/skills/apply/ghost.md"
+  write_manifest "$scratch"
+  grep -v ' docs/manuals/graphify.md$' "$manifest" > "$manifest.cut"
+  mv "$manifest.cut" "$manifest"
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  # Restored before the assertions, so a red leaves the tree as check 3 needs
+  # it. write_manifest is deterministic over the same tree, so what it writes
+  # here is byte for byte what the install wrote.
+  cp "$KIT_DIR/manuals/focus.md" "$manual"
+  rm -f "$scratch/.claude/skills/apply/ghost.md"
+  write_manifest "$scratch"
+  for expected in "docs/manuals/focus.md behind the kit source (run focus-kit update)" \
+                  ".claude/skills/apply/ghost.md behind the kit source (run focus-kit update)" \
+                  "docs/manuals/graphify.md behind the kit source (run focus-kit update)"; do
+    line="$(warn "$expected")"
+    printf '%s\n' "$out" | grep -qF -- "$line" || {
+      printf '%s\n' "$out"
+      die "check 2: doctor did not report $expected in the scratch repository"
+    }
+  done
+  # The green version line stands down while a file is behind: green means the
+  # number and the content both. An if and not an && list, because here the
+  # grep failing is the green case (line 716 above, same reason).
+  line="$(ok "kit version $KIT_VERSION")"
+  if printf '%s\n' "$out" | grep -qF -- "$line"; then
+    printf '%s\n' "$out"
+    die "check 2: doctor printed the green version line with a kit-owned file behind the kit source"
+  fi
+  # And the two negatives that say the compare is against the manifest and not
+  # against the file on disk: the manual was edited, and because the manifest
+  # records the edit it is behind and not drift, so the drift pass stays green.
+  line="$(warn "docs/manuals/focus.md edited locally (focus-kit update overwrites it)")"
+  if printf '%s\n' "$out" | grep -qF -- "$line"; then
+    printf '%s\n' "$out"
+    die "check 2: doctor called a file its own manifest agrees with edited locally"
+  fi
+  line="$(ok "kit-owned files as install wrote them")"
+  printf '%s\n' "$out" | grep -qF -- "$line" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor reported drift on a scratch repository that only its source had moved past"
+  }
   # The Global skill (docs/03-Domain.md), four doctor runs against a fake home
   # and a fake graphify on PATH: every line the state table can print, on any
   # machine, with no network, without graphify and without touching the real

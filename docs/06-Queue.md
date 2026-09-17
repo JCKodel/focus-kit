@@ -192,7 +192,7 @@ about brownfield repositories is untested.
                               no to at least one practice each, so the first branch was never taken,
                               and the disclaimer was not in what any of them captured. One scratch
                               answering yes four times closes both
-[>] doctor-sees-an-unbumped-change
+[x] doctor-sees-an-unbumped-change
                               a target can hold a kit-owned file that differs from the kit source while
                               doctor reports everything green, because the version compare is by number
                               and the drift compare is against the manifest that install itself wrote:
