@@ -21,8 +21,5 @@
     "deny": [
       "Bash(rm -rf /*)"
     ]
-  },
-  "enabledMcpjsonServers": [
-    "graphify"
-  ]
+  }
 }

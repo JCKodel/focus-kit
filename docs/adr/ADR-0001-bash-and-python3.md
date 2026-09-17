@@ -38,6 +38,10 @@ Nothing else is a dependency of the kit. `curl` and `git` are assumed.
 into the target repository, and the target keeps no reference to either
 except the `graphify-mcp` line in its `.mcp.json`.
 
+**2026-09-17, `mcp-leaves-the-baseline`:** that last reference is gone. The
+kit no longer writes `.mcp.json` and installs graphify without the `mcp`
+extra, so a target now keeps no reference to either dependency at all.
+
 Node is not required by the kit. jq is not used: it would add a dependency
 to save a few lines of the python3 that is already there.
 

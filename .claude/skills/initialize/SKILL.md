@@ -156,8 +156,8 @@ option whenever you have one. Suggested rounds:
 After the rounds, still ensure the graph, the same way: follow
 `docs/manuals/graphify.md` §Ensuring the graph, which asks the person before
 anything is billed and installs the post-commit hook. The docs you are about
-to write are content too, and the graph is what the MCP server in
-`.mcp.json` reads from the next session on.
+to write are content too, and the graph is what `/propose` and `/apply` read
+from the next session on.
 
 ## Step 2: write the documents
 

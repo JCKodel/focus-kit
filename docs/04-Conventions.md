@@ -51,11 +51,11 @@ is scoped to authored paths rather than given exceptions
 Beyond that, the copy rules this project needs:
 
 * **A terminal line picks one of four shapes.** `say`, `ok`, `warn`, `die`
-  (`bin/focus-kit:47`). Never a bare `echo` or `printf` for a message a
+  (`bin/focus-kit:46`). Never a bare `echo` or `printf` for a message a
   person reads. The shape carries the meaning, so a message whose shape is
   wrong lies even when its words are right.
 * **A `warn` says what to do next.** "uv missing" is half a message; the line
-  adds the command that puts it right. Compare `bin/focus-kit:373`, and every
+  adds the command that puts it right. Compare `bin/focus-kit:364`, and every
   other warn of `doctor` with it: a person reading one `!` line, without the
   rest of the output, knows what to type.
 * **A `die` names the thing that is missing, not the step that failed.**
@@ -64,7 +64,7 @@ Beyond that, the copy rules this project needs:
   rule: `check 6: .claude/skills differs from skills (run focus-kit install
   .)` names the thing and what fixes it, not the step.
 * **The help text is the script's own header.** `--help` prints it through
-  `awk` (`bin/focus-kit:878`), by a rule and not a range: the shebang is
+  `awk` (`bin/focus-kit:905`), by a rule and not a range: the shebang is
   skipped, then every consecutive line beginning with `#` is printed until
   the first line that does not, each one losing its `#` and one following
   space. A bare `#` becomes an empty line, which is how the header's blank
@@ -107,7 +107,7 @@ about instead:
 
 * **bash 3.2 or it does not ship.** No associative arrays, no `mapfile`, no
   `${var,,}`, no `readlink -f`. macOS ships bash 3.2 and the script runs
-  there unchanged. The symlink resolution loop at `bin/focus-kit:38` exists
+  there unchanged. The symlink resolution loop at `bin/focus-kit:37` exists
   for exactly this reason.
 * **`set -euo pipefail`, and every variable expansion quoted.** Paths in
   this project contain spaces often enough (`/Volumes/Data/...` does not,

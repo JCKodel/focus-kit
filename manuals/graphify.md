@@ -25,7 +25,6 @@ seen.
 |---|---|---|
 | `graphify` | the CLI: build, update, query, path, explain | installed by `focus-kit install` as a uv tool |
 | `/graphify` | the Claude Code skill that drives the CLI | `~/.claude/skills/graphify/` (global, installed by the kit) |
-| MCP server | lets the agent query the graph without shell calls | `.mcp.json`, command `graphify-mcp graphify-out/graph.json` |
 | post-commit hook | rebuilds the graph after every commit, no LLM needed | `.git/hooks/post-commit`, installed by `/initialize`, ensured by `/propose` and `/apply` |
 | `graphify-out/` | `graph.json` (the graph, stamped with the commit it was built from), `GRAPH_REPORT.md` (plain-language map), `graph.html` (interactive) | not versioned; rebuilt on demand by `/propose` and `/apply` |
 
@@ -223,9 +222,6 @@ on graphify 0.9.63. An older graphify that keeps them needs a full rebuild.
 
 ## Rules
 
-* `.mcp.json` names the server by executable (`graphify-mcp`), never by an
-  absolute path. A path to one machine's Python breaks on the next machine
-  and the server silently fails to connect.
 * The corpus is what `.gitignore` and `.graphifyignore` leave. A question
   the graph answers badly is often a corpus question first, not a query
   question (§What the graph leaves out).
@@ -235,27 +231,15 @@ on graphify 0.9.63. An older graphify that keeps them needs a full rebuild.
 
 ## Troubleshooting
 
-* **MCP server fails to connect at session start.** This is the normal
-  first session in a clone, not an accident: `graphify-out/graph.json` is
-  not versioned and does not exist yet. §Ensuring the graph is what fixes
-  it, and `/propose` and `/apply` run it on their own. The server connects
-  from the next session on. If it still fails once the graph is there, two
-  causes are left: `graphify-mcp` is not on PATH, or `.claude/settings.json`
-  does not enable the server, which is what a file edited by hand or written
-  before the kit arrived looks like. `focus-kit doctor` says which of the two
-  it is, and `focus-kit update` merges the entry back.
-* **`graphify-mcp` starts and dies with `ImportError: mcp not installed`.**
-  graphify is installed without its `mcp` extra, which is the case on every
-  machine whose graphify predates that version of the kit. `focus-kit update`
-  fixes it: the dependency phase reinstalls `graphifyy[mcp]`, and
-  `focus-kit doctor` says so before you try.
-* **`graphify-mcp` starts and dies with `ImportError: cannot import name
-  'AnyUrl' from 'mcp.types'`.** The extra is there and graphify is too old
-  for it. graphifyy asks for `mcp` with no upper bound, so adding the extra
-  to a graphify installed long ago pairs old code with the current MCP SDK.
-  `uv tool upgrade graphifyy` fixes it, which is what the `ok` line of the
-  dependency phase already suggests. The kit never runs it: an upgrade is
-  the person's call, not a side effect of installing the kit.
+* **`doctor` says a file still declares or enables the graphify server.** An
+  earlier version of the kit merged the graphify MCP server into `.mcp.json`
+  and enabled it in `.claude/settings.json`. This version ships neither, and
+  a merge never removes what it once added, so both entries stay until you
+  take them out. Delete the `graphify` entry under `mcpServers`, and the file
+  itself when nothing else is in it; delete the `graphify` item under
+  `enabledMcpjsonServers`, and the key itself when the list is then empty.
+  Nothing in the kit reads either one: the three commands drive the graphify
+  CLI through the shell.
 * **Every graphify command warns that the skill is from an older version.**
   The global `/graphify` skill under `~/.claude/skills/graphify/` was written
   by a graphify older than the one installed, and graphify says so on every

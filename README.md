@@ -69,7 +69,6 @@ This installs the dependencies on the machine (uv, graphify, the global
 | `.claude/skills/{initialize,propose,apply}/` | kit | the three commands; overwritten on update |
 | `docs/manuals/{process,focus,graphify}.md` | kit | the manuals; overwritten on update |
 | `.claude/skills/.focus-kit-manifest` | kit | what the install wrote, so `doctor` can tell an edited file from a stale one |
-| `.mcp.json` | merged | the graphify MCP server, by executable name |
 | `.claude/settings.json` | merged | baseline permissions: git commit and push always ask |
 | `.gitignore` | appended once | session settings, graphify cost and machine paths |
 | `.graphifyignore` | appended once | keeps the kit's own skills and manuals out of your graph |

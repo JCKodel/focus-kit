@@ -102,12 +102,12 @@ about brownfield repositories is untested.
                               the six kit-owned files out of the graph; measured before, 214 of
                               the first target's 498 nodes and 139 of this repository's 487 came from the
                               kit's own files, and a query for a rule came back as manual headings
-[ ] mcp-leaves-the-baseline   the graphify MCP server is declared in .mcp.json, spawned every session and
+[x] mcp-leaves-the-baseline   the graphify MCP server is declared in .mcp.json, spawned every session and
                               named by nothing the kit ships: the three skills call the CLI, and 38
                               sessions here plus 347 in two targets made zero MCP calls; the server, its
                               baseline, the enabledMcpjsonServers entry, the mcp extra and the doctor and
                               check 2 lines that read them back leave, twelve places
-[ ] graph-answers-structure   the skills ask the graph "what this delivery touches" and expect slices,
+[>] graph-answers-structure   the skills ask the graph "what this delivery touches" and expect slices,
                               entities and rules; measured, that question comes back as every function of
                               the one code file plus headings, while `graphify path` answers a call in one
                               hop, and 18 of 21 consulting sessions grepped first anyway; /initialize brown
@@ -238,12 +238,16 @@ overwrites them like the skills.
   their first line; the skills cannot, because that line is YAML
   frontmatter. Someone editing a skill inside a target gets no warning that
   the next update erases it (`docs/adr/ADR-0002-file-ownership.md`).
-* `focus-kit uninstall`: remove the kit-owned files and unmerge the two JSON
-  keys, so a repository can stop using the kit without unpicking it by hand.
-* The `install` warn `graphify-mcp not on PATH; the MCP server in .mcp.json
-  needs it` names why and not what fixes it (open a new shell), against
-  `docs/04-Conventions.md` §1. Left out of `every-warn-names-its-fix`, which
-  is about `doctor`.
+* `focus-kit uninstall`: remove the kit-owned files and unmerge the one JSON
+  key the settings baseline adds, so a repository can stop using the kit
+  without unpicking it by hand. `mcp-leaves-the-baseline` is the first time
+  the question was real and the answer was a `warn` and not a mechanism: a
+  second entry the kit stops shipping is what earns this line its delivery.
+* The script's header comment does not name `.graphifyignore` among what
+  install writes, although `graph-ignores-the-kit` made it one of the seven.
+  `--help` prints that header verbatim, so the usage text is one line short
+  of the truth. Found by `mcp-leaves-the-baseline`, which edited the same
+  block and left it alone rather than widen its scope.
 * Distribution beyond clone and symlink: a curl installer, or a package.
   Blocked on open decision 3.
 * The gitignore fragment in a target that installed an earlier version.

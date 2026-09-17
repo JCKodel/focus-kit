@@ -9,15 +9,14 @@
 #   focus-kit selftest         run the six checks that say the kit is deliverable
 #
 # What install does, in order:
-#   1. dependencies on this machine: uv, then graphify with its mcp extra
-#      (uv tool), then the global graphify skill for Claude Code, installed
-#      when absent and refreshed when it is older than the package
+#   1. dependencies on this machine: uv, then graphify (uv tool), then the
+#      global graphify skill for Claude Code, installed when absent and
+#      refreshed when it is older than the package
 #      (graphify install --platform claude)
 #   2. in the target repository:
 #      .claude/skills/{initialize,propose,apply}   copied, overwriting (kit-owned)
 #      docs/manuals/{process,focus,graphify}.md    copied, overwriting (kit-owned)
 #      .claude/skills/.focus-kit-manifest          what install wrote, for doctor (kit-owned)
-#      .mcp.json                                   graphify server merged in
 #      .claude/settings.json                       baseline permissions merged in
 #      .gitignore                                  kit fragment appended once
 #      work/done/.gitkeep                          created if absent
@@ -118,24 +117,25 @@ global_skill_state() {
   if [ "$lower" = "$skill" ]; then echo "older $skill $package"; else echo "newer $skill $package"; fi
 }
 
-# graphify is installed with its mcp extra, always. Without the extra
-# graphify-mcp starts and dies with "ImportError: mcp not installed", so the
-# server declared in .mcp.json never connects. The install runs
-# unconditionally rather than behind a "command -v graphify": that is the only
-# way a machine whose graphify predates the extra ever gains it. uv makes the
-# step idempotent, because "uv tool install" on a tool already installed with
-# the same requirement prints "is already installed" and changes nothing.
+# graphify is installed as a uv tool, plain. The mcp extra left with
+# mcp-leaves-the-baseline: nothing the kit ships calls the MCP server, so the
+# kit no longer installs what it would need. The install runs unconditionally
+# rather than behind a "command -v graphify", because that is the only way a
+# machine that installed graphifyy[mcp] under an earlier kit ever reaches the
+# plain requirement: uv reinstalls when the requirement differs and prints
+# "is already installed" when it does not. It does not upgrade a graphify
+# that is merely old, which is why the ok line names uv tool upgrade.
 ensure_graphify() {
   local out
-  if out="$(uv tool install 'graphifyy[mcp]' 2>&1)"; then
+  if out="$(uv tool install graphifyy 2>&1)"; then
     case "$out" in
       *"is already installed"*) ;;
-      *) say "  installing graphify with the mcp extra (uv tool install 'graphifyy[mcp]')"
+      *) say "  installing graphify (uv tool install graphifyy)"
          printf '%s\n' "$out" ;;
     esac
   else
     printf '%s\n' "$out"
-    die "graphify could not be installed (uv tool install 'graphifyy[mcp]')"
+    die "graphify could not be installed (uv tool install graphifyy)"
   fi
   export PATH="$HOME/.local/bin:$PATH"
   command -v graphify >/dev/null 2>&1 || die "graphify installed but not on PATH; open a new shell and run again"
@@ -143,8 +143,7 @@ ensure_graphify() {
   # as it comes and does not repeat the name. Its stderr is dropped: graphify
   # writes its own notices there, and a line the kit did not shape has no
   # business in the middle of the dependency block (docs/04-Conventions.md §1).
-  ok "$(graphify --version 2>/dev/null) with the mcp extra (to upgrade: uv tool upgrade graphifyy)"
-  command -v graphify-mcp >/dev/null 2>&1 || warn "graphify-mcp not on PATH; the MCP server in .mcp.json needs it"
+  ok "$(graphify --version 2>/dev/null) (to upgrade: uv tool upgrade graphifyy)"
   # The global /graphify skill for Claude Code: installed when absent,
   # refreshed when it is older than the package or carries no stamp, left
   # alone when it is newer, because graphify's own installer would downgrade
@@ -183,7 +182,6 @@ copy_tree() { # src dst  (overwrite, kit-owned)
 # holding a quote, a backslash, a \uXXXX escape or the sequence ''' is data
 # and never syntax. The rule, for every key the baseline holds, in this order:
 #
-#   directly under mcpServers   the baseline's entry, replacing the file's whole
 #   a key the file lacks        the baseline's value
 #   an object on both sides     the two merged key by key, by this same rule
 #   a list on both sides        the file's list, then every baseline item absent
@@ -203,14 +201,12 @@ merge_json() { # file  baseline, both paths
   $py - "$file" "$baseline" <<'PY'
 import json, sys
 
-def merge(d, b, parent=None):
+def merge(d, b):
     for k, v in b.items():
-        if parent == "mcpServers":
-            d[k] = v
-        elif k not in d:
+        if k not in d:
             d[k] = v
         elif isinstance(d[k], dict) and isinstance(v, dict):
-            merge(d[k], v, k)
+            merge(d[k], v)
         elif isinstance(d[k], list) and isinstance(v, list):
             d[k].extend(x for x in v if x not in d[k])
         else:
@@ -325,10 +321,6 @@ install_repo() {
     ok "work/done/"
   fi
 
-  # .mcp.json: graphify server, by executable name, never by absolute path
-  merge_json "$target/.mcp.json" "$KIT_DIR/config/mcp.baseline.json"
-  ok ".mcp.json (graphify server)"
-
   # .claude/settings.json: baseline permissions, merged (never removes what is there)
   merge_json "$target/.claude/settings.json" "$KIT_DIR/config/settings.baseline.json"
   ok ".claude/settings.json (baseline permissions merged)"
@@ -368,20 +360,10 @@ doctor() {
   local target="${1:-.}"
   target="$(cd "$target" && pwd)"
   say "focus-kit $KIT_VERSION doctor: $target"
-  # focus-kit update is the fix named by the three tool lines because it is the
+  # focus-kit update is the fix named by the two tool lines because it is the
   # command that installs both: ensure_uv and ensure_graphify run inside it.
   command -v uv >/dev/null 2>&1        && ok "uv"          || warn "uv missing (run focus-kit update)"
   command -v graphify >/dev/null 2>&1  && ok "graphify"    || warn "graphify missing (run focus-kit update)"
-  # graphify-mcp is an entry point of graphifyy, so it is on PATH whether or
-  # not the mcp extra is there. What decides is the extra, and uv tool list is
-  # the only place that records it.
-  if ! command -v graphify >/dev/null 2>&1; then
-    warn "graphify-mcp missing (run focus-kit update)"
-  elif uv tool list --show-extras 2>/dev/null | grep -q '^graphifyy .*\[extras: mcp\]'; then
-    ok "graphify-mcp (mcp extra)"
-  else
-    warn "graphify-mcp installed without the mcp extra (run focus-kit update)"
-  fi
   # The Global skill against the package, one line whatever the state. On a
   # machine without graphify the line above already says so, and this one
   # reports the skill as of unknown version, which is what it is.
@@ -436,33 +418,39 @@ doctor() {
 "
     fi
   done
-  # The two Merged files (docs/03-Domain.md), in install order, each read back
-  # for the entry its baseline put there. Presence is not the question: an
-  # empty .mcp.json and a .claude/settings.json that never enables the server
-  # both exist and both leave the session without the graph. Neither path goes
-  # into $missing: merged files are not in the manifest, so the drift pass has
-  # nothing to say about them twice.
+  # The one Merged file (docs/03-Domain.md), read back for what its baseline
+  # put there. Presence is not the question: a .claude/settings.json that reads
+  # {} exists and still leaves every permission unasked for. Its path does not
+  # go into $missing: a merged file is not in the manifest, so the drift pass
+  # has nothing to say about it twice.
   #
   # A fixed-string grep behind an -f guard, because grep on an absent file
   # exits 2 and prints, and a grep and not python, because the failure to
   # catch is python missing: that is the choice check 2 of selftest made and
-  # the reason is the same one. The strings are a heuristic, they cannot see
-  # under which key "graphify" sits, and that is accepted. No without_cr: a
+  # the reason is the same one. The string is a heuristic, it cannot see under
+  # which key the permission sits, and that is accepted. No without_cr: a
   # carriage return at the end of a line does not touch a substring inside it.
-  if [ ! -f "$target/.mcp.json" ]; then
-    warn ".mcp.json missing (run focus-kit update)"
-  elif ! grep -qF -- '"graphify-mcp"' "$target/.mcp.json"; then
-    warn ".mcp.json has no graphify server (run focus-kit update)"
-  else
-    ok ".mcp.json"
-  fi
   if [ ! -f "$target/.claude/settings.json" ]; then
     warn ".claude/settings.json missing (run focus-kit update)"
-  elif ! grep -qF -- '"enabledMcpjsonServers"' "$target/.claude/settings.json" ||
-       ! grep -qF -- '"graphify"' "$target/.claude/settings.json"; then
-    warn ".claude/settings.json does not enable the graphify server (run focus-kit update)"
+  elif ! grep -qF -- '"Bash(graphify *)"' "$target/.claude/settings.json"; then
+    warn ".claude/settings.json lacks the baseline permissions (run focus-kit update)"
   else
     ok ".claude/settings.json"
+  fi
+  # Leftover (docs/03-Domain.md): what an earlier kit merged and this one no
+  # longer ships. Merged is additive, so update leaves both entries where they
+  # are and only a person removes them; doctor names the removal and the
+  # section that explains it. Same -f guard and same fixed-string heuristic as
+  # the block above, for the same reasons. The quotes stay inside the pattern:
+  # a bare graphify would match the "Bash(graphify *)" permission every target
+  # has.
+  if [ -f "$target/.mcp.json" ] && grep -qF -- '"graphify-mcp"' "$target/.mcp.json"; then
+    warn ".mcp.json still declares the graphify server (remove its graphify entry by hand; docs/manuals/graphify.md §Troubleshooting)"
+  fi
+  if [ -f "$target/.claude/settings.json" ] &&
+     grep -qF -- '"enabledMcpjsonServers"' "$target/.claude/settings.json" &&
+     grep -qF -- '"graphify"' "$target/.claude/settings.json"; then
+    warn ".claude/settings.json still enables the graphify server (remove graphify from enabledMcpjsonServers by hand; docs/manuals/graphify.md §Troubleshooting)"
   fi
   # Drift (docs/03-Domain.md): a kit-owned file that is not as install wrote
   # it. The question is only asked of a target that has a stamp, because a
@@ -555,7 +543,7 @@ check_install() { # scratch
   # reporter cannot drift.
   for expected in /initialize /propose /apply \
                   docs/manuals/process.md docs/manuals/focus.md \
-                  docs/manuals/graphify.md .mcp.json .claude/settings.json \
+                  docs/manuals/graphify.md .claude/settings.json \
                   "kit version $KIT_VERSION" \
                   "kit-owned files as install wrote them"; do
     line="$(ok "$expected")"
@@ -585,26 +573,66 @@ check_install() { # scratch
       die "check 2: doctor did not report $expected in the scratch repository"
     }
   done
-  # What the two JSON merges wrote is asserted through doctor and not read
-  # here: the two green lines above already say that each merged file carries
-  # the entry its baseline put there, and this probe proves the other branch.
-  # Both files are moved aside and rewritten as {}, which is what a target
-  # holds when the merge never ran, and one doctor run has to name both. The
-  # move back is byte-exact, because check 3 snapshots this scratch next; the
-  # two files wait beside it, as the fake home does, and the trap removes
+  # What the install did not write. Absence is what mcp-leaves-the-baseline
+  # ships, and a green doctor cannot say it: no line names a file the kit
+  # stopped touching, so the two assertions are made here, against the tree.
+  [ ! -e "$scratch/.mcp.json" ] || \
+    die "check 2: the install wrote .mcp.json into the scratch repository"
+  if grep -qF -- '"enabledMcpjsonServers"' "$scratch/.claude/settings.json"; then
+    printf '%s\n' "$(cat "$scratch/.claude/settings.json")"
+    die "check 2: the settings baseline put enabledMcpjsonServers into the scratch repository"
+  fi
+  # What the JSON merge wrote is asserted through doctor and not read here:
+  # the green line above already says the merged file carries what its baseline
+  # put there, and this probe proves the other branch. The file is moved aside
+  # and rewritten as {}, which is what a target holds when the merge never ran.
+  # The move back is byte-exact, because check 3 snapshots this scratch next;
+  # the file waits beside it, as the fake home does, and the trap removes
   # whatever a red left there.
-  mv "$scratch/.mcp.json"             "$SELFTEST_DIR/mcp.json.aside"
   mv "$scratch/.claude/settings.json" "$SELFTEST_DIR/settings.json.aside"
-  printf '%s\n' '{}' > "$scratch/.mcp.json"
   printf '%s\n' '{}' > "$scratch/.claude/settings.json"
   out="$(doctor "$scratch" 2>&1)" || {
     printf '%s\n' "$out"
     die "check 2: doctor failed in the scratch repository"
   }
-  mv "$SELFTEST_DIR/mcp.json.aside"      "$scratch/.mcp.json"
   mv "$SELFTEST_DIR/settings.json.aside" "$scratch/.claude/settings.json"
-  for expected in ".mcp.json has no graphify server (run focus-kit update)" \
-                  ".claude/settings.json does not enable the graphify server (run focus-kit update)"; do
+  line="$(warn ".claude/settings.json lacks the baseline permissions (run focus-kit update)")"
+  printf '%s\n' "$out" | grep -qF -- "$line" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor did not report a settings file without the baseline permissions in the scratch repository"
+  }
+  # The Leftover pass (docs/03-Domain.md), against the shape an earlier kit
+  # left behind: an .mcp.json declaring the server and a settings file
+  # enabling it. One doctor run has to name both, each with the hand removal,
+  # because update never takes either away. The .mcp.json is removed and not
+  # moved back, since the install never wrote one; the settings file goes
+  # aside and returns byte-exact, for check 3.
+  mv "$scratch/.claude/settings.json" "$SELFTEST_DIR/settings.json.aside"
+  cat > "$scratch/.mcp.json" <<'JSON'
+{
+  "mcpServers": {
+    "graphify": {
+      "command": "graphify-mcp",
+      "args": ["graphify-out/graph.json"]
+    }
+  }
+}
+JSON
+  cat > "$scratch/.claude/settings.json" <<'JSON'
+{
+  "enabledMcpjsonServers": [
+    "graphify"
+  ]
+}
+JSON
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  rm -f "$scratch/.mcp.json"
+  mv "$SELFTEST_DIR/settings.json.aside" "$scratch/.claude/settings.json"
+  for expected in ".mcp.json still declares the graphify server (remove its graphify entry by hand; docs/manuals/graphify.md §Troubleshooting)" \
+                  ".claude/settings.json still enables the graphify server (remove graphify from enabledMcpjsonServers by hand; docs/manuals/graphify.md §Troubleshooting)"; do
     line="$(warn "$expected")"
     printf '%s\n' "$out" | grep -qF -- "$line" || {
       printf '%s\n' "$out"

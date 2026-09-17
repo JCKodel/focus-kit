@@ -58,6 +58,12 @@ do not survive a clone, which is part of the same price. The MCP server
 fails to connect in that first session, before the graph exists, and the
 manual now says this is the normal first session rather than a fault.
 
+**2026-09-17, `mcp-leaves-the-baseline`:** the kit stopped shipping that
+server, so this cost is gone with it. Nothing the kit installs reads
+`graphify-out/graph.json` at session start; `/propose` and `/apply` build or
+update the graph when they run, and a clone's first session pays the
+extraction and nothing else.
+
 Forbidden: versioning a subset of `graphify-out/` to shrink the diff. It
 leaves the dirty worktree exactly as it is, which was the problem.
 

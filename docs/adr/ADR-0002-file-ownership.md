@@ -39,6 +39,13 @@ category determines the write:
   closing message to print (`bin/focus-kit:196`).
 * **Merged**, written with `merge_json` (`bin/focus-kit:117`): `.mcp.json`
   and `.claude/settings.json`. Keys are added; nothing is ever removed.
+
+  **2026-09-17, `mcp-leaves-the-baseline`:** `.mcp.json` is no longer one of
+  them; `.claude/settings.json` is the only merged file, and the carve-out
+  that replaced the `mcpServers` entry whole left with the baseline that
+  needed it. "Nothing is ever removed" is what makes an entry the kit stops
+  shipping survive every `update`, which is why `doctor` gained the Leftover
+  warns and why the person, not the CLI, takes it out.
 * **Appended once**, guarded by a marker: `.gitignore`, guarded by
   `# --- focus-kit ---`.
 

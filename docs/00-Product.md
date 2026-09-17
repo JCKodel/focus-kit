@@ -2,7 +2,7 @@
 
 **Project:** focus-kit
 **Status:** active
-**Last updated:** 2026-09-16
+**Last updated:** 2026-09-17
 
 ---
 
@@ -88,18 +88,25 @@ personal data.
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:860`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:906`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
-On the machine: uv, then graphify with its `mcp` extra as a uv tool, then the
-global `/graphify` skill for Claude Code. uv is skipped when already present;
-graphify is reinstalled on every run and uv decides whether that changes
-anything, which is how a machine that installed graphify before the extra
-existed gains it. The global skill is installed when absent and **refreshed
+On the machine: uv, then graphify as a uv tool, then the global `/graphify`
+skill for Claude Code. uv is skipped when already present; graphify is asked
+for on every run and uv decides whether that changes anything, which is how a
+machine that installed `graphifyy[mcp]` under an earlier kit reaches the
+plain requirement. It is not an upgrade: uv reinstalls when the requirement
+differs and says "is already installed" when it does not, and moving an old
+graphify forward is `uv tool upgrade graphifyy`, which the kit names and
+never runs. The install asks for the package plain because the `mcp` extra
+left with `mcp-leaves-the-baseline`: nothing the kit ships calls the MCP
+server it fed, and a machine that wants `graphify-mcp` for its own use
+installs the extra itself. The global skill is
+installed when absent and **refreshed
 when it is older than the graphify package**, or when it carries no stamp
 saying which version wrote it; a skill newer than the package is left alone,
 because graphify's own installer would downgrade it, and both commands say so
-and name `uv tool upgrade graphifyy` (`bin/focus-kit:156`).
+and name `uv tool upgrade graphifyy` (`bin/focus-kit:154`).
 
 The refresh was once withheld, on the grounds that graphify's installer also
 appends a section to the user's `~/.claude/CLAUDE.md` and that repeating it
@@ -111,8 +118,8 @@ graphify prints a warning on **every** invocation while the skill is stale,
 and the kit printed a green line over it.
 
 In the repository: the three skills and the three manuals are copied over
-whatever is there; `.mcp.json` and `.claude/settings.json` are merged into,
-never replaced; the `.gitignore` and `.graphifyignore` fragments are each
+whatever is there; `.claude/settings.json` is merged into, never replaced;
+the `.gitignore` and `.graphifyignore` fragments are each
 appended once, the second one keeping the kit's own skills and manuals out
 of the graph, so a question asked of a target's graph comes back as the
 target's code and not as the kit's documentation; `work/done/` is created if

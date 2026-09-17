@@ -104,17 +104,29 @@ It runs six checks, in this order, and stops at the first red:
    line by calling `ok`: they carry the command that fixes each one
    (`docs/04-Conventions.md` §1), and a parenthesis edited in `doctor` and
    nowhere else has to turn the check red.
-   The **two merged files** are `doctor`'s to read, not the check's:
-   `doctor` asks `.mcp.json` for `"graphify-mcp"` and `.claude/settings.json`
-   for `"enabledMcpjsonServers"` and `"graphify"` with a `grep -qF` behind an
-   `-f` guard, and the check asserts its two lines the way it asserts every
+   The **merged file** is `doctor`'s to read, not the check's: `doctor` asks
+   `.claude/settings.json` for `"Bash(graphify *)"` with a `grep -qF` behind
+   an `-f` guard, and the check asserts its line the way it asserts every
    other, so the assertion and the reporter cannot drift. The reader is a
    `grep` and not python because the failure it exists to catch is python
-   missing: an empty `.mcp.json` satisfies a check that only asks whether the
-   file is there. Then one probe for the other branch: both files are moved
-   aside, rewritten as `{}`, and one `doctor` run must name both, which
-   proves the warn of each on any machine. Both are moved back byte-exact,
-   because check 3 installs into this same scratch.
+   missing: a settings file that reads `{}` satisfies a check that only asks
+   whether the file is there. Then one probe for the other branch: the file
+   is moved aside, rewritten as `{}`, and one `doctor` run must warn that the
+   baseline permissions are missing, which proves that warn on any machine.
+   It is moved back byte-exact, because check 3 installs into this same
+   scratch.
+   Two assertions are the check's own, because no line of `doctor` can make
+   them: after the install, `.mcp.json` must not exist and
+   `enabledMcpjsonServers` must not be in the settings file. Absence is what
+   `mcp-leaves-the-baseline` shipped, and nothing reports a file the kit
+   stopped touching.
+   Then the **Leftover** probe, the shape an earlier kit left: an `.mcp.json`
+   declaring the graphify server and a settings file enabling it. One
+   `doctor` run must carry both warns word for word, each naming the hand
+   removal and `docs/manuals/graphify.md` §Troubleshooting, because `update`
+   removes neither. The settings file goes aside and comes back byte-exact;
+   the `.mcp.json` is deleted rather than restored, since the install never
+   wrote one and check 3 snapshots this scratch next.
    Then one probe: the scratch's `.focus-kit-version` is rewritten as CRLF,
    the way a Windows clone with `core.autocrlf=true` checks it out, `doctor`
    runs again and must still print the same green version line; the stamp is
