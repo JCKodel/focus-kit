@@ -176,14 +176,14 @@ about brownfield repositories is untested.
                               docs/01 §3 that /propose and /apply read for which pieces a slice has and
                               what they may assume, FOCUS is the name for saying yes to all of them, and
                               it leaves the house rules for the manual that teaches it
-[>] language-question-says-what-it-governs
+[x] language-question-says-what-it-governs
                               /initialize Step 0 offers English and Portuguese and says in the option
                               text only that identifiers stay in English; nothing tells the person that
                               the answer governs documents, delivery pages and commit messages and
                               nothing else, and that the conversation may run in another language, the
                               German developer on a project that requires English; the question says so
                               in its own text, and any language typed under Other is taken as written
-[ ] practice-questions-all-yes
+[>] practice-questions-all-yes
                               two clauses of focus-is-asked-not-imposed shipped without a run behind
                               them: the CLAUDE.md template's FOCUS line, which replaces the four
                               practice lines when all four answers are the manual's, and the
@@ -205,6 +205,16 @@ about brownfield repositories is untested.
                               mid-delivery, and the fix is doctor's alone: the kit source is on the
                               machine when doctor runs in this repository, and never is when it runs in
                               someone else's, so the line says which of the two it can answer
+[ ] review-run-finds-a-translated-practice-table
+                              /initialize detects a docs/01 §3 that already answered the four practices
+                              by the literal header row Practice | Answer | Here it is, and the Language
+                              section tells the same run to translate table columns as it fills the
+                              templates. On the greenfield proof of language-question-says-what-it-governs,
+                              2026-09-17, a run in German wrote Praktik | Antwort | Hier ist sie, so a
+                              later review run in that repository will not recognize the table and will
+                              ask the four Practice questions again. The two rules contradict each other
+                              and one of them gives way: a marker that survives translation, or a header
+                              the translation rule excepts
 ```
 
 ## Milestone 3: the kit explains itself

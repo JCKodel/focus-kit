@@ -101,7 +101,7 @@ appears in a delivery.
 
 | Term | Code | Short meaning |
 |---|---|---|
-| Documentation language | (declared in three places) | The language the prose is written in: `docs/00` to `06`, the ADRs, `work/<slug>.md`, commit messages. Chosen once by `/initialize` and declared on the language line of `CLAUDE.md`, in `docs/04-Conventions.md` §1 and in `docs/05-Process.md` §0. For this repository it is English. |
+| Documentation language | (declared in three places) | The language the prose is written in: `docs/00` to `06`, the ADRs, `CLAUDE.md`, `work/<slug>.md`, `work/done/<slug>.md`, commit messages. Chosen once by `/initialize` and declared on the language line of `CLAUDE.md`, in `docs/04-Conventions.md` §1 and in `docs/05-Process.md` §0. The question is written once in `skills/initialize/SKILL.md`, Step 0, and says in its own text what the answer governs, that the conversation is separate and that identifiers stay in English. For this repository it is English. |
 | Identifier | (always English) | A name in code, schema, API, file name or branch. Never follows the documentation language. |
 | Conversation language | (not recorded anywhere) | The language the person and the agent speak in. A third thing, tied to whoever is writing, and it has no effect on either of the two above. |
 | Em dash | `U+2014` | The character forbidden in any text a user reads. In this repository the rule is stricter than the house rule: no em dash anywhere at all, because the kit's own text sets the example (`CLAUDE.md`). It is named by its codepoint here, never written, so that the verify command's grep needs no exception. |

@@ -81,12 +81,29 @@ it shapes every document that follows. One `AskUserQuestion` carries both
 questions:
 
 1. **Kind of project.** Say which you detected and let them confirm.
-2. **Documentation language.** Offer English and Portuguese (Brazil) as
-   options; any other language the person names is valid. On a brownfield
-   repository, look first at `README*`, the existing `docs/` and
-   `git log --oneline -30`: if the prose there is already in one language,
-   offer that one first and say what you saw it in. Remind them, in the
-   option's description, that identifiers stay in English either way.
+2. **Documentation language.** Written here once and asked as written, the
+   question `Which language do the documents get written in? The answer
+   governs the prose of docs/00 to 06, the ADRs, CLAUDE.md, work/<slug>.md,
+   work/done/<slug>.md and the suggested commit messages, and nothing else:
+   this conversation runs in whichever language you write in, and
+   identifiers stay in English whatever you answer. Any other language is
+   valid: type it into the last option, Deutsch for example, and it is taken
+   as you write it.` and two options,
+   **English** and **Portuguese (Brazil)**, each description saying what the
+   documents read like in it. The person answering may be writing to you in
+   a third language, or working on a project that documents in one and talks
+   in another, and the question is the one place they learn that the two are
+   separate. A description carrying half of it leaves the run to improvise
+   the other half, which is why all three statements are in the question.
+
+   On a brownfield repository, look first at `README*`, the existing `docs/`
+   and `git log --oneline -30`: if the prose there is already in one
+   language, offer that one first and say in its description what you saw it
+   in. A language typed into the last option is taken as written: record it
+   in the three declarations below as the person typed it, with no
+   confirmation and no second question. The question names that option by
+   its place and not by a label, because Claude Code writes the label itself
+   and a person reading `Type something` does not read `Other`.
 
 On a **review** run, do not ask: read the declared language from
 `docs/05-Process.md` §0, the language line of `CLAUDE.md` or
