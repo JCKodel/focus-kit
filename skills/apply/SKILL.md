@@ -20,8 +20,13 @@ Implement `work/$ARGUMENTS.md` in this session, completely.
 4. `docs/manuals/focus.md`: the four pieces and the review rules. Every
    line of code you write is reviewable against that table.
 5. The slice you are touching. Ensure the graph first, per
-   `docs/manuals/graphify.md` §Ensuring the graph, then ask it
-   (`graphify query "<slice or entity>"`) and read the files it names.
+   `docs/manuals/graphify.md` §Ensuring the graph, then ask it `graphify
+   explain "<the slice's entry point or entity>"` and `graphify affected
+   "<the same>"`, and read the files the two answers name. Who calls, uses
+   or depends on a symbol is asked of the graph and never grepped. Say in
+   one line what you asked and what came back: `graph: explain "<node>"
+   named <n> files, affected "<node>" named <n>`, or `graph: no node named
+   "<node>"; reading the files the page names` when the graph has none.
 
 If the delivery contradicts a doc, stop and say which; the doc changes in
 the same delivery or the delivery is wrong. Do not resolve it silently.

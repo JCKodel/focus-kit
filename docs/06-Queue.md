@@ -107,7 +107,7 @@ about brownfield repositories is untested.
                               sessions here plus 347 in two targets made zero MCP calls; the server, its
                               baseline, the enabledMcpjsonServers entry, the mcp extra and the doctor and
                               check 2 lines that read them back leave, twelve places
-[>] graph-answers-structure   the skills ask the graph "what this delivery touches" and expect slices,
+[x] graph-answers-structure   the skills ask the graph "what this delivery touches" and expect slices,
                               entities and rules; measured, that question comes back as every function of
                               the one code file plus headings, while `graphify path` answers a call in one
                               hop, and 18 of 21 consulting sessions grepped first anyway; /initialize brown

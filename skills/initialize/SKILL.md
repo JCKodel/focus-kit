@@ -115,11 +115,12 @@ Then ensure the knowledge graph, following `docs/manuals/graphify.md`
 §Ensuring the graph to the letter. That is where the person is asked what an
 extraction may cost, and where the post-commit hook gets installed.
 
-When a graph came out of it, read `graphify-out/GRAPH_REPORT.md`: the god
-nodes and communities are your map of what the product is made of. Use
-`graphify query "<question>"` for anything the report leaves open, for
-example "what are the main entities and how do they relate" or "where do
-business rules live". When the answer was "Not now", there is no report:
+When a graph came out of it, read `graphify-out/GRAPH_REPORT.md` once: the
+god nodes and the community hubs are your map of what the product is made
+of. For each god node whose role the report does not make plain, run
+`graphify explain "<god node>"` and read what it is connected to.
+
+When the answer was "Not now", there is no report:
 keep reading the repository directly, as the seven points above already do,
 and say so.
 

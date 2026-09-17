@@ -13,10 +13,18 @@ nodes" are the few things everything depends on. The graph lives in
 
 An agent that starts a session knows nothing about the codebase. Without a
 map it greps, reads, and fills its context with files it did not need.
-With the graph it asks "where do business rules for orders live" and gets
-the slice, the use case and the repository in one answer. `/propose` uses
-it to find what a delivery touches; `/apply` uses it to load the right
-slice; `/initialize brown` uses it to describe a codebase it has never
+
+What the graph answers is structure, in three questions: what a node is
+connected to (`explain`), what depends on it and changes with it
+(`affected`), and how two nodes reach each other (`path`). Every answer
+carries the file and the line of each edge, because that is what the
+extraction found. What it does not answer is which rules apply: a rule is
+text, and the graph holds edges. Rules are in `docs/03-Domain.md` and in the
+manuals.
+
+So `/propose` asks what depends on what the delivery names; `/apply` asks
+the structure of the slice it is about to touch; `/initialize brown` reads
+the god nodes and the communities once, to describe a codebase it has never
 seen.
 
 ## The pieces
@@ -33,10 +41,12 @@ seen.
 ```
 /graphify                      # build or rebuild (asks nothing below graphify's own threshold)
 /graphify --update             # re-extract only changed files
-graphify query "<question>"    # broad context on a question
-graphify query "<q>" --dfs     # trace one path
-graphify path "A" "B"          # shortest path between two concepts
-graphify explain "X"           # plain-language explanation of one node
+graphify query "<question>"    # word-seeded traversal; headings on a prose corpus
+graphify query "<q>" --dfs     # word-seeded traversal, depth-first; headings on a prose corpus
+graphify explain "X"           # what X is connected to, file and line on every edge
+graphify affected "X"          # what depends on X, two hops
+graphify path "A" "B" --undirected   # the directed form misses a shared definer
+graphify god-nodes --top 10    # the hubs, without the report
 graphify hook status           # is the post-commit hook installed
 grep -o '"built_at_commit": "[0-9a-f]*"' graphify-out/graph.json   # which commit the graph describes
 ```
@@ -222,6 +232,9 @@ on graphify 0.9.63. An older graphify that keeps them needs a full rebuild.
 
 ## Rules
 
+* A Structure question goes to the graph and never to grep: who calls, uses
+  or depends on a symbol, and how two of them reach each other. A question
+  about text goes to grep. The graph never answers which rules apply.
 * The corpus is what `.gitignore` and `.graphifyignore` leave. A question
   the graph answers badly is often a corpus question first, not a query
   question (§What the graph leaves out).

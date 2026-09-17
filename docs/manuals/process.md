@@ -79,8 +79,9 @@ A conversation that ends in `work/<slug>.md`, one page, in the format
 * **States**, **Visual reference**, **Out of scope**, **Done when**.
 
 It reads the product, the domain, the queue and the deliveries in flight;
-it asks the graph what the delivery touches; it asks you whenever there is
-more than one reading; it puts its recommendation first. It writes no code.
+it asks the graph what depends on what the delivery names; it asks you
+whenever there is more than one reading; it puts its recommendation first.
+It writes no code.
 When it is done, it turns the queue line from `[ ]` to `[>]`.
 
 If a scope does not fit on one page, it is two deliveries. The page is the
@@ -91,7 +92,7 @@ test that the scope was understood.
 Implements the page, in a clean session, end to end:
 
 1. reads the delivery, `CLAUDE.md`, `docs/01`, `docs/04`, `docs/05` and
-   the FOCUS manual; asks the graph for the slice;
+   the FOCUS manual; asks the graph the structure of the slice;
 2. builds every piece in its place: rules in a pure use case, the
    orchestrator converting one event into one state, exceptions becoming
    Results only in the repository;

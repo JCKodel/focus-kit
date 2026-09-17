@@ -12,7 +12,7 @@ Prose in English; identifiers in English.
 - how it is built: docs/01-Architecture.md · the server: docs/02-Backend.md
 - style and tests: docs/04-Conventions.md · process: docs/05-Process.md
 - queue: docs/06-Queue.md · decisions: docs/adr/ · manuals: docs/manuals/
-- the codebase graph: graphify-out/ (ask it before grepping; docs/manuals/graphify.md)
+- the codebase graph: graphify-out/ (who depends on what goes to it, text goes to grep; docs/manuals/graphify.md)
 
 ## Non-negotiables
 - One delivery = one page in work/<slug>.md. /propose to define, /apply to build.

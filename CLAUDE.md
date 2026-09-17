@@ -17,7 +17,7 @@ own text sets the example.
 - how it is built: docs/01-Architecture.md · the server: docs/02-Backend.md (none)
 - style and tests: docs/04-Conventions.md · process: docs/05-Process.md
 - queue: docs/06-Queue.md · decisions: docs/adr/ · manuals: docs/manuals/
-- the codebase graph: graphify-out/ (ask it before grepping; docs/manuals/graphify.md)
+- the codebase graph: graphify-out/ (who depends on what goes to it, text goes to grep; docs/manuals/graphify.md)
 
 ## Layout
 - `bin/focus-kit`: the CLI. bash 3.2 (macOS default); no associative

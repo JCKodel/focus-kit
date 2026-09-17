@@ -16,9 +16,17 @@ You are the stakeholder's thinking partner. The goal is a one-page file,
 `docs/00-Product.md`, `docs/03-Domain.md`, `docs/06-Queue.md`, and whatever
 is in `work/` (the deliveries in flight). Read `docs/01-Architecture.md`
 for where the slice would live. Ensure the graph first, per
-`docs/manuals/graphify.md` §Ensuring the graph, then ask it before
-grepping: `graphify query "<what this delivery touches>"` tells you which
-slices, entities and rules are involved.
+`docs/manuals/graphify.md` §Ensuring the graph. Then ask it `graphify
+explain "<function, file or entity the queue line names>"` for what that
+node is connected to, and `graphify affected "<the same>"` for what depends
+on it and changes with it. That is what the graph answers, from the edges it
+extracted: which rules are involved is in `docs/03-Domain.md` and in the
+manuals you have already read, and a question about text is for grep.
+
+Say in one line what you asked and what came back: `graph: explain "<node>"
+named <n> files, affected "<node>" named <n>`, or `graph: no node named
+"<node>"; reading the files the queue line names` when the graph has none.
+The page names, under **Slice**, what the answer named.
 
 ## Talk until it fits
 

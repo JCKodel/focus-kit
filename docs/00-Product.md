@@ -158,9 +158,9 @@ template is worse than no template, because the next session trusts it.
 
 `/propose <slug>` is a conversation that ends in `work/<slug>.md`. It reads
 the product, the domain, the queue and whatever is already in flight; it
-asks the graph what the delivery touches; it asks the person whenever there
-is more than one reading, with its own recommendation first. It writes no
-code, no migration and no test.
+asks the graph what depends on what the delivery names; it asks the person
+whenever there is more than one reading, with its own recommendation first.
+It writes no code, no migration and no test.
 
 The page has a fixed shape: goal, behaviour, contract, slice, states, visual
 reference, out of scope, done when. Of those, only the contract has to be
@@ -199,8 +199,9 @@ It is someone opening an environment believing it is current.
 ### Keeping the map
 
 graphify builds a knowledge graph of the repository and a post-commit hook
-rebuilds it after every commit. `/propose` and `/apply` ask the graph before
-grepping. An extraction is billed only after a person has confirmed it: the
+rebuilds it after every commit. `/propose` and `/apply` ask it the questions
+it answers: who depends on what goes to the graph, a question about text
+goes to grep. An extraction is billed only after a person has confirmed it: the
 commands quote what graphify found and ask before anything reaches a model.
 The graph is a map, not a source of truth: when it disagrees with the code,
 the code wins and the graph gets rebuilt.
