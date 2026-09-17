@@ -143,13 +143,46 @@ about brownfield repositories is untested.
                               to ask; the page had pre-answered the conflict in the wrong direction and
                               contradicted its own "one devDependency and nothing else", and the same
                               pattern turned vitest.config.ts into .mts
-[ ] propose-holds-no-fact-the-run-rechecks
+[x] propose-holds-no-fact-the-run-rechecks
                               the Contract stopped holding versions, config file names and guesses, and
                               still holds a fact measured while the page was written: the first target's
                               testing-setup page dated the runner's engines range "checked 2026-09-17"
                               and moved a Node pin on it, which /apply rechecks and which is stale the
                               day the runner publishes; the same run took the read-only probe the rule
                               before this one left out of scope, one occurrence, recorded and not counted
+[ ] commands-read-sections-not-manuals
+                              measured over 194 sessions, the kit costs no more per session than the
+                              hand-written original it came from: the first turn is 42k to 49k tokens in
+                              ninjobs, here and in the first target alike, and a kit /apply runs 105
+                              turns to a 240k peak against 280 turns and 530k there; what every session
+                              pays for nothing is a manual read whole for one section, graphify.md
+                              (2,626 words) for §Ensuring the graph in all three commands and focus.md
+                              (5,152) in every /apply, while skills/propose grew from 67 words to 932;
+                              the skills name the section they need, the page records the before and
+                              after per command, and docs/00 gets the number, so the next comparison
+                              with OpenSpec or SpecKit is measured and not feared
+[ ] focus-is-asked-not-imposed
+                              FOCUS is a house rule (docs/manuals/process.md §6, the CLAUDE.md template,
+                              /apply Build) and /initialize never asks: the first target's docs/01 wrote
+                              a features/ target layout and a migration line per slice into a repository
+                              that never chose it, and the project the kit came from removed the four
+                              pieces on purpose (ninjobs CLAUDE.md, Não reconstruir, ADR-0022); the
+                              person may never have heard of FOCUS, so /initialize asks one question per
+                              practice, brownfield and greenfield, each explained in a line with FOCUS's
+                              answer first and, on brownfield, what the code does today as an option:
+                              vertical slices or layers, rules in pure use cases behind an orchestrator
+                              or wherever they sit today, errors as values or exceptions as flow, a test
+                              per piece or the project's own test policy; the answers become a table in
+                              docs/01 §3 that /propose and /apply read for which pieces a slice has and
+                              what they may assume, FOCUS is the name for saying yes to all of them, and
+                              it leaves the house rules for the manual that teaches it
+[ ] language-question-says-what-it-governs
+                              /initialize Step 0 offers English and Portuguese and says in the option
+                              text only that identifiers stay in English; nothing tells the person that
+                              the answer governs documents, delivery pages and commit messages and
+                              nothing else, and that the conversation may run in another language, the
+                              German developer on a project that requires English; the question says so
+                              in its own text, and any language typed under Other is taken as written
 ```
 
 ## Milestone 3: the kit explains itself
@@ -200,6 +233,17 @@ own documents.
                               is new; today an idea outside the queue is a page too early through
                               /propose or a hand edit with no placement. Fourth skill: selftest
                               check 4 and every "three" in the docs stop being literals
+[ ] queue-line-finds-its-place
+                              every milestone is named and carries a paragraph saying what closes it, so
+                              a line that arrives later never looks like it belongs: milestone 1's
+                              paragraph was widened by hand to admit three lines, milestone 2's carries
+                              a clause for every friction found, and the three lines that closed
+                              milestone 2 on 2026-09-17 were placed in conversation; Later, not
+                              scheduled becomes a block of [ ] lines, in the template and here, and
+                              /discuss places a line in the milestone whose paragraph it serves, amends
+                              the paragraph when the line serves it and it does not say so, or leaves
+                              the line in Later, and proposes a milestone when three Later lines share
+                              a purpose; docs/manuals/process.md §7 says so. After discuss-adds-queue-line
 [ ] git-branches-are-queue    support automatic optional creation of branches in /propose                              
 [ ] readme-makes-the-case     README opens with the problem (deciding and doing in one conversation,
                               scope grows, context and reasons vanish) and the answer (two sessions,
@@ -226,6 +270,9 @@ own documents.
                               update (and run `focus-kit update`)
 ```
 
+`discuss-adds-queue-line` and `queue-line-finds-its-place` are queue
+mechanics, not README work: they sit here because both need the fourth
+skill, and the second is the first thing that skill does once it exists.
 `readme-makes-the-case` depends on nothing here and can be pulled ahead of
 milestone 2. `readme-real-walkthrough` is cheaper after milestone 2, because
 every piece of friction found there would otherwise appear in the transcript

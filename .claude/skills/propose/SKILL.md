@@ -82,6 +82,16 @@ file's name or extension, a flag, or a guess at what the run will find:
 those are `/apply`'s to settle by running it. A page that pins one is
 fixing what it cannot run.
 
+It holds no fact the run rechecks either. A sentence stating what a tool, a
+registry or a service declares today can change between the page and the run
+with no commit in this repository, so the run finds it anew and a date does
+not rescue it. What a file of the repository pins stays, because it moves
+only through a commit and the run reads the same file, and so does what
+already happened, which no publication undoes. What the page writes instead
+is the constraint that stands whatever the recheck finds, or, when the
+delivery's scope turns on the answer, the condition the run evaluates and
+never the finding.
+
 Name the slice the delivery lives in and the four pieces it touches (view,
 orchestrator, use case, repository) using the vocabulary of
 `docs/manuals/focus.md`.

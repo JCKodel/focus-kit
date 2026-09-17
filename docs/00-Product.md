@@ -168,7 +168,8 @@ in.
 The page has a fixed shape: goal, behaviour, contract, slice, states, visual
 reference, out of scope, done when. Of those, only the contract has to be
 exact, because it is the only one that is expensive to reverse, and exact
-means what must hold, never what only a run settles.
+means what must hold, never what only a run settles and never a fact
+the run rechecks.
 
 **Rule of product:** if the scope does not fit on one page, it is two
 deliveries. This is not a style preference about concision. A scope that

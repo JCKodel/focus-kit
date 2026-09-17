@@ -77,6 +77,10 @@ A conversation that ends in `work/<slug>.md`, one page, in the format
   must be exact, because it is the only one that is expensive to reverse;
   exact about what must hold, not about what only a run settles: of a tool
   it names the tool and the constraint, and leaves the version to `/apply`.
+  It holds no fact the run rechecks either, because what a tool, a registry
+  or a service declares today changes with no commit in the repository, so
+  the page writes the constraint, or the condition the run evaluates, and
+  never the finding.
 * **Slice**, the feature folder and the pieces it touches.
 * **States**, **Visual reference**, **Out of scope**, **Done when**.
 
