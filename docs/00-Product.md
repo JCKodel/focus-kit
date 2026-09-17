@@ -159,8 +159,10 @@ template is worse than no template, because the next session trusts it.
 `/propose <slug>` is a conversation that ends in `work/<slug>.md`. It reads
 the product, the domain, the queue and whatever is already in flight; it
 asks the graph what depends on what the delivery names; it asks the person
-whenever there is more than one reading, with its own recommendation first.
-It writes no code, no migration and no test.
+whenever there is more than one reading and no file it read closes it, with
+its own recommendation first. A matter a file decides goes onto the page
+with the file cited, and is never put in front of the person. It writes no
+code, no migration and no test.
 
 The page has a fixed shape: goal, behaviour, contract, slice, states, visual
 reference, out of scope, done when. Of those, only the contract has to be

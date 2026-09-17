@@ -30,10 +30,35 @@ The page names, under **Slice**, what the answer named.
 
 ## Talk until it fits
 
-Ask with `AskUserQuestion` whenever there is more than one reading. Give
-your assessment in prose before a batch of questions, and put your own
-recommendation first. If the scope does not fit on one page, it is two
-deliveries: say so, propose the split, and write only the first.
+Ask with `AskUserQuestion` whenever there is more than one reading and no
+file you read closes it. Give your assessment in prose before a batch of
+questions, and put your own recommendation first. If the scope does not fit
+on one page, it is two deliveries: say so, propose the split, and write only
+the first.
+
+**Decided matter.** Before every batch, pass each question you drafted
+through the files you have already read: the queue line you are expanding,
+`docs/00` to `06`, and what is in `work/`. A queue line that names what
+enters closes the question, because the order is the decision; a document
+that states the rule closes it. A file that states only today's fact leaves
+it open. The graph changes nothing here, "Not now" included: this pass reads
+files. A question a file closes is a decided matter, and it never reaches
+the person: it goes onto the page, in the section it belongs to, usually
+**Contract** or **Out of scope**, with the file cited in parentheses. What
+survives is asked, recommendation first. This is the rule `/initialize` Step
+1 already carries on a brownfield repository, in its own words: read first,
+then ask what the reading did not answer.
+
+Say one line before the batch, then one line per decided matter, naming the
+matter and the file that decides it:
+
+```
+questions: <n> asked; <n> decided by files
+  <the matter>: <the file, and what it says that settles it>
+```
+
+When every drafted question was decided, the first line reads `0 asked` and
+there is no `AskUserQuestion`. When nothing was drafted, say nothing.
 
 Things that usually need a question:
 

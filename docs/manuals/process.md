@@ -80,7 +80,9 @@ A conversation that ends in `work/<slug>.md`, one page, in the format
 
 It reads the product, the domain, the queue and the deliveries in flight;
 it asks the graph what depends on what the delivery names; it asks you
-whenever there is more than one reading; it puts its recommendation first.
+whenever there is more than one reading and no file it read closes it; a
+matter a file decides goes onto the page with the file cited; it puts its
+recommendation first.
 It writes no code.
 When it is done, it turns the queue line from `[ ]` to `[>]`.
 

@@ -125,7 +125,7 @@ about brownfield repositories is untested.
                               while docs/03 said of itself that no delivery may name in code a concept
                               that is not in the table
 [x] first-target-delivery     one delivery through /propose and /apply, start to finish
-[ ] propose-asks-only-what-no-file-answers
+[x] propose-asks-only-what-no-file-answers
                               /propose asked which test libraries to install when the queue line it was
                               expanding named one package and docs/04 §5 said when each of the others
                               arrives; it had read both files and quoted the rule from one of them inside
