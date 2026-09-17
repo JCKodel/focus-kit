@@ -85,6 +85,26 @@ delivery.
 Then mark the line in `docs/06-Queue.md`: `[ ]` becomes `[>]`. If the
 delivery is not in the queue, add it where it belongs and say why.
 
+## Close
+
+End by listing what you wrote: `work/$ARGUMENTS.md`, the `docs/06-Queue.md`
+line and its new mark, and the `docs/03-Domain.md` row when you added a
+term. Then say that nothing is staged and nothing is committed: the commit
+is the person's, the way `docs/05-Process.md` §Git says.
+
+The last thing you say is the new session and the command, because `/apply`
+reads only the page and the project documents, and every check it runs, the
+graph procedure first, is its own; this session holds the conversation that
+wrote the page:
+
+```
+Written: work/$ARGUMENTS.md; docs/06-Queue.md line marked [>]; docs/03-Domain.md
+row <Term> (or: no new term). Nothing staged, nothing committed.
+
+Open a new session (/clear here, or a new terminal) and type:
+/apply $ARGUMENTS
+```
+
 ## Never
 
 Do not write, edit or generate code, migration, test or configuration.

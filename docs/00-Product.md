@@ -162,7 +162,8 @@ asks the graph what depends on what the delivery names; it asks the person
 whenever there is more than one reading and no file it read closes it, with
 its own recommendation first. A matter a file decides goes onto the page
 with the file cited, and is never put in front of the person. It writes no
-code, no migration and no test.
+code, no migration and no test, and ends by naming the session `/apply` runs
+in.
 
 The page has a fixed shape: goal, behaviour, contract, slice, states, visual
 reference, out of scope, done when. Of those, only the contract has to be
@@ -176,10 +177,11 @@ before the code is written rather than after.
 ### Building it
 
 `/apply <slug>` implements the page in a clean session that reads only that
-page and the project documents. It builds each piece in its place, runs the
-verify command until green, proves the result the way the project's own
-`docs/05-Process.md` says to, and leaves each environment in the state that
-document requires.
+page and the project documents, one in which it is the first thing typed,
+and when it is not it says so and stops. It builds each piece in its place,
+runs the verify command until green, proves the result the way the project's
+own `docs/05-Process.md` says to, and leaves each environment in the state
+that document requires.
 
 Then it writes back into the delivery file what actually happened: what
 diverged from the plan, what was dropped, what the proof found, what

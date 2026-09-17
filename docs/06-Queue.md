@@ -130,7 +130,7 @@ about brownfield repositories is untested.
                               expanding named one package and docs/04 §5 said when each of the others
                               arrives; it had read both files and quoted the rule from one of them inside
                               the option text, and still put a decided matter in front of a person
-[ ] propose-ends-by-naming-the-next-session
+[x] propose-ends-by-naming-the-next-session
                               /propose ends at "/apply <slug> implements" and skills/propose/SKILL.md has
                               no closing section at all, so the person types /apply in the same session;
                               the kit asks for a clean session in three places and says it in none of

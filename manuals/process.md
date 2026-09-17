@@ -84,14 +84,17 @@ whenever there is more than one reading and no file it read closes it; a
 matter a file decides goes onto the page with the file cited; it puts its
 recommendation first.
 It writes no code.
-When it is done, it turns the queue line from `[ ]` to `[>]`.
+When it is done, it turns the queue line from `[ ]` to `[>]`, and its last
+words name the new session to type `/apply` in.
 
 If a scope does not fit on one page, it is two deliveries. The page is the
 test that the scope was understood.
 
 ## 5. `/apply <slug>`
 
-Implements the page, in a clean session, end to end:
+Implements the page, in a clean session, one where `/apply` is the
+first thing typed; when it is not, it says so in one line and stops. End to
+end:
 
 1. reads the delivery, `CLAUDE.md`, `docs/01`, `docs/04`, `docs/05` and
    the FOCUS manual; asks the graph the structure of the slice;
