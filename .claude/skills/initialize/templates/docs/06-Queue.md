@@ -13,7 +13,10 @@ built · `[x]` done, in `work/done/`. The process is `docs/05-Process.md`.
      and names what the user gains, not the technique. After the slug, one
      line of scope; a second line if it needs one. Brownfield: the first
      lines are often "describe what exists" deliveries (a migration per slice
-     toward the target layout, a missing test file the promise depends on). -->
+     toward the target layout, a missing test file the promise depends on).
+     A line speaks in the terms of docs/03-Domain.md: an identifier it names
+     is in that table, or the line says it in words and the term enters
+     docs/03 when /propose defines the delivery. -->
 
 ```
 [ ] <slug>               <one line of scope>

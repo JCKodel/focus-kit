@@ -62,7 +62,8 @@ In both cases, if `docs/00-Product.md` already exists, this is a **review**
 run: read what is there, compare it with the code and the person's
 answers, and propose edits section by section instead of rewriting. A
 `docs/05-Process.md` §6 that names no tool gets the Proof tool question and
-a proposed edit, like any other section.
+a proposed edit, like any other section. The Read-back of Step 2 runs on the
+documents you found, and each identifier it catches is a proposed edit too.
 
 Then settle the documentation language, before you write anything, because
 it shapes every document that follows. One `AskUserQuestion` carries both
@@ -228,6 +229,28 @@ Rules while writing:
   04 and 05 should each fit in a few screens. The verify command, the
   environments table and the publish policy in 05 are the parts `/apply`
   reads every time; get those exact.
+
+**Read-back.** The pivot rule above is stated while you write and nothing
+reads it back, so read it back here, after the nine documents exist and
+before Step 3. Go through `docs/00`, `docs/01` and `docs/06` and collect
+every identifier they name: a type, a function, a column, a table or a
+module, backticked or not. A path, a file name, a command, a branch and a
+term of `docs/manuals/focus.md` are not identifiers: view, orchestrator, use
+case, repository, Result, `Failure`, slice and the rest of that manual's
+vocabulary, which is the list and not these seven. A name built on one of
+those terms is an identifier, and goes through the rule like any other. For each one, look in the Code
+column of `docs/03`. Already there: nothing to do. Not there: one `grep` in
+the source tree decides. Found in the code, the concept was missing from the
+table and gets a row, with what the code calls it. Not found anywhere, the
+name is one nobody has written yet: rewrite the sentence in the table's
+terms and let the name wait for the `/propose` that defines that delivery,
+which is what "enters here first" means. A greenfield repository has no code
+to grep, so it is always the second. End the pass by saying one line,
+`read-back: <n> identifiers in docs/00, 01, 06; <n> rows added; <n> lines
+rewritten`, and then one line per identifier you touched, naming the
+document, the identifier and which of the two happened. When every
+identifier was already in the table, that first line alone, ending `all in
+docs/03`.
 
 ## Step 3: CLAUDE.md
 

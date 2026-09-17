@@ -119,7 +119,7 @@ about brownfield repositories is untested.
                               no file can answer; round 4 of the skill's list and the template's own
                               comment both name it, and /apply reaches "screenshot the changed screen"
                               with nothing that takes one
-[ ] every-term-enters-03-first
+[x] every-term-enters-03-first
                               nothing in /initialize checks the queue it writes against the terms table
                               it wrote first, so docs/06 named VaultRepository, LoadResult and SaveResult
                               while docs/03 said of itself that no delivery may name in code a concept

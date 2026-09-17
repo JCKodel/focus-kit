@@ -28,7 +28,11 @@ The listed form uses `camelCase`. The concrete casing follows the artifact:
 uses it, plural for collections.
 
 **A new concept enters here first**, with its code term, and only then
-appears in a delivery.
+appears in a delivery. The kit's own vocabulary is the exception: view,
+orchestrator, use case, repository, Result, `Failure`, slice and every other
+term `docs/manuals/focus.md` defines mean there what they mean here, and
+need no row. A name that builds on one of them is an identifier of this
+project and does.
 
 | Term | Code | Short meaning |
 |---|---|---|
