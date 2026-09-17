@@ -183,7 +183,7 @@ about brownfield repositories is untested.
                               nothing else, and that the conversation may run in another language, the
                               German developer on a project that requires English; the question says so
                               in its own text, and any language typed under Other is taken as written
-[>] practice-questions-all-yes
+[x] practice-questions-all-yes
                               two clauses of focus-is-asked-not-imposed shipped without a run behind
                               them: the CLAUDE.md template's FOCUS line, which replaces the four
                               practice lines when all four answers are the manual's, and the
@@ -192,7 +192,7 @@ about brownfield repositories is untested.
                               no to at least one practice each, so the first branch was never taken,
                               and the disclaimer was not in what any of them captured. One scratch
                               answering yes four times closes both
-[ ] doctor-sees-an-unbumped-change
+[>] doctor-sees-an-unbumped-change
                               a target can hold a kit-owned file that differs from the kit source while
                               doctor reports everything green, because the version compare is by number
                               and the drift compare is against the manifest that install itself wrote:
@@ -215,6 +215,18 @@ about brownfield repositories is untested.
                               ask the four Practice questions again. The two rules contradict each other
                               and one of them gives way: a marker that survives translation, or a header
                               the translation rule excepts
+[ ] asked-as-written-says-which-language
+                              /initialize says of the Language question, the four Practice questions
+                              and the Proof tool question that each is written once and asked as
+                              written, and gives the two-patterns disclaimer and the no screen line
+                              as fixed text; of none of the five does it say whether the wording
+                              survives a conversation in another language. Measured on 2026-09-17 in
+                              the scratch of practice-questions-all-yes, one session did both: the Language
+                              question came out in its full English wording and the four Practice
+                              questions, the two-patterns disclaimer and the no screen line came out
+                              translated. Neither is wrong against the file, so two runs of the same
+                              command differ and a record quoting one cannot be compared with the
+                              other; the rule says which, or it stops saying as written
 ```
 
 ## Milestone 3: the kit explains itself
