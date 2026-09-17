@@ -27,7 +27,7 @@ and commits; the agent never does.
 CLAUDE.md                the entry point every session reads first
 docs/
   00-Product.md          what the product is, for whom, what it is not
-  01-Architecture.md     how it is built: stack, the four FOCUS pieces, slices
+  01-Architecture.md     how it is built: stack, the four practices, the pieces
   02-Backend.md          the server: topology, operation, migrations, boundary
   03-Domain.md           the vocabulary, with each term's name in code (the pivot)
   04-Conventions.md      names, style, errors, where things are tested, commits
@@ -48,16 +48,18 @@ Run once, in a repository where `focus-kit install` has been run. It
 writes `docs/00` to `06`, `docs/adr/`, `CLAUDE.md`, and the `work/` folder.
 
 * **Greenfield** (no code yet): it asks, in rounds of a few questions each,
-  about the product, the domain, the stack, the environments, the
-  conventions and the first milestone. It does not ask what it can
-  default: the house stack (C# on .NET, the Mediator pattern as the
-  orchestrator, in any implementation), the house rules, the process
+  about the product, the domain, the stack, the four practices, the
+  environments, the conventions and the first milestone. It does not ask
+  what it can default: the house stack (C# on .NET, the Mediator pattern as
+  the orchestrator, in any implementation), the house rules, the process
   itself.
 * **Brownfield** (code exists): it reads the repository first (manifests,
   CI, infrastructure, migrations, folder layout, git history), builds the
   graphify graph, and asks only what the code cannot answer. It describes
-  what exists and what the target is, and keeps them apart. If the code is
-  organized by layer, the queue gets a migration delivery per slice.
+  what exists and what the target is, and keeps them apart when the two
+  differ. The queue gets a migration delivery per slice only when the
+  structure practice was answered vertical slices and the code is organized
+  by layer.
 * If `docs/` already exists, it is a **review** run: it proposes edits
   section by section instead of rewriting.
 * It merges into an existing `CLAUDE.md`, never overwrites it.
@@ -102,13 +104,12 @@ Implements the page, in a clean session, one where `/apply` is the
 first thing typed; when it is not, it says so in one line and stops. End to
 end:
 
-1. reads the delivery, `CLAUDE.md`, `docs/01`, `docs/04`, `docs/05` and,
-   of the FOCUS manual, its table, its four pieces and its anti-patterns;
-   asks the graph the structure of the slice;
-2. builds every piece in its place: rules in a pure use case, the
-   orchestrator converting one event into one state, exceptions becoming
-   Results only in the repository; settling what the page left to the run
-   and recording the choice;
+1. reads the delivery, `CLAUDE.md`, `docs/01`, `docs/04`, `docs/05` and, of
+   the FOCUS manual, the sections the practices answered its way name and
+   no others; asks the graph the structure of the slice;
+2. builds every piece in the place `docs/01` §3 gives it, with errors
+   travelling the way that table answers; settling what the page left to
+   the run and recording the choice;
 3. runs the verify command until green; proves the screen the way
    `docs/05` §6 says;
 4. leaves each environment in the state `docs/05` §5 requires, and
@@ -128,11 +129,6 @@ These are fixed in every project the kit installs. They are not up for a
 per-project vote, which is why `/initialize` does not ask about them.
 
 * **One delivery is one page.**
-* **FOCUS.** Rules live in pure use cases; the orchestrator converts one
-  event into one state; the repository is the only place an exception
-  becomes a Result; features are vertical slices; every layer pays its own
-  way. `docs/manuals/focus.md` is the reference.
-* **Errors are values.** `throw` is not flow.
 * **No em dash in any text a user reads.** It is the signature of generated
   text and it costs the product's credibility.
 * **The agent never commits.** It stages and suggests; a person reviews.
@@ -152,6 +148,13 @@ per-project vote, which is why `/initialize` does not ask about them.
   concept into its English code name once, so it is not renegotiated file by
   file. The conversation follows the language of whoever is writing, which
   is a third thing again.
+
+What is not a house rule is the architecture. The four practices, how the
+code is structured, where the rules live, how errors travel and what is
+tested, are asked by `/initialize`, one question each with the FOCUS answer
+offered first and never assumed, and they live in `docs/01-Architecture.md`
+§3 of the project that answered them. FOCUS (`docs/manuals/focus.md`) is the
+name for saying yes to all four.
 
 ## 7. The queue
 

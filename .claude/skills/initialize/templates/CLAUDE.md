@@ -16,15 +16,23 @@ Prose in English; identifiers in English.
 
 ## Non-negotiables
 - One delivery = one page in work/<slug>.md. /propose to define, /apply to build.
+<!-- init: one line per practice answered in docs/01-Architecture.md §3,
+     in that table's order, each pointing at it: what the structure is,
+     where the rules live, how errors travel, what gets a test. When all
+     four answers are the manual's, those four lines are this one instead,
+     because FOCUS is the name for saying yes to all four:
 - FOCUS (docs/manuals/focus.md): rules live in pure use cases; the
   orchestrator converts one event into one state; the repository is the
-  only place an exception becomes a Result; features are vertical slices.
-- Errors are values. `throw` is not flow.
+  only place an exception becomes a Result; features are vertical slices;
+  errors are values and `throw` is not flow.
+     Either way the lines end at docs/01-Architecture.md §3, which is where
+     /propose and /apply read the answers. -->
 - No em dash in any text a user reads.
 - The agent stages (`git add`) and suggests the commit message. It never commits.
 <!-- init: add the two or three rules this product cannot exist without
      (a privacy boundary, a regulatory constraint, a client rule). Each one
-     a line. If there are none yet, leave only the five above. -->
+     a line. If there are none yet, leave only the three above and the
+     practice lines. -->
 
 ## How to work
 - Verify: `<verify command>` before declaring anything done.

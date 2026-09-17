@@ -23,9 +23,17 @@ read, nothing built, nothing staged.
    them literally: the verify command, the environments table and what a
    delivery must leave up to date in each, the publish policy, the git
    policy, and how a screen is proven.
-4. `docs/manuals/focus.md`, three sections: §2, the canonical responsibility
-   table; §3, the four pieces; §10, the anti-patterns. Every line of code you
-   write is reviewable against that table.
+4. `docs/01-Architecture.md` §3 before anything of the manuals: it holds the
+   four practices this project answered and the pieces a slice has here.
+   Then, of `docs/manuals/focus.md`, only the sections those answers name,
+   and nothing at all for an answer that is not the manual's:
+   * rules in pure use cases behind an orchestrator: §2, the canonical
+     responsibility table; §3, the four pieces; §10, the anti-patterns.
+     Every line of code you write is then reviewable against that table.
+   * errors as values: §5.
+   * vertical slices: §6.
+   * a test per piece: §8, at Build and not here.
+
    Read the named section alone: one `grep -n '^#'` over the manual gives its
    heading's line and the next heading of the same level, and you read that
    range and nothing else of the manual.
@@ -47,18 +55,25 @@ the same delivery or the delivery is wrong. Do not resolve it silently.
 
 ## Build
 
-* **Rules go in the use case, and the use case is pure.** Fetching is the
-  orchestrator's; persisting is the orchestrator's through the repository;
-  one state comes out. If you find yourself writing an `if` that decides a
-  business rule anywhere else, move it.
-* **Errors are values.** `throw` is not flow. An infrastructure exception
-  becomes a Result in the repository and nowhere else.
+* **Every piece goes where `docs/01-Architecture.md` §3 says it goes.** When
+  that table answers rules with pure use cases behind an orchestrator, the
+  rule is a pure function, fetching is the orchestrator's, persisting is the
+  orchestrator's through the repository, one state comes out, and an `if`
+  that decides a business rule anywhere else moves. When it answers
+  otherwise, the rule goes where the table says and nowhere else. A piece
+  that table says does not exist does not appear in the diff.
+* **A failure travels the way `docs/01-Architecture.md` §3 answers.**
+  Values: `throw` is not flow, and an infrastructure exception becomes a
+  Result in the repository and nowhere else. Exceptions as flow: it is
+  thrown and caught where `docs/01-Architecture.md` §6 says, and nowhere
+  else.
 * **No em dash in any text a user reads**: label, message, email,
   aria-label, log line shown to users.
-* Write the test each piece asks for (`docs/manuals/focus.md` §8 Testing,
-  read the way item 4 of Read first says):
-  use cases as units, the orchestrator as the integration, the view as
-  event in and render out.
+* Write the test the tests answer of that table asks for. A test per piece
+  is use cases as units, the orchestrator as the integration, the view as
+  event in and render out (`docs/manuals/focus.md` §8 Testing, read the way
+  item 4 of Read first says). The project's own policy is the rows of
+  `docs/04-Conventions.md` §5.
 * Abstraction on the second concrete occurrence, and the delivery file
   says which was the first.
 * Do not add a dependency, a layer or a tool the delivery did not name.

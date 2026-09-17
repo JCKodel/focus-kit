@@ -12,8 +12,13 @@ built · `[x]` done, in `work/done/`. The process is `docs/05-Process.md`.
      milestone closes. Then the lines. A slug is short, lowercase, hyphenated,
      and names what the user gains, not the technique. After the slug, one
      line of scope; a second line if it needs one. Brownfield: the first
-     lines are often "describe what exists" deliveries (a migration per slice
-     toward the target layout, a missing test file the promise depends on).
+     lines are often "describe what exists" deliveries (a missing test file
+     the promise depends on, and a migration per slice toward the target
+     layout only when the structure answer of docs/01-Architecture.md §3 is
+     vertical slices and the code is organized by layer). Every other
+     practice of §3 answered against what the code does today gets at least
+     one line here as well: two patterns in the tree with no queued
+     migration is the state the person was warned about when they chose.
      A line speaks in the terms of docs/03-Domain.md: an identifier it names
      is in that table, or the line says it in words and the term enters
      docs/03 when /propose defines the delivery. -->

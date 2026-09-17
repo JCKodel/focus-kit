@@ -28,3 +28,4 @@ ADR, in the same delivery.
 | 0003 | FOCUS is what the kit teaches, not how the kit is built | accepted |
 | 0004 | AGPL-3.0-only, with terms outside it granted by the author | accepted |
 | 0005 | The graph is derived, not versioned | accepted |
+| 0006 | FOCUS is asked, one question per practice, never imposed | accepted |

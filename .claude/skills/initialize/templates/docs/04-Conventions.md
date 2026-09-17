@@ -66,18 +66,29 @@ independently: if the screen says X, the code says `x`.
 
 ## 4. Errors are values
 
-<!-- init: the Result type in this stack and the four rules:
+<!-- init: when the errors answer of docs/01-Architecture.md §3 is values,
+     the Result type in this stack and the four rules:
      functions at the boundary return a Result (or a discriminated union
      when the caller must distinguish failure modes); `throw` is not flow,
      try/catch exists only in repositories to convert an infrastructure
      exception into a Result; the view decides what to show from the
      Result and never inspects a driver message; the framework's own
-     error mechanism is the one exception, named. -->
+     error mechanism is the one exception, named.
+     When the answer is exceptions as flow, the rules this project does
+     follow: which exception types are flow, where they are thrown, where
+     they are caught, what never escapes a boundary, and what the framework
+     handles. The section says how a failure travels here, whichever answer
+     §3 holds. -->
 
 ## 5. Where things are tested
 
 | What | With what | When |
 |---|---|---|
+<!-- init: one row per piece docs/01-Architecture.md §3 gives, in that
+     table's order; a piece §3 says does not exist gets no row. When the
+     tests answer of §3 is a test per piece, the rows below are the
+     starting point. When it is the project's own policy, replace them with
+     that policy's rows and say in a line where the policy comes from. -->
 | Business rule (use case) | <!-- init: unit test framework --> | always: it is the unit of unit testing |
 | One action end to end (orchestrator) | <!-- init: integration test, real infra or container --> | every delivery that adds or changes an action |
 | Screen or endpoint (view) | <!-- init: e2e or contract test --> | every delivery that has one |

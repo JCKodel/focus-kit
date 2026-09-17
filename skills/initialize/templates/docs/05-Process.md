@@ -60,8 +60,8 @@ test or a manual check.
 only section that demands precision, because it is the only one that is
 expensive to reverse.
 
-**Slice.** Which feature folder, and which of the four pieces (view,
-orchestrator, use case, repository) it adds or changes.
+**Slice.** Which feature folder, and which of the pieces
+`docs/01-Architecture.md` §3 says a slice has here it adds or changes.
 
 **States.** Empty, loading, error, offline: one line each, or "the
 defaults".

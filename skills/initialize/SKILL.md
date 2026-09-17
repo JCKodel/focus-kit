@@ -10,8 +10,12 @@ argument-hint: "[green|brown]"
 ---
 <!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: https://github.com/JCKodel/focus-kit -->
 
-You are setting up the delivery process described in `docs/manuals/process.md`
-and the architecture described in `docs/manuals/focus.md`. Read both first.
+You are setting up the delivery process described in `docs/manuals/process.md`.
+The architecture is not one of the things you bring: the four Practice
+questions below ask it, one per practice, and the answers become
+`docs/01-Architecture.md` §3. Read `docs/manuals/process.md` first, and
+`docs/manuals/focus.md`, which is the reference behind the answer each of
+those four questions offers first.
 The templates for every document you will write are in
 `.claude/skills/initialize/templates/`. Each template carries `<!-- init: ... -->`
 comments that say what goes in each section; fill the section and remove
@@ -61,9 +65,16 @@ is greenfield.
 In both cases, if `docs/00-Product.md` already exists, this is a **review**
 run: read what is there, compare it with the code and the person's
 answers, and propose edits section by section instead of rewriting. A
-`docs/05-Process.md` §6 that names no tool gets the Proof tool question and
-a proposed edit, like any other section. The Read-back of Step 2 runs on the
-documents you found, and each identifier it catches is a proposed edit too.
+A section that a question written in this file answers, and that carries no
+answer, gets that question and a proposed edit, like any other section. The
+rule is one and the sections are two: a `docs/05-Process.md` §6 that names no
+tool gets the Proof tool question, and a `docs/01-Architecture.md` §3 with no
+table whose header row is `Practice | Answer | Here it is` gets the four
+Practice questions. That header row and not "a table", because a §3 written
+before this version has the pieces table and nothing else, and it is the one
+that most needs asking. The Read-back of Step 2 runs
+on the documents you found, and each identifier it catches is a proposed edit
+too.
 
 Then settle the documentation language, before you write anything, because
 it shapes every document that follows. One `AskUserQuestion` carries both
@@ -108,9 +119,13 @@ in this order, and keep notes as you go:
    to each.
 5. Database: migrations folder, ORM configuration, schema files.
 6. The folder layout of the source tree, two levels deep, and a sample of
-   three or four files from the largest folder. Decide whether the code is
-   organized by feature (vertical slices) or by layer, and whether the four
-   FOCUS pieces exist under any name.
+   three or four files from the largest folder. This is the reading the
+   Practice questions quote, so note four things and the file each one is
+   read in: whether the code is organized by feature (vertical slices) or by
+   layer; whether the business rules sit in pure functions behind an
+   orchestrator or inside handlers, screens and queries; whether a failure
+   travels as a returned value or as a thrown exception; and what the tests
+   beside the code cover, one per piece or something else.
 7. `git log --oneline -30` and `git shortlog -sn | head`: who works here,
    what the commit messages look like, whether there are branches and PRs.
 
@@ -131,13 +146,103 @@ keep reading the repository directly, as the seven points above already do,
 and say so.
 
 The seven readings answer most of what the documents need, and not all of
-it. What they cannot answer is asked here, before you write anything, and
-today that is one thing: the tool that proves a screen. No file in a
-repository names what takes a screenshot, and the sixth reading already
-showed whether there is a screen at all, a web page, a mobile or a desktop
-app. When there is none, ask nothing and say one line, `no screen found; §6
-says how the endpoint or the CLI is proven`. A second slot no file answers
-joins this paragraph as a line, not as a new step.
+it. What they do not answer is asked here, before you write anything, and
+today that is two things, in this order.
+
+The first is **the four Practices**: how the code is structured, where the
+rules live, how errors travel and what is tested. The sixth reading says
+what the code does today, and that is a fact, not a decision. A project may
+be organized by layer and want slices, or hold all four pieces and have
+removed them on purpose. So the questions below are asked even when the code
+already answers them, and what goes into `docs/01-Architecture.md` §3 is the
+answers, never the readings.
+
+The second is **the tool that proves a screen**. No file in a repository
+names what takes a screenshot, and the sixth reading already showed whether
+there is a screen at all, a web page, a mobile or a desktop app. When there
+is none, ask nothing and say one line, `no screen found; §6 says how the
+endpoint or the CLI is proven`. A third thing no file answers joins this
+list as a line, not as a new step.
+
+The **Practice questions** are written here once and asked as written, one
+`AskUserQuestion` carrying all four, each explained in a line. The person
+answering may be new to this repository and may never have heard of FOCUS, so
+every question says two things: **what the code does today**, and, on each of
+the two options, **what that answer buys.** Neither is decoration. The first
+is how someone new learns where they are standing; the second is how anyone
+decides, and it is on both options because the choice is between two
+purchases and not between one purchase and one habit.
+
+**On a brownfield repository** the question states what the sixth reading
+found, with the file cited, and the two options are FOCUS's answer, naming
+how it differs from today, and keeping today's, summarized in the reading's
+own terms. **On a greenfield repository** there is no today: the question is
+the bare one and the second option is the named alternative. Either way
+FOCUS's answer is first, and "Other" is Claude Code's own last option,
+carrying what does not fit; do not write a third.
+
+1. **Structure.** Brownfield: `The code is organized <what reading 6 found>
+   (<file>). How should it be organized?` Greenfield: `How should the code
+   be organized?`
+   * **Vertical slices.** One flat folder per feature, holding that
+     feature's pieces. What it buys: a change to one feature opens one
+     folder, and a feature is deleted by deleting a folder. Brownfield: say
+     what it costs here, which is that every existing feature moves.
+   * **Layers**, and on a brownfield repository **keep it as it is today**,
+     summarized: folders by technical role, controllers with controllers and
+     models with models. What it buys: nothing moves, and everyone already
+     knows where to look.
+2. **Rules.** Brownfield: `The business rules are <where reading 6 found
+   them> (<file>). Where should they live?` Greenfield: `Where should the
+   business rules live?`
+   * **Pure use cases behind an orchestrator.** A use case is one named
+     function per rule: it takes the data it needs, decides, and returns a
+     Result, with no fetching and no persisting inside it. The orchestrator
+     around it converts one event into one state: it fetches, calls the use
+     case, saves through the repository, publishes. What it buys: a rule is
+     tested by calling it with literals, with no database and no mock.
+   * **Where they sit today**, summarized: in the handler, the screen or the
+     query, wherever the code puts them. What it buys: no middle layer to
+     write, and none to read through.
+3. **Errors.** Brownfield: `A failure travels <how reading 6 found it
+   travelling> (<file>). How should it travel?` Greenfield: `How should a
+   failure travel?`
+   * **Values.** A Result type: a refusal is returned like any other answer,
+     and the repository is the one place an infrastructure exception becomes
+     a value. What it buys: every caller is asked to handle each outcome, and
+     a refusal cannot be swallowed by a `catch` three frames up.
+   * **Exceptions as flow**, summarized: `throw` signals a refusal and a
+     caller up the stack catches it. What it buys: the happy path reads
+     straight down, with no Result to unwrap.
+4. **Tests.** Brownfield: `The tests here cover <what reading 6 found>
+   (<file>). What should get a test?` Greenfield: `What should get a test?`
+   * **A test per piece.** The rule as a unit, the orchestrator as the
+     integration, the view as event in and render out. What it buys: a red
+     test names the piece that broke, before anyone opens it.
+   * **The project's own policy**, summarized from what the tests beside the
+     code already do, or, on a greenfield repository, from what the person
+     names. What it buys: the policy stays the one the team already keeps.
+
+**The two-patterns disclaimer, on a brownfield repository, said in one line
+before the person answers.** Choosing FOCUS's answer where the code does
+otherwise means two patterns live in the tree at once, the old one and the
+new, until the migration lands. That is a normal state for a project that is
+migrating and a bad one for a project that is not, so the choice comes with
+the migration deliveries in `docs/06-Queue.md` (Step 2) or it does not come.
+
+**An option says what it does to the queue, when there is a queue to do
+something to.** That is a review run, and any brownfield repository whose
+`docs/06-Queue.md` already holds lines that assume one of the answers. Name
+them in the option, by slug: which deliveries it keeps, which it cancels,
+which it adds, and which milestone leaves. Someone choosing between two
+architectures is choosing between two queues, and the queue is the half of
+the consequence they can already read. A greenfield repository has no queue
+yet, so the option says nothing about one.
+
+The four answers become the Practice table of `docs/01-Architecture.md` §3 in
+Step 2, whose header row is `Practice | Answer | Here it is` and is what a
+review run looks for, and nothing else in any document you write may assume
+an answer that was not given.
 
 The **Proof tool question** is written here once and asked as written, one
 `AskUserQuestion`, the question `How is a screen proven? No file names the
@@ -174,15 +279,19 @@ option whenever you have one. Suggested rounds:
    implementation; see `docs/manuals/focus.md` §9); database;
    where it runs; what the client imposes. Test framework, linter,
    formatter.
-4. **Environments and proof.** Which environments exist (local, dev,
+4. **Practices.** The four Practice questions, asked as they are written in
+   the brownfield step above, with no third option: there is no code to
+   quote. Their answers become `docs/01-Architecture.md` §3 and decide which
+   pieces the rest of this round and Step 2 may name.
+5. **Environments and proof.** Which environments exist (local, dev,
    staging, production); how code gets to each; which one a delivery must
    leave up to date; what the verify command is (or will be). If there is
    a UI, what the visual reference is and which tool proves a screen: the
    Proof tool question, as in the brownfield step.
-5. **Conventions and git.** Naming rules the client imposes; whether work
+6. **Conventions and git.** Naming rules the client imposes; whether work
    goes to trunk or through branches and pull requests; the commit message
    format. The agent never commits, regardless of the answer.
-6. **The first milestone.** Three to eight deliveries, in order, each one
+7. **The first milestone.** Three to eight deliveries, in order, each one
    line, that together make something a person can use end to end. This
    becomes `docs/06-Queue.md`.
 
@@ -204,7 +313,7 @@ Write them in this order, because each one leans on the previous:
 |---|---|---|
 | `docs/03-Domain.md` | `templates/docs/03-Domain.md` | what the words mean, and their names in code |
 | `docs/00-Product.md` | `templates/docs/00-Product.md` | what the product is, for whom, what it is not |
-| `docs/01-Architecture.md` | `templates/docs/01-Architecture.md` | how it is built: stack, the four pieces, slices, what stays out |
+| `docs/01-Architecture.md` | `templates/docs/01-Architecture.md` | how it is built: stack, the Practice table, the pieces those answers give, what stays out |
 | `docs/02-Backend.md` | `templates/docs/02-Backend.md` | the server: topology, environments, operation, data. "Not applicable" is a valid document, with the reason |
 | `docs/04-Conventions.md` | `templates/docs/04-Conventions.md` | names, style, errors, where things are tested, commits |
 | `docs/05-Process.md` | `templates/docs/05-Process.md` | the flow, with this project's slots filled: verify command, environments, publish policy, git policy, proof |
@@ -220,11 +329,19 @@ Rules while writing:
   half-translated page. The code names in the `docs/03-Domain.md` table
   stay in English, and so do paths, file names and the kit's own terms.
 * **Brownfield: describe what is, then what should be, and keep them
-  apart.** If the code is organized by layer and the house architecture
-  is by feature, `01-Architecture.md` says both, and the queue gets a
-  migration delivery per slice (the book's chapter on migrating legacy
-  without stopping the factory is the recipe; see `docs/manuals/focus.md`).
-  Do not write the architecture you wish existed as if it existed.
+  apart, when the two differ.** They differ when a Practice answer is not
+  what the sixth reading found. If the structure answer is vertical slices
+  and the code is organized by layer, `01-Architecture.md` says both, and
+  the queue gets a migration delivery per slice (the book's chapter on
+  migrating legacy without stopping the factory is the recipe; see
+  `docs/manuals/focus.md`). If the structure answer is what the code
+  already does, there is one state to describe and the queue gets no
+  migration line. Every other practice answered against what the code does
+  today gets its own line in the queue too, one at least, because the
+  two-patterns disclaimer was said on the promise of them: a repository
+  left with two patterns and no queued migration is the state that
+  disclaimer warns about. Do not write the architecture you wish existed as
+  if it existed, and do not write one nobody chose.
 * **Everything you assert about a brownfield project must be traceable to
   a file.** Cite the path. If you inferred it, say "inferred from".
 * **The domain document is the pivot.** Every term in 00, 01 and 06 must

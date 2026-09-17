@@ -63,7 +63,21 @@ delivery that introduces one justifies it):
   process spawned at the start of every session. A future need for one is a
   delivery that names what would call it.
 
-## 3. The four pieces in this codebase
+## 3. The practices in this codebase
+
+| Practice | Answer | Here it is |
+|---|---|---|
+| Structure | neither slices nor layers: one file | `bin/focus-kit`, the whole CLI, plus the content it moves (§4) |
+| Rules | none: there is no business rule to place | nothing decides here; the script copies (ADR-0003) |
+| Errors | values | `warn` for a failure inside the flow, `die` for a defect (§6) |
+| Tests | the project's own policy | `bin/focus-kit selftest`, six checks in the script itself (`docs/04-Conventions.md` §5) |
+
+This repository answered the four Practice questions the way ADR-0003
+already decided them: three against FOCUS's answer and one, errors as
+values, with it. That is
+the table `/initialize` writes into every project it sets up, and this one is
+its own first target: a kit that offered a choice and then assumed the answer
+in its own documents would be teaching the opposite of what it ships.
 
 | Piece | Here it is | Lives in |
 |---|---|---|

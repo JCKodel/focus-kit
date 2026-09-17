@@ -161,7 +161,7 @@ about brownfield repositories is untested.
                               the skills name the section they need, the page records the before and
                               after per command, and docs/00 gets the number, so the next comparison
                               with OpenSpec or SpecKit is measured and not feared
-[>] focus-is-asked-not-imposed
+[x] focus-is-asked-not-imposed
                               FOCUS is a house rule (docs/manuals/process.md §6, the CLAUDE.md template,
                               /apply Build) and /initialize never asks: the first target's docs/01 wrote
                               a features/ target layout and a migration line per slice into a repository
@@ -176,13 +176,35 @@ about brownfield repositories is untested.
                               docs/01 §3 that /propose and /apply read for which pieces a slice has and
                               what they may assume, FOCUS is the name for saying yes to all of them, and
                               it leaves the house rules for the manual that teaches it
-[ ] language-question-says-what-it-governs
+[>] language-question-says-what-it-governs
                               /initialize Step 0 offers English and Portuguese and says in the option
                               text only that identifiers stay in English; nothing tells the person that
                               the answer governs documents, delivery pages and commit messages and
                               nothing else, and that the conversation may run in another language, the
                               German developer on a project that requires English; the question says so
                               in its own text, and any language typed under Other is taken as written
+[ ] practice-questions-all-yes
+                              two clauses of focus-is-asked-not-imposed shipped without a run behind
+                              them: the CLAUDE.md template's FOCUS line, which replaces the four
+                              practice lines when all four answers are the manual's, and the
+                              two-patterns disclaimer, the line /initialize says on a brownfield
+                              repository before the person answers. Three runs on 2026-09-17 answered
+                              no to at least one practice each, so the first branch was never taken,
+                              and the disclaimer was not in what any of them captured. One scratch
+                              answering yes four times closes both
+[ ] doctor-sees-an-unbumped-change
+                              a target can hold a kit-owned file that differs from the kit source while
+                              doctor reports everything green, because the version compare is by number
+                              and the drift compare is against the manifest that install itself wrote:
+                              both agree with each other and neither is asked about the source. Measured
+                              on 2026-09-17 during focus-is-asked-not-imposed: focus-kit update ran on
+                              ~/Downloads/vaulted, skills/initialize/SKILL.md then changed without a
+                              VERSION bump, and the review run there asked four questions in a shape the
+                              kit no longer had, with doctor saying kit-owned files as install wrote
+                              them and the version equal. It is reachable by anyone who updates a target
+                              mid-delivery, and the fix is doctor's alone: the kit source is on the
+                              machine when doctor runs in this repository, and never is when it runs in
+                              someone else's, so the line says which of the two it can answer
 ```
 
 ## Milestone 3: the kit explains itself

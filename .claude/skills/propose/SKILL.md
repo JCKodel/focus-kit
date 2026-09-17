@@ -15,7 +15,8 @@ You are the stakeholder's thinking partner. The goal is a one-page file,
 
 `docs/00-Product.md`, `docs/03-Domain.md`, `docs/06-Queue.md`, and whatever
 is in `work/` (the deliveries in flight). Read `docs/01-Architecture.md`
-for where the slice would live. Ensure the graph first, per
+for where the slice would live, its §3 for which pieces a slice has here.
+Ensure the graph first, per
 `docs/manuals/graphify.md` §Ensuring the graph.
 Read the named section alone: one `grep -n '^#'` over the manual gives its
 heading's line and the next heading of the same level, and you read that
@@ -96,9 +97,9 @@ is the constraint that stands whatever the recheck finds, or, when the
 delivery's scope turns on the answer, the condition the run evaluates and
 never the finding.
 
-Name the slice the delivery lives in and the four pieces it touches (view,
-orchestrator, use case, repository) using the vocabulary of
-`docs/manuals/focus.md`.
+Name the slice the delivery lives in and the pieces it touches, the ones
+`docs/01-Architecture.md` §3 says a slice has here, in that table's words. A
+piece it says does not exist is not named on the page.
 
 Use only terms from `docs/03-Domain.md`. A new concept goes into
 `docs/03-Domain.md` first, with its code identifier, then into the

@@ -26,8 +26,8 @@ first one writes no code. The limit: a delivery is one page, and a scope
 that does not fit on one page is two deliveries. Everything else in the kit
 exists to make that page short. The product document so the page need not
 restate the product. The domain document so it need not define its terms.
-The conventions so it need not say how code looks. The architecture, FOCUS,
-so it need not say where a rule goes.
+The conventions so it need not say how code looks. The architecture the
+project chose, so it need not say where a rule goes.
 
 What it replaces is the conversation that starts with "let's build X" and
 ends three hours later with a diff nobody can review. What it improves on is
@@ -44,10 +44,18 @@ ceremony.
 
 ## Positioning
 
-An installable delivery process for repositories worked on with Claude Code,
-built on the FOCUS architecture. Three commands and three manuals, installed
-by one script, that make a repository ready for a coding agent to work in
-without renegotiating the rules every session.
+An installable delivery process for repositories worked on with Claude Code.
+Three commands and three manuals, installed by one script, that make a
+repository ready for a coding agent to work in without renegotiating the
+rules every session.
+
+FOCUS is what the kit **teaches and offers**, not what it assumes.
+`/initialize` asks four questions, one per practice, and puts FOCUS's answer
+first in each: how the code is structured, where the rules live, how errors
+travel, what is tested. The answers are the project's, they live in its
+`docs/01-Architecture.md` §3, and `/propose` and `/apply` read that table
+instead of the manual. Saying yes to all four is what FOCUS names
+(`docs/adr/ADR-0006`).
 
 It is explicitly not sold as: an agent framework, a prompt library, a
 project management tool, a linter, or a way to make an agent write code
@@ -68,6 +76,10 @@ whole to the 1,352 of §Ensuring the graph, in all three commands, and
 `focus.md` from 5,152 to 1,870 in `/apply`, 1,584 at Read first for §2, §3
 and §10 and 286 at Build for §8. A command reads the section it names and
 nothing else of the manual around it (`docs/03-Domain.md`, Named section).
+Since `focus-is-asked-not-imposed` that 1,870 is the ceiling and not the
+figure: it is what a project that answered all four practices FOCUS's way
+pays, and a project that answered none of them that way reads nothing of
+`focus.md` at all.
 
 Name: `focus-kit`, lowercase, one word with a hyphen, both as the repository
 and as the command. No domain, no brand, no package on any registry. It is
