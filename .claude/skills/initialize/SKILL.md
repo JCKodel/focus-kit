@@ -60,7 +60,9 @@ is greenfield.
 
 In both cases, if `docs/00-Product.md` already exists, this is a **review**
 run: read what is there, compare it with the code and the person's
-answers, and propose edits section by section instead of rewriting.
+answers, and propose edits section by section instead of rewriting. A
+`docs/05-Process.md` §6 that names no tool gets the Proof tool question and
+a proposed edit, like any other section.
 
 Then settle the documentation language, before you write anything, because
 it shapes every document that follows. One `AskUserQuestion` carries both
@@ -124,6 +126,31 @@ When the answer was "Not now", there is no report:
 keep reading the repository directly, as the seven points above already do,
 and say so.
 
+The seven readings answer most of what the documents need, and not all of
+it. What they cannot answer is asked here, before you write anything, and
+today that is one thing: the tool that proves a screen. No file in a
+repository names what takes a screenshot, and the sixth reading already
+showed whether there is a screen at all, a web page, a mobile or a desktop
+app. When there is none, ask nothing and say one line, `no screen found; §6
+says how the endpoint or the CLI is proven`. A second slot no file answers
+joins this paragraph as a line, not as a new step.
+
+The **Proof tool question** is written here once and asked as written, one
+`AskUserQuestion`, the question `How is a screen proven? No file names the
+tool.` and three options, in this order:
+
+* **Claude in Chrome.** The browser inside Claude Code: a screenshot at the
+  viewports §6 names, nothing added to the repository.
+* **A script or driver of the repository.** The person names it (Playwright,
+  an emulator, a device) and its command, and it lives in the repository
+  like any other tool.
+* **None.** The verify command is the proof, and §6 says so in one line.
+
+"Other" is Claude Code's own fourth option and carries what does not fit; do
+not write a fourth. The answer opens `docs/05-Process.md` §6: its first line
+is `**Tool.**` and what was chosen. The rest of that section stays what the
+files answered, each one cited.
+
 ## Step 1 (greenfield): ask in rounds
 
 Do not ask twenty questions at once. Ask in rounds, each round one
@@ -146,7 +173,8 @@ option whenever you have one. Suggested rounds:
 4. **Environments and proof.** Which environments exist (local, dev,
    staging, production); how code gets to each; which one a delivery must
    leave up to date; what the verify command is (or will be). If there is
-   a UI, what the visual reference is and how a screen is proven.
+   a UI, what the visual reference is and which tool proves a screen: the
+   Proof tool question, as in the brownfield step.
 5. **Conventions and git.** Naming rules the client imposes; whether work
    goes to trunk or through branches and pull requests; the commit message
    format. The agent never commits, regardless of the answer.
@@ -211,8 +239,8 @@ the existing file that belongs in a doc (a naming rule, a test command) into
 that doc, leaving a pointer. Show the person the diff before writing it.
 
 Also add to `.claude/settings.json` the permission allows this stack needs
-(`Bash(dotnet *)`, `Bash(npm *)`, `Bash(make *)`, and so on), so `/apply`
-does not stop on every build.
+(`Bash(dotnet *)`, `Bash(npm *)`, `Bash(make *)`, and so on) and the one the
+Proof tool needs, when it has one, so `/apply` does not stop on every build.
 
 ## Step 4: report
 

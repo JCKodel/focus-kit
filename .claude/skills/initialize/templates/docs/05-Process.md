@@ -107,11 +107,14 @@ deploy: it is someone opening an environment believing it is current.
 
 ## 6. Proof
 
-<!-- init: how a screen is proven: tool, viewports, what it is compared to
-     (a design canvas, the previous screenshot, a client's mock), and the
-     rule for divergence ("the visual wins; copy and flow may diverge with a
-     one-line reason"). If there is no UI: how an endpoint or a CLI is
-     proven (contract test, golden file). -->
+<!-- init: the tool first, from the Proof tool question, never inferred: no
+     file in a repository names what takes a screenshot. The finished
+     section opens with **Tool.** and what was chosen. Then the rest of how
+     a screen is proven: viewports, what it is compared to (a design canvas,
+     the previous screenshot, a client's mock), and the rule for divergence
+     ("the visual wins; copy and flow may diverge with a one-line reason").
+     If there is no UI: how an endpoint or a CLI is proven (contract test,
+     golden file). -->
 
 ## 7. Git
 

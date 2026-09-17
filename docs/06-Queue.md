@@ -113,7 +113,7 @@ about brownfield repositories is untested.
                               hop, and 18 of 21 consulting sessions grepped first anyway; /initialize brown
                               reads god nodes and communities once, /apply asks structure, /propose stops
                               promising rules
-[ ] initialize-asks-for-the-proof-tool
+[x] initialize-asks-for-the-proof-tool
                               the brownfield path fills docs/05 §6 with viewports, themes and references
                               read off the repository and leaves out the tool, the one part of that slot
                               no file can answer; round 4 of the skill's list and the template's own
