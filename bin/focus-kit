@@ -26,8 +26,10 @@
 #   3. prints the next step: open Claude Code in the repository and run /initialize
 #
 # Everything the kit owns is overwritten on update. Everything the project owns
-# (docs/00 to 06, CLAUDE.md, ADRs, work/) is never touched here: that is
-# /initialize's job, and it merges instead of overwriting.
+# (docs/00 to 06, CLAUDE.md, ADRs, work/, .claude/skills/.focus-kit-language)
+# is never touched here: that is /initialize's job, and it merges instead of
+# overwriting. The manuals are the kit's, so update writes them back in
+# English over a translation /initialize made; doctor names each one.
 #
 # Runs on macOS (bash 3.2), Linux, and Windows through WSL or Git Bash. Needs
 # curl and a python 3 on PATH, as python3 or as python (or uv, which can
@@ -338,12 +340,14 @@ append_once() { # file fragment
 # The one place a carriage return is forgiven. A target cloned on Windows
 # with core.autocrlf=true has every kit-owned file, the stamp and the
 # manifest checked out as CRLF, and it receives no .gitattributes, so the
-# tolerance has to live in the readers. Its six callers are
+# tolerance has to live in the readers. Its seven callers are
 # installed_version, fingerprint, the manifest reader inside doctor,
-# global_skill_state, which reads a stamp graphify wrote on this machine, and
-# the two passes that read a file the target itself versions, the Fragment gap
+# global_skill_state, which reads a stamp graphify wrote on this machine, the
+# two passes that read a file the target itself versions, the Fragment gap
 # over .gitignore and .graphifyignore and the Manual citation over the
-# target's own documents. It
+# target's own documents, and the read of the Manual language, which is a
+# one-line file of the target's like the stamp and is printed back in the line
+# the Translated manual pass writes. It
 # reads and never dies: its output is captured (docs/01-Architecture.md §6),
 # and the callers keep their own -f guard on the file.
 without_cr() { # file
@@ -608,6 +612,45 @@ doctor() {
 "
     fi
   done
+  # The Manual language (docs/03-Domain.md), read once for the two passes that
+  # ask it: the Translated manual pass right below and the Drift pass further
+  # down, which skips the three manuals where the answer is not en. /initialize
+  # writes this file and the CLI only reads it. Absent means en, which is every
+  # target installed before it existed, and is what keeps all of them printing
+  # what they printed. Through without_cr, its seventh caller: the target
+  # versions this file, receives no .gitattributes, and the tag is quoted back
+  # in every line the pass writes.
+  local mlang="en"
+  if [ -f "$target/.claude/skills/.focus-kit-language" ]; then
+    mlang="$(without_cr "$target/.claude/skills/.focus-kit-language")"
+  fi
+  # Translated manual (docs/03-Domain.md): where the target's manuals are meant
+  # to be in another language, each one that is still the English file the kit
+  # ships. One warn per manual and never a count, the way the Fragment gap and
+  # the Manual citation passes print one line per thing to fix, so a target with
+  # two translated manuals and one English names the one. Still English means
+  # equal by fingerprint to the source at KIT_DIR, which reuses the function and
+  # with it the without_cr tolerance: a Windows target with core.autocrlf=true
+  # holds the untranslated manual as CRLF against the kit's LF, and a byte
+  # comparison would call it translated. Against KIT_DIR and not against the
+  # manifest, because the manifest answers whether a file was edited and this
+  # pass asks whether a translation ever happened.
+  #
+  # The manuals are enumerated as manuals/*.md from KIT_DIR, the way every other
+  # read of the kit's own files is, so a fourth manual is a file and no edit. A
+  # manual the target does not have is skipped: the presence lines above already
+  # said so, and the question here is asked of the ones that are there.
+  if [ "$mlang" != "en" ]; then
+    local mfile mrel english=0
+    for mfile in "$KIT_DIR"/manuals/*.md; do
+      mrel="docs/manuals/$(basename "$mfile")"
+      [ -f "$target/$mrel" ] || continue
+      [ "$(fingerprint "$target/$mrel")" = "$(fingerprint "$mfile")" ] || continue
+      warn "$mrel in English, not $mlang (run /initialize to translate it)"
+      english=1
+    done
+    [ "$english" -eq 1 ] || ok "docs/manuals ($mlang)"
+  fi
   # The one Merged file (docs/03-Domain.md), read back for what its baseline
   # put there. Presence is not the question: a .claude/settings.json that reads
   # {} exists and still leaves every permission unasked for. Its path does not
@@ -707,6 +750,16 @@ doctor() {
           printf '%s\n' "$missing" | grep -qxF -- "$path" ||
             warn "$path missing (focus-kit update restores it)"
           continue
+        fi
+        # The one exception, and it is the Manual language's: where the target's
+        # manuals are meant to be in another language, the manifest holds the
+        # fingerprint of the English file install wrote and the disk holds the
+        # translation, so the comparison would call all three edited locally.
+        # What is asked of them instead is the pass above. Everything else the
+        # manifest names is compared as it always was, and a manual that is
+        # absent is still the missing shape, which the line above prints.
+        if [ "$mlang" != "en" ]; then
+          case "$path" in docs/manuals/*) continue ;; esac
         fi
         if [ "$(fingerprint "$target/$path")" != "$crc" ]; then
           warn "$path edited locally (focus-kit update overwrites it)"
@@ -1364,7 +1417,13 @@ check_dogfood() {
   installed="$(installed_version "$KIT_DIR")"
   [ "$installed" = "$KIT_VERSION" ] || \
     die "check 6: the dogfood copy is at $installed and VERSION is $KIT_VERSION (run focus-kit install .)"
-  out="$(diff -r -x .focus-kit-version -x .focus-kit-manifest skills .claude/skills 2>&1)" || {
+  # Three exclusions and they are the three data files: none is a copy of
+  # anything under skills/, so skills/ has no source for any of them. The stamp
+  # and the manifest are what install writes; the Manual language record is what
+  # /initialize writes, and it lands here for the same reason the other two do,
+  # which is that copy_tree overwrites .claude/skills/<name>/ and not their
+  # parent (docs/03-Domain.md, Manual language).
+  out="$(diff -r -x .focus-kit-version -x .focus-kit-manifest -x .focus-kit-language skills .claude/skills 2>&1)" || {
     printf '%s\n' "$out"
     die "check 6: .claude/skills differs from skills (run focus-kit install .)"
   }

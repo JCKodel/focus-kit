@@ -12,17 +12,30 @@ How the code looks and where it is tested. The architecture is in
 documentation language, and for this repository it is also the language of
 everything the kit ships: the skills, the three manuals, the
 templates and every string `bin/focus-kit` prints. A target repository
-chooses its own documentation language when `/initialize` runs there; the
-kit's own text is never translated. The conversation is a separate matter:
-it follows the language of whoever is writing.
+chooses its own documentation language when `/initialize` runs there. The
+conversation is a separate matter: it follows the language of whoever is
+writing.
+
+**What a target may hold in another language is the three manuals, and
+nothing else the kit ships.** `/initialize` writes them in the target's
+documentation language, with every section heading left in English, and
+records the language in `.claude/skills/.focus-kit-language`
+(`docs/adr/ADR-0008`). The skills, the templates and the terminal output stay
+English wherever they are installed. The source in this repository is English
+in all cases: a manual is translated in a target and never here, so nothing
+under `manuals/` is ever anything but the English file, and `update` writing
+it back over a translation is the mechanism working.
 
 **Identifiers in English**, whatever the prose language. Function names,
 file names, slugs, branches, markers. `docs/03-Domain.md` holds the table
 that translates each concept into its code name, once.
 
-The kit has no user interface, so there is no UI text and no translation
-mechanism. The strings a person reads are the terminal output of
-`bin/focus-kit` and the documents `/initialize` writes.
+The kit has no user interface, so there is no UI text. The strings a person
+reads are the terminal output of `bin/focus-kit`, which is English wherever
+it runs, and the documents `/initialize` writes, which follow the target's
+language. The one translation mechanism is that command writing a manual
+again in that language; the CLI has none, and it has no model with which to
+have one.
 
 ### Text a user reads
 
@@ -51,11 +64,11 @@ is scoped to authored paths rather than given exceptions
 Beyond that, the copy rules this project needs:
 
 * **A terminal line picks one of four shapes.** `say`, `ok`, `warn`, `die`
-  (`bin/focus-kit:49`). Never a bare `echo` or `printf` for a message a
+  (`bin/focus-kit:51`). Never a bare `echo` or `printf` for a message a
   person reads. The shape carries the meaning, so a message whose shape is
   wrong lies even when its words are right.
 * **A `warn` says what to do next.** "uv missing" is half a message; the line
-  adds the command that puts it right. Compare `bin/focus-kit:502`, and every
+  adds the command that puts it right. Compare `bin/focus-kit:506`, and every
   other warn of `doctor` with it: a person reading one `!` line, without the
   rest of the output, knows what to type.
 * **A `die` names the thing that is missing, not the step that failed.**
@@ -64,7 +77,7 @@ Beyond that, the copy rules this project needs:
   rule: `check 6: .claude/skills differs from skills (run focus-kit install
   .)` names the thing and what fixes it, not the step.
 * **The help text is the script's own header.** `--help` prints it through
-  `awk` (`bin/focus-kit:1443`), by a rule and not a range: the shebang is
+  `awk` (`bin/focus-kit:1502`), by a rule and not a range: the shebang is
   skipped, then every consecutive line beginning with `#` is printed until
   the first line that does not, each one losing its `#` and one following
   space. A bare `#` becomes an empty line, which is how the header's blank
@@ -77,7 +90,7 @@ Beyond that, the copy rules this project needs:
   check of the verify command: the only enumeration of what `install` writes
   outside `install_repo` itself is its own `ok` lines, and not every write
   has one. The Installed version is written silently under the skills line
-  (`bin/focus-kit:404`), so a check comparing the `ok` output with the header
+  (`bin/focus-kit:408`), so a check comparing the `ok` output with the header
   would have gone green on exactly the omission
   `help-names-what-install-writes` found.
 * **A document says what is, not what is wished for.** When the code and the
@@ -116,7 +129,7 @@ about instead:
 
 * **bash 3.2 or it does not ship.** No associative arrays, no `mapfile`, no
   `${var,,}`, no `readlink -f`. macOS ships bash 3.2 and the script runs
-  there unchanged. The symlink resolution loop at `bin/focus-kit:41` exists
+  there unchanged. The symlink resolution loop at `bin/focus-kit:43` exists
   for exactly this reason.
 * **`set -euo pipefail`, and every variable expansion quoted.** Paths in
   this project contain spaces often enough (`/Volumes/Data/...` does not,

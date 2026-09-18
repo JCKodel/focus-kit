@@ -2,7 +2,7 @@
 
 **Project:** focus-kit
 **Status:** active
-**Last updated:** 2026-09-17
+**Last updated:** 2026-09-18
 
 ---
 
@@ -120,7 +120,7 @@ person, the machine or the target in it
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:1427`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:1486`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify as a uv tool, then the global `/graphify`
@@ -138,7 +138,7 @@ installed when absent and **refreshed
 when it is older than the graphify package**, or when it carries no stamp
 saying which version wrote it; a skill newer than the package is left alone,
 because graphify's own installer would downgrade it, and both commands say so
-and name `uv tool upgrade graphifyy` (`bin/focus-kit:175`).
+and name `uv tool upgrade graphifyy` (`bin/focus-kit:177`).
 
 The dependency block then closes with the one thing it can say about
 itself: whether the clone the CLI is running from is still what it was
@@ -190,6 +190,16 @@ knowing what it would do.
 `/initialize` is run once in the target, inside Claude Code. It writes
 `docs/00` to `06`, `docs/adr/`, and `CLAUDE.md`, in the documentation
 language it asks for first.
+
+**The three manuals follow that language too.** A target that documents
+itself in Portuguese reads `docs/manuals/process.md`, `focus.md` and
+`graphify.md` in Portuguese, because they are read here like any other
+document and a manual nobody reads teaches nothing. Every section heading
+stays in English, since a command names the section of a manual it reads and
+`focus-kit doctor` matches a citation against the manual the kit ships. The
+command records the language in a one-line file of the target, and `doctor`
+says in a line per manual when `update` has written the English one back over
+a translation.
 
 How it gets what it needs depends on what is there. On a greenfield
 repository it asks, in rounds of at most four questions, each round about
@@ -389,10 +399,9 @@ Recorded here so that no agent closes them alone:
 3. **How the kit is distributed.** Clone and symlink works for one person.
    Whether it becomes a package, a curl installer, or stays as it is has not
    been decided, and it changes what `update` has to do.
-4. **Whether `/initialize` should support a non-English kit.** A target can
-   document itself in any language, but the manuals it receives are in
-   English. Whether translated manuals are ever shipped is open, and the
-   answer affects `copy_tree` and `VERSION` both.
+Whether `/initialize` should support a non-English kit was the fourth, and it
+left the list on 2026-09-18: `manuals-follow-the-language` closed it, and the
+answer is `docs/adr/ADR-0008`.
 
 ---
 

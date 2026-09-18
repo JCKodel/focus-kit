@@ -25,7 +25,7 @@ introduced, so the script never has to work it out at runtime.
 Every file the kit writes belongs to exactly one of four categories, and the
 category determines the write:
 
-* **Kit-owned**, written with `copy_tree` (`bin/focus-kit:271`): the
+* **Kit-owned**, written with `copy_tree` (`bin/focus-kit:273`): the
   destination is removed and copied over. The three skills and the three
   manuals. Editing one inside a target is a change the next update erases.
   Each manual carries a banner saying so on its first line; the three
@@ -69,8 +69,30 @@ category determines the write:
   `CLAUDE.md`, `docs/adr/`, `work/`. Only `/initialize` touches them, and it
   merges rather than overwriting. The CLI's single interaction with this
   category is testing whether `docs/00-Product.md` exists, to choose which
-  closing message to print (`bin/focus-kit:440`).
-* **Merged**, written with `merge_json` (`bin/focus-kit:288`): `.mcp.json`
+  closing message to print (`bin/focus-kit:444`).
+
+  **2026-09-18, `manuals-follow-the-language`:** the list gains one path,
+  `.claude/skills/.focus-kit-language`, the Manual language
+  (`docs/03-Domain.md`). It is project-owned by the same test as everything
+  else here, which is who writes it: `/initialize` does, at the step where it
+  asks the documentation language, and `install` and `update` never do. Two
+  things about it are new to the category and neither moves the line. It does
+  not live under `docs/` or `work/`, because it sits beside the two data
+  files `doctor` reads and `copy_tree` never wipes their parent; and it is
+  the one file here no person is expected to type, which is why it holds a
+  BCP 47 tag and not a sentence. The read count above goes from two to
+  three: `doctor` reads it to know which language the manuals are meant to be
+  in. No write was added, and Forbidden stands.
+
+  The same delivery puts one exception into the Drift pass, and it belongs
+  here because it is where the category line is defended. The three manuals
+  stay kit-owned, with nothing about that changed: `update` writes the
+  English file over a translation, and what translates it again is
+  `/initialize`. What gives way is the fingerprint comparison, which would
+  otherwise report all three as edited locally in every translated target.
+  What is asked of them instead is whether a translation happened at all
+  (`docs/adr/ADR-0008`). No fifth category, and the four are still four.
+* **Merged**, written with `merge_json` (`bin/focus-kit:290`): `.mcp.json`
   and `.claude/settings.json`. Keys are added; nothing is ever removed.
 
   **2026-09-17, `mcp-leaves-the-baseline`:** `.mcp.json` is no longer one of

@@ -23,8 +23,9 @@ for coding agents, and graphify in the repository.
 
 The kit is **bilingual**: English and Portuguese. `/initialize` asks which
 of the two the project documents itself in, and everything written
-afterwards follows that choice: docs, deliveries, ADRs, commit messages.
-English is the default. The conversation is a separate matter: you talk to
+afterwards follows that choice: docs, deliveries, ADRs, commit messages, and
+the three manuals, which `/initialize` writes again in that language with
+every section heading left in English. English is the default. The conversation is a separate matter: you talk to
 the agents in whatever language you like, in any session, and the generated
 documentation still comes out in the language the project chose.
 Identifiers are always in English, so a Portuguese project still names its

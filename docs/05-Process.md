@@ -258,9 +258,16 @@ It runs six checks, in this order, and stops at the first red:
    rebuild.
 6. `.claude/skills/.focus-kit-version` equal to `VERSION`, then `diff -r
    skills .claude/skills` and `diff -r manuals docs/manuals`, both empty
-   except for `.focus-kit-version` and `.focus-kit-manifest`. Both are
-   excluded because neither is a copy of anything under `skills/`: they are
-   what the install writes, and `skills/` has no source for either. The stamp
+   except for `.focus-kit-version`, `.focus-kit-manifest` and
+   `.focus-kit-language`. The three are excluded because none is a copy of
+   anything under `skills/`: `skills/` has no source for any of them. The
+   first two are what the install writes; the third is the Manual language
+   (`docs/03-Domain.md`), which `/initialize` writes and which lands in the
+   same folder for the same reason, `copy_tree` overwriting
+   `.claude/skills/<name>/` and not their parent. It is excluded by name and
+   not by a rule, the way the other two are, and without it the first
+   `/initialize` review run in this repository would leave the verify command
+   red over a file the kit asked that command to write. The stamp
    is compared by value and not
    by bytes against `skills/`, because it is not a copy of anything: it is
    what the install writes. By value also forgives a trailing carriage

@@ -154,6 +154,18 @@ Record the answer in `docs/05-Process.md` §0, on the language line of
 `CLAUDE.md` and in `docs/04-Conventions.md` §1, so `/propose` and `/apply`
 know it without asking again.
 
+A fourth place, and the only one written for a program rather than for a
+person: `.claude/skills/.focus-kit-language`, one line ending in a newline,
+LF, holding the IETF BCP 47 tag of the answer. `en` for English, `pt-BR` for
+Portuguese (Brazil), and for a language typed into the last option the tag of
+what was typed, `de` for Deutsch. A tag is an identifier, so it stays in
+English whatever the documentation language is. It is written on a first run
+and on a review run alike, including when the answer is English, so that the
+record says what was chosen instead of leaving it to be inferred from a file
+that is not there. `focus-kit doctor` reads it to know which language the
+manuals of `docs/manuals/` are meant to be in; the CLI never writes it, and
+neither does anything else here. Step 4 is where it is acted on.
+
 ## Step 1 (brownfield): read the repository before asking anything
 
 The person should not have to tell you what the code already says. Read,
@@ -490,7 +502,56 @@ Also add to `.claude/settings.json` the permission allows this stack needs
 (`Bash(dotnet *)`, `Bash(npm *)`, `Bash(make *)`, and so on) and the one the
 Proof tool needs, when it has one, so `/apply` does not stop on every build.
 
-## Step 4: report
+## Step 4: the manuals follow the language
+
+The three manuals in `docs/manuals/` are read in this repository by the people
+working here and by every command that names a section of one, so they are
+written in the documentation language too. The tag Step 0 recorded says which
+one, and this is the step that acts on it.
+
+When the tag is `en`, there is nothing to do: say one line, `manuals stay in
+English`, and go on.
+
+When it is anything else, rewrite `docs/manuals/process.md`,
+`docs/manuals/focus.md` and `docs/manuals/graphify.md` in that language, one
+file at a time, each one in place. The body is translated and the finished
+manual reads as if it had been written in that language, with no seam, the way
+a document filled from a template does.
+
+**Every section heading stays in English, byte for byte.** A command names the
+section of a manual it reads, and `focus-kit doctor` matches a citation from
+this repository's documents against the manual the kit ships, so one
+translated heading breaks both at once. A `§` citation inside a manual's own
+body is that same heading's text and stays with it: `§When the graph is
+rebuilt` is written as it is, in the middle of a translated sentence.
+
+What else stays as written is the closed list the Language section above
+already keeps for a document: the kit's own terms, every path, every file
+name, every command and a quote of what a tool printed. The first two lines of
+each manual belong to that list and are carried over untouched, the Kit-owned
+banner and the License notice, which are the kit's own terms, a path and a
+URL.
+
+The no em dash rule covers a translated manual like every other text you
+write here.
+
+A manual that says it quotes a source verbatim says, in the translation, that
+the quotes are translated. `focus.md` is the one that does: it quotes the book
+word for word, and a quotation translated is no longer one. One clause in the
+line that already makes the claim, and nothing else added to the file.
+
+On a **review** run the question is asked of each manual on its own: one that
+is still the English file the kit ships is translated now, one that is already
+in the language is left alone. `focus-kit doctor` answers it in one line per
+manual, `docs/manuals/<name>.md in English, not <tag>`, and so does reading
+the file's first paragraphs.
+
+The manuals stay kit-owned, so `focus-kit update` writes the English files
+back over the translations, as it does over every file the kit owns. That is
+not a failure and nothing is lost: `doctor` names each one that came back in
+English, and what translates them again is this command.
+
+## Step 5: report
 
 End by listing the files you wrote, the questions you left open (each one
 as a line in `docs/06-Queue.md` under "Open decisions" or in `docs/00`),

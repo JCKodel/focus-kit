@@ -137,16 +137,112 @@ docs/manuals (pt-BR)
 
 **Done when.**
 
-* `bin/focus-kit selftest` comes back green, six checks.
-* A real run (`docs/05-Process.md` §6): `/initialize` in a scratch repository,
+* [x] `bin/focus-kit selftest` comes back green, six checks.
+* [x] A real run (`docs/05-Process.md` §6): `/initialize` in a scratch repository,
   answering a Documentation language that is not English, leaves the three
   manuals in `docs/manuals/` in that language with every heading in English,
   and the language record holding that tag.
-* `focus-kit doctor` on that scratch prints the new `ok` line, no Drift over
+* [x] `focus-kit doctor` on that scratch prints the new `ok` line, no Drift over
   the three manuals and nothing behind the kit source over them.
-* `focus-kit doctor` on a scratch whose language is English prints what it
+* [x] `focus-kit doctor` on a scratch whose language is English prints what it
   prints today, line for line.
-* `VERSION` bumped and `focus-kit install .` run here, with check 6 of the
+* [x] `VERSION` bumped and `focus-kit install .` run here, with check 6 of the
   verify command coming back empty (`docs/05-Process.md` §5).
-* Every document named in the Contract updated, and the ADR written.
-* `docs/06-Queue.md` line at `[x]` and this page in `work/done/`.
+* [x] Every document named in the Contract updated, and the ADR written.
+* [x] `docs/06-Queue.md` line at `[x]` and this page in `work/done/`.
+
+---
+
+## What happened
+
+**The page contradicted itself, and the answer is Step 0.** Contract bullet 1
+said the record is written "at the step where it asks the Documentation
+language", which is Step 0 and what `docs/03-Domain.md` already said; the
+`/initialize` bullet said the late step "writes the language record, and where
+the tag is not `en` it rewrites the three manuals". Asked
+(`CLAUDE.md`, ambiguity goes to the person): **Step 0 writes the record,
+beside the three prose declarations, and the late step only translates.** That
+is where the tag is known and where a review run reads the declared language
+of a target that predates the record. The `/initialize` bullet is what was
+wrong, and this record is the correction.
+
+**What the run settled**, inside the Contract's constraints:
+
+* The record's path is `.claude/skills/.focus-kit-language`, beside
+  `.focus-kit-version` and `.focus-kit-manifest`, one line ending in a
+  newline. The name follows the two files it sits with, which is the only
+  naming the page constrained.
+* It is read through `without_cr()`, its seventh caller. The page argued the
+  CR tolerance for `fingerprint` in the new pass and said nothing about the
+  record; it is a one-line file of the target's, exactly the shape of the
+  stamp, and the tag is quoted back in every warn.
+* The ADR is **0008** and not the next number on disk. `0007` is reserved in
+  writing by `work/copilot-port.md` and already cited by `docs/03-Domain.md`,
+  and `docs/04-Conventions.md` §2 says an ADR is never renumbered. The gap is
+  noted in `docs/adr/README.md` so the number is not read as a loss.
+* Step 4 gained one rule the page did not name, written after the scratch run
+  and because of it: a manual claiming to quote a source verbatim says, in the
+  translation, that the quotes are translated. `focus.md` is the only one that
+  claims it, and the translated file carries the clause in the line that
+  already made the claim.
+* The new pass enumerates `manuals/*.md` from `KIT_DIR` rather than repeating
+  the presence loop's three names, so a fourth manual is a file and no edit.
+  The visible consequence is the order: the warns come out in glob order
+  (`focus`, `graphify`, `process`), not the presence loop's.
+
+**One defect the page did not foresee, fixed here.** `.focus-kit-language`
+lands under `.claude/skills/`, and check 6 of the verify command diffs that
+folder against `skills/` while excluding only the stamp and the manifest. This
+repository has no record today, so the check was green; the first
+`/initialize` review run here would have written `en` and turned the kit's own
+verify red over a file the kit asked that command to write. Asked, and the
+answer was to fix it in this delivery: check 6 excludes the third data file by
+name, the way it excludes the other two, and `docs/05-Process.md` §4 item 6
+says why.
+
+**What was dropped.** No probe was added to check 2 for the new pass, although
+every other pass of `doctor` has one. The page's Done when names a real run
+and two `doctor` observations as the proof and no probe, and adding one
+rewrites check 2's paragraph in `docs/05-Process.md` §4. The gap is real: the
+`warn` and the `ok` this delivery adds are exercised by no automated check,
+and a later line can close it.
+
+**What the proof found.** Nothing the page did not expect.
+
+* An English scratch: `doctor` before and after the change, diffed, identical
+  line for line. The pass does not run where the record is absent.
+* A `pt-BR` scratch, the record written and the three manuals translated by
+  hand in this session, which is the step as written: `docs/manuals (pt-BR)`
+  green, no Drift over the three, nothing behind the kit source, every
+  `grep '^#'` of a translated manual identical to the English source's, and
+  no `U+2014` anywhere in the three.
+* `focus-kit update` on that same scratch, then `doctor` again: three warns,
+  `docs/manuals/<name>.md in English, not pt-BR (run /initialize to translate
+  it)`, which is Behaviour bullet 4 on the same scratch.
+* Before the translation, the same three warns on the untranslated target,
+  which is the review run's own starting state.
+
+**One cost measured rather than argued.** Translating `focus.md` means
+translating the book's quotes, and a quotation translated is no longer a
+quotation. `docs/00-Product.md` (Audience) says the words are quoted because a
+model given the rule verbatim argues with it less. The three are translated
+together anyway, and `docs/adr/ADR-0008` records the trade rather than hiding
+it. The manual's own note now says the quotes are the book's words,
+translated.
+
+**Also in this delivery, because the CLI grew 60 lines.** Six
+`bin/focus-kit:<line>` citations in `docs/00`, `docs/01`, `docs/03`, `docs/04`
+and `ADR-0002` moved, plus the Line column of the function table of
+`docs/01-Architecture.md` §3 and the six check functions below it. Each one
+was resolved against what the cited line now holds, the way
+`help-names-what-install-writes` did.
+
+**Environments.**
+
+| Environment | State |
+|---|---|
+| Kit source | 0.29.0, the delivery's version |
+| Dogfood copy | 0.29.0, `focus-kit install .` run here, check 6 green |
+| Machine | untouched: the CLI is a symlink and follows the source |
+| First target (`~/Downloads/vaulted`) | not on this machine: the directory does not exist. Nothing to update, and nothing was written there. The row of `docs/05-Process.md` §5 is left as it is, since it leaves with milestone 2 and this delivery is not that one |
+| Target repositories (anyone else's) | untouched; they move when their owner runs `focus-kit update` |

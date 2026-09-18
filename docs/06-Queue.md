@@ -486,7 +486,7 @@ have.
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
                               the only host, and the README promise made in readme-makes-the-case
                               becomes true. Hooks are necessary and available on codex?
-[>] manuals-follow-the-language
+[x] manuals-follow-the-language
                               a target that documents itself in another language reads the three
                               manuals in that language, focus.md included: /initialize translates
                               them in the target, at init and on a review run, and every section
