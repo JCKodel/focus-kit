@@ -64,11 +64,11 @@ is scoped to authored paths rather than given exceptions
 Beyond that, the copy rules this project needs:
 
 * **A terminal line picks one of four shapes.** `say`, `ok`, `warn`, `die`
-  (`bin/focus-kit:51`). Never a bare `echo` or `printf` for a message a
+  (`bin/focus-kit:56`). Never a bare `echo` or `printf` for a message a
   person reads. The shape carries the meaning, so a message whose shape is
   wrong lies even when its words are right.
 * **A `warn` says what to do next.** "uv missing" is half a message; the line
-  adds the command that puts it right. Compare `bin/focus-kit:506`, and every
+  adds the command that puts it right. Compare `bin/focus-kit:575`, and every
   other warn of `doctor` with it: a person reading one `!` line, without the
   rest of the output, knows what to type.
 * **A `die` names the thing that is missing, not the step that failed.**
@@ -77,7 +77,7 @@ Beyond that, the copy rules this project needs:
   rule: `check 6: .claude/skills differs from skills (run focus-kit install
   .)` names the thing and what fixes it, not the step.
 * **The help text is the script's own header.** `--help` prints it through
-  `awk` (`bin/focus-kit:1502`), by a rule and not a range: the shebang is
+  `awk` (`bin/focus-kit:1612`), by a rule and not a range: the shebang is
   skipped, then every consecutive line beginning with `#` is printed until
   the first line that does not, each one losing its `#` and one following
   space. A bare `#` becomes an empty line, which is how the header's blank
@@ -90,7 +90,7 @@ Beyond that, the copy rules this project needs:
   check of the verify command: the only enumeration of what `install` writes
   outside `install_repo` itself is its own `ok` lines, and not every write
   has one. The Installed version is written silently under the skills line
-  (`bin/focus-kit:408`), so a check comparing the `ok` output with the header
+  (`bin/focus-kit:465`), so a check comparing the `ok` output with the header
   would have gone green on exactly the omission
   `help-names-what-install-writes` found.
 * **A document says what is, not what is wished for.** When the code and the
@@ -129,7 +129,7 @@ about instead:
 
 * **bash 3.2 or it does not ship.** No associative arrays, no `mapfile`, no
   `${var,,}`, no `readlink -f`. macOS ships bash 3.2 and the script runs
-  there unchanged. The symlink resolution loop at `bin/focus-kit:43` exists
+  there unchanged. The symlink resolution loop at `bin/focus-kit:48` exists
   for exactly this reason.
 * **`set -euo pipefail`, and every variable expansion quoted.** Paths in
   this project contain spaces often enough (`/Volumes/Data/...` does not,
@@ -186,7 +186,7 @@ one)`. It names the thing that is missing, which is the rule above it.
 | An install is idempotent | the same install run twice, trees compared | every delivery that touches `install_repo` |
 | A skill still loads | the frontmatter of each `SKILL.md` against four structural rules | every delivery that touches a `SKILL.md` |
 | No em dash in authored text | a grep over the authored paths | automatic, every run |
-| The dogfood copy matches its source | `diff -r skills .claude/skills` and `diff -r manuals docs/manuals` | automatic, every run |
+| The dogfood copy matches its source | `diff -r skills .claude/skills`, `diff -r manuals docs/manuals`, and each `.github/prompts/*.prompt.md` against a fresh `render_prompt` of the skill it comes from | automatic, every run |
 
 ```
 bin/focus-kit selftest   = bash -n
@@ -194,7 +194,8 @@ bin/focus-kit selftest   = bash -n
                          + the same install again, trees compared
                          + the structural rules of the SKILL.md frontmatters
                          + grep for the em dash over authored paths
-                         + diff of the dogfood copies against their sources
+                         + diff of the dogfood copies against their sources,
+                           the generated prompt files against a regeneration
 ```
 
 Each check is one bash function in `bin/focus-kit`, named `check_<what it

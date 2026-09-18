@@ -120,7 +120,7 @@ person, the machine or the target in it
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:1486`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:1596`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify as a uv tool, then the global `/graphify`
@@ -138,7 +138,7 @@ installed when absent and **refreshed
 when it is older than the graphify package**, or when it carries no stamp
 saying which version wrote it; a skill newer than the package is left alone,
 because graphify's own installer would downgrade it, and both commands say so
-and name `uv tool upgrade graphifyy` (`bin/focus-kit:177`).
+and name `uv tool upgrade graphifyy` (`bin/focus-kit:182`).
 
 The dependency block then closes with the one thing it can say about
 itself: whether the clone the CLI is running from is still what it was

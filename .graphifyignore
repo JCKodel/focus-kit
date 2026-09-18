@@ -7,3 +7,7 @@
 docs/manuals/process.md
 docs/manuals/focus.md
 docs/manuals/graphify.md
+.github/prompts/initialize.prompt.md
+.github/prompts/discuss.prompt.md
+.github/prompts/propose.prompt.md
+.github/prompts/apply.prompt.md

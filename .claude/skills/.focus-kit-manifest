@@ -1,5 +1,6 @@
 1024278779 .claude/skills/propose/SKILL.md
 1063700627 .claude/skills/initialize/templates/docs/05-Process.md
+1174900872 .github/prompts/discuss.prompt.md
 1324977428 .claude/skills/initialize/SKILL.md
 1462085056 .claude/skills/initialize/templates/docs/00-Product.md
 1473567852 .claude/skills/apply/SKILL.md
@@ -7,11 +8,14 @@
 1686962602 docs/manuals/process.md
 1849877824 .claude/skills/discuss/SKILL.md
 1866192412 .claude/skills/initialize/templates/docs/04-Conventions.md
+1882617097 .github/prompts/initialize.prompt.md
 194712140 .claude/skills/initialize/templates/docs/01-Architecture.md
 3137895575 docs/manuals/graphify.md
 358320372 .claude/skills/initialize/templates/CLAUDE.md
 3632340232 .claude/skills/initialize/templates/docs/02-Backend.md
+43953295 .github/prompts/propose.prompt.md
 571537966 docs/manuals/focus.md
 757358552 .claude/skills/initialize/templates/docs/03-Domain.md
+878416496 .github/prompts/apply.prompt.md
 892715747 .claude/skills/initialize/templates/docs/adr/ADR-0000-template.md
 89771736 .claude/skills/initialize/templates/docs/adr/README.md

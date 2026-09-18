@@ -25,7 +25,7 @@ introduced, so the script never has to work it out at runtime.
 Every file the kit writes belongs to exactly one of four categories, and the
 category determines the write:
 
-* **Kit-owned**, written with `copy_tree` (`bin/focus-kit:273`): the
+* **Kit-owned**, written with `copy_tree` (`bin/focus-kit:321`): the
   destination is removed and copied over. The three skills and the three
   manuals. Editing one inside a target is a change the next update erases.
   Each manual carries a banner saying so on its first line; the three
@@ -45,6 +45,28 @@ category determines the write:
   file without its banner is forbidden, the two data files `doctor` reads
   are the only exception, and the templates are a gap this amendment
   records rather than closes.
+
+  **2026-09-18, `copilot-port`:** the category gains the Ported commands
+  (`docs/03-Domain.md`), one `.github/prompts/<command>.prompt.md` per
+  Command, and gains them without gaining a fifth category. Three things
+  about them are new to the category and none moves the line. They are
+  **generated and not copied**: `render_prompt` makes each one from the
+  `SKILL.md` it comes from, at install, and they are authored nowhere
+  (`ADR-0007`), which is why the write is one `printf` per file and not
+  `copy_tree`. They carry the banner and the License notice at the position
+  `skill-says-it-is-kit-owned` fixed for a file that opens with frontmatter,
+  the line after its closing `---`, and they carry them because the source
+  does, not because anything writes them again. And **the directory holding
+  them is not kit-owned**: `.github/prompts/` is where a person keeps their
+  own prompt files, so the install writes its own files into it and removes
+  nothing, the way it writes `docs/manuals/`. That is what makes one Drift
+  wording unreachable for them: `is not the kit's (focus-kit update removes
+  it)` would name a removal that does not happen, and a warn naming a
+  command that would not act is a warn that lies
+  (`docs/04-Conventions.md` §1). The other two, edited locally and missing,
+  are reached as for any kit-owned file. Being kit-owned is a property of
+  the file and never of the folder around it, which was already true of
+  `docs/manuals/` and is written down here for the first time.
 
   **2026-09-18, `update-survives-a-moved-section`:** a kit-owned file may
   change shape between versions, and `update` goes on overwriting it. There
@@ -69,7 +91,7 @@ category determines the write:
   `CLAUDE.md`, `docs/adr/`, `work/`. Only `/initialize` touches them, and it
   merges rather than overwriting. The CLI's single interaction with this
   category is testing whether `docs/00-Product.md` exists, to choose which
-  closing message to print (`bin/focus-kit:444`).
+  closing message to print (`bin/focus-kit:513`).
 
   **2026-09-18, `manuals-follow-the-language`:** the list gains one path,
   `.claude/skills/.focus-kit-language`, the Manual language
@@ -92,7 +114,7 @@ category determines the write:
   otherwise report all three as edited locally in every translated target.
   What is asked of them instead is whether a translation happened at all
   (`docs/adr/ADR-0008`). No fifth category, and the four are still four.
-* **Merged**, written with `merge_json` (`bin/focus-kit:290`): `.mcp.json`
+* **Merged**, written with `merge_json` (`bin/focus-kit:338`): `.mcp.json`
   and `.claude/settings.json`. Keys are added; nothing is ever removed.
 
   **2026-09-17, `mcp-leaves-the-baseline`:** `.mcp.json` is no longer one of

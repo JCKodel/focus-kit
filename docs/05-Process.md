@@ -107,7 +107,10 @@ It runs six checks, in this order, and stops at the first red:
 2. `focus-kit install` into a **scratch repository**, a fresh `mktemp -d`
    with `git init` run in it, then `focus-kit doctor` there. The check is
    every kit-owned path present and the installed version equal to
-   `VERSION`, **not** a doctor with no warnings. A scratch repository has
+   `VERSION`, **not** a doctor with no warnings. The paths include the four
+   Ported commands (`docs/03-Domain.md`), asserted by name here as the four
+   commands are, because an assertion that read the same list as the
+   reporter would assert nothing. A scratch repository has
    not had `/initialize` run in it, so `doctor` correctly warns that
    `docs/00` to `06`, `CLAUDE.md`, the graph and the hook are missing.
    Those ten warnings are the expected output, and the check **asserts**
@@ -286,6 +289,16 @@ It runs six checks, in this order, and stops at the first red:
    the gap they leave: both copies equal to their sources and the manifest
    stale against them, which is what editing a manual and its dogfood copy by
    hand, without `focus-kit install .`, produces.
+   One comparison more, and it is the one that cannot be a `diff -r`: every
+   `.github/prompts/<name>.prompt.md` of this repository against what
+   `render_prompt` produces from `skills/<name>/SKILL.md` now. `skills/` holds
+   no tree of prompt files to compare against, because they are generated and
+   not copied, the same reason the three data files are excluded above. It is
+   also where the transform's determinism is read back a second time: two
+   renderings of one source that differed would be a diff here, as they would
+   be a changed tree in check 3. An absent file is red before the diff runs,
+   with a `die` naming it, so the message is the missing install and not a
+   `diff` failing on a path.
 
 It takes a few seconds. There is nothing slow and nothing that runs only in
 CI, because there is no CI. A red means a target repository would receive a
@@ -303,7 +316,7 @@ prints the detail of what broke, one `die` naming it, and exits 1.
 | Environment | A delivery must leave it | Command |
 |---|---|---|
 | Kit source (`skills/`, `manuals/`, `config/`, `bin/`) | at the delivery's version, always. It is the truth. | the edit itself |
-| Dogfood copy (`.claude/skills/`, `docs/manuals/`) | in sync with the kit source, always, when the delivery touched a skill or a manual, or bumped `VERSION` | `focus-kit install .` |
+| Dogfood copy (`.claude/skills/`, `docs/manuals/`, `.github/prompts/`) | in sync with the kit source, always, when the delivery touched a skill or a manual, or bumped `VERSION`. The third path holds no copy: it holds what `render_prompt` makes of `skills/`, so a change to a skill or to the transform moves it too. | `focus-kit install .` |
 | Machine (`~/.local/bin/focus-kit`) | the CLI untouched: it is a symlink to the kit source and follows it automatically. The global `/graphify` skill left at the graphify package's version, which `focus-kit install` anywhere does on its own and `focus-kit doctor` reports. `doctor` also reports whether the clone the CLI runs from is still current with its `origin` (`docs/03-Domain.md`, Upstream version), which is the one thing here a person fixes with `git pull` and not with a command of the kit's. | none for the CLI; verify with `focus-kit version` and the skill and kit source lines of `focus-kit doctor .` |
 | Target repositories (anyone else's) | untouched. They move only when their owner runs `focus-kit update`. | `focus-kit update <path>`, run by that person |
 | First target (`~/Downloads/vaulted`) | installed, initialized and taken through one delivery at the delivery's version while milestone 2 is open; nothing committed there, ever, because it is a clone of someone else's repository, and what a command stages there is undone with `git reset` before the record is written, leaving the working tree as the last run left it. This row leaves with milestone 2 (`docs/03-Domain.md`, First target). | `focus-kit update ~/Downloads/vaulted` |

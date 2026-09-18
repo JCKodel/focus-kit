@@ -29,7 +29,5 @@ ADR, in the same delivery.
 | 0004 | AGPL-3.0-only, with terms outside it granted by the author | accepted |
 | 0005 | The graph is derived, not versioned | accepted |
 | 0006 | FOCUS is asked, one question per practice, never imposed | accepted |
+| 0007 | A port to another host is generated, never authored | accepted |
 | 0008 | The manuals follow the target's language, with the headings left in English | accepted |
-
-`0007` is not here yet: `work/copilot-port.md` reserves it, and a number is
-never reused.

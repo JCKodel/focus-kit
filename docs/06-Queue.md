@@ -466,7 +466,7 @@ have.
                               domain, condensed only by cutting lines, never by inventing one; each
                               step ends with what it produced and why that matters (documentation
                               born from the code, no code yet, clean session, a person commits)
-[>] copilot-port              the kit's commands as GitHub Copilot repository instructions and
+[x] copilot-port              the kit's commands as GitHub Copilot repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
                               the only host, and the README promise made in readme-makes-the-case

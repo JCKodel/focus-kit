@@ -18,12 +18,17 @@
 #      .claude/skills/<command>/                   copied, overwriting (kit-owned)
 #      .claude/skills/.focus-kit-version           which version is installed, for doctor (kit-owned)
 #      docs/manuals/{process,focus,graphify}.md    copied, overwriting (kit-owned)
+#      .github/prompts/<command>.prompt.md         generated from the skill, overwriting (kit-owned)
 #      .claude/skills/.focus-kit-manifest          what install wrote, for doctor (kit-owned)
 #      .claude/settings.json                       baseline permissions merged in
 #      .gitignore                                  kit fragment appended once
 #      .graphifyignore                             kit fragment appended once
 #      work/done/.gitkeep                          created if absent
 #   3. prints the next step: open Claude Code in the repository and run /initialize
+#
+# The prompt files are the same commands for a host that reads
+# .github/prompts instead of .claude/skills: generated from the skills at
+# install time, never authored beside them, so the two can never disagree.
 #
 # Everything the kit owns is overwritten on update. Everything the project owns
 # (docs/00 to 06, CLAUDE.md, ADRs, work/, .claude/skills/.focus-kit-language)
@@ -270,6 +275,49 @@ kit_skills() {
   done
 }
 
+# The Ported command (docs/03-Domain.md): one skill as the reusable prompt
+# GitHub Copilot reads, written to stdout. The body of the SKILL.md reaches it
+# word for word and the frontmatter is carried over as it is, because its three
+# keys (name, description, argument-hint) are three the prompt file format
+# names; the one line added is the agent, which is what makes Copilot run the
+# prompt in agent mode, and a command that writes files needs it. The Kit-owned
+# banner and the License notice follow the closing --- in the source, which is
+# the first position a file opening with frontmatter allows, so they arrive
+# where ADR-0002 wants them without being written again here.
+#
+# The substitution list is below and nowhere else: one pair per thing a SKILL.md
+# names that belongs to Claude Code and to no other host. A later edit to a
+# skill has to respect it. What is not in it and could be: CLAUDE.md, which
+# every target has whatever its host and which the host instructions file points
+# at rather than replaces, and .claude/skills/initialize/templates/, which the
+# skills already name by a path the install writes in every target.
+#
+# Pure bash, no interpreter: the file is read line by line and each line goes
+# through five quoted expansions, which is bash 3.2, byte for byte the same on
+# macOS, Linux and Git Bash, and never the empty answer a captured die would
+# leave behind (docs/01-Architecture.md §6). It reads and never dies: its output
+# is captured or piped, and the caller keeps the guard on the file.
+render_prompt() { # skill
+  local file="$KIT_DIR/skills/$1/SKILL.md" line n=0
+  local arg_from='$ARGUMENTS'       arg_to='${input:arguments}'
+  local ask_from='AskUserQuestion'  ask_to='multiple choice question'
+  local new_from='/clear'           new_to='a new chat'
+  local eye_from='Claude in Chrome' eye_to='The browser tool'
+  local host_from='Claude Code'     host_to='GitHub Copilot'
+  [ -f "$file" ] || return 1
+  while IFS= read -r line || [ -n "$line" ]; do
+    n=$((n + 1))
+    # Line 1 is the opening --- of the frontmatter, which check 4 guarantees.
+    if [ "$n" -eq 1 ]; then printf '%s\n' "$line" "agent: 'agent'"; continue; fi
+    line="${line//"$arg_from"/$arg_to}"
+    line="${line//"$ask_from"/$ask_to}"
+    line="${line//"$new_from"/$new_to}"
+    line="${line//"$eye_from"/$eye_to}"
+    line="${line//"$host_from"/$host_to}"
+    printf '%s\n' "$line"
+  done < "$file"
+}
+
 copy_tree() { # src dst  (overwrite, kit-owned)
   rm -rf "$2"
   mkdir -p "$(dirname "$2")"
@@ -386,6 +434,15 @@ write_manifest() { # target
       [ -f "$target/$f" ] || continue
       printf '%s %s\n' "$(fingerprint "$target/$f")" "$f"
     done
+    # The Ported commands, enumerated the way the skills they come from are, so
+    # a fifth command is a folder under skills/ and no edit here. Guarded like a
+    # manual: a target the generated files never reached is a target install has
+    # not run in since they existed, and doctor names each one as missing.
+    while IFS= read -r s; do
+      f=".github/prompts/$s.prompt.md"
+      [ -f "$target/$f" ] || continue
+      printf '%s %s\n' "$(fingerprint "$target/$f")" "$f"
+    done <<< "$(kit_skills)"
   } | LC_ALL=C sort > "$target/.claude/skills/.focus-kit-manifest"
 }
 
@@ -415,6 +472,18 @@ install_repo() {
     cp "$m" "$target/docs/manuals/$(basename "$m")"
   done
   ok "docs/manuals/{process,focus,graphify}.md"
+
+  # the Ported commands (kit-owned), generated from the same skills just
+  # copied. Each file is overwritten and nothing else in the directory is
+  # touched, the way a manual is: .github/prompts is a folder the person keeps
+  # their own prompts in, and an install that emptied it would take work that
+  # was never the kit's. The ok line reuses the names built above, so a fifth
+  # command reaches the screen without a second list to keep in step.
+  mkdir -p "$target/.github/prompts"
+  while IFS= read -r s; do
+    render_prompt "$s" > "$target/.github/prompts/$s.prompt.md"
+  done <<< "$(kit_skills)"
+  ok ".github/prompts/{$names}"
 
   # the manifest (kit-owned), over the files just written
   write_manifest "$target"
@@ -535,6 +604,21 @@ doctor() {
 "
     fi
   done <<< "$(kit_skills)"
+  # The Ported commands (docs/03-Domain.md), one presence line each, in the
+  # shape the skills loop above prints and for the same reason: the fix is
+  # update, which writes them again. Per file and not one line for the four,
+  # because each path goes into $missing and the Drift pass reads it to avoid
+  # naming a second time what a presence line named.
+  local p
+  while IFS= read -r p; do
+    if [ -f "$target/.github/prompts/$p.prompt.md" ]; then
+      ok ".github/prompts/$p.prompt.md"
+    else
+      warn ".github/prompts/$p.prompt.md missing (focus-kit update restores it)"
+      missing="$missing.github/prompts/$p.prompt.md
+"
+    fi
+  done <<< "$(kit_skills)"
   # The number, and behind it the Unbumped change (docs/03-Domain.md): a
   # target at the kit's own number whose kit-owned files are no longer what
   # the source holds. The question is asked only when the number is equal,
@@ -572,6 +656,14 @@ doctor() {
             [ -f "$src" ] || continue
             printf '%s docs/manuals/%s\n' "$(fingerprint "$src")" "$(basename "$src")"
           done
+          # The Ported commands are generated and not copied, so what install
+          # would write is what render_prompt prints and there is no file to
+          # fingerprint. The CRC is the same one either way: the rendered text
+          # through the same tr and the same cksum the manifest side used.
+          while IFS= read -r src; do
+            printf '%s .github/prompts/%s.prompt.md\n' \
+              "$(render_prompt "$src" | tr -d '\r' | cksum | cut -d' ' -f1)" "$src"
+          done <<< "$(kit_skills)"
         } | LC_ALL=C sort | uniq -u | cut -d' ' -f2- | LC_ALL=C sort -u)"
       fi
       if [ -n "$behind" ]; then
@@ -910,6 +1002,8 @@ check_install() { # scratch
   # read the same list as the reporter would assert nothing, which is why
   # each manual is written out here too. A new command joins this list.
   for expected in /apply /discuss /initialize /propose \
+                  .github/prompts/apply.prompt.md .github/prompts/discuss.prompt.md \
+                  .github/prompts/initialize.prompt.md .github/prompts/propose.prompt.md \
                   docs/manuals/process.md docs/manuals/focus.md \
                   docs/manuals/graphify.md .claude/settings.json \
                   ".gitignore (kit fragment current)" \
@@ -1431,6 +1525,22 @@ check_dogfood() {
     printf '%s\n' "$out"
     die "check 6: docs/manuals differs from manuals (run focus-kit install .)"
   }
+  # The third dogfood copy, and the one that cannot be a diff -r: skills/ holds
+  # no tree of prompt files to compare against, because they are generated. The
+  # comparison is against a regeneration from the same source, which is also
+  # where the determinism of the transform is read back: two renderings of one
+  # SKILL.md that differ would be a diff here.
+  local s
+  while IFS= read -r s; do
+    # Presence first, or diff would fail on the missing file and render_prompt
+    # would print into a pipe nobody reads any more.
+    [ -f "$KIT_DIR/.github/prompts/$s.prompt.md" ] || \
+      die "check 6: .github/prompts/$s.prompt.md is missing (run focus-kit install .)"
+    out="$(render_prompt "$s" | diff - "$KIT_DIR/.github/prompts/$s.prompt.md" 2>&1)" || {
+      printf '%s\n' "$out"
+      die "check 6: .github/prompts/$s.prompt.md is not what skills/$s/SKILL.md renders (run focus-kit install .)"
+    }
+  done <<< "$(kit_skills)"
   # After both diffs, so it fires only on the gap they leave: the two copies
   # equal to their sources and the manifest stale against them, which is what
   # a source and a copy edited by hand in step produce. Only the presence of
