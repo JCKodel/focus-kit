@@ -205,7 +205,7 @@ about brownfield repositories is untested.
                               mid-delivery, and the fix is doctor's alone: the kit source is on the
                               machine when doctor runs in this repository, and never is when it runs in
                               someone else's, so the line says which of the two it can answer
-[ ] review-run-finds-a-translated-practice-table
+[x] review-run-finds-a-translated-practice-table
                               /initialize detects a docs/01 §3 that already answered the four practices
                               by the literal header row Practice | Answer | Here it is, and the Language
                               section tells the same run to translate table columns as it fills the
@@ -215,7 +215,7 @@ about brownfield repositories is untested.
                               ask the four Practice questions again. The two rules contradict each other
                               and one of them gives way: a marker that survives translation, or a header
                               the translation rule excepts
-[ ] asked-as-written-says-which-language
+[>] asked-as-written-says-which-language
                               /initialize says of the Language question, the four Practice questions
                               and the Proof tool question that each is written once and asked as
                               written, and gives the two-patterns disclaimer and the no screen line
@@ -227,6 +227,18 @@ about brownfield repositories is untested.
                               translated. Neither is wrong against the file, so two runs of the same
                               command differ and a record quoting one cannot be compared with the
                               other; the rule says which, or it stops saying as written
+[ ] initialize-trusts-the-argument
+                              Step 0 contradicts itself on the argument: line 66 says that if
+                              $ARGUMENTS says green or brown, trust it, and line 89 says of the kind
+                              of project, inside the one AskUserQuestion that also carries the
+                              language, to say which was detected and let them confirm. Measured on
+                              2026-09-17 in the scratch of review-run-finds-a-translated-practice-table:
+                              the run was started with /initialize green, asked the question anyway,
+                              and the description of the option it recommended cited the argument it
+                              was reconfirming. The run obeyed the text. One of the two lines gives
+                              way: the argument answers the question and the AskUserQuestion carries
+                              the language alone, or the argument is a detection like any other and
+                              line 66 stops saying trust it
 ```
 
 ## Milestone 3: the kit explains itself

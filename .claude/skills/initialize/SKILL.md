@@ -42,7 +42,13 @@ you fill them: headings, fixed prose, table columns, the lot. The finished
 document reads as if it had been written in that language, with no seam.
 Keep the template structure, the section order and the technical terms this
 kit defines (FOCUS, use case, orchestrator, repository, slice, `/propose`,
-`/apply`), and keep every path and file name as it is.
+`/apply`), keep every path and file name as it is, and keep one row of one
+table: the header row `Practice | Answer | Here it is` of
+`docs/01-Architecture.md` §3 stays in English whatever the documentation
+language, because it is what a review run looks for to know the four
+Practice questions were already answered (Step 0). The rest of that table
+translates like the rest of the document: the four Practice names, the
+answers and the third column.
 
 ## Two house rules that shape everything you write
 

@@ -44,7 +44,8 @@ delivery that introduces one justifies it):
 <!-- init: the four answers are the ones the Practice questions of
      /initialize were given. Write the answer that was chosen, never the
      option list, and never an answer read off the code: the code is
-     today's fact and this table is the decision. -->
+     today's fact and this table is the decision. The header row above is
+     the one row that is not translated; the Language section says why. -->
 
 | Piece | Here it is | Lives in |
 |---|---|---|
