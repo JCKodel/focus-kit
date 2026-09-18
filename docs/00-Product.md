@@ -208,8 +208,10 @@ says in a line per manual when `update` has written the English one back over
 a translation.
 
 How it gets what it needs depends on what is there. On a greenfield
-repository it asks, in rounds of at most four questions, each round about
-what the previous one settled. On a brownfield repository it reads first:
+repository it asks in rounds, each round about what the previous one
+settled, and at most four questions per card, a round asking a second card
+where what it offers is composed from what an earlier one answered. On a
+brownfield repository it reads first:
 manifests, CI, infrastructure, migrations, folder layout, git history, then
 builds the graphify graph, and only then asks what the code could not
 answer. Everything it asserts about existing code cites the file it came
@@ -218,6 +220,11 @@ from.
 If `docs/00-Product.md` already exists, the run is a review: it compares the
 documents against the code and proposes edits section by section instead of
 rewriting.
+
+**It closes by running `focus-kit doctor` in the target and printing what
+that command says**, whole and acted on by nobody, so a step the run did not
+take is named while the person is still reading instead of days later by
+someone who thought to ask.
 
 **Rule of product:** a document is never left with a placeholder. If the
 command does not know what goes in a section, it asks. If the section does

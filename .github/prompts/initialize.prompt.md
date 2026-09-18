@@ -383,9 +383,13 @@ repeats it.
 
 ## Step 1 (greenfield): ask in rounds
 
-Do not ask twenty questions at once. Ask in rounds, each round one
-`multiple choice question` with at most four questions, and each round only about
-what the previous one settled. Give your recommendation as the first
+Do not ask twenty questions at once. Ask in rounds, each round only about
+what the previous one settled. A card is one `multiple choice question` with at most
+four questions, and that ceiling is the card's and not the round's: a round
+asks a second card when what it has to offer could not have been written
+into the first. Round 5 is the round that does, twice over: its tooling card
+is composed from what round 3 answered, and its Proof tool card is asked
+only where there is a UI. Give your recommendation as the first
 option whenever you have one. Suggested rounds:
 
 1. **Product.** What it is in one sentence; who uses it (every side, if it
@@ -398,15 +402,26 @@ option whenever you have one. Suggested rounds:
 3. **Stack.** Language and framework (the house default is C# on .NET,
    with the Mediator pattern as the orchestrator, MediatR or any other
    implementation; see `docs/manuals/focus.md` §9); database;
-   where it runs; what the client imposes. Test framework, linter,
-   formatter.
+   where it runs; what the client imposes.
 4. **Practices.** The four Practice questions, asked as they are written in
    the brownfield step above, with no third option: there is no code to
    quote. Their answers become `docs/01-Architecture.md` §3 and decide which
    pieces the rest of this round and Step 2 may name.
-5. **Environments and proof.** Which environments exist (local, dev,
-   staging, production); how code gets to each; which one a delivery must
-   leave up to date; what the verify command is (or will be). If there is
+5. **Environments, tooling and proof.** Which environments exist (local,
+   dev, staging, production); how code gets to each; which one a delivery
+   must leave up to date. Then a second card, in the same round: the test
+   framework, the linter and the formatter of the ecosystem round 3
+   answered, and of no other. Three options, in this order: the set that
+   ecosystem's projects standardly use, one credible alternative of the
+   same ecosystem, and deciding later. No tool is named here, because the
+   ecosystem is the answer's and not this file's; where round 3 answered
+   the house default, the first option is that stack's usual set. Deciding
+   later writes one line in each section that would have named a tool,
+   saying that nothing is chosen yet and where the choice gets made, and
+   never a placeholder (`docs/00-Product.md`, Initializing). Only then
+   what the verify command is (or will be), because it runs the tooling
+   that was just chosen: asked before that card the answer is a promise,
+   asked after it the answer is a command. If there is
    a UI, what the visual reference is and which tool proves a screen: the
    Proof tool question, as in the brownfield step.
 6. **Conventions and git.** Naming rules the client imposes; the Git
@@ -562,9 +577,27 @@ English, and what translates them again is this command.
 
 ## Step 5: report
 
-End by listing the files you wrote, the questions you left open (each one
-as a line in `docs/06-Queue.md` under "Open decisions" or in `docs/00`),
-the state of the graph and the hook, and the next step:
+End by listing the files you wrote and the questions you left open (each
+one as a line in `docs/06-Queue.md` under "Open decisions" or in
+`docs/00`).
+
+Then run `focus-kit doctor .` at the root of this repository and print what
+it printed, whole and unchanged: every line, in the order the command wrote
+them. Not a summary, not the warns alone, not a count. Those lines are a
+quote of what a tool printed, which the Language section above keeps in
+English whatever the conversation's language, so they reach the person as
+the command printed them.
+
+The command names and you do not act. A warn there already carries the
+command that fixes it, so nothing of yours goes after it and no step is
+taken back because one appeared: what to do about it is the person's call.
+A run that skipped a step reads it back here, which is what the line is
+for.
+
+When `focus-kit` is not on `PATH`, or the command exits non-zero, say one
+line naming what you could not run, and go on. Nothing stops.
+
+Then the next step:
 
 ```
 /propose <first-slug-from-the-queue>

@@ -68,6 +68,9 @@ writes `docs/00` to `06`, `docs/adr/`, `CLAUDE.md`, and the `work/` folder.
   section by section instead of rewriting.
 * It merges into an existing `CLAUDE.md`, never overwrites it.
 * It installs the graphify post-commit hook, so the graph follows the code.
+* It ends by running `focus-kit doctor` in the repository and printing what
+  that command says, so a step the run did not take is named while the
+  person is still reading.
 
 Run it again at any time to review the documents against the code.
 

@@ -394,10 +394,14 @@ English; a repository that stops using the kit gets its files back without
 unpicking them by hand; and a target installed several versions ago learns
 that a new one exists instead of waiting for someone to check. It closes on
 one more thing, and that thing is not a tenth promise: the friction its own
-proof runs surfaced, in the scratch repositories where a ported command was
-run under its host, because a port whose proof run finds the host diverging
-from the text it received word for word is not ported until the divergence
-has an answer. Seven of the
+proof runs surfaced, in the scratch repositories where a command was run end
+to end, under a ported host or under the one the kit was written for. Two
+shapes of finding, and the clause covers both: the host diverging from the
+text it received word for word, because a port whose proof run finds that is
+not ported until the divergence has an answer; and the text itself asking
+what the run has no way to answer, because a question the kit ships is paid
+for by every person who is asked it, and a proof run is where the kit reads
+its own questions back. Seven of the
 nine describe or replicate the whole kit, so any change to a skill, a manual
 or the CLI rewrites part of each; the alert is worth shipping once the
 versions it announces stop arriving with every delivery; and the removal is
@@ -504,7 +508,7 @@ have.
                               person's, so the documents came out right and only the asking was
                               wrong, which is why no file records it (work/done/copilot-port.md,
                               The proof run)
-[>] initialize-names-what-it-skipped
+[x] initialize-names-what-it-skipped
                               /initialize closes by running focus-kit doctor and printing what it
                               says, so a step the run did not take is named by the run and not by a
                               person who thinks to ask days later. None of the four skills runs
@@ -544,6 +548,27 @@ have.
                               control group questions-reach-the-persons-language recorded. Ahead
                               of codex-port, already proposed, which reads this for whether it
                               installs that host's graphify skill too
+[x] tools-follow-the-stack    the tooling card of /initialize offers the ecosystem the person
+                              answered, not the house one. Round 3 of Step 1 greenfield asks the
+                              language and "Test framework, linter, formatter" in the same card
+                              set, so the tooling options cannot depend on an answer given beside
+                              them, and the only stack the skill names is the house default
+                              (skills/initialize/SKILL.md, Step 1 greenfield item 3, citing
+                              docs/manuals/focus.md §9). Measured on 2026-09-18 in the proof run
+                              of initialize-names-what-it-skipped,
+                              ~/Downloads/lanternfile-initialize-proof under Claude Code: the
+                              person answered TypeScript on Node and the tooling card came out
+                              offering "xUnit e dotnet format" and "NUnit e dotnet format". The
+                              third option, decide later, is what was taken, so the documents came
+                              out right and only the asking was wrong, which is why no file in that
+                              scratch records it. The answer is where the question stands, not what
+                              it offers: the tooling question moves out of round 3 and into round
+                              5, beside the verify command, where the language is already answered
+                              and where the tooling answer feeds that command anyway. The house
+                              default stays the offer when the language answered is C# on .NET,
+                              since manuals/process.md §3 keeps it as what the command defaults to.
+                              Ahead of codex-port, which renders its prompts from the skills, so
+                              the port ships the fixed text and not the fix afterwards
 [>] codex-port                the kit's commands as Codex repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
