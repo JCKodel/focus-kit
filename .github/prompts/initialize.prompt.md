@@ -8,6 +8,35 @@ description: >-
   it reads the code, builds the graphify graph and asks only what the code
   cannot answer.
 ---
+
+**Read this before the rest of the file.** This command is a
+conversation and not a script, and every question in it is a stop.
+Where the file says to ask, you ask and then wait: you create no
+file, change no file and run no command that writes, until the
+person has answered. Ask as a multiple choice question, carrying
+the options as they are written. Where
+GitHub Copilot gives you no way to show options, the
+question still has to be answerable: write it as text, list its
+options numbered from 1 in the order the file gives them, and say
+in one line that the person replies with the number, one number
+per question, or types the answer where the file offers that. An
+option nobody can point at is not an option. Then stop there. Never
+answer for the person, never take an option because it is the
+recommended one, and never decide a question yourself because the
+repository seems to answer it. A run that wrote a document nobody
+was asked about has failed, and so has a run that reported at the
+end what it decided alone.
+
+**And the stop ends when the answer arrives.** You then go on at
+once, in the same reply, from the step that asked, and you carry
+out every step after it. Saying the answers back, saying that you
+will continue, or saying what you are about to do is not a step and
+finishes nothing. Your turn ends where the command ends, at its
+closing report, and nowhere else: not at a question, not at an
+answer, not between two steps. Ask each question where the file
+asks it, and do not gather the questions of later steps into an
+earlier one.
+
 <!-- kit-owned: focus-kit update overwrites this file. Edit it in the focus-kit repository, not here. -->
 <!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: https://github.com/JCKodel/focus-kit -->
 
@@ -97,7 +126,7 @@ line, not a line of the closing report.
 
 In both cases, if `docs/00-Product.md` already exists, this is a **review**
 run: read what is there, compare it with the code and the person's
-answers, and propose edits section by section instead of rewriting. A
+answers, and propose edits section by section instead of rewriting.
 A section that a question written in this file answers, and that carries no
 answer, gets that question and a proposed edit, like any other section. The
 rule is one and the sections are three: a `docs/05-Process.md` §6 that names

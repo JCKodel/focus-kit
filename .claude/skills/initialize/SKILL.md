@@ -96,7 +96,7 @@ line, not a line of the closing report.
 
 In both cases, if `docs/00-Product.md` already exists, this is a **review**
 run: read what is there, compare it with the code and the person's
-answers, and propose edits section by section instead of rewriting. A
+answers, and propose edits section by section instead of rewriting.
 A section that a question written in this file answers, and that carries no
 answer, gets that question and a proposed edit, like any other section. The
 rule is one and the sections are three: a `docs/05-Process.md` §6 that names
