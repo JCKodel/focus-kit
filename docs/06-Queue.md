@@ -166,9 +166,10 @@ about brownfield repositories is untested.
                               after per command, and docs/00 gets the number, so the next comparison
                               with OpenSpec or SpecKit is measured and not feared
 [x] focus-is-asked-not-imposed
-                              FOCUS is a house rule (docs/manuals/process.md §7, the CLAUDE.md template,
-                              /apply Build) and /initialize never asks: the first target's docs/01 wrote
-                              a features/ target layout and a migration line per slice into a repository
+                              FOCUS is a house rule (docs/manuals/process.md §The house rules, the
+                              CLAUDE.md template, /apply Build) and /initialize never asks: the first
+                              target's docs/01 wrote a features/ target layout and a migration line
+                              per slice into a repository
                               that never chose it, and the project the kit came from removed the four
                               pieces on purpose (ninjobs CLAUDE.md, Não reconstruir, ADR-0022); the
                               person may never have heard of FOCUS, so /initialize asks one question per
@@ -299,7 +300,8 @@ staged the other's page.
                               /discuss places a line in the milestone whose paragraph it serves, amends
                               the paragraph when the line serves it and it does not say so, or leaves
                               the line in Later, and proposes a milestone when three Later lines share
-                              a purpose; docs/manuals/process.md §8 says so. After discuss-adds-queue-line
+                              a purpose; docs/manuals/process.md §The queue says so. After
+                              discuss-adds-queue-line
 [x] ~~git-branches-are-queue~~
                               superseded by git-strategy-is-asked, which covers the branch, the
                               worktree and none, and is asked by /initialize rather than assumed
@@ -352,7 +354,7 @@ it).
                               block's content changed, and every target that predates it edits
                               .gitignore by hand. Related to update-survives-a-moved-section,
                               but a different mechanism: that one overwrites, this one refuses to
-[>] update-survives-a-moved-section
+[x] update-survives-a-moved-section
                               a kit-owned file in a target that changed shape between versions:
                               today update overwrites and a target's documents may reference a
                               section that moved. Blocked on open decision 5
@@ -423,11 +425,21 @@ have.
                               domain, condensed only by cutting lines, never by inventing one; each
                               step ends with what it produced and why that matters (documentation
                               born from the code, no code yet, clean session, a person commits)
-[ ] copilot-port              the kit's commands as GitHub Copilot repository instructions and
+[>] copilot-port              the kit's commands as GitHub Copilot repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
                               the only host, and the README promise made in readme-makes-the-case
                               becomes true. Hooks are necessary and available on copilot?
+[>] copilot-reads-the-project-rules
+                              the second half of copilot-port, whose page puts both out of scope:
+                              /initialize writes, in every target and without asking, a Host
+                              instructions file that points at CLAUDE.md instead of copying it, so
+                              one edit by hand moves every host and nothing drifts. Project-owned,
+                              because a person may add a line to it and update erases a kit-owned
+                              file. Then docs/00 Positioning stops naming Claude Code as the only
+                              host, proven by a real /initialize run under GitHub Copilot in a
+                              scratch repository, which docs/05 §6 requires before a platform is
+                              claimed anywhere a user reads. codex-port takes the same two halves
 [ ] codex-port                the kit's commands as Codex repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as

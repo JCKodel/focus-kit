@@ -30,7 +30,8 @@ introduced to make the kit resemble what it documents.
 
 `docs/01-Architecture.md` §3 states this in the table itself, with the
 manual's own criterion as the reason: **every layer pays its own way**
-(`docs/manuals/focus.md` §1). A layer earns its place only if it can point
+(`docs/manuals/focus.md` §What FOCUS is). A layer earns its place only if
+it can point
 at a verifiable gain that would vanish without it. Splitting `install_repo`
 into a view, an orchestrator, a use case and a repository makes nothing
 testable that was not, makes nothing swappable that needed swapping, and

@@ -260,10 +260,12 @@ append_once() { # file fragment
 # The one place a carriage return is forgiven. A target cloned on Windows
 # with core.autocrlf=true has every kit-owned file, the stamp and the
 # manifest checked out as CRLF, and it receives no .gitattributes, so the
-# tolerance has to live in the readers. Its five callers are
+# tolerance has to live in the readers. Its six callers are
 # installed_version, fingerprint, the manifest reader inside doctor,
 # global_skill_state, which reads a stamp graphify wrote on this machine, and
-# the Fragment gap pass, which reads a file that is the target's own. It
+# the two passes that read a file the target itself versions, the Fragment gap
+# over .gitignore and .graphifyignore and the Manual citation over the
+# target's own documents. It
 # reads and never dies: its output is captured (docs/01-Architecture.md §6),
 # and the callers keep their own -f guard on the file.
 without_cr() { # file
@@ -376,6 +378,41 @@ install_repo() {
 # own -f guard on the file.
 installed_version() { # target
   without_cr "$1/.claude/skills/.focus-kit-version"
+}
+
+# Does this manual still have the section a citation names? The text after the
+# § is compared with every heading of the manual, normalized first: the #'s and
+# the "N. " numbering go, and what is left is cut at the first comma or opening
+# parenthesis, so "## 5. Errors are values (ch. 8)" gives "Errors are values"
+# and "## 6. Vertical slices, DRY, YAGNI, KISS, CQS" gives "Vertical slices".
+# That is what lets a person cite the heading in the words the sentence needs
+# instead of pasting a chapter number out of the book.
+#
+# A prefix and never a whole line, because a citation ends inside the sentence
+# around it and nothing marks where: §Ensuring the graph is followed by a comma
+# in one document, by a full stop in another and by a table pipe in a third.
+#
+# The pattern is a quoted variable, so a heading holding a * or a [ is text and
+# not a glob. The manual is read as it is, without without_cr: it comes from
+# KIT_DIR, which is a clone of this repository, whose .gitattributes checks
+# every markdown file out with LF (docs/01-Architecture.md §2).
+#
+# It reads and never dies: its status is the whole answer
+# (docs/01-Architecture.md §6).
+cites_a_heading() { # manual  the text after the §
+  local h
+  while IFS= read -r h; do
+    case "$h" in '#'*) ;; *) continue ;; esac
+    while [ "${h#\#}" != "$h" ]; do h="${h#\#}"; done
+    while [ "${h# }" != "$h" ]; do h="${h# }"; done
+    case "$h" in [0-9]*) h="${h#*. }" ;; esac
+    h="${h%%,*}"
+    h="${h%%(*}"
+    while [ "${h% }" != "$h" ]; do h="${h% }"; done
+    [ -n "$h" ] || continue
+    case "$2" in "$h"*) return 0 ;; esac
+  done < "$1"
+  return 1
 }
 
 doctor() {
@@ -607,6 +644,90 @@ doctor() {
       [ "$drift" -eq 1 ] || ok "kit-owned files as install wrote them"
     fi
   fi
+  # Manual citation (docs/03-Domain.md): a reference from one of the documents
+  # this target reads again and again to a section of a kit-owned Manual, at an
+  # address the next update can move under it. update overwrites the manual and
+  # never the citing document, so a section inserted in a manual renumbers every
+  # one below it and a citation by number goes on pointing at a number that now
+  # means something else. Both fixes are a hand edit: the citing file is the
+  # target's own, which ADR-0002 forbids the CLI, and what the citation meant is
+  # only in the sentence around it.
+  #
+  # The manuals are the ones the kit ships, read from KIT_DIR as manuals/*.md
+  # the way every other read of the kit's own files is, so a fourth manual is a
+  # file and no edit here. Against the kit's copy and never the target's,
+  # because what is at stake is what the next update writes.
+  #
+  # The documents are CLAUDE.md, docs/00 to 06 and everything under docs/adr/.
+  # work/ is not read, in flight or done: a Delivery is read by the one session
+  # that builds it, and a Done page records what was, which a correction would
+  # falsify.
+  #
+  # Each file is read through without_cr, its sixth caller and the second over
+  # a file the target itself versions: a Windows clone checks these out with a
+  # carriage return, and the warn quotes the rest of the line.
+  local cdocs cdoc n rest before after key name cited=0
+  cdocs="CLAUDE.md
+docs/00-Product.md
+docs/01-Architecture.md
+docs/02-Backend.md
+docs/03-Domain.md
+docs/04-Conventions.md
+docs/05-Process.md
+docs/06-Queue.md"
+  if [ -d "$target/docs/adr" ]; then
+    cdocs="$cdocs
+$(cd "$target" && find docs/adr -type f | LC_ALL=C sort)"
+  fi
+  # Herestrings and not pipes, the two of them: a pipe would run the loop in a
+  # subshell and cited would come back 0 however many lines it warned about.
+  while IFS= read -r cdoc; do
+    [ -n "$cdoc" ] || continue
+    [ -f "$target/$cdoc" ] || continue
+    n=0
+    while IFS= read -r rest; do
+      n=$((n + 1))
+      # One line may carry two citations, so the scan walks the § signs rather
+      # than stopping at the first.
+      while :; do
+        case "$rest" in *§*) ;; *) break ;; esac
+        before="${rest%%§*}"
+        after="${rest#*§}"
+        rest="$after"
+        # What sits in front of the § is a citation only when it ends in the
+        # name of a manual the kit ships, with nothing between the two but
+        # backticks and spaces. manuals/ is part of the key: a target's own
+        # docs/05-Process.md is one file name away from process.md, and every
+        # citation the kit and its targets write carries the folder.
+        key="$before"
+        while :; do
+          case "$key" in
+            *' ')  key="${key% }" ;;
+            *'`')  key="${key%\`}" ;;
+            *)     break ;;
+          esac
+        done
+        case "$key" in *manuals/*.md) ;; *) continue ;; esac
+        name="${key##*manuals/}"
+        [ -f "$KIT_DIR/manuals/$name" ] || continue
+        # By number when a digit follows the §, by heading otherwise, and the
+        # heading then runs to the end of the line.
+        case "$after" in
+          [0-9]*)
+            warn "$cdoc:$n cites docs/manuals/$name by number: \"§$after\" (cite the heading by hand; a section added to that manual renumbers the ones below it)"
+            cited=1
+            continue ;;
+        esac
+        cites_a_heading "$KIT_DIR/manuals/$name" "$after" && continue
+        warn "$cdoc:$n cites a section docs/manuals/$name does not have: \"§$after\" (fix the citation by hand; the heading moved or was renamed)"
+        cited=1
+      done
+    done <<< "$(without_cr "$target/$cdoc")"
+  done <<< "$cdocs"
+  # Green on a target whose every citation names a heading the manual has, and
+  # green on a target /initialize never ran in: nothing there points at a
+  # section that can move.
+  [ "$cited" -eq 1 ] || ok "project-owned documents (every manual citation by heading, every heading there)"
   [ -f "$target/graphify-out/graph.json" ] && ok "graphify-out/graph.json" || warn "graphify-out/graph.json missing (/propose and /apply rebuild it; docs/manuals/graphify.md)"
   if [ -d "$target/.git" ]; then
     if (cd "$target" && graphify hook status 2>/dev/null | grep -i '^post-commit' | grep -qiv 'not installed'); then
@@ -657,7 +778,8 @@ check_install() { # scratch
                   ".gitignore (kit fragment current)" \
                   ".graphifyignore (kit fragment current)" \
                   "kit version $KIT_VERSION" \
-                  "kit-owned files as install wrote them"; do
+                  "kit-owned files as install wrote them" \
+                  "project-owned documents (every manual citation by heading, every heading there)"; do
     line="$(ok "$expected")"
     printf '%s\n' "$out" | grep -qF -- "$line" || {
       printf '%s\n' "$out"
@@ -955,6 +1077,55 @@ JSON
   printf '%s\n' "$out" | grep -qF -- "$line" || {
     printf '%s\n' "$out"
     die "check 2: doctor reported drift on a scratch repository that only its source had moved past"
+  }
+  # The Manual citation pass (docs/03-Domain.md), on one project-owned document
+  # written into the scratch for it. The green line above already proves the
+  # other branch, on a scratch that cites nothing, which is also the target
+  # /initialize never ran in. Here the two warns, in one doctor run: a citation
+  # by number and a citation by a heading no manual has. The line numbers are
+  # the check's own, so the <path>:<line> of each warn is asserted exactly.
+  #
+  # CLAUDE.md and not a file under docs/, because it leaves no directory behind
+  # when it goes, and it goes: it is project-owned, and check 3 installs into
+  # this same scratch.
+  local claude="$scratch/CLAUDE.md"
+  cat > "$claude" <<'MD'
+A scratch document, for the probe below.
+It cites `docs/manuals/process.md` §7, which is a number.
+And `docs/manuals/focus.md` §A heading no manual ships.
+MD
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  for expected in "CLAUDE.md:2 cites docs/manuals/process.md by number: \"§7, which is a number.\" (cite the heading by hand; a section added to that manual renumbers the ones below it)" \
+                  "CLAUDE.md:3 cites a section docs/manuals/focus.md does not have: \"§A heading no manual ships.\" (fix the citation by hand; the heading moved or was renamed)"; do
+    line="$(warn "$expected")"
+    printf '%s\n' "$out" | grep -qF -- "$line" || {
+      printf '%s\n' "$out"
+      die "check 2: doctor did not report $expected in the scratch repository"
+    }
+  done
+  # An if and not an && list, because here the grep failing is the green case.
+  line="$(ok "project-owned documents (every manual citation by heading, every heading there)")"
+  if printf '%s\n' "$out" | grep -qF -- "$line"; then
+    printf '%s\n' "$out"
+    die "check 2: doctor called the scratch repository's documents current with a citation by number in one of them"
+  fi
+  # Then the same document with one citation by a heading the manual has, which
+  # is the state every target is meant to be in.
+  cat > "$claude" <<'MD'
+A scratch document, for the probe below.
+It cites `docs/manuals/process.md` §The house rules, by heading.
+MD
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  rm -f "$claude"
+  printf '%s\n' "$out" | grep -qF -- "$line" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor did not call the scratch repository's documents current with every citation by heading"
   }
   # The Global skill (docs/03-Domain.md), four doctor runs against a fake home
   # and a fake graphify on PATH: every line the state table can print, on any

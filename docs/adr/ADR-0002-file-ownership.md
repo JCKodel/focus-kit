@@ -45,6 +45,26 @@ category determines the write:
   file without its banner is forbidden, the two data files `doctor` reads
   are the only exception, and the templates are a gap this amendment
   records rather than closes.
+
+  **2026-09-18, `update-survives-a-moved-section`:** a kit-owned file may
+  change shape between versions, and `update` goes on overwriting it. There
+  is no migration notion and there will not be one: a notes file the CLI
+  prints for the versions crossed is a file every future delivery has to
+  edit, against product question 2. What answers the risk instead is
+  `doctor`, which names every citation the change can invalidate: a
+  reference from one of a target's repeatedly read documents to a section of
+  a Manual, by a number a later section shifts or by a heading the manual no
+  longer has. A person fixes each one by hand, because the citing file is
+  Project-owned and what the citation meant is only in the sentence around
+  it. That closes open decision 5 of `docs/00-Product.md`, which has left
+  the list.
+
+  The Project-owned bullet above is superseded on one word. Its "single
+  interaction" was a read, and there are two reads now: the same test for
+  `docs/00-Product.md`, and the pass, which opens `CLAUDE.md`, `docs/00` to
+  `06` and every file under `docs/adr/` and reads them line by line. `work/`
+  stays unread, in flight and done both. Nothing else about the category
+  moves: Forbidden forbids the edit, not the read, and no write was added.
 * **Project-owned**, never written by the CLI at all: `docs/00` to `06`,
   `CLAUDE.md`, `docs/adr/`, `work/`. Only `/initialize` touches them, and it
   merges rather than overwriting. The CLI's single interaction with this
@@ -85,10 +105,10 @@ qualifier covers exactly two files, `.claude/skills/.focus-kit-version` and
 `.claude/skills/.focus-kit-manifest`: a banner in either one would be a line
 the reader has to skip, and neither is a document anybody opens.
 
-Revisit when: a kit-owned file needs to change shape between versions in a
-way that makes a target's documents point at a section that no longer
-exists. There is no migration notion today, and that gap is open decision 5
-in `docs/00-Product.md`.
+Revisit when: a target needs something of the kit's changed in place rather
+than reported. The Leftover warns and the Manual citation warns both end in
+a hand edit, and a third category of thing the person has to go and fix is
+where the reporting answer stops paying for itself.
 
 ## Alternatives considered
 

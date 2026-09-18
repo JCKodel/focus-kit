@@ -192,17 +192,137 @@ and in a current one:
 
 **Done when.**
 
-* `bin/focus-kit selftest` is green, six checks, with check 2 carrying the
+* [x] `bin/focus-kit selftest` is green, six checks, with check 2 carrying the
   green line and the probe.
-* `focus-kit doctor` here prints the green line and no citation warn.
-* `focus-kit doctor` in a scratch repository holding a project-owned document
-  that cites a manual by number names that line, and the transcript goes into
-  `work/done/update-survives-a-moved-section.md` (`docs/05-Process.md` §6).
-* `docs/00-Product.md`, `docs/01-Architecture.md`, `docs/03-Domain.md` and
+* [x] `focus-kit doctor` here prints the green line and no citation warn.
+* [x] `focus-kit doctor` in a scratch repository holding a project-owned
+  document that cites a manual by number names that line, and the transcript
+  goes into `work/done/update-survives-a-moved-section.md`
+  (`docs/05-Process.md` §6).
+* [x] `docs/00-Product.md`, `docs/01-Architecture.md`, `docs/03-Domain.md` and
   `docs/adr/ADR-0002-file-ownership.md` carry what the Contract names, the
   **Manual citation** row and the dated amendment included.
-* Every manual citation in this repository's project-owned documents is by
+* [x] Every manual citation in this repository's project-owned documents is by
   heading, `ADR-0006` included, and so is the one in
   `skills/initialize/templates/docs/01-Architecture.md`.
-* `VERSION` bumped and `focus-kit install .` run here, so check 6 is green and
-  the dogfood copy is at the same number (`docs/05-Process.md` §5).
+* [x] `VERSION` bumped and `focus-kit install .` run here, so check 6 is green
+  and the dogfood copy is at the same number (`docs/05-Process.md` §5).
+
+---
+
+## What happened, 2026-09-18
+
+Built as the page defines it, with four divergences and one thing the page
+could not have known.
+
+**The position in `doctor`.** The Contract asks for a pass "after the Drift
+pass and before the version and the Unbumped change", and the two cannot both
+hold: the version and the Unbumped change sit at `bin/focus-kit:413` in the
+source the page was written against, before the presence loops, and Drift ends
+at 609. The rationale in the same sentence, "what the kit owns stays in one
+block and the target's own documents come after it", and the Independent
+bullet, "this one sits after the Drift pass", both point the same way, and the
+question was put to the person, who took that answer. The pass is the last
+thing `doctor` does before the graph and the hook lines.
+
+**A citation the line wrap cuts.** The rule that a heading runs from the `§` to
+the end of the line makes a wrapped citation a defect, and the pass found two
+of them in this repository on its first run: `docs/01-Architecture.md`, which
+ended a line at `§The` and carried `git strategy` to the next, and
+`docs/05-Process.md`, which ended at `§The git`. Neither was reported by the
+page's Behaviour, which names only the number and the renamed heading. Both
+were rewrapped so the whole heading sits on the line the file name is on, and
+`docs/03-Domain.md` gained a sentence saying what the pass does with each half
+of the case: a heading the wrap cuts gets the second warn, and a file name and
+`§` on either side of the wrap are not a citation at all. Every conversion made
+here was rewrapped with that constraint in mind, which is why several
+paragraphs moved more than the citation did.
+
+**The Visual reference's second line is not reachable.** It shows
+`"§The house rules, in one place."` as the shape of the heading warn, and
+`The house rules` is a prefix of that text, so the pass calls it current. The
+probe in check 2 uses `§A heading no manual ships.` instead. The first line of
+the reference is real and was printed verbatim by the first run.
+
+**One more helper than the Contract named.** The heading comparison is
+`cites_a_heading` (`bin/focus-kit:402`), one caller, so the normalization lives
+in one place rather than nested three loops deep inside `doctor`.
+`docs/01-Architecture.md` §3 counts twelve helpers now and carries its row, and
+`without_cr` has six callers rather than five, in the code comment and in the
+table both.
+
+**Line numbers.** The two insertions moved everything below them, so the Line
+column of §3, the dispatch (`bin/focus-kit:1286`), the `awk` of `--help`
+(`:1298`), the `docs/00-Product.md` read (`:362`) and the `uv` warn (`:424`)
+were refreshed in `docs/00`, `docs/01` and `docs/04`. References that were
+already stale before this delivery were left alone: `ADR-0001` (`:35`,
+`:117`), `ADR-0002` (`:111`, `:117`, `:196`), `docs/03-Domain.md` (`:337`,
+`:292`, `:114`) and `docs/01-Architecture.md` §6 (`:193`, which is `copy_tree`
+and means `merge_json`). Fixing them is a queue line, not this delivery.
+
+**Two documents the page did not name.** `docs/03-Domain.md`'s **Project-owned**
+row and `ADR-0002`'s Project-owned bullet both said the CLI's one interaction
+with the category is the `docs/00-Product.md` test, which the pass makes false.
+The row was rewritten; the bullet is 2026-09-15 text the page forbids touching,
+so the dated amendment says which word of it is superseded, the way the
+`mcp-leaves-the-baseline` amendment does for its own bullet.
+
+**Decisions.** Open decision 5 of `docs/00-Product.md` left the list; the
+answer is the dated `2026-09-18` paragraph in
+`docs/adr/ADR-0002-file-ownership.md`, which says that a kit-owned file may
+change shape, that `update` goes on overwriting, that `doctor` names the
+citations the change can invalidate and that a person fixes them. **Revisit
+when** was rewritten to what is still open: a target that needs something of
+the kit's changed in place rather than reported. No new ADR.
+
+**The conversions.** Thirteen citations, all found by the pass itself:
+`docs/01-Architecture.md` (six), `docs/03-Domain.md`, `docs/04-Conventions.md`,
+`docs/05-Process.md`, `docs/06-Queue.md` (two), `ADR-0003` and `ADR-0006`, plus
+the one in `skills/initialize/templates/docs/01-Architecture.md`. `ADR-0006`
+was the one that was wrong: it named the house rules as `§6`, which has been
+`/apply <slug>` since `9f09c7e`, and the bare `§6` later in the same paragraph
+went with it. `docs/03-Domain.md` now cites `§`/apply <slug>``, backticks
+included, because that is the normalized heading and the match is a prefix of
+it.
+
+**The proof.** `bin/focus-kit selftest`, six green. `focus-kit doctor .` here
+prints the green line and no citation warn. And one run in a scratch
+repository, `focus-kit install` into a `mktemp -d` with `git init`, then a
+`docs/01-Architecture.md` of three citations written into it by hand, one by
+number, one by a heading no manual has and one current:
+
+```
+  ✓ docs/01-Architecture.md
+  ! docs/01-Architecture.md:3 cites docs/manuals/focus.md by number: "§5 says." (cite the heading by hand; a section added to that manual renumbers the ones below it)
+  ! docs/01-Architecture.md:4 cites a section docs/manuals/process.md does not have: "§Rules of the house." (fix the citation by hand; the heading moved or was renamed)
+```
+
+The third citation printed nothing, which is the point, and the green line
+stood down because two warns printed. The scratch was removed.
+
+The whole verify command was run again under `/bin/bash`, 3.2.57 on this
+machine, so the bash 3.2 claim covers the parameter expansions and the nested
+herestrings this delivery added rather than assuming them from a newer shell
+on PATH.
+
+What was not proven by a run: the template. `docs/05-Process.md` §6 asks for a
+real `/initialize` for a change to one, and the change here is inside an
+`<!-- init: ... -->` comment the command removes, so a run would show nothing
+that a run before it did not. Check 2 proves the copy, and the pass proves the
+citation.
+
+**Nothing was dropped.** `work/` is not read, the thirteen Done pages are
+untouched, `install` and `update` write exactly what they wrote, and no skill
+other than the one template was edited.
+
+**Environments.** Kit source at 0.27.0. Dogfood copy at 0.27.0, `focus-kit
+install .` run here, check 6 green. Machine: the CLI is a symlink and follows
+the source. Target repositories are untouched and move when their owner runs
+`focus-kit update`.
+
+**One thing found on the way, for the queue.** Another session was editing
+`docs/03-Domain.md` and `docs/06-Queue.md` in this working tree while this
+delivery ran, adding the `copilot-port` rows and queue lines. Nothing
+collided, because every edit here was made against an exact string, and the
+`git add -A` at the end stages that other work too. That is the cost
+`docs/05-Process.md` §7 already names for the git strategy being none.

@@ -125,5 +125,5 @@ src/Features/Orders/OrdersRepository.cs   shared by the slices of Orders
      session brings it back with good intentions. A piece §3 says does not
      exist belongs here too, with the reason it was never built.
      Greenfield, and only for the practices §3 answered the manual's way:
-     start with the anti-patterns list of docs/manuals/focus.md §10 and add
-     nothing until something is actually removed. -->
+     start with the anti-patterns list of docs/manuals/focus.md §Anti-patterns
+     and add nothing until something is actually removed. -->

@@ -7,11 +7,12 @@
 
 ## Context
 
-Until this decision, FOCUS was a house rule. `manuals/process.md` §6 listed
+Until this decision, FOCUS was a house rule.
+`manuals/process.md` §The house rules listed
 it beside "one delivery is one page" and "the agent never commits", the
 `CLAUDE.md` template shipped it as a non-negotiable line, and `/apply` opened
 its Build section with "rules go in the use case". `/initialize` never asked
-about it, because §6 said it was not up for a per-project vote.
+about it, because that section said it was not up for a per-project vote.
 
 Two runs showed what that costs. The first target's `docs/01-Architecture.md`
 came out with a `features/` target layout and a migration delivery per slice

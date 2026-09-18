@@ -200,6 +200,19 @@ It runs six checks, in this order, and stops at the first red:
    two passes answer different questions and the assertions say so. The
    restore happens before the assertions, so a red leaves the tree as check 3
    needs it, and `write_manifest` puts the manifest back byte for byte.
+   Then the **Manual citation** (`docs/03-Domain.md`). Its green line joins
+   the expected output of the normal run above, because a scratch cites no
+   manual at all, which is also the target `/initialize` never ran in. Then
+   one probe for the two warns: a `CLAUDE.md` is written at the scratch's
+   root, three lines, the second citing a manual by number and the third
+   citing a heading no manual has, and one `doctor` run must carry both warns,
+   each with its `<path>:<line>`, **and not** the green line. The line numbers
+   are the check's own, so the address in each warn is asserted exactly. The
+   file is then rewritten with one citation by a heading a manual has and a
+   second run must carry the green line, after which it is removed:
+   `CLAUDE.md` rather than a file under `docs/` because it leaves no directory
+   behind, and removed because it is project-owned and check 3 installs into
+   this same scratch.
    Last, the **global skill**: four `doctor` runs against a fake home holding
    `.claude/skills/graphify/SKILL.md` and a fake `graphify` on PATH that
    prints `graphify 9.9.9` whatever its arguments, so every line the state
@@ -336,8 +349,9 @@ requests, no review before merge. There is one person working here, and a
 branch would be ceremony with nobody on the other side of it.
 
 That is one of the three answers `/initialize` asks for, and what each
-command does under each of them is `docs/manuals/process.md` §The git
-strategy. Under this one nothing is made: `/discuss`, `/propose` and
+command does under each of them is
+`docs/manuals/process.md` §The git strategy. Under this one nothing is
+made: `/discuss`, `/propose` and
 `/apply` write where the session already is. The cost is the one
 `git-strategy-is-asked` measured here on 2026-09-18, an `/apply` staging
 another delivery's page with `git add -A`, and it is the price of having

@@ -116,7 +116,7 @@ personal data.
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:1115`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:1286`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify as a uv tool, then the global `/graphify`
@@ -365,10 +365,6 @@ Recorded here so that no agent closes them alone:
    document itself in any language, but the manuals it receives are in
    English. Whether translated manuals are ever shipped is open, and the
    answer affects `copy_tree` and `VERSION` both.
-5. **What happens to a target when a kit-owned file changes shape.** Today
-   `update` overwrites and the target's documents may silently reference a
-   section that moved. There is no migration notion. Whether one is needed
-   has not been decided.
 
 ---
 
