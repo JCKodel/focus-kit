@@ -440,12 +440,12 @@ have.
                               host, proven by a real /initialize run under GitHub Copilot in a
                               scratch repository, which docs/05 §6 requires before a platform is
                               claimed anywhere a user reads. codex-port takes the same two halves
-[ ] codex-port                the kit's commands as Codex repository instructions and
+[>] codex-port                the kit's commands as Codex repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
                               the only host, and the README promise made in readme-makes-the-case
                               becomes true. Hooks are necessary and available on codex?
-[>] update-alert              alert users when new versions are available on github so the user can
+[x] update-alert              alert users when new versions are available on github so the user can
                               update (and run `focus-kit update`)
 ```
 

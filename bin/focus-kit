@@ -12,7 +12,8 @@
 #   1. dependencies on this machine: uv, then graphify (uv tool), then the
 #      global graphify skill for Claude Code, installed when absent and
 #      refreshed when it is older than the package
-#      (graphify install --platform claude)
+#      (graphify install --platform claude), then whether this clone is
+#      behind the origin it was cloned from, which warns and never pulls
 #   2. in the target repository:
 #      .claude/skills/<command>/                   copied, overwriting (kit-owned)
 #      docs/manuals/{process,focus,graphify}.md    copied, overwriting (kit-owned)
@@ -82,6 +83,19 @@ ensure_uv() {
   ok "uv installed"
 }
 
+# The lower of two dotted version numbers, field by field and numerically, or
+# a string comparison would put 0.9.10 before 0.9.8 and call the newer of the
+# two older. Two callers, global_skill_state and report_upstream, which is
+# what makes it a function: the first held the sort alone until the second
+# asked the same question of the clone and its origin (CLAUDE.md, abstraction
+# on the second concrete occurrence).
+#
+# It reads and never dies: its output is captured, and a die inside $(...)
+# ends only the subshell (docs/01-Architecture.md §6).
+version_lower() { # a b
+  printf '%s\n%s\n' "$1" "$2" | sort -t. -k1,1n -k2,2n -k3,3n | head -1
+}
+
 # The state of the Global skill against the graphify package
 # (docs/03-Domain.md, Global skill and Skill stamp). One line,
 # "<state> <skill> <package>", a number it could not read written as "-":
@@ -92,8 +106,9 @@ ensure_uv() {
 #   older     they differ and the stamp is the lower of the two
 #   newer     they differ and the package is the lower of the two
 #
-# The order is numeric field by field and not a string comparison, or 0.9.10
-# would sort before 0.9.8 and a newer skill would read as older. The stamp is
+# The order is version_lower's, numeric field by field and not a string
+# comparison, or 0.9.10 would sort before 0.9.8 and a newer skill would read
+# as older. The stamp is
 # the same file graphify reads to print its own stale-skill notice, so the kit
 # reaches graphify's verdict without reading graphify's stderr
 # (docs/04-Conventions.md §1).
@@ -113,7 +128,7 @@ global_skill_state() {
   fi
   if [ "$skill" = "-" ] || [ "$package" = "-" ]; then echo "unknown $skill $package"; return; fi
   if [ "$skill" = "$package" ]; then echo "equal $skill $package"; return; fi
-  lower="$(printf '%s\n%s\n' "$skill" "$package" | sort -t. -k1,1n -k2,2n -k3,3n | head -1)"
+  lower="$(version_lower "$skill" "$package")"
   if [ "$lower" = "$skill" ]; then echo "older $skill $package"; else echo "newer $skill $package"; fi
 }
 
@@ -168,6 +183,67 @@ ensure_graphify() {
       fi
       ;;
   esac
+}
+
+# The Upstream version (docs/03-Domain.md): the VERSION at the default branch
+# of the clone's own origin, against KIT_VERSION. One function, because one
+# state has one wording, and two callers say it: doctor's machine block and
+# the dependencies block of install and update, which is the run that would
+# otherwise write a months-old kit into a target with nothing said. It warns;
+# it does not stop, and it does not pull.
+#
+# Read-only on the clone and bounded. No ref, no object, no cache and no file
+# is written: one HTTPS read of a public file, forgotten as soon as it is
+# compared, and a remote that does not answer becomes a line and never a
+# command that hangs in front of an install. The remote is derived from
+# origin and never written down here, so a fork checks the fork and this
+# clone checks this one. HEAD in the raw URL is what resolves the default
+# branch, whatever the fork named it.
+#
+# What counts as an answer: the body's first line, digits and dots and at
+# least one digit. An empty body, an error page and a rate limit answer are
+# the third line, because a page taken for a number is a warn that lies
+# (docs/04-Conventions.md §1). So is an origin the derivation does not cover,
+# a machine with no network and a reader absent from PATH: it is the same
+# failure as a network that does not answer, and it gets no wording of its
+# own. The third line names a hand check rather than a command, since being
+# offline has no command that fixes it.
+#
+# The green line says nothing newer rather than equal, because a clone ahead
+# of origin is the normal state between a commit and a push and the line has
+# to be true of it too.
+#
+# It prints and never dies, whatever the network did, and every branch ends
+# in an ok or a warn: doctor goes on reporting and install goes on installing
+# (docs/01-Architecture.md §6).
+report_upstream() {
+  local origin="" repo="" body="" answer
+  origin="$(git -C "$KIT_DIR" config --get remote.origin.url 2>/dev/null || true)"
+  case "$origin" in
+    git@github.com:*)       repo="${origin#git@github.com:}" ;;
+    ssh://git@github.com/*) repo="${origin#ssh://git@github.com/}" ;;
+    https://github.com/*)   repo="${origin#https://github.com/}" ;;
+    http://github.com/*)    repo="${origin#http://github.com/}" ;;
+  esac
+  repo="${repo%/}"
+  repo="${repo%.git}"
+  case "$repo" in
+    */*) body="$(curl -fsSL --connect-timeout 5 --max-time 10 \
+                   "https://raw.githubusercontent.com/$repo/HEAD/VERSION" 2>/dev/null)" || body="" ;;
+  esac
+  answer="${body%%$'\n'*}"
+  case "$answer" in
+    ""|*[!0-9.]*) answer="" ;;
+    *[0-9]*)      ;;
+    *)            answer="" ;;
+  esac
+  if [ -z "$answer" ]; then
+    warn "kit source $KIT_VERSION, origin did not answer (check by hand: git -C $KIT_DIR pull)"
+  elif [ "$answer" != "$KIT_VERSION" ] && [ "$(version_lower "$KIT_VERSION" "$answer")" = "$KIT_VERSION" ]; then
+    warn "kit source $KIT_VERSION, origin has $answer (git -C $KIT_DIR pull, then focus-kit update)"
+  else
+    ok "kit source $KIT_VERSION (nothing newer on origin)"
+  fi
 }
 
 # ---------------------------------------------------------------- repository
@@ -435,6 +511,12 @@ doctor() {
     older)   warn "global /graphify skill $gskill installed, $gpackage available (run focus-kit update)" ;;
     newer)   warn "global /graphify skill $gskill is newer than graphify $gpackage (uv tool upgrade graphifyy)" ;;
   esac
+  # The last line of the machine block, and the last that speaks of anything
+  # but the target: whether the clone this CLI runs from is still what it was
+  # cloned from (docs/03-Domain.md, Upstream version). It reports the kit
+  # source (docs/01-Architecture.md §7) and not the target, and it sits above
+  # every line that does, so the two are never read for each other.
+  report_upstream
   # Every path reported missing below, in the form the manifest holds it. The
   # drift pass reads it to avoid saying a second time what these lines said.
   local s missing=""
@@ -1162,6 +1244,45 @@ MD
       die "check 2: doctor did not report the global skill as expected with the stamp at $v and graphify at 9.9.9"
     }
   done
+  # The Upstream version (docs/03-Domain.md), four doctor runs against the
+  # fake reader selftest put on PATH: every line report_upstream can print,
+  # on any machine, with no network and without touching the clone. What
+  # cannot be faked is the derivation, because faking an origin means writing
+  # into the clone and the check writes nothing there, so the coverage is a
+  # precondition and the die names it rather than asserting nothing. The
+  # shapes are written out here, as the command names are above: an assertion
+  # that read them from the reporter would assert nothing.
+  local answer="$SELFTEST_DIR/offline/answer" origin
+  origin="$(git -C "$KIT_DIR" config --get remote.origin.url 2>/dev/null || true)"
+  case "$origin" in
+    git@github.com:*/*|ssh://git@github.com/*/*|https://github.com/*/*|http://github.com/*/*) ;;
+    *) die "check 2: this clone's origin is not one the Upstream version derivation covers, so its three lines cannot be proven here (origin: ${origin:-none})" ;;
+  esac
+  # 99.0.0 is behind, 0.0.1 is the green line a clone ahead of origin gets,
+  # the page is the answer that arrived and is not a version, and "-" is no
+  # answer at all. The last two share a line, which is the point: a 404 page
+  # taken for a number would be a warn that lies.
+  for v in 99.0.0 0.0.1 '<!DOCTYPE html>' -; do
+    case "$v" in
+      99.0.0) printf '%s\n' "$v" > "$answer"
+              expected="$(warn "kit source $KIT_VERSION, origin has 99.0.0 (git -C $KIT_DIR pull, then focus-kit update)")" ;;
+      0.0.1)  printf '%s\n' "$v" > "$answer"
+              expected="$(ok "kit source $KIT_VERSION (nothing newer on origin)")" ;;
+      -)      rm -f "$answer"
+              expected="$(warn "kit source $KIT_VERSION, origin did not answer (check by hand: git -C $KIT_DIR pull)")" ;;
+      *)      printf '%s\n' "$v" > "$answer"
+              expected="$(warn "kit source $KIT_VERSION, origin did not answer (check by hand: git -C $KIT_DIR pull)")" ;;
+    esac
+    out="$(doctor "$scratch" 2>&1)" || {
+      printf '%s\n' "$out"
+      die "check 2: doctor failed with the origin answering \"$v\""
+    }
+    printf '%s\n' "$out" | grep -qF -- "$expected" || {
+      printf '%s\n' "$out"
+      die "check 2: doctor did not report the kit source as expected with the origin answering \"$v\""
+    }
+  done
+  rm -f "$answer"
   ok "2 install into a scratch repository, doctor agrees"
 }
 
@@ -1270,6 +1391,24 @@ selftest() {
   say "focus-kit $KIT_VERSION selftest"
   SELFTEST_DIR="$(mktemp -d)" || die "could not create a scratch directory (mktemp -d)"
   trap selftest_cleanup EXIT
+  # The verify command makes no network call, on any check. report_upstream
+  # reads with a program on PATH, so a fake one in front of it is the whole
+  # answer: it prints the file beside it when there is one and fails when
+  # there is not, which is the third line. It lives beside the scratch and
+  # not in it, because check 3 snapshots the scratch, and the trap above
+  # removes it. Its own directory and not the one the fake graphify uses,
+  # which check 2 puts on PATH for four runs and nothing else. Exported here
+  # rather than in check 2, because check 6 runs doctor on this repository
+  # and has to stay offline for the same reason.
+  mkdir -p "$SELFTEST_DIR/offline"
+  {
+    printf '%s\n' '#!/bin/sh'
+    printf '%s\n' "[ -f \"$SELFTEST_DIR/offline/answer\" ] || exit 7"
+    printf '%s\n' "cat \"$SELFTEST_DIR/offline/answer\""
+  } > "$SELFTEST_DIR/offline/curl"
+  chmod +x "$SELFTEST_DIR/offline/curl"
+  PATH="$SELFTEST_DIR/offline:$PATH"
+  export PATH
   check_parses
   check_install    "$SELFTEST_DIR/scratch"
   check_idempotent "$SELFTEST_DIR/scratch" "$SELFTEST_DIR/snapshot"
@@ -1288,6 +1427,10 @@ case "$cmd" in
     say "dependencies"
     ensure_uv
     ensure_graphify
+    # Before anything is copied: this is the run that would otherwise write
+    # the old kit into a target with nothing said. The install then goes on
+    # and writes the version the clone holds.
+    report_upstream
     say
     install_repo "${2:-.}"
     ;;

@@ -107,8 +107,12 @@ rule verbatim argues with it less than a model given a paraphrase.
 Markets and languages: the kit's own text is in English. A target repository
 picks its own documentation language when `/initialize` runs, and everything
 written afterwards follows it while identifiers stay in English. There is no
-regulatory context: the kit stores nothing, sends nothing, and holds no
-personal data.
+regulatory context: the kit stores nothing and holds no personal data. What
+it sends is one thing, and it is worth naming: an HTTPS read of `VERSION` at
+the clone's own `origin`, so a person is told when the kit they update
+targets from is behind. A GET of a public file, with nothing about the
+person, the machine or the target in it
+(`docs/01-Architecture.md` §5).
 
 ## Mechanics
 
@@ -116,7 +120,7 @@ personal data.
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:1286`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:1424`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify as a uv tool, then the global `/graphify`
@@ -134,7 +138,27 @@ installed when absent and **refreshed
 when it is older than the graphify package**, or when it carries no stamp
 saying which version wrote it; a skill newer than the package is left alone,
 because graphify's own installer would downgrade it, and both commands say so
-and name `uv tool upgrade graphifyy` (`bin/focus-kit:154`).
+and name `uv tool upgrade graphifyy` (`bin/focus-kit:168`).
+
+The dependency block then closes with the one thing it can say about
+itself: whether the clone the CLI is running from is still what it was
+cloned from. It reads `VERSION` at the default branch of that clone's own
+`origin` and compares it with its own, and when `origin` is ahead it names
+both numbers, the pull and then `focus-kit update`, in that order, because
+the pull is what puts the newer kit on the machine and `update` is what
+carries it into a repository. It says this **before anything is copied**,
+since this is the run that would otherwise write a months-old kit into a
+target with nothing said, and then it installs anyway: it warns, it does not
+stop, and it never pulls. A clone that is current gets a green line, and so
+does a clone ahead of `origin`, which is the normal state between a commit
+and a push. A machine with no network gets one line saying `origin` did not
+answer, and so does every other way the question goes unanswered, because a
+page taken for a version number would be a warn that lies. What each state
+prints is `docs/03-Domain.md`, Upstream version.
+
+**This is not auto-update**, which is a non-goal below and stays one. The
+line names the two commands and runs neither, and the person who reads it
+decides.
 
 The refresh was once withheld, on the grounds that graphify's installer also
 appends a section to the user's `~/.claude/CLAUDE.md` and that repeating it
@@ -301,7 +325,9 @@ the code wins and the graph gets rebuilt.
   reading, and that is deliberate: the rules that mattered were the ones
   phrased so a reviewer could point at a line on screen.
 * **Not a package.** No registry, no installer beyond git clone and a
-  symlink, no auto-update.
+  symlink, no auto-update. The kit does tell a person when their clone is
+  behind its `origin` (Installing, above), and that is the whole of it: it
+  names `git pull` and `focus-kit update` and runs neither.
 * **Not a book.** `manuals/focus.md` is a condensed reference for an agent
   working in a repository. The book is *FOCUS* by J.C. Ködel, and the manual
   cites it rather than replacing it.

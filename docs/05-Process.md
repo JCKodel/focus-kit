@@ -213,7 +213,7 @@ It runs six checks, in this order, and stops at the first red:
    `CLAUDE.md` rather than a file under `docs/` because it leaves no directory
    behind, and removed because it is project-owned and check 3 installs into
    this same scratch.
-   Last, the **global skill**: four `doctor` runs against a fake home holding
+   Then the **global skill**: four `doctor` runs against a fake home holding
    `.claude/skills/graphify/SKILL.md` and a fake `graphify` on PATH that
    prints `graphify 9.9.9` whatever its arguments, so every line the state
    table can print is proven on any machine, with no network, without
@@ -224,6 +224,23 @@ It runs six checks, in this order, and stops at the first red:
    substitution, so the `HOME=` and `PATH=` in front of `doctor` die with the
    subshell. Both fakes live beside the scratch and not in it, because check
    3 snapshots the scratch, and the existing `trap` removes them.
+   Last, the **Upstream version** (`docs/03-Domain.md`), four `doctor` runs
+   against a fake reader on PATH: the three lines the state can print, on any
+   machine and with no network. The reader is `curl`, which is a program on
+   PATH, so a fake one in front of it is the whole answer: it prints the file
+   beside it when there is one and fails when there is not, which is the
+   third line. The four answers are a higher version, a lower one, a page
+   that is not a version and no answer at all; the last two share a line,
+   which is the point, since a 404 page taken for a number would be a warn
+   that lies. What cannot be faked is the derivation, because faking an
+   `origin` means writing into the clone and the check writes nothing there:
+   the coverage is a precondition and the `die` names it rather than
+   asserting nothing. The fake lives beside the scratch and not in it, in its
+   own directory and not the one the global skill's two fakes use, and the
+   existing `trap` removes it. It is put on PATH by `selftest` and not by
+   this check, because check 6 runs `doctor` on this repository and has to
+   stay offline for the same reason: the verify command makes no network
+   call, and is green on a machine that has none.
 3. The same install again into the same scratch repository, trees compared.
    The install is idempotent.
 4. The frontmatter of each `SKILL.md` the kit ships, against four
@@ -280,7 +297,7 @@ prints the detail of what broke, one `die` naming it, and exits 1.
 |---|---|---|
 | Kit source (`skills/`, `manuals/`, `config/`, `bin/`) | at the delivery's version, always. It is the truth. | the edit itself |
 | Dogfood copy (`.claude/skills/`, `docs/manuals/`) | in sync with the kit source, always, when the delivery touched a skill or a manual, or bumped `VERSION` | `focus-kit install .` |
-| Machine (`~/.local/bin/focus-kit`) | the CLI untouched: it is a symlink to the kit source and follows it automatically. The global `/graphify` skill left at the graphify package's version, which `focus-kit install` anywhere does on its own and `focus-kit doctor` reports. | none for the CLI; verify with `focus-kit version` and the skill line of `focus-kit doctor .` |
+| Machine (`~/.local/bin/focus-kit`) | the CLI untouched: it is a symlink to the kit source and follows it automatically. The global `/graphify` skill left at the graphify package's version, which `focus-kit install` anywhere does on its own and `focus-kit doctor` reports. `doctor` also reports whether the clone the CLI runs from is still current with its `origin` (`docs/03-Domain.md`, Upstream version), which is the one thing here a person fixes with `git pull` and not with a command of the kit's. | none for the CLI; verify with `focus-kit version` and the skill and kit source lines of `focus-kit doctor .` |
 | Target repositories (anyone else's) | untouched. They move only when their owner runs `focus-kit update`. | `focus-kit update <path>`, run by that person |
 | First target (`~/Downloads/vaulted`) | installed, initialized and taken through one delivery at the delivery's version while milestone 2 is open; nothing committed there, ever, because it is a clone of someone else's repository, and what a command stages there is undone with `git reset` before the record is written, leaving the working tree as the last run left it. This row leaves with milestone 2 (`docs/03-Domain.md`, First target). | `focus-kit update ~/Downloads/vaulted` |
 

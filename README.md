@@ -57,6 +57,24 @@ missing until you open a new shell or run `. ~/.local/bin/env`.
 Under WSL nothing is different: it is Linux, and the clone lives on the WSL
 side of the filesystem, not under `/mnt/c`.
 
+### Keeping the kit current
+
+A newer kit reaches the machine through the clone, and nothing else:
+
+```
+git -C ~/Projects/focus-kit pull
+```
+
+The symlink follows it, so there is nothing to reinstall on the machine. A
+repository receives the newer kit when you run `focus-kit update` there.
+
+You do not have to remember: `focus-kit doctor`, and every `focus-kit
+install` and `focus-kit update`, read `VERSION` at the default branch of
+your clone's own `origin` and say which of the two numbers is which. When
+`origin` is ahead the line names both and the two commands above, in that
+order. The install then goes on and writes the version your clone holds: it
+warns, it does not stop, and it never pulls.
+
 ## Install into a repository
 
 ```

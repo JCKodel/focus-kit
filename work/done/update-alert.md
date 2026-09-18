@@ -182,16 +182,155 @@ puts it; the line carries whatever `KIT_DIR` resolved to.
 
 **Done when.**
 
-* `bin/focus-kit selftest` is green, six checks, and every `doctor` and
+* [x] `bin/focus-kit selftest` is green, six checks, and every `doctor` and
   `install` it runs sees the fake `curl` and never the real one, so the run
   makes no network call and all three lines are asserted.
-* `focus-kit doctor` here prints one of the three lines in the machine block,
-  and every line it printed before, unchanged.
-* `focus-kit update` on a clone made stale by hand prints the first line and
-  still installs, and the transcript goes into `work/done/update-alert.md`
+* [x] `focus-kit doctor` here prints one of the three lines in the machine
+  block, and every line it printed before, unchanged.
+* [x] `focus-kit update` on a clone made stale by hand prints the first line
+  and still installs, and the transcript goes into `work/done/update-alert.md`
   (`docs/05-Process.md` §6).
-* `README.md`, `docs/00-Product.md`, `docs/01-Architecture.md`,
+* [x] `README.md`, `docs/00-Product.md`, `docs/01-Architecture.md`,
   `docs/03-Domain.md` and `docs/05-Process.md` carry what the Contract names,
   the **Upstream version** row included.
-* `VERSION` bumped and `focus-kit install .` run here, so check 6 is green and
-  the dogfood copy is at the same number (`docs/05-Process.md` §5).
+* [x] `VERSION` bumped and `focus-kit install .` run here, so check 6 is green
+  and the dogfood copy is at the same number (`docs/05-Process.md` §5).
+
+---
+
+## What happened, 2026-09-18
+
+Built as the page defines it. Two functions, `version_lower`
+(`bin/focus-kit:94`) and `report_upstream` (`bin/focus-kit:218`), two callers
+each, and the three lines word for word. What follows is what the run
+settled, one divergence, and two things the page did not name.
+
+**What the run settled.** The page left the URL and the bound to the run,
+inside its constraints.
+
+* **The URL is `https://raw.githubusercontent.com/<owner>/<repo>/HEAD/VERSION`.**
+  `HEAD` there resolves to the default branch, whatever a fork named it,
+  which is what the Contract asks for without naming a branch. Verified
+  against this repository before anything was written: it answered `0.27.0`,
+  the number the clone held.
+* **The derivation covers four shapes of `origin`**, all of them GitHub:
+  `git@github.com:o/r`, `ssh://git@github.com/o/r`, and the two HTTP forms,
+  each with a trailing `/` and a trailing `.git` removed. Anything else,
+  `origin` absent and git absent included, is the third line. It is read with
+  `git -C "$KIT_DIR" config --get remote.origin.url`, which reads and writes
+  nothing.
+* **The bound is `--connect-timeout 5 --max-time 10`**, and the read is
+  `curl -fsSL`. `-f` drops a 4xx or 5xx body, and the first line of what is
+  left has to be digits and dots with at least one digit, which is the
+  Contract's "what counts as an answer".
+* **A carriage return is not forgiven here.** An answer of `0.27.0\r`, which
+  a fork that committed `VERSION` with CRLF would serve, fails the digits and
+  dots test and becomes the third line. That keeps `without_cr` the one place
+  a carriage return is forgiven (`docs/01-Architecture.md` §3), and the cost
+  is a warn that says `origin` did not answer when it answered something
+  unreadable, which is what the third line means.
+
+**The divergence: the fake reader cannot cover the derivation.** The
+Contract says the verify command proves all three lines with a fake `curl` in
+front of the reader, and it does, but only past the derivation. Faking an
+`origin` means writing into the clone, which the page forbids in the same
+breath, so an `origin` the derivation does not cover never reaches the reader
+at all and the two lines that need an answer cannot be produced. Check 2
+therefore tests the coverage first and dies naming it: `check 2: this clone's
+origin is not one the Upstream version derivation covers, so its three lines
+cannot be proven here`. On a clone of this repository, which is what the
+verify command is run in, the precondition holds and the three lines are
+asserted. On a fork hosted elsewhere the check goes red with that sentence
+rather than asserting nothing, and the delivery that widens the derivation is
+where it stops being red.
+
+**Four probes for three lines.** The page names three states and the fourth
+run is the one that separates them: a higher version, a lower one, a page
+that is not a version, and no answer at all. The last two are asserted
+against the same line, which is the assertion the "warn that lies" clause
+exists for; three runs would have proven the third line without ever proving
+that a page is not taken for a number.
+
+**The fake reader is `selftest`'s and not check 2's.** The page puts it
+"beside the scratch and not in it, removed by the existing `trap`", and it
+is, in its own directory and not the one check 2 fills with the fake
+`graphify` for four runs: that one is on PATH for four command substitutions
+and this one for the whole run, because check 6 runs `doctor` on this
+repository and has to stay offline too. Proven twice: `selftest` green, and
+`selftest` green again behind a dead proxy
+(`all_proxy=http://127.0.0.1:1`), which no assertion noticed.
+
+**Line numbers, and one document the page did not name.** The two insertions
+moved everything below them, so the Line column of `docs/01-Architecture.md`
+§3 was refreshed for every function from `global_skill_state` down, the six
+checks included, and eleven `bin/focus-kit:N` citations were re-pointed across
+`docs/00`, `docs/01`, `docs/03` and `docs/04`. `docs/04-Conventions.md` is
+not in the Slice, and its two numbers, `:424` for the uv warn and `:1298` for
+the `awk` of `--help`, are stale because of this delivery and nobody else's,
+so they were fixed here. The `bin/focus-kit:114` inside the **Upstream
+version** row, written by the `/propose` against a sort that had no name yet,
+now points at `version_lower` (`:94`). The pre-existing `:292` in that
+document's **Target repository** row was already wrong before this delivery
+and was left alone.
+
+**Nothing was dropped.** Every Out of scope item stayed out: no pull, no
+cache, no flag that silences the check, no tag or release API, no change to
+`focus-kit version`, and no ADR, since what changed is one sentence in
+`docs/00-Product.md` and one row and one paragraph in
+`docs/01-Architecture.md` §5. One thing was added that the page did not name:
+the script's header gained a clause, because the header is the `--help` text
+(`docs/04-Conventions.md` §1) and its numbered list of what `install` does
+ended one line short of what the dependency block now says.
+
+**The proof.** `bin/focus-kit selftest`, six green, twice: once normally and
+once behind a dead proxy. Then the three lines live, with a real read and no
+fake anywhere.
+
+The green line, `focus-kit doctor .` here at 0.27.0 against an `origin` at
+0.27.0:
+
+```
+  ✓ kit source 0.27.0 (nothing newer on origin)
+```
+
+and again after the bump, at 0.28.0 against the same `origin` at 0.27.0,
+which is a clone ahead of `origin` and the case the wording exists for. It is
+the first line of `focus-kit install .` run here, the last of the dependency
+block:
+
+```
+  ✓ kit source 0.28.0 (nothing newer on origin)
+```
+
+The first line, `VERSION` lowered to `0.26.0` in the working tree and
+`focus-kit update` run into a fresh scratch repository, restored byte for
+byte afterwards:
+
+```
+dependencies
+  ✓ uv 0.11.14
+  ✓ graphify 0.9.63 (to upgrade: uv tool upgrade graphifyy)
+  ✓ global /graphify skill for Claude Code
+  ! kit source 0.26.0, origin has 0.27.0 (git -C /Volumes/Data/Projects/focus-kit pull, then focus-kit update)
+
+installing focus-kit 0.26.0 into /var/folders/.../t
+  ✓ .claude/skills/{apply,discuss,initialize,propose}
+```
+
+It warned and installed anyway, which is what the page asks of it.
+
+The third line, `focus-kit doctor .` here behind the dead proxy:
+
+```
+  ! kit source 0.28.0, origin did not answer (check by hand: git -C /Volumes/Data/Projects/focus-kit pull)
+```
+
+Every other line of `doctor` is where it was, and the new one sits above all
+of them that speak of the target.
+
+**Environments.** Kit source at 0.28.0. Dogfood copy at 0.28.0, `focus-kit
+install .` run here, check 6 green. Machine untouched: `~/.local/bin/focus-kit`
+is a symlink to this clone and follows it. Target repositories at whatever
+their owners last ran; they move on their own `focus-kit update`. The first
+target row of `docs/05-Process.md` §5 belongs to milestone 2 and this
+delivery did not touch it.
