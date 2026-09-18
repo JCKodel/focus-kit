@@ -16,10 +16,12 @@
 #      behind the origin it was cloned from, which warns and never pulls
 #   2. in the target repository:
 #      .claude/skills/<command>/                   copied, overwriting (kit-owned)
+#      .claude/skills/.focus-kit-version           which version is installed, for doctor (kit-owned)
 #      docs/manuals/{process,focus,graphify}.md    copied, overwriting (kit-owned)
 #      .claude/skills/.focus-kit-manifest          what install wrote, for doctor (kit-owned)
 #      .claude/settings.json                       baseline permissions merged in
 #      .gitignore                                  kit fragment appended once
+#      .graphifyignore                             kit fragment appended once
 #      work/done/.gitkeep                          created if absent
 #   3. prints the next step: open Claude Code in the repository and run /initialize
 #

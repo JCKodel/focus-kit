@@ -25,7 +25,7 @@ introduced, so the script never has to work it out at runtime.
 Every file the kit writes belongs to exactly one of four categories, and the
 category determines the write:
 
-* **Kit-owned**, written with `copy_tree` (`bin/focus-kit:111`): the
+* **Kit-owned**, written with `copy_tree` (`bin/focus-kit:271`): the
   destination is removed and copied over. The three skills and the three
   manuals. Editing one inside a target is a change the next update erases.
   Each manual carries a banner saying so on its first line; the three
@@ -69,8 +69,8 @@ category determines the write:
   `CLAUDE.md`, `docs/adr/`, `work/`. Only `/initialize` touches them, and it
   merges rather than overwriting. The CLI's single interaction with this
   category is testing whether `docs/00-Product.md` exists, to choose which
-  closing message to print (`bin/focus-kit:196`).
-* **Merged**, written with `merge_json` (`bin/focus-kit:117`): `.mcp.json`
+  closing message to print (`bin/focus-kit:440`).
+* **Merged**, written with `merge_json` (`bin/focus-kit:288`): `.mcp.json`
   and `.claude/settings.json`. Keys are added; nothing is ever removed.
 
   **2026-09-17, `mcp-leaves-the-baseline`:** `.mcp.json` is no longer one of

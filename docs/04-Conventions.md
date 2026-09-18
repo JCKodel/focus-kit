@@ -51,11 +51,11 @@ is scoped to authored paths rather than given exceptions
 Beyond that, the copy rules this project needs:
 
 * **A terminal line picks one of four shapes.** `say`, `ok`, `warn`, `die`
-  (`bin/focus-kit:46`). Never a bare `echo` or `printf` for a message a
+  (`bin/focus-kit:49`). Never a bare `echo` or `printf` for a message a
   person reads. The shape carries the meaning, so a message whose shape is
   wrong lies even when its words are right.
 * **A `warn` says what to do next.** "uv missing" is half a message; the line
-  adds the command that puts it right. Compare `bin/focus-kit:499`, and every
+  adds the command that puts it right. Compare `bin/focus-kit:502`, and every
   other warn of `doctor` with it: a person reading one `!` line, without the
   rest of the output, knows what to type.
 * **A `die` names the thing that is missing, not the step that failed.**
@@ -64,13 +64,22 @@ Beyond that, the copy rules this project needs:
   rule: `check 6: .claude/skills differs from skills (run focus-kit install
   .)` names the thing and what fixes it, not the step.
 * **The help text is the script's own header.** `--help` prints it through
-  `awk` (`bin/focus-kit:1440`), by a rule and not a range: the shebang is
+  `awk` (`bin/focus-kit:1443`), by a rule and not a range: the shebang is
   skipped, then every consecutive line beginning with `#` is printed until
   the first line that does not, each one losing its `#` and one following
   space. A bare `#` becomes an empty line, which is how the header's blank
   lines survive. Documentation and usage are the same bytes, so they cannot
   drift, and a header that grows a line needs no other edit. A change to the
   header is a change to the help text, and that is the point.
+* **The header names every path `install` writes into a target.** Item 2 of
+  the header is the whole list, so a delivery that makes `install` write a
+  new path writes that line in the same delivery. A rule and not a seventh
+  check of the verify command: the only enumeration of what `install` writes
+  outside `install_repo` itself is its own `ok` lines, and not every write
+  has one. The Installed version is written silently under the skills line
+  (`bin/focus-kit:404`), so a check comparing the `ok` output with the header
+  would have gone green on exactly the omission
+  `help-names-what-install-writes` found.
 * **A document says what is, not what is wished for.** When the code and the
   intention differ, both are written, and which is which is marked.
 
@@ -107,7 +116,7 @@ about instead:
 
 * **bash 3.2 or it does not ship.** No associative arrays, no `mapfile`, no
   `${var,,}`, no `readlink -f`. macOS ships bash 3.2 and the script runs
-  there unchanged. The symlink resolution loop at `bin/focus-kit:37` exists
+  there unchanged. The symlink resolution loop at `bin/focus-kit:41` exists
   for exactly this reason.
 * **`set -euo pipefail`, and every variable expansion quoted.** Paths in
   this project contain spaces often enough (`/Volumes/Data/...` does not,

@@ -441,7 +441,7 @@ and the alert do, because a target receives files and behaviour it did not
 have.
 
 ```
-[ ] uninstall-removes-the-kit remove the kit-owned files and unmerge the one JSON key the
+[>] uninstall-removes-the-kit remove the kit-owned files and unmerge the one JSON key the
                               settings baseline adds, so a repository can stop using the kit
                               without unpicking it by hand. mcp-leaves-the-baseline is the
                               first time the question was real and the answer was a warn and
@@ -511,7 +511,7 @@ have.
                               milestone's paragraph to admit it
 [x] update-alert              alert users when new versions are available on github so the user can
                               update (and run `focus-kit update`)
-[>] help-names-what-install-writes
+[x] help-names-what-install-writes
                               the script's header comment does not name .graphifyignore among
                               what install writes, although graph-ignores-the-kit made it one
                               of the seven, and --help prints that header verbatim, so the
@@ -531,31 +531,9 @@ and `codex-port` follows whatever it decides.
 ## Later, not scheduled
 
 ```
-[ ] ~~dogfood-copies-out-of-the-graph~~
+[x] ~~dogfood-copies-out-of-the-graph~~
                               done by graph-ignores-the-kit: .graphifyignore and
                               config/graphifyignore.fragment hold the kit-owned paths, so the
                               first build's mirrored communities and its 42 weakly connected
                               nodes cannot come back
-[ ] distribution-beyond-clone distribution beyond clone and symlink: a curl installer, or a
-                              package. Blocked on open decision 3
-[ ] git-policy-for-a-second-person
-                              a second person working in this repository, which is what would
-                              make the trunk-only git policy in docs/05-Process.md §7 worth
-                              revisiting
 ```
-
-## Open decisions
-
-These are the decisions from `docs/00-Product.md` that affect what order
-things happen in. Each one is the stakeholder's call, taken in conversation,
-never by an agent's assumption.
-
-1. **Does the kit get a test suite beyond `selftest`?** `kit-selftest`
-   shipped as six checks inside `bin/focus-kit`. If the answer is a real
-   suite, with a framework and cases per function, that is new lines in this
-   queue, not a change to the ones already here. Decides: the stakeholder.
-2. **Do the dogfood copies stay versioned?** If they stop being versioned,
-   check 6 of the verify command and the second row of the environments
-   table both disappear. Decides: the stakeholder.
-3. **How is the kit distributed?** Everything under "Later" about
-   installers and packages waits on this. Decides: the stakeholder.
