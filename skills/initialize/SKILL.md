@@ -55,9 +55,10 @@ the person in the conversation's language: the Language question (Step 0),
 the four Practice questions and the Proof tool question (Step 1 brownfield,
 reused by rounds 4 and 5 of Step 1 greenfield), the Git strategy question
 (Step 1 brownfield, reused by round 6 of Step 1 greenfield), the
-two-patterns disclaimer and the no screen line. Four of the six carry the
-phrase `written here once and asked as written`; the disclaimer and the no
-screen line do not, and the rule covers all six. That phrase binds the content and not the
+two-patterns disclaimer and the no screen line. Each of the six carries the
+phrase
+`written here once and said entire, in the conversation's language`,
+and the rule covers all six. That phrase binds the content and not the
 bytes: every statement, every option and their order reach the person in the
 language they write to you in, with nothing added and nothing dropped. What
 stays in English is a closed list: the kit's own terms, every path and every
@@ -119,8 +120,9 @@ first reaches the person with the evidence behind it. One `AskUserQuestion`
 carries both questions:
 
 1. **Kind of project.** Say which you detected and let them confirm.
-2. **Documentation language.** Written here once and asked as written, the
-   question `Which language do the documents get written in? The answer
+2. **Documentation language.** The question and its options are
+   written here once and said entire, in the conversation's language:
+   the question `Which language do the documents get written in? The answer
    governs the prose of docs/00 to 06, the ADRs, CLAUDE.md, work/<slug>.md,
    work/done/<slug>.md and the suggested commit messages, and nothing else:
    this conversation runs in whichever language you write in, and
@@ -228,7 +230,8 @@ The second is **the tool that proves a screen**. No file in a repository
 names what takes a screenshot, and the sixth reading already showed whether
 there is a screen at all, a web page, a mobile or a desktop app. When there
 is none, ask nothing and say one line, `no screen found; §6 says how the
-endpoint or the CLI is proven`.
+endpoint or the CLI is proven`, that line being
+written here once and said entire, in the conversation's language.
 
 The third is **the git strategy**. The seventh reading shows what the
 repository does today, the branches it has and whether pull requests happen,
@@ -236,8 +239,9 @@ and that is a fact and not the rule: the question is asked anyway, and what
 goes into `docs/05-Process.md` §7 is the answer. A fourth thing no file
 answers joins this list as a line, not as a new step.
 
-The **Practice questions** are written here once and asked as written, one
-`AskUserQuestion` carrying all four, each explained in a line. The person
+The **Practice questions** are
+written here once and said entire, in the conversation's language,
+one `AskUserQuestion` carrying all four, each explained in a line. The person
 answering may be new to this repository and may never have heard of FOCUS, so
 every question says two things: **what the code does today**, and, on each of
 the two options, **what that answer buys.** Neither is decoration. The first
@@ -296,7 +300,9 @@ carrying what does not fit; do not write a third.
      names. What it buys: the policy stays the one the team already keeps.
 
 **The two-patterns disclaimer, on a brownfield repository, said in one line
-before the person answers.** Choosing FOCUS's answer where the code does
+before the person answers.** It is
+written here once and said entire, in the conversation's language.
+Choosing FOCUS's answer where the code does
 otherwise means two patterns live in the tree at once, the old one and the
 new, until the migration lands. That is a normal state for a project that is
 migrating and a bad one for a project that is not, so the choice comes with
@@ -316,9 +322,10 @@ Step 2, whose header row is `Practice | Answer | Here it is` and is what a
 review run looks for, and nothing else in any document you write may assume
 an answer that was not given.
 
-The **Proof tool question** is written here once and asked as written, one
-`AskUserQuestion`, the question `How is a screen proven? No file names the
-tool.` and three options, in this order:
+The **Proof tool question** is
+written here once and said entire, in the conversation's language,
+one `AskUserQuestion`, the question `How is a screen proven? No file names
+the tool.` and three options, in this order:
 
 * **Claude in Chrome.** The browser inside Claude Code: a screenshot at the
   viewports §6 names, nothing added to the repository.
@@ -332,10 +339,11 @@ not write a fourth. The answer opens `docs/05-Process.md` §6: its first line
 is `**Tool.**` and what was chosen. The rest of that section stays what the
 files answered, each one cited.
 
-The **Git strategy question** is written here once and asked as written, one
-`AskUserQuestion`. This is not a Practice and FOCUS has no answer to it, so
-no option comes first as a recommendation and none of the three is the
-house's. On a brownfield repository the question quotes what the seventh
+The **Git strategy question** is
+written here once and said entire, in the conversation's language,
+one `AskUserQuestion`. This is not a Practice and FOCUS has no answer to
+it, so no option comes first as a recommendation and none of the three is
+the house's. On a brownfield repository the question quotes what the seventh
 reading printed and cites no file, because that reading is `git log` and
 `git shortlog` and not a file. The question is `How does this repository
 work with git? The git history shows <what reading 7 printed>. That is what

@@ -392,7 +392,12 @@ writes, whatever the ports added to it; a target that documents itself in
 another language reads the three manuals in that language instead of in
 English; a repository that stops using the kit gets its files back without
 unpicking them by hand; and a target installed several versions ago learns
-that a new one exists instead of waiting for someone to check. Seven of the
+that a new one exists instead of waiting for someone to check. It closes on
+one more thing, and that thing is not a tenth promise: the friction its own
+proof runs surfaced, in the scratch repositories where a ported command was
+run under its host, because a port whose proof run finds the host diverging
+from the text it received word for word is not ported until the divergence
+has an answer. Seven of the
 nine describe or replicate the whole kit, so any change to a skill, a manual
 or the CLI rewrites part of each; the alert is worth shipping once the
 versions it announces stop arriving with every delivery; and the removal is
@@ -481,6 +486,38 @@ have.
                               host, proven by a real /initialize run under GitHub Copilot in a
                               scratch repository, which docs/05 §6 requires before a platform is
                               claimed anywhere a user reads. codex-port takes the same two halves
+[x] questions-reach-the-persons-language
+                              the six texts of /initialize that are conversation and not document
+                              carry the rule beside them, instead of only once in the Language
+                              section and nowhere near the questions it governs, so a host reads it
+                              at the moment it asks. Third occurrence of the shape and the first
+                              under a second host: asked-as-written-says-which-language and
+                              as-written-covers-a-literal each answered with more prose in that one
+                              section, and docs/03, As written, already states the rule, so what is
+                              open is the mechanism. Measured on 2026-09-18 in copilot-port's proof
+                              run, ~/Downloads/focus-kit-copilot-proof under GitHub Copilot with the
+                              kit at 0.30.0: the person wrote Portuguese, the host's own prose
+                              answered Portuguese, and every question card came out in English,
+                              while a diff of the generated prompt against skills/initialize/SKILL.md
+                              is ten lines and every one of them is one of the five substitutions,
+                              so the text reached the host word for word. The answers were the
+                              person's, so the documents came out right and only the asking was
+                              wrong, which is why no file records it (work/done/copilot-port.md,
+                              The proof run)
+[ ] initialize-names-what-it-skipped
+                              /initialize closes by running focus-kit doctor and printing what it
+                              says, so a step the run did not take is named by the run and not by a
+                              person who thinks to ask days later. None of the four skills runs
+                              doctor today. Measured on 2026-09-18 in the same proof run: the
+                              language record read pt-BR and the three docs/manuals/*.md were still
+                              the English files the kit ships, which is the whole of Step 4, the
+                              step manuals-follow-the-language added one delivery before; Step 5
+                              lists the files written, the open questions, the graph and the hook,
+                              and a manual translated in place is no new file, so the run said
+                              nothing about it. doctor already names all three with /initialize as
+                              the fix, and it names the graph that same run left unbuilt, the third
+                              of that page's smaller findings, so the mechanism is there and only
+                              the reading of it is missing (work/done/copilot-port.md, The proof run)
 [>] codex-port                the kit's commands as Codex repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
