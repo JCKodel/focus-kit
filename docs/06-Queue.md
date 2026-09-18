@@ -215,7 +215,7 @@ about brownfield repositories is untested.
                               ask the four Practice questions again. The two rules contradict each other
                               and one of them gives way: a marker that survives translation, or a header
                               the translation rule excepts
-[>] asked-as-written-says-which-language
+[x] asked-as-written-says-which-language
                               /initialize says of the Language question, the four Practice questions
                               and the Proof tool question that each is written once and asked as
                               written, and gives the two-patterns disclaimer and the no screen line
@@ -227,7 +227,7 @@ about brownfield repositories is untested.
                               translated. Neither is wrong against the file, so two runs of the same
                               command differ and a record quoting one cannot be compared with the
                               other; the rule says which, or it stops saying as written
-[ ] initialize-trusts-the-argument
+[>] initialize-trusts-the-argument
                               Step 0 contradicts itself on the argument: line 66 says that if
                               $ARGUMENTS says green or brown, trust it, and line 89 says of the kind
                               of project, inside the one AskUserQuestion that also carries the
@@ -239,6 +239,22 @@ about brownfield repositories is untested.
                               way: the argument answers the question and the AskUserQuestion carries
                               the language alone, or the argument is a detection like any other and
                               line 66 stops saying trust it
+[ ] as-written-covers-a-literal
+                              a text the source sets off as a literal is reproduced byte for byte
+                              instead of being said in the conversation's language, and the two
+                              rules that should forbid it say nothing about the case. Measured on
+                              2026-09-17 in the scratch of asked-as-written-says-which-language, one
+                              Portuguese session, the kit at 0.22.2 with the Language section's new
+                              paragraph in place: the no screen line, written in backticks in
+                              skills/initialize/SKILL.md, came out in English inside a Portuguese
+                              sentence, while the two-patterns disclaimer beside it, written as
+                              prose, came out translated; and the Graph confirmation of
+                              manuals/graphify.md asked its question in Portuguese with its three
+                              option labels, written in bold, still reading Build now, Code only and
+                              Not now. Same shape twice, in the two files, so one of two things
+                              gives way: the two rules say what a backtick and a bold mean in a text
+                              that is asked as written, or the five texts and the confirmation stop
+                              being written with marks that read as bytes to reproduce
 ```
 
 ## Milestone 3: the kit explains itself

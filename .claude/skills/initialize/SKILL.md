@@ -50,6 +50,21 @@ Practice questions were already answered (Step 0). The rest of that table
 translates like the rest of the document: the four Practice names, the
 answers and the third column.
 
+Five texts of this file are conversation and not document, and they reach
+the person in the conversation's language: the Language question (Step 0),
+the four Practice questions and the Proof tool question (Step 1 brownfield,
+reused by rounds 4 and 5 of Step 1 greenfield), the two-patterns disclaimer
+and the no screen line. Three of the five carry the phrase `written here
+once and asked as written`; the disclaimer and the no screen line do not,
+and the rule covers all five. That phrase binds the content and not the
+bytes: every statement, every option and their order reach the person in the
+language they write to you in, with nothing added and nothing dropped, while
+the kit's own terms, every path and every file name stay as this section
+already keeps them in a document. The English text here is the source. A
+record that quotes what was asked is compared with it statement by
+statement, never byte by byte, and in a conversation in English the two are
+the same bytes.
+
 ## Two house rules that shape everything you write
 
 * **No em dash in any text a user of the product reads.** It is the most

@@ -1,4 +1,5 @@
 1064646898 .claude/skills/initialize/templates/CLAUDE.md
+1396527816 .claude/skills/initialize/SKILL.md
 1462085056 .claude/skills/initialize/templates/docs/00-Product.md
 1708082966 .claude/skills/initialize/templates/docs/06-Queue.md
 1821706096 .claude/skills/propose/SKILL.md
@@ -11,6 +12,5 @@
 571537966 docs/manuals/focus.md
 747951838 docs/manuals/graphify.md
 757358552 .claude/skills/initialize/templates/docs/03-Domain.md
-790127276 .claude/skills/initialize/SKILL.md
 892715747 .claude/skills/initialize/templates/docs/adr/ADR-0000-template.md
 89771736 .claude/skills/initialize/templates/docs/adr/README.md
