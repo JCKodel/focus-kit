@@ -205,8 +205,15 @@ Where the idea adds a part to the process itself, the conversation asks the
 question this document asks of every such part: which concrete error that
 happened would it have caught.
 
+When the line is new and the project's git strategy is a worktree per
+delivery or a branch per slug (`docs/05-Process.md` §7), this is the first
+command to write under that slug, so it is the one that makes the worktree or
+the branch, and the line goes there. Under none it makes nothing and writes
+where the session is.
+
 **Rule of product:** it writes the line and nothing else. No delivery page,
-no ADR, no notes file. What the conversation settled travels in the line's
+no ADR, no notes file. A branch or a worktree is not an exception to that: it
+is where the line is written, not a second thing written. What the conversation settled travels in the line's
 own words, because a line that needs a second file to be understood is a
 delivery nobody has decided yet, and the page too early is the thing this
 command exists to prevent.
@@ -221,7 +228,11 @@ whenever there is more than one reading and no file it read closes it, with
 its own recommendation first. A matter a file decides goes onto the page
 with the file cited, and is never put in front of the person. It writes no
 code, no migration and no test, and ends by naming the session `/apply` runs
-in.
+in. When the line was already in the queue and the git strategy is a worktree
+per delivery or a branch per slug, it is the first command to write under the
+slug, so it is the one that makes the worktree or the branch, and the page
+goes there; under a worktree the session it names is one opened in that
+directory.
 
 The page has a fixed shape: goal, behaviour, contract, slice, states, visual
 reference, out of scope, done when. Of those, only the contract has to be
@@ -238,7 +249,9 @@ before the code is written rather than after.
 
 `/apply <slug>` implements the page in a clean session that reads only that
 page and the project documents, one in which it is the first thing typed,
-and when it is not it says so and stops. It builds each piece in its place,
+and when it is not it says so and stops. It also stops when the git strategy
+puts this slug in a worktree or on a branch and the session is not in it,
+naming the command that gets there. It builds each piece in its place,
 settling what the page left to the run, runs the verify command until green,
 proves the result the way the project's own `docs/05-Process.md` says to,
 and leaves each environment in the state that document requires.
@@ -250,8 +263,10 @@ changed, ticks the "Done when" list, moves the page to `work/done/`, turns
 the queue line to `[x]`, stages everything with `git add -A` and suggests a
 commit message.
 
-**Rule of product:** it does not commit. Ever, in any configuration, whatever
-the project's git policy says. The commit is where a person takes
+**Rule of product:** it does not commit, and it does not merge. Ever, in any
+configuration, whatever the project's git strategy says: under a branch or a
+worktree it names the merge command, and under a worktree the removal of the
+directory, and runs neither. The commit is where a person takes
 responsibility for the change, and a process that lets an agent take it has
 removed the only review that was guaranteed to happen.
 

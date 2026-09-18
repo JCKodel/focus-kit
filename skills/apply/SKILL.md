@@ -16,6 +16,15 @@ say `this session already ran <command>; open a new one (/clear, or a new
 terminal) and type /apply $ARGUMENTS` and stop, before Read first: nothing
 read, nothing built, nothing staged.
 
+Then check where you are standing, still before Read first. Read
+`docs/05-Process.md` §7 and nothing else to do it: its first line names the
+git strategy. When it names a worktree per delivery or a branch per slug and
+this session is not in the one for `$ARGUMENTS`, say the strategy, where you
+expected to be, where you are and the command that gets there, and stop:
+nothing read, nothing built, nothing staged. What the one for this slug is,
+and which command gets there, is `docs/manuals/process.md` §The git strategy.
+When §7 names none, there is nothing to check and the manual is not read.
+
 ## Read first
 
 1. `work/$ARGUMENTS.md`: the delivery. It is the scope; do not widen it.
@@ -113,6 +122,12 @@ others.
    five one-line bullets, last line pointing at `work/done/<slug>.md`.
    **Do not commit.** The graph rebuilds itself on the person's commit
    (post-commit hook).
+6. When `docs/05-Process.md` §7 names a worktree per delivery or a branch
+   per slug, name the command that brings this slug's branch to the trunk,
+   and under a worktree the removal of the directory too, the way
+   `docs/manuals/process.md` §The git strategy words them. Name them and run
+   neither: the agent never commits and never merges, whatever the strategy
+   says (`docs/00-Product.md`, Building it).
 
 Every file you write is in the project's documentation language, the one
 `docs/05-Process.md` §0 declares (`CLAUDE.md` repeats it on its language

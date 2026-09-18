@@ -192,7 +192,13 @@ self-contained and repeats what it needs, because they are read one at a
 time by a session that has none of the others in context. That is not
 duplicated knowledge in the DRY sense (`docs/manuals/focus.md` §6): the
 house rules have exactly one authoritative representation, in
-`manuals/process.md` §7, and the skills point at it.
+`manuals/process.md` §7, and the skills point at it. The git strategy is the
+second thing with that shape: what `/discuss`, `/propose` and `/apply` do
+under each of the three answers is written once in `manuals/process.md` §The
+git strategy, and the three skills read the project's answer in
+`docs/05-Process.md` §7 and point at that section for the rest. Cited by
+heading and never by number, because a section added to that manual
+renumbers the ones below it.
 
 ## 5. Data access and boundaries
 

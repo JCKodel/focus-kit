@@ -51,7 +51,8 @@ writes `docs/00` to `06`, `docs/adr/`, `CLAUDE.md`, and the `work/` folder.
 
 * **Greenfield** (no code yet): it asks, in rounds of a few questions each,
   about the product, the domain, the stack, the four practices, the
-  environments, the conventions and the first milestone. It does not ask
+  environments, the git strategy (§The git strategy), the conventions and
+  the first milestone. It does not ask
   what it can default: the house stack (C# on .NET, the Mediator pattern as
   the orchestrator, in any implementation), the house rules, the process
   itself.
@@ -61,7 +62,8 @@ writes `docs/00` to `06`, `docs/adr/`, `CLAUDE.md`, and the `work/` folder.
   what exists and what the target is, and keeps them apart when the two
   differ. The queue gets a migration delivery per slice only when the
   structure practice was answered vertical slices and the code is organized
-  by layer.
+  by layer. The git strategy is asked here too: the git history says what
+  the repository does today, and today is a fact and not the rule.
 * If `docs/` already exists, it is a **review** run: it proposes edits
   section by section instead of rewriting.
 * It merges into an existing `CLAUDE.md`, never overwrites it.
@@ -235,7 +237,56 @@ Each of these was tried in the project the kit came from and removed. If
 one reappears, the question is which concrete error it would have caught,
 and the answer has to name one that happened.
 
-## 10. Commit message
+## 10. The git strategy
+
+`docs/05-Process.md` §7 opens with `**Strategy.**` and one of three
+answers, chosen once by `/initialize`. It decides where the work under a
+slug is written and nothing else: whatever it says, the agent never commits
+and never merges. It stages, and it names the command you run.
+
+**The first command that writes under a slug is what makes the worktree or
+the branch**, and every later command for that slug works in it. That is
+`/discuss` when the line is new, and `/propose` when the line was already in
+the queue. Everything relative to one slug is on one branch, named by the
+slug, so `git add -A` of one delivery can never stage another's page.
+
+**A worktree per delivery.** The command runs `git worktree add
+../<repository folder>-<slug> -b <slug>` and writes its files in that
+directory. `/propose` makes it at Write, after the graph is ensured and the
+conversation is over, so a run that stops costs no directory; its Close
+names that directory as where the `/apply` session opens, instead of
+`/clear` here. `/apply` works in it, and its Close names the merge command
+and `git worktree remove ../<repository folder>-<slug>`, and runs neither.
+The merge command is `git checkout <trunk> && git merge <slug>`, the trunk
+being the branch §7 names, under this strategy and under a branch per slug
+alike. It is written here so that no run invents it.
+A worktree is made from `HEAD`, so what is uncommitted in the main tree does
+not follow it: a queue line written there and not yet committed is not in
+the worktree, and neither is the graph, because `graphify-out/` is ignored
+and the procedure builds one there once per delivery.
+
+**A branch per slug.** The command runs `git checkout -b <slug>` in the tree
+it is standing in. When that tree is not clean it first says what the
+checkout will carry with it and asks, because uncommitted work follows a
+checkout and the isolation this strategy promises covers committed work
+alone.
+
+**None.** Nothing is made. The three commands write where you are, and the
+work goes straight to the trunk.
+
+A branch or a worktree that already exists for the slug is not a failure:
+the slug is what names it and the delivery is one, so the command says it is
+already there and works in it.
+
+`/apply` checks where it is standing before it reads anything of the
+delivery. When §7 names worktree or branch and the session is not in the one
+for this slug, it says the strategy, where it expected to be, where it is
+and the command that gets there, and stops: nothing read, nothing built,
+nothing staged. Under a branch that command is `git checkout <slug>`; under
+a worktree it is opening a session in that directory, because a session does
+not change its own working directory.
+
+## 11. Commit message
 
 Subject up to 72 characters, imperative, with the slug as scope. Body up
 to five one-line bullets: the highlights, not the reasoning. Last line
@@ -252,7 +303,7 @@ feat(place-order): order placed with idempotency key
 Details in work/done/place-order.md
 ```
 
-## 11. Updating the kit
+## 12. Updating the kit
 
 `focus-kit update <repo>` overwrites the four skills and the three
 manuals and merges configuration. It never touches `docs/00` to `06`,

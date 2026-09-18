@@ -49,13 +49,14 @@ Practice questions were already answered (Step 0). The rest of that table
 translates like the rest of the document: the four Practice names, the
 answers and the third column.
 
-Five texts of this file are conversation and not document, and they reach
+Six texts of this file are conversation and not document, and they reach
 the person in the conversation's language: the Language question (Step 0),
 the four Practice questions and the Proof tool question (Step 1 brownfield,
-reused by rounds 4 and 5 of Step 1 greenfield), the two-patterns disclaimer
-and the no screen line. Three of the five carry the phrase `written here
-once and asked as written`; the disclaimer and the no screen line do not,
-and the rule covers all five. That phrase binds the content and not the
+reused by rounds 4 and 5 of Step 1 greenfield), the Git strategy question
+(Step 1 brownfield, reused by round 6 of Step 1 greenfield), the
+two-patterns disclaimer and the no screen line. Four of the six carry the
+phrase `written here once and asked as written`; the disclaimer and the no
+screen line do not, and the rule covers all six. That phrase binds the content and not the
 bytes: every statement, every option and their order reach the person in the
 language they write to you in, with nothing added and nothing dropped. What
 stays in English is a closed list: the kit's own terms, every path and every
@@ -96,12 +97,16 @@ run: read what is there, compare it with the code and the person's
 answers, and propose edits section by section instead of rewriting. A
 A section that a question written in this file answers, and that carries no
 answer, gets that question and a proposed edit, like any other section. The
-rule is one and the sections are two: a `docs/05-Process.md` §6 that names no
-tool gets the Proof tool question, and a `docs/01-Architecture.md` §3 with no
+rule is one and the sections are three: a `docs/05-Process.md` §6 that names
+no tool gets the Proof tool question, a `docs/01-Architecture.md` §3 with no
 table whose header row is `Practice | Answer | Here it is` gets the four
-Practice questions. That header row and not "a table", because a §3 written
-before this version has the pieces table and nothing else, and it is the one
-that most needs asking. The Read-back of Step 2 runs
+Practice questions, and a `docs/05-Process.md` §7 that names none of the three
+strategies gets the Git strategy question. That header row and not "a table",
+because a §3 written before this version has the pieces table and nothing
+else, and it is the one that most needs asking. For §7 the marker has §6's
+shape: a first line that opens `**Strategy.**` and names one of the three.
+Prose about branches and pull requests that names none of the three names
+none. The Read-back of Step 2 runs
 on the documents you found, and each identifier it catches is a proposed edit
 too.
 
@@ -196,7 +201,7 @@ and say so.
 
 The seven readings answer most of what the documents need, and not all of
 it. What they do not answer is asked here, before you write anything, and
-today that is two things, in this order.
+today that is three things, in this order.
 
 The first is **the four Practices**: how the code is structured, where the
 rules live, how errors travel and what is tested. The sixth reading says
@@ -210,8 +215,13 @@ The second is **the tool that proves a screen**. No file in a repository
 names what takes a screenshot, and the sixth reading already showed whether
 there is a screen at all, a web page, a mobile or a desktop app. When there
 is none, ask nothing and say one line, `no screen found; §6 says how the
-endpoint or the CLI is proven`. A third thing no file answers joins this
-list as a line, not as a new step.
+endpoint or the CLI is proven`.
+
+The third is **the git strategy**. The seventh reading shows what the
+repository does today, the branches it has and whether pull requests happen,
+and that is a fact and not the rule: the question is asked anyway, and what
+goes into `docs/05-Process.md` §7 is the answer. A fourth thing no file
+answers joins this list as a line, not as a new step.
 
 The **Practice questions** are written here once and asked as written, one
 `AskUserQuestion` carrying all four, each explained in a line. The person
@@ -309,6 +319,46 @@ not write a fourth. The answer opens `docs/05-Process.md` §6: its first line
 is `**Tool.**` and what was chosen. The rest of that section stays what the
 files answered, each one cited.
 
+The **Git strategy question** is written here once and asked as written, one
+`AskUserQuestion`. This is not a Practice and FOCUS has no answer to it, so
+no option comes first as a recommendation and none of the three is the
+house's. On a brownfield repository the question quotes what the seventh
+reading printed and cites no file, because that reading is `git log` and
+`git shortlog` and not a file. The question is `How does this repository
+work with git? The git history shows <what reading 7 printed>. That is what
+happens today; this answer is the rule from now on.` and, on a greenfield
+repository, `How does this repository work with git?` Three options, in this
+order:
+
+* **A worktree per delivery.** The first command that writes under a slug
+  makes a git worktree on a branch named by the slug, in a sibling directory
+  of this one, and every later command for that slug works there. What it
+  buys: two deliveries never share a working tree, so `git add -A` of one
+  cannot stage the other's files. What it costs: a worktree is made from
+  `HEAD`, so the queue line and its mark live on that branch until someone
+  merges it and a session in the main tree does not see them; the graph is
+  built once per delivery, because a fresh worktree has none; and the
+  directory is removed by hand after the merge.
+* **A branch per slug.** The first command that writes under a slug makes a
+  branch named by the slug in this tree, and every later command for that
+  slug works on it. What it buys: one delivery is one branch, so the history
+  reads a delivery at a time and a pull request has something to point at.
+  What it costs: there is one working tree, so uncommitted work follows the
+  checkout, and the command says what it would carry before it switches.
+* **None.** Nothing is made and the commands write where you are; work goes
+  straight to the trunk. What it buys: no ceremony, which is the answer where
+  one person works alone and nobody is on the other side of a branch. What it
+  costs: two deliveries in flight share one tree, so `git add -A` of one
+  stages whatever the other left there.
+
+"Other" is Claude Code's own fourth option and carries what does not fit; do
+not write a fourth. The answer opens `docs/05-Process.md` §7: its first line
+is `**Strategy.**` and what was chosen, the way §6 opens with `**Tool.**`.
+The rest of §7 stays what the files answered: who commits, the message
+format, review before merge. What each command does under each strategy is
+`docs/manuals/process.md` §The git strategy, and no document you write
+repeats it.
+
 ## Step 1 (greenfield): ask in rounds
 
 Do not ask twenty questions at once. Ask in rounds, each round one
@@ -337,9 +387,10 @@ option whenever you have one. Suggested rounds:
    leave up to date; what the verify command is (or will be). If there is
    a UI, what the visual reference is and which tool proves a screen: the
    Proof tool question, as in the brownfield step.
-6. **Conventions and git.** Naming rules the client imposes; whether work
-   goes to trunk or through branches and pull requests; the commit message
-   format. The agent never commits, regardless of the answer.
+6. **Conventions and git.** Naming rules the client imposes; the Git
+   strategy question, as in the brownfield step, with no history to quote;
+   the commit message format. The agent never commits, regardless of the
+   answer.
 7. **The first milestone.** Three to eight deliveries, in order, each one
    line, that together make something a person can use end to end. This
    becomes `docs/06-Queue.md`.

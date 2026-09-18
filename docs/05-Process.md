@@ -316,9 +316,18 @@ platform is not claimed anywhere a user reads.
 
 ## 7. Git
 
-**Trunk.** Work goes straight to `main`. No branches, no pull requests, no
-review before merge. There is one person working here, and a branch would be
-ceremony with nobody on the other side of it.
+**Strategy.** None. Work goes straight to `main`. No branches, no pull
+requests, no review before merge. There is one person working here, and a
+branch would be ceremony with nobody on the other side of it.
+
+That is one of the three answers `/initialize` asks for, and what each
+command does under each of them is `docs/manuals/process.md` §The git
+strategy. Under this one nothing is made: `/discuss`, `/propose` and
+`/apply` write where the session already is. The cost is the one
+`git-strategy-is-asked` measured here on 2026-09-18, an `/apply` staging
+another delivery's page with `git add -A`, and it is the price of having
+nobody on the other side of a branch. `git-policy-for-a-second-person`, under
+Later, is where the answer is revisited.
 
 **A person commits, always.** `/apply` stages with `git add -A` and suggests
 the message. It does not commit and does not push, whatever else is

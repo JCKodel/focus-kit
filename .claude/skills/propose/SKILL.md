@@ -86,6 +86,19 @@ Things that usually need a question:
 
 ## Write
 
+**Where the page is written.** Read `docs/05-Process.md` §7 first. Its first
+line names the git strategy, and when it names a worktree per delivery or a
+branch per slug, everything under this slug belongs in the one named by it:
+when `/discuss` already made it, say so and work in it; when the line was
+already in the queue and nothing was made, this command is the first to write
+under the slug and makes it here, after the conversation and not at Read
+first, so a run that stops costs nothing. How that is done is
+`docs/manuals/process.md` §The git strategy, and this file repeats none of
+it. Read the named section alone: one `grep -n '^#'` over the manual gives
+its heading's line and the next heading of the same level, and you read that
+range and nothing else of the manual. When §7 names none, nothing is made and
+the manual is not read.
+
 `work/$ARGUMENTS.md`, one page. The **Contract** section (data, API,
 migrations, message shapes) is the only one that must be exact: a wrong
 screen is fixed in a session, a wrong column is a migration.
@@ -131,12 +144,20 @@ graph procedure first, is its own; this session holds the conversation that
 wrote the page:
 
 ```
+Made: <the branch <slug> | the worktree <directory>, on branch <slug> | it was
+already there | nothing; docs/05 §7 names none>.
 Written: work/$ARGUMENTS.md; docs/06-Queue.md line marked [>]; docs/03-Domain.md
 row <Term> (or: no new term). Nothing staged, nothing committed.
 
 Open a new session (/clear here, or a new terminal) and type:
 /apply $ARGUMENTS
 ```
+
+Under a worktree per delivery the session is not opened here: `/apply` runs
+in the worktree, so the last lines name that directory instead, `Open a
+session in <directory> and type: /apply $ARGUMENTS`. Under a branch per slug
+and under none the lines above stand as they are, because the tree is the
+same one.
 
 ## Never
 

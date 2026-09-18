@@ -198,8 +198,8 @@ The agent stages (`git add`) and **suggests** the message; a person commits,
 after reviewing. The commit is the delivery, and the delivery passes through
 human review.
 
-Work goes straight to `main`. There are no branches and no pull requests
-(`docs/05-Process.md` §7).
+The git strategy here is none, so work goes straight to `main`: no branches,
+no pull requests, and nothing made for a slug (`docs/05-Process.md` §7).
 
 Message in the imperative, in English, with the slug as scope. The type, the
 scope and the slug stay as they are, because they are identifiers:

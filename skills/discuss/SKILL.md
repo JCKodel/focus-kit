@@ -18,9 +18,11 @@ ask what the idea is and start from the answer.
 ## Read first
 
 `docs/00-Product.md`, `docs/03-Domain.md`, `docs/06-Queue.md`, and whatever
-is in `work/` (the deliveries in flight). Nothing else, and no graph: this
-command asks no Structure question, so it runs no graph procedure and says
-nothing about the graph at all.
+is in `work/` (the deliveries in flight). No graph: this command asks no
+Structure question, so it runs no graph procedure and says nothing about the
+graph at all. The one other thing it reads is `docs/05-Process.md` §7, at
+Write and not here, because that is where it decides whether a new line
+needs a branch or a worktree of its own.
 
 When `docs/06-Queue.md` is not there, the repository has no queue yet. Say
 so, name `/initialize`, and write nothing.
@@ -102,6 +104,17 @@ makes, and each one is a move the conversation decided.
 
 ## Write
 
+**Where the line is written.** Read `docs/05-Process.md` §7 first. Its first
+line names the git strategy, and when it names a worktree per delivery or a
+branch per slug, and the line you are about to write is new, this command is
+the first to write under that slug: it makes the worktree or the branch, and
+writes there everything this run writes. How that is done is
+`docs/manuals/process.md` §The git strategy, and this file repeats none of
+it. Read the named section alone: one `grep -n '^#'` over the manual gives
+its heading's line and the next heading of the same level, and you read that
+range and nothing else of the manual. When §7 names none, nothing is made
+and the manual is not read.
+
 One line in `docs/06-Queue.md`, in the queue's own shape: the mark `[ ]`,
 the slug, and the scope beside it. The slug is an identifier, so it stays in
 English whatever the documentation language is: short, lowercase,
@@ -135,6 +148,8 @@ builds on it:
 ```
 Placed: <the milestone whose paragraph admits it | the milestone whose
 paragraph you amended | Later, no paragraph admits it>.
+Made: <the branch <slug> | the worktree <directory>, on branch <slug> | nothing;
+docs/05 §7 names none>.
 Written: docs/06-Queue.md, one line <slug> under <where>; docs/03-Domain.md
 row <Term> (or: no new term); <the amended paragraph, the milestone
 proposed and its three lines, or the promoted line, when there was one>.

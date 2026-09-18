@@ -127,9 +127,14 @@ deploy: it is someone opening an environment believing it is current.
 
 ## 7. Git
 
-<!-- init: trunk or branches; PR or direct; who commits (a person, always,
-     is the house rule); review before merge; the message format from
-     docs/04 §6. -->
+<!-- init: the first line is **Strategy.** and the answer to the Git strategy
+     question, one of the three: a worktree per delivery, a branch per slug,
+     or none. It is what /discuss, /propose and /apply read, so it is never
+     prose about branches in general. Then the rest: PR or direct; who
+     commits (a person, always, is the house rule); review before merge; the
+     message format from docs/04 §6. What each command does under each
+     strategy is docs/manuals/process.md §The git strategy; do not repeat it
+     here. -->
 
 ## 8. Queue
 
