@@ -55,8 +55,8 @@ the person in the conversation's language: the Language question (Step 0),
 the four Practice questions and the Proof tool question (Step 1 brownfield,
 reused by rounds 4 and 5 of Step 1 greenfield), the Git strategy question
 (Step 1 brownfield, reused by round 6 of Step 1 greenfield), the
-two-patterns disclaimer and the no screen line. Each of the six carries the
-phrase
+two-patterns disclaimer and the No screen question. Each of the six carries
+the phrase
 `written here once and said entire, in the conversation's language`,
 and the rule covers all six. That phrase binds the content and not the
 bytes: every statement, every option and their order reach the person in the
@@ -100,7 +100,8 @@ answers, and propose edits section by section instead of rewriting. A
 A section that a question written in this file answers, and that carries no
 answer, gets that question and a proposed edit, like any other section. The
 rule is one and the sections are three: a `docs/05-Process.md` §6 that names
-no tool gets the Proof tool question, a `docs/01-Architecture.md` §3 with no
+no tool gets the Proof tool question where there is a screen and the No
+screen question where there is none, a `docs/01-Architecture.md` §3 with no
 table whose header row is `Practice | Answer | Here it is` gets the four
 Practice questions, and a `docs/05-Process.md` §7 that names none of the three
 strategies gets the Git strategy question. That header row and not "a table",
@@ -228,10 +229,10 @@ answers, never the readings.
 
 The second is **the tool that proves a screen**. No file in a repository
 names what takes a screenshot, and the sixth reading already showed whether
-there is a screen at all, a web page, a mobile or a desktop app. When there
-is none, ask nothing and say one line, `no screen found; §6 says how the
-endpoint or the CLI is proven`, that line being
-written here once and said entire, in the conversation's language.
+there is a screen at all, a web page, a mobile or a desktop app. Where there
+is one, the Proof tool question; where there is none, the No screen question
+in its place. Exactly one of the two, never both and never neither, and
+nothing is said before the card.
 
 The third is **the git strategy**. The seventh reading shows what the
 repository does today, the branches it has and whether pull requests happen,
@@ -339,6 +340,24 @@ not write a fourth. The answer opens `docs/05-Process.md` §6: its first line
 is `**Tool.**` and what was chosen. The rest of that section stays what the
 files answered, each one cited.
 
+The **No screen question** is
+written here once and said entire, in the conversation's language,
+one `AskUserQuestion`, the question `How is a delivery proven? There is no
+screen, and no file names the tool.` and three options, in this order:
+
+* **A real run in a scratch copy.** The command or the endpoint runs in a
+  throwaway directory or repository, and what it printed is read and
+  recorded in the delivery.
+* **An output compared with a reference.** A contract test or a golden file
+  kept beside the code, which the run's output is compared with.
+* **None.** The verify command is the proof, and §6 says so in one line.
+
+"Other" is Claude Code's own fourth option and carries what does not fit; do
+not write a fourth. The answer opens `docs/05-Process.md` §6 the same way:
+its first line is `**Tool.**` and what was chosen, so the slot keeps one
+marker whatever the repository has. The rest of that section stays what the
+files answered, each one cited.
+
 The **Git strategy question** is
 written here once and said entire, in the conversation's language,
 one `AskUserQuestion`. This is not a Practice and FOCUS has no answer to
@@ -387,8 +406,9 @@ what the previous one settled. A card is one `AskUserQuestion` with at most
 four questions, and that ceiling is the card's and not the round's: a round
 asks a second card when what it has to offer could not have been written
 into the first. Round 5 is the round that does, twice over: its tooling card
-is composed from what round 3 answered, and its Proof tool card is asked
-only where there is a UI. Give your recommendation as the first
+is composed from what round 3 answered, and its proof card is one of two,
+the Proof tool question or the No screen question, decided by whether rounds
+1 to 3 named a UI. Give your recommendation as the first
 option whenever you have one. Suggested rounds:
 
 1. **Product.** What it is in one sentence; who uses it (every side, if it
@@ -420,9 +440,12 @@ option whenever you have one. Suggested rounds:
    never a placeholder (`docs/00-Product.md`, Initializing). Only then
    what the verify command is (or will be), because it runs the tooling
    that was just chosen: asked before that card the answer is a promise,
-   asked after it the answer is a command. If there is
-   a UI, what the visual reference is and which tool proves a screen: the
-   Proof tool question, as in the brownfield step.
+   asked after it the answer is a command. Then how a delivery is proven,
+   which is one card of two: where rounds 1 to 3 named a UI, what the visual
+   reference is and which tool proves a screen, the Proof tool question, as
+   in the brownfield step; where they named none, the No screen question, as
+   in the brownfield step too. Exactly one of the two, never both and never
+   neither.
 6. **Conventions and git.** Naming rules the client imposes; the Git
    strategy question, as in the brownfield step, with no history to quote;
    the commit message format. The agent never commits, regardless of the

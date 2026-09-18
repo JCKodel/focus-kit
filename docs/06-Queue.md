@@ -569,6 +569,35 @@ have.
                               since manuals/process.md §3 keeps it as what the command defaults to.
                               Ahead of codex-port, which renders its prompts from the skills, so
                               the port ships the fixed text and not the fix afterwards
+[x] proof-is-asked-without-a-screen
+                              a repository with no screen is asked how a delivery is proven instead
+                              of being told. Today the branch is one said line, no screen found; §6
+                              says how the endpoint or the CLI is proven, which /initialize is told
+                              to say and to ask nothing after. It gets a card of its own, with
+                              options meant for a repository that has no screen, beside the Proof
+                              tool question, which stays the question for a repository that has
+                              one: two questions where there is one question and one statement
+                              today. Measured on 2026-09-18 in the proof run of
+                              tools-follow-the-stack, ~/Downloads/tools-follow-the-stack-proof
+                              under Claude Code with the kit at 0.33.0, a Dart CLI and a Portuguese
+                              session: the line came out in English before it came out in
+                              Portuguese, in one sentence, and the run then asked anyway, composing
+                              "Como a CLI é provada?" with three options of its own, of which the
+                              person took execution in a real temporary folder. That is not what
+                              the line writes into §6, whose own third option is what the line
+                              states, so the said text was costing the answer and not only the
+                              language. Fourth occurrence of the as-written shape and the first
+                              after questions-reach-the-persons-language put the phrase beside each
+                              of the six texts; the same run says that fix worked, since the Graph
+                              confirmation came out whole in Portuguese, question, three labels and
+                              three descriptions. So the difference is not the marks, which
+                              as-written-covers-a-literal already answered: it is that the
+                              confirmation is asked in a card and this one is said in prose, and it
+                              is the only one of the six still said at the moment it decides
+                              something. The two-patterns disclaimer is the other said text and
+                              stays out, having never leaked (CLAUDE.md, abstraction on the second
+                              concrete occurrence); it is its own line the day it does. Ahead of
+                              codex-port, for the reason the line above it gives
 [>] codex-port                the kit's commands as Codex repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as

@@ -363,6 +363,12 @@ stays where it is.
 
 ## 6. Proof
 
+**Tool.** A real run in a scratch repository. The command runs there, in a
+copy that is thrown away at the end, and what it printed is read and
+recorded in the delivery. That is the first of the three answers the No
+screen question offers (`docs/03-Domain.md`), and this repository is where
+it was answered first.
+
 There is no UI, so there is no screenshot and no visual reference. What
 stands in for proof here is an install into a scratch repository, which is
 check 2 of the verify command, plus one thing the verify command cannot do.
