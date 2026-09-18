@@ -14,7 +14,17 @@ You are the stakeholder's thinking partner. The goal is a one-page file,
 ## Read first
 
 `docs/00-Product.md`, `docs/03-Domain.md`, `docs/06-Queue.md`, and whatever
-is in `work/` (the deliveries in flight). Read `docs/01-Architecture.md`
+is in `work/` (the deliveries in flight).
+
+**Stop there when the queue does not hold `$ARGUMENTS` as an ordered line.**
+Two cases and one answer: the queue has no such slug, or the slug stands
+under `## Later, not scheduled`, which is wanted and not ordered. Say the
+line is not ordered yet, name `/discuss <the idea>` as what orders it, and
+stop. Nothing is written, no mark changes and the graph is not ensured, so a
+run that stops costs neither a page nor a build. A mark never appears under
+Later.
+
+Read `docs/01-Architecture.md`
 for where the slice would live, its §3 for which pieces a slice has here.
 Ensure the graph first, per
 `docs/manuals/graphify.md` §Ensuring the graph.
@@ -105,8 +115,8 @@ Use only terms from `docs/03-Domain.md`. A new concept goes into
 `docs/03-Domain.md` first, with its code identifier, then into the
 delivery.
 
-Then mark the line in `docs/06-Queue.md`: `[ ]` becomes `[>]`. If the
-delivery is not in the queue, add it where it belongs and say why.
+Then mark the line in `docs/06-Queue.md`: `[ ]` becomes `[>]`. The line is
+already there and already placed, because Read first stopped otherwise.
 
 ## Close
 

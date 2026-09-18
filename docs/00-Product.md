@@ -192,8 +192,14 @@ whenever more than one reading survives those files, and says out loud, with
 the file cited, what one of them already decided. It asks the graph nothing,
 because where a line belongs is not a Structure question.
 
-Where the line goes it asks, and never assumes. The order is the decision
-(`docs/03-Domain.md`, The queue), and it is the person's to take.
+Where the line goes it decides against the milestone paragraphs and never by
+taste: a milestone whose paragraph already admits the line takes it with no
+question asked, a line that serves a milestone whose paragraph does not say
+so makes it ask for the amendment and the placement together, and a line no
+paragraph admits waits under "Later, not scheduled". The order is still the
+decision (`docs/03-Domain.md`, The queue) and still the person's to take:
+what the paragraph removed is the question nobody had a rule for, not the
+person's say over it.
 
 Where the idea adds a part to the process itself, the conversation asks the
 question this document asks of every such part: which concrete error that

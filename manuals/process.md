@@ -80,14 +80,25 @@ and no more: it asks the graph nothing. It offers the alternatives it sees,
 says what each one buys and what it costs, puts its own recommendation
 first, and asks you whenever more than one reading survives those files. A
 matter one of them decides is said out loud with the file cited, and never
-put in front of you. Where the line goes it asks, because the order is the
-decision and the decision is yours.
+put in front of you.
+
+Where the line goes it decides against the milestone paragraphs, and not by
+taste: a milestone whose paragraph already admits the line takes it, with
+no question asked; a line that serves a milestone whose paragraph does not
+say so makes it ask you for the amendment and the placement together; and a
+line no paragraph admits goes under "Later, not scheduled", which is the
+block for what is wanted and not ordered. When three lines there share a
+purpose, it says which three and proposes a milestone, a name and a
+paragraph of its own, and writes it where you say.
 
 It writes the line, and a term in `docs/03-Domain.md` when the idea names a
 concept that document does not have. It writes no delivery page, no ADR and
-no code, it moves no existing line and it changes no mark. When the idea is
-already a line, or a bullet under "Later, not scheduled", it says which one
-and writes nothing.
+no code, it edits no existing line and it changes no mark. It moves a line
+in two cases only, each one a move you accepted: the three lines carried
+into a milestone you said yes to, and a Later line promoted into a
+milestone whose paragraph admits it now. When the idea is already a line it
+says which one and writes nothing; when it is already a line under Later,
+it says which one and offers that promotion.
 
 The line is the whole record: what the conversation settled travels in its
 own words, in the project's documentation language, with the slug in
@@ -120,6 +131,12 @@ recommendation first.
 It writes no code.
 When it is done, it turns the queue line from `[ ]` to `[>]`, and its last
 words name the new session to type `/apply` in.
+
+It starts from a line the queue already holds and already placed. A slug
+the queue does not have, and a slug standing under "Later, not scheduled",
+both stop it before it reads anything else: it says the line is not ordered
+yet and names `/discuss`, so a run that stops costs neither a page nor a
+graph build.
 
 If a scope does not fit on one page, it is two deliveries. The page is the
 test that the scope was understood.
@@ -184,11 +201,31 @@ name for saying yes to all four.
 
 ## 8. The queue
 
-`docs/06-Queue.md` is one line per delivery, in order, grouped by
-milestone. A line never leaves; it changes mark. A milestone is the unit
-of "something a person can use end to end". At the close of a milestone the
-stakeholder runs a whole-branch review; each confirmed finding becomes a
-queue line named after what it fixes.
+`docs/06-Queue.md` is one line per delivery, grouped by milestone and in
+order from the first milestone on, plus one block outside that order. A
+line never leaves; it changes mark. A milestone is the unit of "something a
+person can use end to end". At the close of a milestone the stakeholder
+runs a whole-branch review; each confirmed finding becomes a queue line
+named after what it fixes.
+
+**A milestone carries a name and a paragraph saying what closes it**, and
+that paragraph is what a line is placed against: what it says closes the
+milestone is what the milestone admits. A line whose scope the paragraph
+already covers belongs there, and a line no paragraph covers does not
+belong to any milestone yet.
+
+**"Later, not scheduled" is that block outside the order**: the deliveries
+that are wanted and not ordered, one `[ ]` line each in the queue's own
+shape, a slug and its scope, and no prose bullet. It carries no `[>]` and
+no `[x]`, because `/propose` stops on a slug standing there rather than
+marking it. A Later line another delivery already did is struck through
+with the reason naming that slug, never deleted, the way a cancelled line
+is.
+
+So a placement ends in one of three places, and `/discuss` is what takes
+it: the milestone whose paragraph admits the line, the milestone whose
+paragraph you amended to admit it, or Later. A line leaves Later only the
+way it arrived, through `/discuss` and a move you accepted.
 
 ## 9. What the process deliberately lacks
 

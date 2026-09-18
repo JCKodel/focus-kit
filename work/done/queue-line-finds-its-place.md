@@ -146,17 +146,161 @@ takes, here and in the template:
 
 **Done when.**
 
-* `bin/focus-kit selftest` is green, six checks.
-* A real run of `/discuss` in this repository places a line and says which
+* [x] `bin/focus-kit selftest` is green, six checks.
+* [x] A real run of `/discuss` in this repository places a line and says which
   outcome it took, and the transcript goes into
   `work/done/queue-line-finds-its-place.md` (`docs/05-Process.md` §6). The
   idea it runs on is the person's to bring, and the line it writes commits
   with the delivery.
-* `docs/06-Queue.md` holds no prose bullet under Later.
-* No text of this repository says the queue is one line per delivery in order
+* [x] `docs/06-Queue.md` holds no prose bullet under Later.
+* [x] No text of this repository says the queue is one line per delivery in order
   without admitting a Later line: `docs/03`, `docs/05` §8, `docs/06`,
   `manuals/process.md` and the two templates.
-* `VERSION` bumped and `focus-kit install .` run here, so check 6 is green
+* [x] `VERSION` bumped and `focus-kit install .` run here, so check 6 is green
   and the dogfood copy carries the change (`docs/05-Process.md` §5).
-* `docs/03` rows added and amended, `docs/05` §8 and `manuals/process.md`
+* [x] `docs/03` rows added and amended, `docs/05` §8 and `manuals/process.md`
   §The queue updated, in this delivery.
+
+---
+
+## Record
+
+`VERSION` 0.24.0. A target receives a changed `/discuss`, a changed
+`/propose`, a changed `manuals/process.md` and two changed templates.
+
+### What the run settled
+
+**The placement step is a section of its own.** The Contract asked for it
+"as its last act before it writes", and the paragraph it replaces sat inside
+Write. A step with three ordered cases and a milestone proposal after them
+does not read as a paragraph, so it became `## Place the line`, between Talk
+and Write. Write kept the shape of a line and gained the shape of a Later
+line; the placement left it entirely.
+
+**`/propose`'s Close had nothing to remove.** The Contract says "Its Close
+stops offering a line it added." Its Close never offered one: it lists what
+was written and names the new session. The clause that added a missing line
+lived only in Write, and that is the one that left. Write's remaining
+sentence now says why the line is already there, which is the stop in Read
+first.
+
+**Three files the Contract did not name changed, because their behaviour
+did** (`CLAUDE.md`, docs are living). `docs/00-Product.md`, Putting a line in
+the queue, said "Where the line goes it asks, and never assumes"; it now
+says the placement is decided against the paragraphs and what stays a
+question. `docs/05-Process.md` §2 and the template's §2 carried the same
+sentence about `/discuss`, one line each. `manuals/process.md` §4 said
+`/discuss` "moves no existing line" and named a bullet under Later, and §5
+said nothing about a `/propose` that stops. `README.md`, one line, for the
+same reason: its `/discuss` bullet said the command asks where the line
+goes. None of the five is in the Contract and each states behaviour this
+delivery changed.
+
+**One literal the conversion corrected.** The Later bullet about the
+kit-owned banner read "the three `SKILL.md` files". There are four since
+`discuss-adds-queue-line`, so the line reads "each SKILL.md". The bullet
+about the gitignore fragment said "Related to the line below"; a line that
+now has a slug is named by it, `update-survives-a-moved-section`, because a
+positional reference dies the moment the lines move, which they did in the
+same session.
+
+**The struck-through case was checked and not assumed.** `.graphifyignore`
+and `config/graphifyignore.fragment` both hold the four skill folders and
+the three manuals, so the first Later line is struck with the reason naming
+`graph-ignores-the-kit`, per the page's own instruction.
+
+### The deleted queue line, and what put it back
+
+The working tree arrived with `git-branches-are-queue` removed from
+milestone 3 rather than struck through, which contradicts the Queue
+invariant (`docs/03-Domain.md`: a line never leaves, a cancelled one is
+struck through with a reason) and the text of `git-strategy-is-asked`, which
+says that line is struck "when this one is proposed". Offered three ways:
+restore it, strike it now, or keep it. The stakeholder chose to keep it
+deleted, and this delivery wrote nothing there.
+
+It came back anyway, and not from here. While this session was running, a
+`/propose git-strategy-is-asked` in another session restored the line struck
+through with its reason and marked its own line `[>]`, which is what that
+queue line always said would happen when it was proposed. The invariant
+holds again in the file, by that session's hand. What this delivery did was
+notice it and ask; the fix belongs to the other one.
+
+**And it produced the collision it describes.** That same concurrent session
+left `work/git-strategy-is-asked.md` in the tree and a `[>]` in
+`docs/06-Queue.md` under this delivery's feet, which is word for word the
+error its own queue line records as measured on 2026-09-18. The Close of
+this delivery had to decide what to stage rather than run `git add -A` and
+find out, and the decision went to the stakeholder. Second occurrence of the
+same failure, in the same repository, two days running; `git-strategy-is-asked`
+is the delivery that ends it.
+
+### No conflict with `git-strategy-is-asked`
+
+The two deliveries were checked against each other, which is what opened
+this session. They do not collide: the rows they add to `docs/03-Domain.md`
+are different (Milestone paragraph and Later here, Git strategy there), the
+slot one writes is `docs/05` §7 and the rules the other writes are §8 and
+the queue's own shape, and `git-policy-for-a-second-person`, the Later line
+this delivery named, is about revisiting this repository's trunk policy when
+a second person arrives, not about what `/initialize` asks a target. The one
+place they touch is `docs/06-Queue.md` itself, and that is the struck line
+above and not a rule.
+
+`git-strategy-is-asked` does sit under a milestone 3 paragraph that does not
+admit it, which is exactly the pathology this delivery names. Moving it is
+Out of scope here, and the `/discuss` run below queued the line that fixes
+it.
+
+### The proof run
+
+`/discuss` in this repository, after `focus-kit install .`, so the session
+read the new `.claude/skills/discuss/SKILL.md` and not the old one. The idea
+was the stakeholder's: normalize the milestone paragraphs already written,
+so the placement rule decides the queue as it stands.
+
+**What it did.** Read `docs/00`, `docs/03`, `docs/06` and `work/`; asked the
+graph nothing. Said three decided matters out loud with the file that closed
+each: no new term (`docs/03` already holds Milestone paragraph), not the
+same delivery (`work/queue-line-finds-its-place.md`, Out of scope, names it)
+and which concrete error (`docs/06` itself, milestone 3's paragraph and the
+four lines under it). Asked two questions: how far the normalization goes,
+and the milestone proposal.
+
+**Which outcome the placement took: the third.** No paragraph admits the
+line. Milestone 3 closes when someone reads `README.md` and understands the
+kit, and normalizing the queue's own paragraphs does not serve that;
+milestones 1 and 2 are closed. So the line went under Later, and nothing was
+asked about the placement, which is what the page says step 3 does.
+
+**The milestone proposal fired on the first pass**, as States predicted.
+Later held three lines sharing one purpose, what an `update` does to a
+target the kit has moved past: `skill-says-it-is-kit-owned`,
+`an-old-target-gets-the-fragment` and `update-survives-a-moved-section`. The
+stakeholder accepted it after milestone 3, so `## Milestone 4: the kit
+reaches the targets it left behind` was written with a paragraph of its own
+and the three lines moved out of Later into it. That move and the promotion
+are the only two the command makes, and this was the first one exercised.
+
+**What the run proves that the verify command cannot.** Check 2 proves the
+new `SKILL.md` copies into a target. It cannot prove that a placement step
+with three cases produces one of them and says which, that a proposal out of
+three Later lines is recognized rather than invented, or that a line refused
+by every paragraph lands under Later with no question asked. The run did all
+three, and it wrote two of this delivery's own outputs: the queue line
+`every-paragraph-admits-its-lines` and milestone 4.
+
+**Nothing diverged from the page.** The three placement outcomes, the Later
+shape and the milestone proposal behaved as Behaviour describes them. The
+one thing the page left to the run, which outcome the proof would take, came
+back as Later plus a milestone proposal.
+
+### Environments
+
+| Environment | State |
+|---|---|
+| Kit source | 0.24.0, the truth |
+| Dogfood copy (`.claude/skills/`, `docs/manuals/`) | 0.24.0, check 6 green |
+| Machine (`~/.local/bin/focus-kit`) | a symlink to the kit source, so 0.24.0; global `/graphify` skill at the graphify package's version |
+| First target (`~/Downloads/vaulted`) | 0.22.5, read from its stamp, so two versions behind. `focus-kit update ~/Downloads/vaulted`, and only if someone works there: milestone 2 is closed and this row leaves `docs/05-Process.md` §5 with it |
+| Target repositories (anyone else's) | untouched, at whatever version they installed. Their owner runs `focus-kit update` |

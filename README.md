@@ -11,7 +11,8 @@ It installs four commands into a repository:
   reads the code, builds a graphify knowledge graph, and asks only what the
   code cannot answer.
 * **`/discuss <the idea>`**: turns an idea into one line of the queue, by
-  conversation, and asks where the line goes. Writes nothing else.
+  conversation, placed in the milestone whose paragraph admits it. Writes
+  nothing else.
 * **`/propose <slug>`**: defines the next delivery in a one-page file, by
   conversation. Writes no code.
 * **`/apply <slug>`**: builds that page end to end, proves it, updates the

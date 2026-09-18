@@ -38,8 +38,9 @@ an idea  →  /discuss  →  docs/06-Queue.md  →  /propose <slug>  →  work/<
 **`/discuss <the idea>`** is a conversation that ends in one line of
 `docs/06-Queue.md` and in nothing else. It reads `docs/00-Product.md`,
 `docs/03-Domain.md`, `docs/06-Queue.md` and what is in `work/`; it offers
-alternatives with what each one buys and costs; it asks where the line goes,
-because the order is the decision. **It writes no delivery page.**
+alternatives with what each one buys and costs; it places the line against
+the milestone paragraphs and asks only what they leave open. **It writes no
+delivery page.**
 
 **`/propose <slug>`** is a conversation. It reads `docs/00-Product.md`,
 `docs/03-Domain.md`, `docs/06-Queue.md` and what is in `work/`; asks
@@ -132,11 +133,16 @@ deploy: it is someone opening an environment believing it is current.
 
 ## 8. Queue
 
-`docs/06-Queue.md`: one line per delivery, in order. Not a schedule, not a
-narrative. `/discuss` is what adds a line, in conversation, and where it
-goes is asked. A line **never leaves** the queue: it changes mark.
-`/propose` turns `[ ]` into `[>]` (defined in `work/<slug>.md`, not yet
-built); `/apply` turns `[>]` into `[x]` and moves the file to `work/done/`.
+`docs/06-Queue.md`: one line per delivery, in order from the first
+milestone on, plus `## Later, not scheduled` outside that order. Not a
+schedule, not a narrative. `/discuss` is what adds a line, in conversation,
+and where it goes is decided against the milestone paragraphs: the
+milestone whose paragraph admits the line, the milestone whose paragraph
+the person amends to admit it, or Later, for a line no paragraph admits. A
+line **never leaves** the queue: it changes mark. `/propose` turns `[ ]`
+into `[>]` (defined in `work/<slug>.md`, not yet built) and stops on a slug
+standing under Later, which is not ordered yet; `/apply` turns `[>]` into
+`[x]` and moves the file to `work/done/`.
 
 ## 9. Milestone review
 

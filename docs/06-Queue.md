@@ -4,6 +4,10 @@ One line per delivery, in order. The mark says where it stands:
 `[ ]` not yet defined · `[>]` defined, `work/<slug>.md` exists, not yet
 built · `[x]` done, in `work/done/`. The process is `docs/05-Process.md`.
 
+The order starts at the first milestone. A `[ ]` line under "Later, not
+scheduled" sits outside it: a delivery that is wanted and not ordered,
+which `/discuss` moves into a milestone when a paragraph admits it.
+
 ---
 
 ## Milestone 1: the kit checks itself
@@ -316,7 +320,7 @@ receives a fourth command.
                               is new; today an idea outside the queue is a page too early through
                               /propose or a hand edit with no placement. Fourth skill: selftest
                               check 4 and every "three" in the docs stop being literals
-[>] queue-line-finds-its-place
+[x] queue-line-finds-its-place
                               every milestone is named and carries a paragraph saying what closes it, so
                               a line that arrives later never looks like it belongs: milestone 1's
                               paragraph was widened by hand to admit three lines, milestone 2's carries
@@ -327,8 +331,10 @@ receives a fourth command.
                               the paragraph when the line serves it and it does not say so, or leaves
                               the line in Later, and proposes a milestone when three Later lines share
                               a purpose; docs/manuals/process.md §8 says so. After discuss-adds-queue-line
-[ ] git-branches-are-queue    support automatic optional creation of branches in /propose                              
-[ ] git-strategy-is-asked     /initialize asks which of three git strategies the repository works
+[ ] ~~git-branches-are-queue~~
+                              superseded by git-strategy-is-asked, which covers the branch, the
+                              worktree and none, and is asked by /initialize rather than assumed
+[>] git-strategy-is-asked     /initialize asks which of three git strategies the repository works
                               by, a worktree per delivery, a branch per slug, or none, and writes
                               the answer into docs/05 §7 for /propose and /apply to act on: the
                               worktree or the branch made when the delivery starts, and on none the
@@ -378,43 +384,83 @@ touches `install`, `doctor`, `selftest` and the ownership table; its
 `/propose` settles how the prompts are versioned and whether `update`
 overwrites them like the skills.
 
+## Milestone 4: the kit reaches the targets it left behind
+
+When this milestone closes, `focus-kit update` in a repository installed
+several versions ago lands without costing that repository anything it did
+not choose: it does not erase an edit the person made without warning them
+first, it does not leave a fragment that a later version rewrote, and it
+does not leave a document pointing at a section that has moved. Today all
+three are true of any target that is more than a few versions behind, and
+the only reason nobody has paid for it is that the kit has one target that
+is not itself. Proposed out of three lines that sat under Later and shared
+that purpose (`queue-line-finds-its-place`, the `/discuss` run that proved
+it).
+
+```
+[ ] skill-says-it-is-kit-owned
+                              a kit-owned banner on each SKILL.md. The manuals carry one on
+                              their first line; a skill cannot, because that line is YAML
+                              frontmatter. Someone editing a skill inside a target gets no
+                              warning that the next update erases it
+                              (docs/adr/ADR-0002-file-ownership.md)
+[ ] an-old-target-gets-the-fragment
+                              the gitignore fragment in a target that installed an earlier
+                              version. It is appended once and guarded by its marker, so update
+                              deliberately leaves it alone and a target keeps whatever block it
+                              first received. graph-rebuilds-on-demand is the first time the
+                              block's content changed, and every target that predates it edits
+                              .gitignore by hand. Related to update-survives-a-moved-section,
+                              but a different mechanism: that one overwrites, this one refuses to
+[ ] update-survives-a-moved-section
+                              a kit-owned file in a target that changed shape between versions:
+                              today update overwrites and a target's documents may reference a
+                              section that moved. Blocked on open decision 5
+```
+
 ## Later, not scheduled
 
-* Keep the dogfood copies out of the graph. The first build indexed
-  `.claude/skills/` and `docs/manuals/` alongside their sources and produced
-  mirrored communities, so half the graph describes the same files twice and
-  42 nodes came back weakly connected (`graphify-out/GRAPH_REPORT.md`).
-  Related to open decision 2, but fixable without settling it.
-* A kit-owned banner on the three `SKILL.md` files. The manuals carry one on
-  their first line; the skills cannot, because that line is YAML
-  frontmatter. Someone editing a skill inside a target gets no warning that
-  the next update erases it (`docs/adr/ADR-0002-file-ownership.md`).
-* `focus-kit uninstall`: remove the kit-owned files and unmerge the one JSON
-  key the settings baseline adds, so a repository can stop using the kit
-  without unpicking it by hand. `mcp-leaves-the-baseline` is the first time
-  the question was real and the answer was a `warn` and not a mechanism: a
-  second entry the kit stops shipping is what earns this line its delivery.
-* The script's header comment does not name `.graphifyignore` among what
-  install writes, although `graph-ignores-the-kit` made it one of the seven.
-  `--help` prints that header verbatim, so the usage text is one line short
-  of the truth. Found by `mcp-leaves-the-baseline`, which edited the same
-  block and left it alone rather than widen its scope.
-* Distribution beyond clone and symlink: a curl installer, or a package.
-  Blocked on open decision 3.
-* The gitignore fragment in a target that installed an earlier version.
-  It is appended once and guarded by its marker, so `update` deliberately
-  leaves it alone and a target keeps whatever block it first received.
-  `graph-rebuilds-on-demand` is the first time the block's content changed,
-  and every target that predates it edits `.gitignore` by hand. Related to
-  the line below, but a different mechanism: that one overwrites, this one
-  refuses to.
-* A kit-owned file in a target that changed shape between versions: today
-  `update` overwrites and a target's documents may reference a section that
-  moved. Blocked on open decision 5.
-* Translated manuals, so a target documenting itself in another language
-  does not receive three English manuals. Blocked on open decision 4.
-* A second person working in this repository, which is what would make the
-  trunk-only git policy in `docs/05-Process.md` §7 worth revisiting.
+```
+[ ] ~~dogfood-copies-out-of-the-graph~~
+                              done by graph-ignores-the-kit: .graphifyignore and
+                              config/graphifyignore.fragment hold the kit-owned paths, so the
+                              first build's mirrored communities and its 42 weakly connected
+                              nodes cannot come back
+[ ] uninstall-removes-the-kit remove the kit-owned files and unmerge the one JSON key the
+                              settings baseline adds, so a repository can stop using the kit
+                              without unpicking it by hand. mcp-leaves-the-baseline is the
+                              first time the question was real and the answer was a warn and
+                              not a mechanism: a second entry the kit stops shipping is what
+                              earns this line its delivery
+[ ] help-names-what-install-writes
+                              the script's header comment does not name .graphifyignore among
+                              what install writes, although graph-ignores-the-kit made it one
+                              of the seven, and --help prints that header verbatim, so the
+                              usage text is one line short of the truth. Found by
+                              mcp-leaves-the-baseline, which edited the same block and left it
+                              alone rather than widen its scope
+[ ] distribution-beyond-clone distribution beyond clone and symlink: a curl installer, or a
+                              package. Blocked on open decision 3
+[ ] manuals-follow-the-language
+                              translated manuals, so a target documenting itself in another
+                              language does not receive three English manuals. Blocked on open
+                              decision 4
+[ ] git-policy-for-a-second-person
+                              a second person working in this repository, which is what would
+                              make the trunk-only git policy in docs/05-Process.md §7 worth
+                              revisiting
+[ ] every-paragraph-admits-its-lines
+                              every milestone paragraph is rewritten until it says what actually
+                              closes that milestone and admits the lines already under it, so the
+                              placement rule queue-line-finds-its-place shipped decides the queue
+                              as it stands and not only what arrives next. No line moves and the
+                              order is untouched: what is wrong today is the paragraphs, not the
+                              placements. Measured here on 2026-09-18: milestone 3's paragraph is
+                              the README case and carries git-strategy-is-asked, copilot-port,
+                              codex-port and update-alert, which it never mentions; milestone 1's
+                              was widened by hand to admit three lines; milestone 2's grew a
+                              clause for every friction found
+```
 
 ## Open decisions
 

@@ -4,12 +4,20 @@ One line per delivery, in order. The mark says where it stands:
 `[ ]` not yet defined · `[>]` defined, `work/<slug>.md` exists, not yet
 built · `[x]` done, in `work/done/`. The process is `docs/05-Process.md`.
 
+The order starts at the first milestone. A `[ ]` line under "Later, not
+scheduled" sits outside it: a delivery that is wanted and not ordered,
+which `/discuss` moves into a milestone when a paragraph admits it.
+
 ---
 
 ## Milestone 1: <name>
 
 <!-- init: one paragraph: what a person can do end to end when this
-     milestone closes. Then the lines. A slug is short, lowercase, hyphenated,
+     milestone closes. That paragraph is also what every line arriving later
+     is placed against: what it says closes the milestone is what the
+     milestone admits, so /discuss reads it to decide where a new line goes
+     and asks only when the line serves the milestone and the paragraph does
+     not say so. Then the lines. A slug is short, lowercase, hyphenated,
      and names what the user gains, not the technique. After the slug, one
      line of scope; a second line if it needs one. Brownfield: the first
      lines are often "describe what exists" deliveries (a missing test file
@@ -40,8 +48,18 @@ Close of milestone 1: whole-branch review (`docs/05-Process.md` §9).
 
 ## Later, not scheduled
 
-<!-- init: what is known to be wanted and deliberately not ordered yet,
-     one line each. -->
+<!-- init: what is known to be wanted and deliberately not ordered yet, in
+     the same shape as a milestone's lines and never as a prose bullet: the
+     mark [ ], the slug, the scope. No [>] and no [x] ever appear here,
+     because /propose stops on a slug standing under this heading and names
+     /discuss, which is what places it in a milestone once a paragraph
+     admits it. A line another delivery already did is struck through with
+     the reason naming that slug, never deleted. -->
+
+```
+[ ] <slug>               <one line of scope>
+[ ] ~~<slug>~~           done by <the slug that did it>
+```
 
 ## Open decisions
 
