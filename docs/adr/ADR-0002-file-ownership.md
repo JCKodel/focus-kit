@@ -32,6 +32,19 @@ category determines the write:
   `SKILL.md` files do not, because their first line is YAML frontmatter and
   a comment above it is not valid. Warning the reader there is a gap, and a
   queue line (`docs/06-Queue.md`).
+
+  **2026-09-18, `skill-says-it-is-kit-owned`:** the gap is closed for the
+  four `SKILL.md` files, which now carry the banner on the first line after
+  the frontmatter's closing `---`, ahead of the License notice. That is the
+  only position a `SKILL.md` allows: a comment above line 1 is still not
+  valid YAML, and check 4 of the verify command dies when line 1 is not
+  `---`. The ten templates under `skills/initialize/templates/` still carry
+  none, because a banner there would reach a target's own
+  `docs/00-Product.md` unless `/initialize` stripped it the way it strips an
+  Init comment. The Forbidden clause below stands as written: a kit-owned
+  file without its banner is forbidden, the two data files `doctor` reads
+  are the only exception, and the templates are a gap this amendment
+  records rather than closes.
 * **Project-owned**, never written by the CLI at all: `docs/00` to `06`,
   `CLAUDE.md`, `docs/adr/`, `work/`. Only `/initialize` touches them, and it
   merges rather than overwriting. The CLI's single interaction with this

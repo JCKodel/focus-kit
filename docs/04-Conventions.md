@@ -92,8 +92,8 @@ Beyond that, the copy rules this project needs:
 | Slug | lowercase, hyphenated, names what the user gains | `kit-selftest`, not `add-bash-script` |
 | Marker in a file | a comment line, fixed string, never a regex | `# --- focus-kit ---` |
 | Init comment | `<!-- init: ... -->`, removed by the command | see any template |
-| Kit-owned banner | first line of a manual, fixed wording. The `SKILL.md` files do not carry one: their first line is YAML frontmatter | `<!-- kit-owned: focus-kit update overwrites this file. -->` |
-| License notice | one line, identical in every kit-owned file and in the CLI's header. Line 2 of a manual, the first line after the frontmatter of a `SKILL.md`, line 2 of `bin/focus-kit` as a `#` comment | `<!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: ... -->` |
+| Kit-owned banner | one line, fixed wording, taken from `manuals/process.md` line 1 rather than retyped. Line 1 of a manual, the first line after the frontmatter of a `SKILL.md`, since a comment above line 1 is not valid YAML | `<!-- kit-owned: focus-kit update overwrites this file. -->` |
+| License notice | one line, identical in every kit-owned file and in the CLI's header. Line 2 of a manual, the line after the Kit-owned banner in a `SKILL.md`, line 2 of `bin/focus-kit` as a `#` comment | `<!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: ... -->` |
 
 The domain vocabulary is `docs/03-Domain.md` and is not translated
 independently: if a document says "dogfood copy", nothing else in the

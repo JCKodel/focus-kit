@@ -7,6 +7,7 @@ description: >-
   it reads the code, builds the graphify graph and asks only what the code
   cannot answer.
 ---
+<!-- kit-owned: focus-kit update overwrites this file. Edit it in the focus-kit repository, not here. -->
 <!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: https://github.com/JCKodel/focus-kit -->
 
 You are setting up the delivery process described in `docs/manuals/process.md`.

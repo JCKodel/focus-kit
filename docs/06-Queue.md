@@ -300,7 +300,7 @@ staged the other's page.
                               the paragraph when the line serves it and it does not say so, or leaves
                               the line in Later, and proposes a milestone when three Later lines share
                               a purpose; docs/manuals/process.md §8 says so. After discuss-adds-queue-line
-[ ] ~~git-branches-are-queue~~
+[x] ~~git-branches-are-queue~~
                               superseded by git-strategy-is-asked, which covers the branch, the
                               worktree and none, and is asked by /initialize rather than assumed
 [x] git-strategy-is-asked     /initialize asks which of three git strategies the repository works
@@ -338,7 +338,7 @@ that purpose (`queue-line-finds-its-place`, the `/discuss` run that proved
 it).
 
 ```
-[>] skill-says-it-is-kit-owned
+[x] skill-says-it-is-kit-owned
                               a kit-owned banner on each SKILL.md. The manuals carry one on
                               their first line; a skill cannot, because that line is YAML
                               frontmatter. Someone editing a skill inside a target gets no
