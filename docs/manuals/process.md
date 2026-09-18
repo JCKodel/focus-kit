@@ -65,8 +65,7 @@ writes `docs/00` to `06`, `docs/adr/`, `CLAUDE.md`, and the `work/` folder.
 * It merges into an existing `CLAUDE.md`, never overwrites it.
 * It installs the graphify post-commit hook, so the graph follows the code.
 
-Run it again with `/initialize brown` after a large change to the
-codebase, or `/initialize` at any time to review the docs against the code.
+Run it again at any time to review the documents against the code.
 
 ## 4. `/propose <slug>`
 

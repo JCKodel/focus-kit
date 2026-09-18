@@ -23,9 +23,8 @@ text, and the graph holds edges. Rules are in `docs/03-Domain.md` and in the
 manuals.
 
 So `/propose` asks what depends on what the delivery names; `/apply` asks
-the structure of the slice it is about to touch; `/initialize brown` reads
-the god nodes and the communities once, to describe a codebase it has never
-seen.
+the structure of the slice it is about to touch; `/initialize` reads the god
+nodes and the communities once, to describe a codebase it has never seen.
 
 ## The pieces
 

@@ -227,7 +227,7 @@ about brownfield repositories is untested.
                               translated. Neither is wrong against the file, so two runs of the same
                               command differ and a record quoting one cannot be compared with the
                               other; the rule says which, or it stops saying as written
-[>] initialize-trusts-the-argument
+[x] initialize-trusts-the-argument
                               Step 0 contradicts itself on the argument: line 66 says that if
                               $ARGUMENTS says green or brown, trust it, and line 89 says of the kind
                               of project, inside the one AskUserQuestion that also carries the
@@ -239,7 +239,7 @@ about brownfield repositories is untested.
                               way: the argument answers the question and the AskUserQuestion carries
                               the language alone, or the argument is a detection like any other and
                               line 66 stops saying trust it
-[ ] as-written-covers-a-literal
+[>] as-written-covers-a-literal
                               a text the source sets off as a literal is reproduced byte for byte
                               instead of being said in the conversation's language, and the two
                               rules that should forbid it say nothing about the case. Measured on
@@ -255,6 +255,16 @@ about brownfield repositories is untested.
                               gives way: the two rules say what a backtick and a bold mean in a text
                               that is asked as written, or the five texts and the confirmation stop
                               being written with marks that read as bytes to reproduce
+[ ] run-ignores-a-stray-word  a word typed after /initialize is explained back to the person, although
+                              nothing in the skill names an argument any more. Measured on 2026-09-17
+                              in the second scratch of initialize-trusts-the-argument, the kit at
+                              0.22.3: /initialize green produced the same count line and the same kind
+                              question as the bare run, and one paragraph more, naming the word that
+                              was typed and saying it was not taken as an early confirmation. Removing
+                              the rule left the word unexplained by the file and not unmentioned by the
+                              run, which is what initialize-trusts-the-argument assumed would follow.
+                              So the skill says what a word after the command is worth, or it says
+                              nothing and the run is left to invent this paragraph again
 ```
 
 ## Milestone 3: the kit explains itself

@@ -6,7 +6,6 @@ description: >-
   project chooses. On a greenfield project it asks; on a brownfield project
   it reads the code, builds the graphify graph and asks only what the code
   cannot answer.
-argument-hint: "[green|brown]"
 ---
 <!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: https://github.com/JCKodel/focus-kit -->
 
@@ -78,10 +77,9 @@ the same bytes.
 
 ## Step 0: which kind of project, and in which language
 
-If `$ARGUMENTS` says `green` or `brown`, trust it. Otherwise count source
-files (anything that is not docs, config, lockfile or asset). A repository
-with real code is brownfield; a repository with none, or only scaffolding,
-is greenfield.
+Count source files (anything that is not docs, config, lockfile or asset).
+A repository with real code is brownfield; a repository with none, or only
+scaffolding, is greenfield.
 
 In both cases, if `docs/00-Product.md` already exists, this is a **review**
 run: read what is there, compare it with the code and the person's
@@ -98,8 +96,11 @@ on the documents you found, and each identifier it catches is a proposed edit
 too.
 
 Then settle the documentation language, before you write anything, because
-it shapes every document that follows. One `AskUserQuestion` carries both
-questions:
+it shapes every document that follows. Before you ask, in every run, say in
+one line what the count found and which kind of project that makes this
+repository, in the conversation's language, so the option the question puts
+first reaches the person with the evidence behind it. One `AskUserQuestion`
+carries both questions:
 
 1. **Kind of project.** Say which you detected and let them confirm.
 2. **Documentation language.** Written here once and asked as written, the
