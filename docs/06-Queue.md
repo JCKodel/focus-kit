@@ -239,7 +239,7 @@ about brownfield repositories is untested.
                               way: the argument answers the question and the AskUserQuestion carries
                               the language alone, or the argument is a detection like any other and
                               line 66 stops saying trust it
-[>] as-written-covers-a-literal
+[x] as-written-covers-a-literal
                               a text the source sets off as a literal is reproduced byte for byte
                               instead of being said in the conversation's language, and the two
                               rules that should forbid it say nothing about the case. Measured on
@@ -255,7 +255,7 @@ about brownfield repositories is untested.
                               gives way: the two rules say what a backtick and a bold mean in a text
                               that is asked as written, or the five texts and the confirmation stop
                               being written with marks that read as bytes to reproduce
-[ ] run-ignores-a-stray-word  a word typed after /initialize is explained back to the person, although
+[>] run-ignores-a-stray-word  a word typed after /initialize is explained back to the person, although
                               nothing in the skill names an argument any more. Measured on 2026-09-17
                               in the second scratch of initialize-trusts-the-argument, the kit at
                               0.22.3: /initialize green produced the same count line and the same kind

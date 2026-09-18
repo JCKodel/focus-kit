@@ -96,7 +96,14 @@ out loud and not a branch it skipped. What the procedure forbids is reaching
 this branch and reading, or grepping in place of, a graph nobody was asked
 about.
 
-The question is written here once and the commands ask it as written. One
+The question is written here once and the commands ask it as written, which
+binds the content and not the bytes: the question, the three option labels
+and their descriptions reach the person in the conversation's language,
+carrying every statement and their order, with nothing added and nothing
+dropped. The count line the question quotes stays what graphify printed, as
+do the commands, the paths and the file names. A mark here, backticks or
+bold, delimits a text so that its start and its end are visible; it is never
+an instruction to reproduce the bytes between the marks. One
 `AskUserQuestion`, the question `graphify refused: <the found line>. Build
 the graph?`, where `<the found line>` is the count line above without its
 `[graphify extract]` prefix, and three options, in this order:

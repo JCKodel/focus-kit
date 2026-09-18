@@ -57,12 +57,16 @@ and the no screen line. Three of the five carry the phrase `written here
 once and asked as written`; the disclaimer and the no screen line do not,
 and the rule covers all five. That phrase binds the content and not the
 bytes: every statement, every option and their order reach the person in the
-language they write to you in, with nothing added and nothing dropped, while
-the kit's own terms, every path and every file name stay as this section
-already keeps them in a document. The English text here is the source. A
-record that quotes what was asked is compared with it statement by
-statement, never byte by byte, and in a conversation in English the two are
-the same bytes.
+language they write to you in, with nothing added and nothing dropped. What
+stays in English is a closed list: the kit's own terms, every path and every
+file name, as this section already keeps them in a document, plus every
+command and a quote of what a tool printed. An option label is not one of
+them, and it is said in the person's language like the question it belongs
+to. A mark in this file, backticks or bold, delimits a text so that its
+start and its end are visible; it is never an instruction to reproduce the
+bytes between the marks. The English text here is the source. A record that
+quotes what was asked is compared with it statement by statement, never byte
+by byte, and in a conversation in English the two are the same bytes.
 
 ## Two house rules that shape everything you write
 
