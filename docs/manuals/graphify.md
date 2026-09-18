@@ -31,7 +31,7 @@ nodes and the communities once, to describe a codebase it has never seen.
 | Piece | What | Where |
 |---|---|---|
 | `graphify` | the CLI: build, update, query, path, explain | installed by `focus-kit install` as a uv tool |
-| `/graphify` | the Claude Code skill that drives the CLI | `~/.claude/skills/graphify/` (global, installed by the kit) |
+| `/graphify` | graphify's own skill, which drives the CLI | on the machine, in the skills directory your agent reads (global, installed by the kit) |
 | post-commit hook | rebuilds the graph after every commit, no LLM needed | `.git/hooks/post-commit`, installed by `/initialize`, ensured by `/propose` and `/apply` |
 | `graphify-out/` | `graph.json` (the graph, stamped with the commit it was built from), `GRAPH_REPORT.md` (plain-language map), `graph.html` (interactive) | not versioned; rebuilt on demand by `/propose` and `/apply` |
 
@@ -50,8 +50,8 @@ graphify hook status           # is the post-commit hook installed
 grep -o '"built_at_commit": "[0-9a-f]*"' graphify-out/graph.json   # which commit the graph describes
 ```
 
-From inside a Claude Code session, asking a question about the codebase is
-enough: the global skill treats it as a graph query first when
+From inside a session, asking a question about the codebase is enough:
+graphify's own skill treats it as a graph query first when
 `graphify-out/graph.json` exists.
 
 ## Ensuring the graph
@@ -105,7 +105,8 @@ do the commands, the paths and the file names. A mark here, backticks or
 bold, delimits a text so that its start and its end are visible; it is never
 an instruction to reproduce the bytes between the marks. One
 `AskUserQuestion`, the question `graphify refused: <the found line>. Build
-the graph?`, where `<the found line>` is the count line above without its
+the graph?`, written here once and said entire, in the conversation's
+language, where `<the found line>` is the count line above without its
 `[graphify extract]` prefix, and three options, in this order:
 
 * **Build now.** `/graphify .` in this session, billed as its tokens. When
@@ -260,17 +261,18 @@ on graphify 0.9.63. An older graphify that keeps them needs a full rebuild.
   Nothing in the kit reads either one: the commands that ask the graph drive
   the graphify CLI through the shell.
 * **Every graphify command warns that the skill is from an older version.**
-  The global `/graphify` skill under `~/.claude/skills/graphify/` was written
-  by a graphify older than the one installed, and graphify says so on every
-  invocation. `focus-kit update` fixes it: the dependency phase runs
-  `graphify install --platform claude` and names the version it came from,
-  and `focus-kit doctor` says so before you try. When the warning is the
-  other way round, a skill newer than the package, the kit leaves the skill
-  alone and names `uv tool upgrade graphifyy`, which is the person's call.
+  The global `/graphify` skill your agent loads was written by a graphify
+  older than the one installed, and graphify says so on every invocation.
+  `focus-kit update` fixes it: the dependency phase runs graphify's own
+  installer once for each host the kit ships commands for and names the
+  version each skill came from, and `focus-kit doctor` says so, one line per
+  host, before you try. When the warning is the other way round, a skill
+  newer than the package, the kit leaves the skill alone and names
+  `uv tool upgrade graphifyy`, which is the person's call.
 * **Hook missing after a clone.** Also normal: git does not transfer
   `.git/hooks/`, and there is no hook that fires at clone time. §Ensuring
   the graph installs it, or run `graphify hook install` by hand.
 * **Report names "Community 3".** Community naming needs the model; run
-  `graphify cluster-only .` inside a Claude Code session. This is also the
+  `graphify cluster-only .` inside a session that has one. This is also the
   normal report after Code only, whose second command skips the naming on
   purpose.

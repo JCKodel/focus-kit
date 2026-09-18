@@ -83,8 +83,9 @@ cd <your repo>
 focus-kit install .
 ```
 
-This installs the dependencies on the machine (uv, graphify, the global
-`/graphify` skill for Claude Code), then in the repository:
+This installs the dependencies on the machine (uv, graphify, and the global
+`/graphify` skill once for each host the kit ships commands for), then in the
+repository:
 
 | Path | Owner | What |
 |---|---|---|

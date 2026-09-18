@@ -25,7 +25,7 @@ introduced, so the script never has to work it out at runtime.
 Every file the kit writes belongs to exactly one of four categories, and the
 category determines the write:
 
-* **Kit-owned**, written with `copy_tree` (`bin/focus-kit:321`): the
+* **Kit-owned**, written with `copy_tree` (`bin/focus-kit:359`): the
   destination is removed and copied over. The three skills and the three
   manuals. Editing one inside a target is a change the next update erases.
   Each manual carries a banner saying so on its first line; the three
@@ -91,7 +91,7 @@ category determines the write:
   `CLAUDE.md`, `docs/adr/`, `work/`. Only `/initialize` touches them, and it
   merges rather than overwriting. The CLI's single interaction with this
   category is testing whether `docs/00-Product.md` exists, to choose which
-  closing message to print (`bin/focus-kit:513`).
+  closing message to print (`bin/focus-kit:551`).
 
   **2026-09-18, `manuals-follow-the-language`:** the list gains one path,
   `.claude/skills/.focus-kit-language`, the Manual language
@@ -114,7 +114,7 @@ category determines the write:
   otherwise report all three as edited locally in every translated target.
   What is asked of them instead is whether a translation happened at all
   (`docs/adr/ADR-0008`). No fifth category, and the four are still four.
-* **Merged**, written with `merge_json` (`bin/focus-kit:338`): `.mcp.json`
+* **Merged**, written with `merge_json` (`bin/focus-kit:376`): `.mcp.json`
   and `.claude/settings.json`. Keys are added; nothing is ever removed.
 
   **2026-09-17, `mcp-leaves-the-baseline`:** `.mcp.json` is no longer one of

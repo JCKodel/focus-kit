@@ -10,9 +10,9 @@
 #
 # What install does, in order:
 #   1. dependencies on this machine: uv, then graphify (uv tool), then the
-#      global graphify skill for Claude Code, installed when absent and
-#      refreshed when it is older than the package
-#      (graphify install --platform claude), then whether this clone is
+#      graphify skill for each host the kit ships commands for, one line each,
+#      installed when absent and refreshed when it is older than the package
+#      (graphify install --platform <platform>), then whether this clone is
 #      behind the origin it was cloned from, which warns and never pulls
 #   2. in the target repository:
 #      .claude/skills/<command>/                   copied, overwriting (kit-owned)
@@ -105,11 +105,36 @@ version_lower() { # a b
   printf '%s\n%s\n' "$1" "$2" | sort -t. -k1,1n -k2,2n -k3,3n | head -1
 }
 
-# The state of the Global skill against the graphify package
-# (docs/03-Domain.md, Global skill and Skill stamp). One line,
+# The Hosts the kit ships Commands for (docs/03-Domain.md, Host), one line
+# each, "<platform> <directory under HOME> <host name>": the name graphify's
+# own installer takes after --platform, the directory that installer places
+# that Host's skill and its Skill stamp in, and the name a person reads. The
+# host name is last because it is the one field with a space in it, so a
+# "read -r platform dir host" gets all of it.
+#
+# This is the Host list and the only one: a third Host is a line here, plus
+# an entry in render_prompt's substitution list for its Ported command. Read
+# off graphify 0.9.63, whose "graphify install --help" names both platforms
+# and whose installer writes SKILL.md, references/ and .graphify_version
+# under the directory below and nothing into the target: a route that wrote
+# into the target would be a Host the kit warns about instead of installing,
+# since the script never touches a project-owned file (docs/00-Product.md,
+# Installing).
+#
+# It reads and never dies: its output is captured, and a die inside $(...)
+# ends only the subshell (docs/01-Architecture.md §6).
+kit_hosts() {
+  printf '%s\n' \
+    'claude .claude/skills/graphify Claude Code' \
+    'copilot .copilot/skills/graphify GitHub Copilot'
+}
+
+# The state of one Host's Global skill against the graphify package
+# (docs/03-Domain.md, Global skill and Skill stamp), asked with that Host's
+# directory as kit_hosts names it. One line,
 # "<state> <skill> <package>", a number it could not read written as "-":
 #
-#   missing   ~/.claude/skills/graphify/SKILL.md is not there
+#   missing   the Host's SKILL.md under $HOME is not there
 #   unknown   the skill is there and the stamp is not, or graphify is not on PATH
 #   equal     the stamp and the second word of "graphify --version" are the same
 #   older     they differ and the stamp is the lower of the two
@@ -124,8 +149,8 @@ version_lower() { # a b
 #
 # It reads and never dies: its output is captured, and a die inside $(...)
 # ends only the subshell (docs/01-Architecture.md §6).
-global_skill_state() {
-  local dir="$HOME/.claude/skills/graphify" skill="-" package="-" lower
+global_skill_state() { # directory under HOME, from kit_hosts
+  local dir="$HOME/$1" skill="-" package="-" lower
   [ -f "$dir/SKILL.md" ] || { echo "missing - -"; return; }
   if [ -s "$dir/.graphify_version" ]; then
     skill="$(without_cr "$dir/.graphify_version")"
@@ -168,30 +193,43 @@ ensure_graphify() {
   # writes its own notices there, and a line the kit did not shape has no
   # business in the middle of the dependency block (docs/04-Conventions.md §1).
   ok "$(graphify --version 2>/dev/null) (to upgrade: uv tool upgrade graphifyy)"
-  # The global /graphify skill for Claude Code: installed when absent,
-  # refreshed when it is older than the package or carries no stamp, left
-  # alone when it is newer, because graphify's own installer would downgrade
-  # it. A refresh is not a file the kit keeps rewriting: graphify's installer
-  # copies the skill, its references/ and the stamp, and appends its section
-  # to ~/.claude/CLAUDE.md only when that file does not mention graphify yet.
-  # graphify is on PATH by here, so "unknown" in this block means no stamp.
-  local state skill package
-  read -r state skill package <<< "$(global_skill_state)"
-  case "$state" in
-    equal) ok "global /graphify skill for Claude Code" ;;
-    newer) warn "global /graphify skill $skill is newer than graphify $package (uv tool upgrade graphifyy)" ;;
-    *)
-      if graphify install --platform claude >/dev/null 2>&1; then
-        case "$state" in
-          missing) ok "global /graphify skill for Claude Code (installed; it also added a graphify section to ~/.claude/CLAUDE.md)" ;;
-          unknown) ok "global /graphify skill for Claude Code (refreshed from an unknown version)" ;;
-          *)       ok "global /graphify skill for Claude Code (refreshed from $skill)" ;;
-        esac
-      else
-        warn "could not install the global /graphify skill (graphify install --platform claude)"
-      fi
-      ;;
-  esac
+  # The Global skill, once per Host the kit ships Commands for (kit_hosts):
+  # installed when absent, refreshed when it is older than the package or
+  # carries no stamp, left alone when it is newer, because graphify's own
+  # installer would downgrade it. A refresh is not a file the kit keeps
+  # rewriting: graphify's installer copies the skill, its references/ and the
+  # stamp, and the kit writes none of them itself. graphify is on PATH by
+  # here, so "unknown" in this block means no stamp.
+  #
+  # One line per Host and never a count, the way the Translated manual, the
+  # Fragment gap and the Manual citation passes already print one line per
+  # thing to fix. A Host whose skill graphify's installer does not place is a
+  # failure inside the flow and not a defect, so it warns, names what would
+  # have placed it, and the install goes on (docs/01-Architecture.md §6).
+  #
+  # The loop reads kit_hosts through a herestring and not a pipe, so its body
+  # runs in this shell; the installer gets </dev/null so nothing it reads can
+  # swallow the remaining host lines.
+  local platform dir host state skill package
+  while read -r platform dir host; do
+    [ -n "$platform" ] || continue
+    read -r state skill package <<< "$(global_skill_state "$dir")"
+    case "$state" in
+      equal) ok "graphify skill for $host" ;;
+      newer) warn "graphify skill for $host $skill is newer than graphify $package (uv tool upgrade graphifyy)" ;;
+      *)
+        if graphify install --platform "$platform" >/dev/null 2>&1 </dev/null; then
+          case "$state" in
+            missing) ok "graphify skill for $host (installed)" ;;
+            unknown) ok "graphify skill for $host (refreshed from an unknown version)" ;;
+            *)       ok "graphify skill for $host (refreshed from $skill)" ;;
+          esac
+        else
+          warn "could not install the graphify skill for $host (graphify install --platform $platform)"
+        fi
+        ;;
+    esac
+  done <<< "$(kit_hosts)"
 }
 
 # The Upstream version (docs/03-Domain.md): the VERSION at the default branch
@@ -574,18 +612,23 @@ doctor() {
   # command that installs both: ensure_uv and ensure_graphify run inside it.
   command -v uv >/dev/null 2>&1        && ok "uv"          || warn "uv missing (run focus-kit update)"
   command -v graphify >/dev/null 2>&1  && ok "graphify"    || warn "graphify missing (run focus-kit update)"
-  # The Global skill against the package, one line whatever the state. On a
-  # machine without graphify the line above already says so, and this one
-  # reports the skill as of unknown version, which is what it is.
-  local gstate gskill gpackage
-  read -r gstate gskill gpackage <<< "$(global_skill_state)"
-  case "$gstate" in
-    equal)   ok   "global /graphify skill" ;;
-    missing) warn "global /graphify skill missing (run focus-kit update)" ;;
-    unknown) warn "global /graphify skill of unknown version (run focus-kit update)" ;;
-    older)   warn "global /graphify skill $gskill installed, $gpackage available (run focus-kit update)" ;;
-    newer)   warn "global /graphify skill $gskill is newer than graphify $gpackage (uv tool upgrade graphifyy)" ;;
-  esac
+  # The Global skill against the package, one line per Host (kit_hosts) and
+  # never a count, whatever the state. On a machine without graphify the line
+  # above already says so, and every Host then reads as of unknown version,
+  # which is what it is. A herestring and not a pipe, so the loop runs in this
+  # shell.
+  local ghost gdir gplatform gstate gskill gpackage
+  while read -r gplatform gdir ghost; do
+    [ -n "$gplatform" ] || continue
+    read -r gstate gskill gpackage <<< "$(global_skill_state "$gdir")"
+    case "$gstate" in
+      equal)   ok   "graphify skill for $ghost" ;;
+      missing) warn "graphify skill for $ghost missing (run focus-kit update)" ;;
+      unknown) warn "graphify skill for $ghost of unknown version (run focus-kit update)" ;;
+      older)   warn "graphify skill for $ghost $gskill installed, $gpackage available (run focus-kit update)" ;;
+      newer)   warn "graphify skill for $ghost $gskill is newer than graphify $gpackage (uv tool upgrade graphifyy)" ;;
+    esac
+  done <<< "$(kit_hosts)"
   # The last line of the machine block, and the last that speaks of anything
   # but the target: whether the clone this CLI runs from is still what it was
   # cloned from (docs/03-Domain.md, Upstream version). It reports the kit
@@ -1359,39 +1402,52 @@ MD
     die "check 2: doctor did not call the scratch repository's documents current with every citation by heading"
   }
   # The Global skill (docs/03-Domain.md), four doctor runs against a fake home
-  # and a fake graphify on PATH: every line the state table can print, on any
-  # machine, with no network, without graphify and without touching the real
-  # ~/.claude. Both fakes live beside the scratch and not in it, because check
-  # 3 snapshots the scratch, and the trap that removes SELFTEST_DIR removes
-  # them. Each run is a command substitution, so the two assignments in front
-  # of doctor die with the subshell instead of outliving the call.
-  local home="$SELFTEST_DIR/home" bin="$SELFTEST_DIR/bin" stamp expected
-  mkdir -p "$home/.claude/skills/graphify" "$bin"
+  # and a fake graphify on PATH: every line the state table can print, for
+  # every Host, on any machine, with no network, without graphify and without
+  # touching the real ~/.claude or ~/.copilot. Both fakes live beside the
+  # scratch and not in it, because check 3 snapshots the scratch, and the trap
+  # that removes SELFTEST_DIR removes them. Each run is a command
+  # substitution, so the two assignments in front of doctor die with the
+  # subshell instead of outliving the call.
+  #
+  # The fake home holds one skill directory per Host and the two host names
+  # are written out here, the way the four command names are and for the same
+  # reason: an assertion that read kit_hosts would read the reporter's own
+  # list and assert nothing (docs/05-Process.md §4). The fake graphify needs
+  # no widening, since it only ever answers --version: ensure_graphify is the
+  # one caller of the installer and check 2 never runs it.
+  local home="$SELFTEST_DIR/home" bin="$SELFTEST_DIR/bin" expected
+  mkdir -p "$home/.claude/skills/graphify" "$home/.copilot/skills/graphify" "$bin"
   printf '%s\n' "A fake global skill, for the probe below." > "$home/.claude/skills/graphify/SKILL.md"
+  printf '%s\n' "A fake global skill, for the probe below." > "$home/.copilot/skills/graphify/SKILL.md"
   printf '%s\n' '#!/bin/sh' 'echo "graphify 9.9.9"' > "$bin/graphify"
   chmod +x "$bin/graphify"
-  stamp="$home/.claude/skills/graphify/.graphify_version"
   # 9.9.10 first: it is the run that proves the order is numeric, because a
   # string comparison puts 9.9.10 before 9.9.9 and calls the newer skill older.
   # "-" is no stamp at all. Each expected line is built through ok or warn, as
   # every other assertion here is, so the check and the reporter cannot drift.
-  local v
+  local v d h
   for v in 9.9.10 9.9.8 - 9.9.9; do
-    if [ "$v" = "-" ]; then rm -f "$stamp"; else printf '%s\n' "$v" > "$stamp"; fi
-    case "$v" in
-      9.9.10) expected="$(warn "global /graphify skill 9.9.10 is newer than graphify 9.9.9 (uv tool upgrade graphifyy)")" ;;
-      9.9.8)  expected="$(warn "global /graphify skill 9.9.8 installed, 9.9.9 available (run focus-kit update)")" ;;
-      -)      expected="$(warn "global /graphify skill of unknown version (run focus-kit update)")" ;;
-      9.9.9)  expected="$(ok "global /graphify skill")" ;;
-    esac
+    for d in .claude .copilot; do
+      if [ "$v" = "-" ]; then rm -f "$home/$d/skills/graphify/.graphify_version"
+      else printf '%s\n' "$v" > "$home/$d/skills/graphify/.graphify_version"; fi
+    done
     out="$(HOME="$home" PATH="$bin:$PATH" doctor "$scratch" 2>&1)" || {
       printf '%s\n' "$out"
       die "check 2: doctor failed against the fake home with the skill stamp at $v"
     }
-    printf '%s\n' "$out" | grep -qF -- "$expected" || {
-      printf '%s\n' "$out"
-      die "check 2: doctor did not report the global skill as expected with the stamp at $v and graphify at 9.9.9"
-    }
+    for h in "Claude Code" "GitHub Copilot"; do
+      case "$v" in
+        9.9.10) expected="$(warn "graphify skill for $h 9.9.10 is newer than graphify 9.9.9 (uv tool upgrade graphifyy)")" ;;
+        9.9.8)  expected="$(warn "graphify skill for $h 9.9.8 installed, 9.9.9 available (run focus-kit update)")" ;;
+        -)      expected="$(warn "graphify skill for $h of unknown version (run focus-kit update)")" ;;
+        9.9.9)  expected="$(ok "graphify skill for $h")" ;;
+      esac
+      printf '%s\n' "$out" | grep -qF -- "$expected" || {
+        printf '%s\n' "$out"
+        die "check 2: doctor did not report the graphify skill for $h as expected with the stamp at $v and graphify at 9.9.9"
+      }
+    done
   done
   # The Upstream version (docs/03-Domain.md), four doctor runs against the
   # fake reader selftest put on PATH: every line report_upstream can print,

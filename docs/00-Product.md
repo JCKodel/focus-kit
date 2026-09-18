@@ -120,11 +120,14 @@ person, the machine or the target in it
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:1596`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:1652`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify as a uv tool, then the global `/graphify`
-skill for Claude Code. uv is skipped when already present; graphify is asked
+skill, once for each host the kit ships commands for and one line each, since
+every host loads its own copy from its own directory and graphify's own
+installer places each one when asked for it by name. uv is skipped when
+already present; graphify is asked
 for on every run and uv decides whether that changes anything, which is how a
 machine that installed `graphifyy[mcp]` under an earlier kit reaches the
 plain requirement. It is not an upgrade: uv reinstalls when the requirement
@@ -133,12 +136,15 @@ graphify forward is `uv tool upgrade graphifyy`, which the kit names and
 never runs. The install asks for the package plain because the `mcp` extra
 left with `mcp-leaves-the-baseline`: nothing the kit ships calls the MCP
 server it fed, and a machine that wants `graphify-mcp` for its own use
-installs the extra itself. The global skill is
+installs the extra itself. Each host's skill is
 installed when absent and **refreshed
 when it is older than the graphify package**, or when it carries no stamp
 saying which version wrote it; a skill newer than the package is left alone,
 because graphify's own installer would downgrade it, and both commands say so
-and name `uv tool upgrade graphifyy` (`bin/focus-kit:182`).
+and name `uv tool upgrade graphifyy` (`bin/focus-kit:219`). Nothing in that
+phase writes into the repository: what a host's skill costs a target is
+nothing, and a host whose skill graphify's installer does not place gets a
+warn naming what would have placed it while the install goes on.
 
 The dependency block then closes with the one thing it can say about
 itself: whether the clone the CLI is running from is still what it was

@@ -504,7 +504,7 @@ have.
                               person's, so the documents came out right and only the asking was
                               wrong, which is why no file records it (work/done/copilot-port.md,
                               The proof run)
-[ ] initialize-names-what-it-skipped
+[>] initialize-names-what-it-skipped
                               /initialize closes by running focus-kit doctor and printing what it
                               says, so a step the run did not take is named by the run and not by a
                               person who thinks to ask days later. None of the four skills runs
@@ -518,6 +518,32 @@ have.
                               the fix, and it names the graph that same run left unbuilt, the third
                               of that page's smaller findings, so the mechanism is there and only
                               the reading of it is missing (work/done/copilot-port.md, The proof run)
+[>] graph-builds-without-a-key
+                              the graph is built in a session with no model key exported,
+                              whatever host reads the manual. Measured on 2026-09-18 in
+                              copilot-port's proof run, ~/Downloads/quiltline-copilot-proof
+                              under GitHub Copilot: asked to build the graph, the run answered
+                              that it could not for want of a key and moved on. Not the host
+                              misreading the Build now option: that scratch's .github/prompts/
+                              holds the kit's four commands and no graphify prompt, so there was
+                              no /graphify to type and graphify ., which refuses without a key,
+                              was the only reachable thing. The kit owns both halves of that:
+                              install asks for graphify install --platform claude alone
+                              (bin/focus-kit:191) while graphify install --help lists copilot and
+                              codex beside it, and a Manual names one host's command,
+                              docs/manuals/graphify.md:34 calling /graphify the Claude Code skill,
+                              copied to every target as it is and reached by no substitution of
+                              render_prompt (docs/03, Ported command). So install puts graphify's
+                              skill where every host the kit ports commands to can invoke it, the
+                              Global skill row widens past Claude Code, and Build now names what
+                              the session's own model runs there, with an exported key as the
+                              alternative it already says it is. The same paragraph carries the
+                              second half: the Graph confirmation gains the phrase the six texts
+                              of /initialize carry, since in that same run its three labels came
+                              out in English while its descriptions came out in Portuguese, the
+                              control group questions-reach-the-persons-language recorded. Ahead
+                              of codex-port, already proposed, which reads this for whether it
+                              installs that host's graphify skill too
 [>] codex-port                the kit's commands as Codex repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as

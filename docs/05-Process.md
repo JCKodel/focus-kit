@@ -217,13 +217,21 @@ It runs six checks, in this order, and stops at the first red:
    behind, and removed because it is project-owned and check 3 installs into
    this same scratch.
    Then the **global skill**: four `doctor` runs against a fake home holding
-   `.claude/skills/graphify/SKILL.md` and a fake `graphify` on PATH that
+   one skill directory per Host, `.claude/skills/graphify/SKILL.md` and
+   `.copilot/skills/graphify/SKILL.md`, and a fake `graphify` on PATH that
    prints `graphify 9.9.9` whatever its arguments, so every line the state
-   table can print is proven on any machine, with no network, without
-   graphify installed and without touching the real `~/.claude`. A stamp of
+   table can print is proven for every Host on any machine, with no network,
+   without graphify installed and without touching the real `~/.claude` or
+   `~/.copilot`. A stamp of
    `9.9.10` must print the `newer` warn, which is the run that proves the
    order is numeric and not lexical; `9.9.8` the `older` warn; no stamp the
-   `unknown` warn; `9.9.9` the green line. Each run is a command
+   `unknown` warn; `9.9.9` the green line. **Each of the four runs asserts one
+   line per Host**, and the host names are written out here, the way the four
+   command names are and for the same reason: an assertion that read
+   `kit_hosts` would read the reporter's own list and assert nothing. The fake
+   `graphify` needs no widening, because it only ever answers `--version`:
+   `ensure_graphify` is the one caller of graphify's installer and this check
+   never runs it. Each run is a command
    substitution, so the `HOME=` and `PATH=` in front of `doctor` die with the
    subshell. Both fakes live beside the scratch and not in it, because check
    3 snapshots the scratch, and the existing `trap` removes them.
@@ -317,7 +325,7 @@ prints the detail of what broke, one `die` naming it, and exits 1.
 |---|---|---|
 | Kit source (`skills/`, `manuals/`, `config/`, `bin/`) | at the delivery's version, always. It is the truth. | the edit itself |
 | Dogfood copy (`.claude/skills/`, `docs/manuals/`, `.github/prompts/`) | in sync with the kit source, always, when the delivery touched a skill or a manual, or bumped `VERSION`. The third path holds no copy: it holds what `render_prompt` makes of `skills/`, so a change to a skill or to the transform moves it too. | `focus-kit install .` |
-| Machine (`~/.local/bin/focus-kit`) | the CLI untouched: it is a symlink to the kit source and follows it automatically. The global `/graphify` skill left at the graphify package's version, which `focus-kit install` anywhere does on its own and `focus-kit doctor` reports. `doctor` also reports whether the clone the CLI runs from is still current with its `origin` (`docs/03-Domain.md`, Upstream version), which is the one thing here a person fixes with `git pull` and not with a command of the kit's. | none for the CLI; verify with `focus-kit version` and the skill and kit source lines of `focus-kit doctor .` |
+| Machine (`~/.local/bin/focus-kit`) | the CLI untouched: it is a symlink to the kit source and follows it automatically. The global `/graphify` skill of every Host left at the graphify package's version, which `focus-kit install` anywhere does on its own, once per Host, and `focus-kit doctor` reports, one line per Host. `doctor` also reports whether the clone the CLI runs from is still current with its `origin` (`docs/03-Domain.md`, Upstream version), which is the one thing here a person fixes with `git pull` and not with a command of the kit's. | none for the CLI; verify with `focus-kit version` and the skill and kit source lines of `focus-kit doctor .` |
 | Target repositories (anyone else's) | untouched. They move only when their owner runs `focus-kit update`. | `focus-kit update <path>`, run by that person |
 | First target (`~/Downloads/vaulted`) | installed, initialized and taken through one delivery at the delivery's version while milestone 2 is open; nothing committed there, ever, because it is a clone of someone else's repository, and what a command stages there is undone with `git reset` before the record is written, leaving the working tree as the last run left it. This row leaves with milestone 2 (`docs/03-Domain.md`, First target). | `focus-kit update ~/Downloads/vaulted` |
 
