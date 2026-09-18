@@ -14,12 +14,12 @@ which `/discuss` moves into a milestone when a paragraph admits it.
 
 When this milestone closes, a change to focus-kit can be made without fear,
 because one command says whether a target repository would still receive a
-working kit. That command now exists; most of the lines below are defects it
-reports rather than fixes. Three are not: the license, the graph policy and
-the queue's front door, which are friction the process itself produces and
-no check would catch. Before it, the answer came from installing into a scratch
-directory by hand and looking, which is why they went unnoticed until the
-documents were written.
+working kit. That command now exists, and it is the first line below; the
+rest are the defects found building and running it, except two. The license
+and the graph policy are friction the process itself produced and no check
+would catch. Before the command, the answer came from installing into a
+scratch directory by hand and looking, which is why those two went unnoticed
+until the documents were written.
 
 ```
 [x] kit-selftest              one command that parses, installs into a scratch repository, runs doctor,
@@ -72,9 +72,10 @@ and produced the line above, which is the last one.
 
 When this milestone closes, the kit has been through a full cycle on a
 repository that is not itself: installed, initialized, one delivery proposed
-and applied end to end, and every piece of friction found on the way brought
-back here as a queue line. Until that happens, every claim the kit makes
-about brownfield repositories is untested.
+and applied end to end, plus the friction that running the kit outside this
+repository surfaced, in the first target and in the scratch repositories that
+proved this milestone's own deliveries. Until that happens, every claim the
+kit makes about brownfield repositories is untested.
 
 ```
 [x] first-target-install      install into a real repository and record what doctor missed
@@ -319,6 +320,25 @@ staged the other's page.
                               ran while a /propose of another line changed docs/03 and docs/06
                               under it, and both delivery pages sat uncommitted in one tree, so
                               git add -A of one staged the other's page
+[x] every-paragraph-admits-its-lines
+                              every milestone paragraph is rewritten until it says what actually
+                              closes that milestone and admits the lines already under it, so the
+                              placement rule queue-line-finds-its-place shipped decides the queue as
+                              it stands and not only what arrives next. No line moves and the order
+                              is untouched: what is wrong today is the paragraphs, not the
+                              placements. Measured here on 2026-09-18: milestone 1's paragraph names
+                              the queue's front door among the three lines it admits that no check
+                              would catch, and that line, discuss-adds-queue-line, is under this
+                              milestone; milestone 2's carries a clause for every friction found,
+                              which admits anything. The other three say what closes them and admit
+                              their lines, so the work is those two. The third measurement of that
+                              day, milestone 3's paragraph carrying git-strategy-is-asked,
+                              copilot-port, codex-port and update-alert without naming them, was
+                              resolved the same day by the move that opened milestone 5 and rewrote
+                              milestone 3 around what stayed. Promoted out of Later by the /discuss
+                              of 2026-09-18, because this milestone closes at an idea reaching the
+                              queue as one line in the milestone it serves, which it cannot while a
+                              paragraph admits a line that is under another
 ```
 
 `queue-line-finds-its-place` needs the fourth skill `discuss-adds-queue-line`
@@ -336,8 +356,7 @@ does not leave a document pointing at a section that has moved. Today all
 three are true of any target that is more than a few versions behind, and
 the only reason nobody has paid for it is that the kit has one target that
 is not itself. Proposed out of three lines that sat under Later and shared
-that purpose (`queue-line-finds-its-place`, the `/discuss` run that proved
-it).
+that purpose, by the `/discuss` of 2026-09-18.
 
 ```
 [x] skill-says-it-is-kit-owned
@@ -362,18 +381,26 @@ it).
 
 ## Milestone 5: the kit is 1.0
 
-When this milestone closes, the kit is presented and ported once, over a kit
-that has stopped moving underneath it: a person who has never heard of
-focus-kit reads `README.md` and knows, before the first command, what problem
-it solves, what they get for it and what it costs them; the same commands run
-under GitHub Copilot and under Codex, installed and owned the way the skills
-are; and a target installed several versions ago learns that a new one exists
-instead of waiting for someone to check. Four of the five describe or
-replicate the whole kit, so any change to a skill, a manual or the CLI
-rewrites part of each; the fifth, the alert, is worth shipping once the
-versions it announces stop arriving with every delivery. That is why they are
-last: everything the queue plans is built first, these five are done once,
-and that is what makes the version 1.0.
+When this milestone closes, the kit is presented, ported and translated once,
+over a kit that has stopped moving underneath it, and a repository that took
+it can give it back: a person who has never heard of focus-kit reads
+`README.md` and knows, before the first command, what problem it solves, what
+they get for it and what it costs them, the way out included; the same
+commands run under GitHub Copilot and under Codex, installed and owned the
+way the skills are; the usage text the CLI prints names everything install
+writes, whatever the ports added to it; a target that documents itself in
+another language reads the three manuals in that language instead of in
+English; a repository that stops using the kit gets its files back without
+unpicking them by hand; and a target installed several versions ago learns
+that a new one exists instead of waiting for someone to check. Seven of the
+nine describe or replicate the whole kit, so any change to a skill, a manual
+or the CLI rewrites part of each; the alert is worth shipping once the
+versions it announces stop arriving with every delivery; and the removal is
+the last thing built before the two README lines, because it decides what the
+README may promise about leaving and because every file it takes back is a
+file the two ports are still adding. That is why they are last: everything
+the queue plans is built first, these nine are done once, and that is what
+makes the version 1.0.
 
 The README's case rests on four problems every engineering organization
 recognizes, each answered by a mechanism the kit already has and a path where
@@ -395,7 +422,7 @@ and what is wanted as separate things. The slug ties the process to git with
 no extra effort: one branch, one pull request whose description points at
 the delivery page, one commit with the slug as scope, while the git policy
 itself stays a slot in the target's `docs/05` §7, filled by the question
-`git-strategy-is-asked` adds. And the artifacts are plain markdown, readable
+`/initialize` asks. And the artifacts are plain markdown, readable
 by any assistant: the commands run in Claude Code today, and the two ports
 are lines below, so the README may promise them by pointing there. Today the
 README is a manual: it says what gets installed and how the process runs, and
@@ -414,6 +441,20 @@ and the alert do, because a target receives files and behaviour it did not
 have.
 
 ```
+[ ] uninstall-removes-the-kit remove the kit-owned files and unmerge the one JSON key the
+                              settings baseline adds, so a repository can stop using the kit
+                              without unpicking it by hand. mcp-leaves-the-baseline is the
+                              first time the question was real and the answer was a warn and
+                              not a mechanism: a second entry the kit stops shipping is what
+                              earns this line its delivery. Promoted out of Later by the
+                              /discuss of 2026-09-18, which ordered it without that second
+                              entry and amended this milestone's paragraph to admit it: the
+                              last step before the READMEs, because it decides what the README
+                              may promise about leaving and because copilot-port and codex-port
+                              each put removing the files they generate out of scope and named
+                              this line as where it lives. copilot-reads-the-project-rules
+                              names it too, for the kit's side only: the Host instructions file
+                              is project-owned and the person's to delete
 [ ] readme-makes-the-case     README opens with the problem (deciding and doing in one conversation,
                               scope grows, context and reasons vanish) and the answer (two sessions,
                               one page), then the four problems above as a table of problem, mechanism
@@ -445,8 +486,38 @@ have.
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
                               the only host, and the README promise made in readme-makes-the-case
                               becomes true. Hooks are necessary and available on codex?
+[>] manuals-follow-the-language
+                              a target that documents itself in another language reads the three
+                              manuals in that language, focus.md included: /initialize translates
+                              them in the target, at init and on a review run, and every section
+                              heading stays in English, because a command names the section it
+                              reads and doctor matches a citation against the manual at KIT_DIR, so
+                              a translated heading would break all four skills and every Manual
+                              citation line (docs/03, Named section and Manual citation; the same
+                              reason review-run-finds-a-translated-practice-table kept one header
+                              row in English). The target records the language, /initialize writes
+                              the record, and install, update and write_manifest are untouched: the
+                              manifest goes on holding the English fingerprint install wrote, so the
+                              Unbumped change pass keeps agreeing with the kit source and the Drift
+                              pass is the one that gains the exception, skipping the three manuals
+                              where the record is not English. doctor gains one line saying the
+                              manuals are English again and naming /initialize, the way every other
+                              warn names its fix. No fifth ownership category: the manuals stay
+                              kit-owned, the record is project-owned, and ADR-0002 is amended on its
+                              list and its Drift bullet. Closes open decision 4 of
+                              docs/00, and docs/04 §1 and docs/03, Language of the interface, stop
+                              saying the kit's own text is never translated. Promoted out of Later
+                              by the /discuss of 2026-09-18, which took decision 4 and amended this
+                              milestone's paragraph to admit it
 [x] update-alert              alert users when new versions are available on github so the user can
                               update (and run `focus-kit update`)
+[>] help-names-what-install-writes
+                              the script's header comment does not name .graphifyignore among
+                              what install writes, although graph-ignores-the-kit made it one
+                              of the seven, and --help prints that header verbatim, so the
+                              usage text is one line short of the truth. Found by
+                              mcp-leaves-the-baseline, which edited the same block and left it
+                              alone rather than widen its scope
 ```
 
 `readme-real-walkthrough` follows `readme-makes-the-case`, because the
@@ -465,41 +536,12 @@ and `codex-port` follows whatever it decides.
                               config/graphifyignore.fragment hold the kit-owned paths, so the
                               first build's mirrored communities and its 42 weakly connected
                               nodes cannot come back
-[ ] uninstall-removes-the-kit remove the kit-owned files and unmerge the one JSON key the
-                              settings baseline adds, so a repository can stop using the kit
-                              without unpicking it by hand. mcp-leaves-the-baseline is the
-                              first time the question was real and the answer was a warn and
-                              not a mechanism: a second entry the kit stops shipping is what
-                              earns this line its delivery
-[ ] help-names-what-install-writes
-                              the script's header comment does not name .graphifyignore among
-                              what install writes, although graph-ignores-the-kit made it one
-                              of the seven, and --help prints that header verbatim, so the
-                              usage text is one line short of the truth. Found by
-                              mcp-leaves-the-baseline, which edited the same block and left it
-                              alone rather than widen its scope
 [ ] distribution-beyond-clone distribution beyond clone and symlink: a curl installer, or a
                               package. Blocked on open decision 3
-[ ] manuals-follow-the-language
-                              translated manuals, so a target documenting itself in another
-                              language does not receive three English manuals. Blocked on open
-                              decision 4
 [ ] git-policy-for-a-second-person
                               a second person working in this repository, which is what would
                               make the trunk-only git policy in docs/05-Process.md §7 worth
                               revisiting
-[ ] every-paragraph-admits-its-lines
-                              every milestone paragraph is rewritten until it says what actually
-                              closes that milestone and admits the lines already under it, so the
-                              placement rule queue-line-finds-its-place shipped decides the queue
-                              as it stands and not only what arrives next. No line moves and the
-                              order is untouched: what is wrong today is the paragraphs, not the
-                              placements. Measured here on 2026-09-18: milestone 1's was widened by
-                              hand to admit three lines and milestone 2's grew a clause for every
-                              friction found. The third measurement of that day, milestone 3's
-                              paragraph carrying git-strategy-is-asked, copilot-port, codex-port and
-                              update-alert without naming them, was resolved the same day by the move
-                              that opened milestone 5 and rewrote milestone 3 around what stayed
 ```
 
 ## Open decisions
