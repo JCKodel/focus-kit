@@ -260,9 +260,10 @@ append_once() { # file fragment
 # The one place a carriage return is forgiven. A target cloned on Windows
 # with core.autocrlf=true has every kit-owned file, the stamp and the
 # manifest checked out as CRLF, and it receives no .gitattributes, so the
-# tolerance has to live in the readers. Its four callers are
-# installed_version, fingerprint, the manifest reader inside doctor and
-# global_skill_state, which reads a stamp graphify wrote on this machine. It
+# tolerance has to live in the readers. Its five callers are
+# installed_version, fingerprint, the manifest reader inside doctor,
+# global_skill_state, which reads a stamp graphify wrote on this machine, and
+# the Fragment gap pass, which reads a file that is the target's own. It
 # reads and never dies: its output is captured (docs/01-Architecture.md §6),
 # and the callers keep their own -f guard on the file.
 without_cr() { # file
@@ -520,6 +521,44 @@ doctor() {
      grep -qF -- '"graphify"' "$target/.claude/settings.json"; then
     warn ".claude/settings.json still enables the graphify server (remove graphify from enabledMcpjsonServers by hand; docs/manuals/graphify.md §Troubleshooting)"
   fi
+  # Fragment gap (docs/03-Domain.md): what a target's Appended once file lacks
+  # of the fragment the kit ships now. append_once writes the block the first
+  # time and never again, so a target installed before a line joined a fragment
+  # never receives it, and update leaves the block where it is rather than
+  # re-adding a line the person may have removed on purpose. The two pairs are
+  # the two appends of install_repo, in the order it appends them.
+  #
+  # What is looked for is a pattern line: a line of the fragment that is
+  # neither blank nor beginning with #. The marker and the comments around it
+  # carry no behaviour, and the marker's own presence is what append_once
+  # already tests, with the same fixed-string grep, so the two agree on what a
+  # block being there means.
+  #
+  # Present means a whole line and never a substring: an old target holds
+  # graphify-out/cost.json and lacks graphify-out/, and a substring test would
+  # go green on exactly the case this pass exists for. The target's file is
+  # read through without_cr, its fifth caller, because the target's own
+  # .gitignore is checked out CRLF on a Windows clone and receives no
+  # .gitattributes from the kit.
+  local pair pfile pfrag marker gap pline
+  for pair in ".gitignore gitignore.fragment" ".graphifyignore graphifyignore.fragment"; do
+    read -r pfile pfrag <<< "$pair"
+    marker="$(head -n 1 "$KIT_DIR/config/$pfrag")"
+    if [ ! -f "$target/$pfile" ] || ! grep -qF -- "$marker" "$target/$pfile"; then
+      warn "$pfile has no focus-kit block (run focus-kit update)"
+      continue
+    fi
+    # A herestring and not a pipe: a pipe would run the loop in a subshell and
+    # gap would come back 0 however many lines it warned about.
+    gap=0
+    while IFS= read -r pline; do
+      case "$pline" in ''|'#'*) continue ;; esac
+      without_cr "$target/$pfile" | grep -qxF -- "$pline" && continue
+      warn "$pfile lacks the kit's line \"$pline\" (add it by hand; focus-kit update leaves an existing block alone)"
+      gap=1
+    done <<< "$(cat "$KIT_DIR/config/$pfrag")"
+    [ "$gap" -eq 1 ] || ok "$pfile (kit fragment current)"
+  done
   # Drift (docs/03-Domain.md): a kit-owned file that is not as install wrote
   # it. The question is only asked of a target that has a stamp, because a
   # target with no stamp has no kit in it. A file that is absent is drift
@@ -615,6 +654,8 @@ check_install() { # scratch
   for expected in /apply /discuss /initialize /propose \
                   docs/manuals/process.md docs/manuals/focus.md \
                   docs/manuals/graphify.md .claude/settings.json \
+                  ".gitignore (kit fragment current)" \
+                  ".graphifyignore (kit fragment current)" \
                   "kit version $KIT_VERSION" \
                   "kit-owned files as install wrote them"; do
     line="$(ok "$expected")"
@@ -710,6 +751,51 @@ JSON
       die "check 2: doctor did not report $expected in the scratch repository"
     }
   done
+  # The Fragment gap pass (docs/03-Domain.md), one probe per file, because one
+  # would prove the pass over one pair where the loop runs over two. Both files
+  # are the target's own and neither is in the manifest, so no restore has to
+  # agree with it; each one still goes aside and comes back byte for byte,
+  # because check 3 installs into this same scratch and compares the trees.
+  #
+  # First the target installed before graph-rebuilds-on-demand: the block is
+  # there and one of its pattern lines is not. The run has to name that line
+  # and must not print the green line, which is the only assertion that
+  # separates a whole-line test from the substring one: graphify-out/cost.json
+  # is not in a scratch, but the green line on a file missing a line would be
+  # the same defect wherever it came from.
+  mv "$scratch/.gitignore" "$SELFTEST_DIR/gitignore.aside"
+  grep -vxF -- 'graphify-out/' "$SELFTEST_DIR/gitignore.aside" > "$scratch/.gitignore"
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  mv "$SELFTEST_DIR/gitignore.aside" "$scratch/.gitignore"
+  line="$(warn ".gitignore lacks the kit's line \"graphify-out/\" (add it by hand; focus-kit update leaves an existing block alone)")"
+  printf '%s\n' "$out" | grep -qF -- "$line" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor did not name the kit line cut out of the scratch repository's .gitignore"
+  }
+  line="$(ok ".gitignore (kit fragment current)")"
+  if printf '%s\n' "$out" | grep -qF -- "$line"; then
+    printf '%s\n' "$out"
+    die "check 2: doctor called a .gitignore current with one line of the kit fragment cut out of it"
+  fi
+  # Then the other file and the other state: the whole block gone, which is a
+  # target that predates the fragment as much as it is one whose block a person
+  # removed. The fix is the command and not a paste, and doctor cannot tell the
+  # two apart, so one wording covers both.
+  mv "$scratch/.graphifyignore" "$SELFTEST_DIR/graphifyignore.aside"
+  : > "$scratch/.graphifyignore"
+  out="$(doctor "$scratch" 2>&1)" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor failed in the scratch repository"
+  }
+  mv "$SELFTEST_DIR/graphifyignore.aside" "$scratch/.graphifyignore"
+  line="$(warn ".graphifyignore has no focus-kit block (run focus-kit update)")"
+  printf '%s\n' "$out" | grep -qF -- "$line" || {
+    printf '%s\n' "$out"
+    die "check 2: doctor did not report a .graphifyignore with the kit block cut out of it in the scratch repository"
+  }
   # The stamp as a Windows clone with core.autocrlf=true checks it out. The
   # probe runs on every platform because nothing on macOS or Linux ever writes
   # that byte: without it, a regression in installed_version would be

@@ -137,12 +137,114 @@ and in a current one:
 
 **Done when.**
 
-* `bin/focus-kit selftest` is green, six checks, with check 2 carrying the
+* [x] `bin/focus-kit selftest` is green, six checks, with check 2 carrying the
   two green lines and the two probes.
-* `focus-kit doctor` in a scratch repository whose `.gitignore` has had
+* [x] `focus-kit doctor` in a scratch repository whose `.gitignore` has had
   `graphify-out/` cut out names that line, and the transcript goes into
   `work/done/an-old-target-gets-the-fragment.md` (`docs/05-Process.md` §6).
-* `docs/01-Architecture.md`, `docs/03-Domain.md` and `docs/05-Process.md`
+* [x] `docs/01-Architecture.md`, `docs/03-Domain.md` and `docs/05-Process.md`
   carry what the Contract names, the **Fragment gap** row included.
-* `VERSION` bumped and `focus-kit install .` run here, so check 6 is green
+* [x] `VERSION` bumped and `focus-kit install .` run here, so check 6 is green
   and the dogfood copy is at the same number (`docs/05-Process.md` §5).
+
+---
+
+## What happened
+
+Built as the Contract defines it, in one pass. `VERSION` 0.25.1 to 0.26.0:
+the CLI gained a behaviour a target wants, which is a minor and not a patch.
+
+**The pass**, `bin/focus-kit` in `doctor`, between the Leftover pass and the
+Drift pass. One loop over two literal pairs, the marker read with `head -n 1`
+from `KIT_DIR` and tested with the same fixed-string `grep` `append_once`
+uses, so the two agree on what a block being there means. Where the block is
+there, each pattern line is looked for with `without_cr "$target/$file" |
+grep -qxF`, its fifth caller and the first over a file the target itself
+versions. A herestring feeds the inner loop, for the reason the Drift loop states
+at `bin/focus-kit:580`: a pipe would run it in a subshell and the `gap` flag
+would come back 0 however many lines it warned about.
+
+**Check 2** gained the two green lines in the `ok` list and two probes,
+after the Leftover probe and before the CRLF stamp probe. The `.gitignore`
+probe asserts the warn **and** the absence of the green line, which is the
+assertion that separates a whole-line test from a substring one; the absence
+is written as an `if ... then die`, because `grep -q` failing is the expected
+outcome and `|| die` would have read backwards. Both files go aside into
+`SELFTEST_DIR` and come back byte for byte, for check 3.
+
+## Diverged from the plan
+
+* **`docs/00-Product.md` was edited after all.** The Contract says it needs
+  none, and on content that held: Installing says nothing about `doctor`. But
+  its line 119 cites `bin/focus-kit:1029` for the dispatch, and the insertion
+  moved the dispatch to 1115. A pointer this delivery broke is this
+  delivery's to fix. Same for the citations in `docs/03-Domain.md` (`:291` to
+  `:292`) and `docs/04-Conventions.md` (`:385` to `:386`, `:1041` to `:1127`),
+  and for fifteen line numbers in `docs/01-Architecture.md`: seven rows of the
+  §3 function table, the six `check_*` numbers under it, the dispatch, and the
+  §5 read of `docs/00-Product.md`.
+  Citations that were already stale before this delivery were left alone:
+  §2's `bin/focus-kit:219` for the heredoc and §6's `bin/focus-kit:193` for
+  `merge_json` point at the wrong lines and did so yesterday. Correcting a
+  pointer nothing here moved is a `/discuss` line.
+* Nothing was dropped and nothing in the Contract went unbuilt.
+
+## The proof
+
+Beyond `selftest`, a real run in a scratch repository (`docs/05-Process.md`
+§6). `mktemp -d`, `git init`, `focus-kit install`, then `graphify-out/` cut
+out of `.gitignore` with `grep -vxF`:
+
+```
+focus-kit 0.26.0 doctor: /var/folders/.../tmp.TkdxN0WDNR
+  ...
+  ✓ .claude/settings.json
+  ! .gitignore lacks the kit's line "graphify-out/" (add it by hand; focus-kit update leaves an existing block alone)
+  ✓ .graphifyignore (kit fragment current)
+  ✓ kit-owned files as install wrote them
+```
+
+Then the case the delivery exists for, which no assertion in `selftest`
+reaches: `graphify-out/cost.json` appended to that same `.gitignore`, which
+is what a target installed before `graph-rebuilds-on-demand` holds, and the
+whole block cut out of `.graphifyignore`:
+
+```
+  ! .gitignore lacks the kit's line "graphify-out/" (add it by hand; focus-kit update leaves an existing block alone)
+  ! .graphifyignore has no focus-kit block (run focus-kit update)
+```
+
+A substring test would have printed the green line on the first of those two.
+Then `focus-kit update` on the same scratch, which is the other half of the
+claim: the `.gitignore` block came back untouched, still without
+`graphify-out/` and still with the `cost.json` line a person would have
+written, and the empty `.graphifyignore` received the whole fragment, because
+it had no marker. Exactly the two behaviours the warns name.
+
+`focus-kit doctor .` here prints both green lines: this repository is current
+on both files, which is what installing the kit on itself at every delivery
+buys.
+
+## Decisions
+
+No ADR. The three questions this delivery could have raised were answered in
+the `/propose` conversation and are in Out of scope: no second marker block
+(ADR-0002 forbids it), no `update` writing into an existing block, no
+reporting of a line an older fragment dropped. The build found nothing that
+reopened any of the three.
+
+One decision the build itself took: the warn for a missing block and the warn
+for a missing line are separate wordings and not one with a count, because
+the two fixes differ, and `doctor` cannot tell a file that predates the
+fragment from one whose block a person removed. One wording covers both,
+since the fix is the same command.
+
+## Environments
+
+| Environment | State |
+|---|---|
+| Kit source | 0.26.0, the pass and the two probes |
+| Dogfood copy | 0.26.0, `focus-kit install .` run here; check 6 green |
+| Machine | untouched: `~/.local/bin/focus-kit` is a symlink and follows the source |
+| First target (`~/Downloads/vaulted`) | at 0.22.5, and left there: milestone 2 has no open line, which is what the `docs/05-Process.md` §5 row makes its condition, and the three deliveries before this one left it there too. `focus-kit update ~/Downloads/vaulted` brings it to 0.26.0, and doing so would make it the first repository to see this pass on a real fragment gap |
+| Target repositories | untouched, as always; they move when their owner runs `focus-kit update` |

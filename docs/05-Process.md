@@ -115,6 +115,9 @@ It runs six checks, in this order, and stops at the first red:
    line by calling `ok`: they carry the command that fixes each one
    (`docs/04-Conventions.md` §1), and a parenthesis edited in `doctor` and
    nowhere else has to turn the check red.
+   The two **Appended once** files get a green line each, `<file> (kit
+   fragment current)`, asserted the same way, because a scratch receives both
+   fragments whole and a scratch that did not is a broken `install`.
    The **merged file** is `doctor`'s to read, not the check's: `doctor` asks
    `.claude/settings.json` for `"Bash(graphify *)"` with a `grep -qF` behind
    an `-f` guard, and the check asserts its line the way it asserts every
@@ -138,6 +141,18 @@ It runs six checks, in this order, and stops at the first red:
    removes neither. The settings file goes aside and comes back byte-exact;
    the `.mcp.json` is deleted rather than restored, since the install never
    wrote one and check 3 snapshots this scratch next.
+   Then the **Fragment gap** (`docs/03-Domain.md`), one probe per file,
+   because one probe would prove the pass over one pair where the loop runs
+   over two. `graphify-out/` is cut out of the scratch's `.gitignore` and one
+   `doctor` run must carry that line's warn **and not** the file's green line:
+   that second assertion is the only one that separates a whole-line test from
+   a substring test, which is the defect the pass exists to avoid. Then the
+   whole block is cut out of `.graphifyignore`, leaving the empty file a
+   target that predates the fragment has, and one `doctor` run must carry the
+   no block warn, whose fix is the command and not a paste. Each file goes
+   aside and comes back byte for byte, as the settings file does, because
+   check 3 installs into this same scratch; neither is in the manifest, so no
+   restore has to agree with it.
    Then one probe: the scratch's `.focus-kit-version` is rewritten as CRLF,
    the way a Windows clone with `core.autocrlf=true` checks it out, `doctor`
    runs again and must still print the same green version line; the stamp is

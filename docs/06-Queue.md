@@ -344,7 +344,7 @@ it).
                               frontmatter. Someone editing a skill inside a target gets no
                               warning that the next update erases it
                               (docs/adr/ADR-0002-file-ownership.md)
-[>] an-old-target-gets-the-fragment
+[x] an-old-target-gets-the-fragment
                               the gitignore fragment in a target that installed an earlier
                               version. It is appended once and guarded by its marker, so update
                               deliberately leaves it alone and a target keeps whatever block it
@@ -433,7 +433,7 @@ have.
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
                               the only host, and the README promise made in readme-makes-the-case
                               becomes true. Hooks are necessary and available on codex?
-[ ] update-alert              alert users when new versions are available on github so the user can
+[>] update-alert              alert users when new versions are available on github so the user can
                               update (and run `focus-kit update`)
 ```
 
