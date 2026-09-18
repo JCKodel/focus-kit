@@ -10,7 +10,7 @@ How the code looks and where it is tested. The architecture is in
 **Prose in English.** Documents, ADRs, `work/<slug>.md`,
 `work/done/<slug>.md` and commit messages. This is the project's
 documentation language, and for this repository it is also the language of
-everything the kit ships: the three skills, the three manuals, the
+everything the kit ships: the skills, the three manuals, the
 templates and every string `bin/focus-kit` prints. A target repository
 chooses its own documentation language when `/initialize` runs there; the
 kit's own text is never translated. The conversation is a separate matter:
@@ -55,7 +55,7 @@ Beyond that, the copy rules this project needs:
   person reads. The shape carries the meaning, so a message whose shape is
   wrong lies even when its words are right.
 * **A `warn` says what to do next.** "uv missing" is half a message; the line
-  adds the command that puts it right. Compare `bin/focus-kit:364`, and every
+  adds the command that puts it right. Compare `bin/focus-kit:385`, and every
   other warn of `doctor` with it: a person reading one `!` line, without the
   rest of the output, knows what to type.
 * **A `die` names the thing that is missing, not the step that failed.**
@@ -64,7 +64,7 @@ Beyond that, the copy rules this project needs:
   rule: `check 6: .claude/skills differs from skills (run focus-kit install
   .)` names the thing and what fixes it, not the step.
 * **The help text is the script's own header.** `--help` prints it through
-  `awk` (`bin/focus-kit:1005`), by a rule and not a range: the shebang is
+  `awk` (`bin/focus-kit:1041`), by a rule and not a range: the shebang is
   skipped, then every consecutive line beginning with `#` is printed until
   the first line that does not, each one losing its `#` and one following
   space. A bare `#` becomes an empty line, which is how the header's blank
@@ -92,7 +92,7 @@ Beyond that, the copy rules this project needs:
 | Slug | lowercase, hyphenated, names what the user gains | `kit-selftest`, not `add-bash-script` |
 | Marker in a file | a comment line, fixed string, never a regex | `# --- focus-kit ---` |
 | Init comment | `<!-- init: ... -->`, removed by the command | see any template |
-| Kit-owned banner | first line of a manual, fixed wording. The three `SKILL.md` files do not carry one: their first line is YAML frontmatter | `<!-- kit-owned: focus-kit update overwrites this file. -->` |
+| Kit-owned banner | first line of a manual, fixed wording. The `SKILL.md` files do not carry one: their first line is YAML frontmatter | `<!-- kit-owned: focus-kit update overwrites this file. -->` |
 | License notice | one line, identical in every kit-owned file and in the CLI's header. Line 2 of a manual, the first line after the frontmatter of a `SKILL.md`, line 2 of `bin/focus-kit` as a `#` comment | `<!-- Copyright (C) 2026 J.C. Ködel. Licensed under AGPL-3.0-only. Source and terms: ... -->` |
 
 The domain vocabulary is `docs/03-Domain.md` and is not translated
@@ -169,7 +169,7 @@ one)`. It names the thing that is missing, which is the rule above it.
 bin/focus-kit selftest   = bash -n
                          + install into a scratch repository, then doctor there
                          + the same install again, trees compared
-                         + the structural rules of the three SKILL.md frontmatters
+                         + the structural rules of the SKILL.md frontmatters
                          + grep for the em dash over authored paths
                          + diff of the dogfood copies against their sources
 ```

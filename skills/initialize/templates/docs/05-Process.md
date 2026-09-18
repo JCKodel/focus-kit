@@ -24,14 +24,22 @@ not been decided yet.
 ## 2. The flow
 
 ```
-docs/06-Queue.md  →  /propose <slug>  →  work/<slug>.md  →  /apply <slug>
-                                                                 ↓
-                                        verify green, environments as §5 says
-                                                                 ↓
-                                          work/done/<slug>.md + git add -A
-                                                                 ↓
-                                             a person reviews and commits
+an idea  →  /discuss  →  docs/06-Queue.md  →  /propose <slug>  →  work/<slug>.md
+                                                                        ↓
+                                                                  /apply <slug>
+                                                                        ↓
+                                              verify green, environments as §5 says
+                                                                        ↓
+                                                work/done/<slug>.md + git add -A
+                                                                        ↓
+                                                   a person reviews and commits
 ```
+
+**`/discuss <the idea>`** is a conversation that ends in one line of
+`docs/06-Queue.md` and in nothing else. It reads `docs/00-Product.md`,
+`docs/03-Domain.md`, `docs/06-Queue.md` and what is in `work/`; it offers
+alternatives with what each one buys and costs; it asks where the line goes,
+because the order is the decision. **It writes no delivery page.**
 
 **`/propose <slug>`** is a conversation. It reads `docs/00-Product.md`,
 `docs/03-Domain.md`, `docs/06-Queue.md` and what is in `work/`; asks
@@ -125,9 +133,10 @@ deploy: it is someone opening an environment believing it is current.
 ## 8. Queue
 
 `docs/06-Queue.md`: one line per delivery, in order. Not a schedule, not a
-narrative. A line **never leaves** the queue: it changes mark. `/propose`
-turns `[ ]` into `[>]` (defined in `work/<slug>.md`, not yet built);
-`/apply` turns `[>]` into `[x]` and moves the file to `work/done/`.
+narrative. `/discuss` is what adds a line, in conversation, and where it
+goes is asked. A line **never leaves** the queue: it changes mark.
+`/propose` turns `[ ]` into `[>]` (defined in `work/<slug>.md`, not yet
+built); `/apply` turns `[>]` into `[x]` and moves the file to `work/done/`.
 
 ## 9. Milestone review
 

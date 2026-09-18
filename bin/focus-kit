@@ -14,7 +14,7 @@
 #      refreshed when it is older than the package
 #      (graphify install --platform claude)
 #   2. in the target repository:
-#      .claude/skills/{initialize,propose,apply}   copied, overwriting (kit-owned)
+#      .claude/skills/<command>/                   copied, overwriting (kit-owned)
 #      docs/manuals/{process,focus,graphify}.md    copied, overwriting (kit-owned)
 #      .claude/skills/.focus-kit-manifest          what install wrote, for doctor (kit-owned)
 #      .claude/settings.json                       baseline permissions merged in
@@ -172,6 +172,24 @@ ensure_graphify() {
 
 # ---------------------------------------------------------------- repository
 
+# The commands the kit ships, one folder name per line, read from the skills
+# tree itself and never listed here: a fifth command is a folder under
+# skills/ and no edit to this script, the way a fourth manual is a file under
+# manuals/. Every place that enumerates the commands reads this, so the
+# install, the manifest, doctor and check 4 can never disagree about which
+# ones exist. The order is the glob's, which for one lowercase word each is
+# alphabetical, and it is the order every line of output follows.
+#
+# It reads and never dies: its output is captured, and a die inside $(...)
+# ends only the subshell (docs/01-Architecture.md §6).
+kit_skills() {
+  local d
+  for d in "$KIT_DIR"/skills/*/; do
+    [ -d "$d" ] || continue
+    basename "$d"
+  done
+}
+
 copy_tree() { # src dst  (overwrite, kit-owned)
   rm -rf "$2"
   mkdir -p "$(dirname "$2")"
@@ -272,12 +290,12 @@ fingerprint() { # file
 write_manifest() { # target
   local target="$1" s m f
   {
-    for s in initialize propose apply; do
+    while IFS= read -r s; do
       [ -d "$target/.claude/skills/$s" ] || continue
       (cd "$target" && find ".claude/skills/$s" -type f) | while IFS= read -r f; do
         printf '%s %s\n' "$(fingerprint "$target/$f")" "$f"
       done
-    done
+    done <<< "$(kit_skills)"
     for m in "$KIT_DIR"/manuals/*.md; do
       f="docs/manuals/$(basename "$m")"
       [ -f "$target/$f" ] || continue
@@ -294,13 +312,16 @@ install_repo() {
 
   say "installing focus-kit $KIT_VERSION into $target"
 
-  # skills (kit-owned)
-  local s
-  for s in initialize propose apply; do
+  # skills (kit-owned). The ok line names the folders it just wrote, from the
+  # same enumeration, so a command the kit gained is on screen without a
+  # second list to keep in step.
+  local s names=""
+  while IFS= read -r s; do
     copy_tree "$KIT_DIR/skills/$s" "$target/.claude/skills/$s"
-  done
+    names="${names:+$names,}$s"
+  done <<< "$(kit_skills)"
   printf '%s\n' "$KIT_VERSION" > "$target/.claude/skills/.focus-kit-version"
-  ok ".claude/skills/{initialize,propose,apply}"
+  ok ".claude/skills/{$names}"
 
   # manuals (kit-owned)
   mkdir -p "$target/docs/manuals"
@@ -379,7 +400,7 @@ doctor() {
   # Every path reported missing below, in the form the manifest holds it. The
   # drift pass reads it to avoid saying a second time what these lines said.
   local s missing=""
-  for s in initialize propose apply; do
+  while IFS= read -r s; do
     if [ -f "$target/.claude/skills/$s/SKILL.md" ]; then
       ok "/$s"
     else
@@ -387,7 +408,7 @@ doctor() {
       missing="$missing.claude/skills/$s/SKILL.md
 "
     fi
-  done
+  done <<< "$(kit_skills)"
   # The number, and behind it the Unbumped change (docs/03-Domain.md): a
   # target at the kit's own number whose kit-owned files are no longer what
   # the source holds. The question is asked only when the number is equal,
@@ -416,12 +437,11 @@ doctor() {
       local kitmanifest="$target/.claude/skills/.focus-kit-manifest" behind="" src rel
       if [ -f "$kitmanifest" ]; then
         behind="$( { without_cr "$kitmanifest"
-          for src in initialize propose apply; do
-            [ -d "$KIT_DIR/skills/$src" ] || continue
+          while IFS= read -r src; do
             (cd "$KIT_DIR" && find "skills/$src" -type f) | while IFS= read -r rel; do
               printf '%s .claude/skills/%s\n' "$(fingerprint "$KIT_DIR/$rel")" "${rel#skills/}"
             done
-          done
+          done <<< "$(kit_skills)"
           for src in "$KIT_DIR"/manuals/*.md; do
             [ -f "$src" ] || continue
             printf '%s docs/manuals/%s\n' "$(fingerprint "$src")" "$(basename "$src")"
@@ -536,7 +556,7 @@ doctor() {
       # A file added inside a kit skill is as lost as an edit: copy_tree is
       # rm -rf then cp -R. Each folder is guarded, so a target with /propose
       # missing gets no find error in the middle of doctor.
-      for d in initialize propose apply; do
+      while IFS= read -r d; do
         [ -d "$target/.claude/skills/$d" ] || continue
         while IFS= read -r path; do
           [ -n "$path" ] || continue
@@ -544,7 +564,7 @@ doctor() {
           warn "$path is not the kit's (focus-kit update removes it)"
           drift=1
         done <<< "$(cd "$target" && find ".claude/skills/$d" -type f)"
-      done
+      done <<< "$(kit_skills)"
       [ "$drift" -eq 1 ] || ok "kit-owned files as install wrote them"
     fi
   fi
@@ -588,8 +608,11 @@ check_install() { # scratch
     die "check 2: doctor failed in the scratch repository"
   }
   # The expected line is built by calling ok, so the assertion and the
-  # reporter cannot drift.
-  for expected in /initialize /propose /apply \
+  # reporter cannot drift. The command names stay literal here, where every
+  # other place in the script enumerates the skills tree: an assertion that
+  # read the same list as the reporter would assert nothing, which is why
+  # each manual is written out here too. A new command joins this list.
+  for expected in /apply /discuss /initialize /propose \
                   docs/manuals/process.md docs/manuals/focus.md \
                   docs/manuals/graphify.md .claude/settings.json \
                   "kit version $KIT_VERSION" \
@@ -743,7 +766,7 @@ JSON
   rm -f "$scratch/.claude/skills/apply/extra.md"
   write_manifest "$scratch"
   # The fourth kind of drift: a kit-owned file the target no longer has. A
-  # template, because ten of the sixteen paths the manifest names are
+  # template, because ten of the seventeen paths the manifest names are
   # templates and no presence line anywhere covers them, so this is the only
   # place the deletion can be caught. Both assertions in one doctor run: the
   # warn has to be there and the green line has not to be.
@@ -904,7 +927,7 @@ check_idempotent() { # scratch snapshot
 # description value breaks the YAML and the skill disappears with no error.
 check_frontmatter() {
   local s file line n closing name desc_at desc_body bad state
-  for s in initialize propose apply; do
+  while IFS= read -r s; do
     file="$KIT_DIR/skills/$s/SKILL.md"
     [ -f "$file" ] || die "check 4: skills/$s/SKILL.md is missing"
     n=0; closing=0; name=""; desc_at=0; desc_body=0; bad=0; state=key
@@ -934,8 +957,8 @@ check_frontmatter() {
     [ "$name" = "$s" ]    || die "check 4: skills/$s/SKILL.md says name: $name, the folder is $s"
     [ "$desc_at" -gt 0 ]  || die "check 4: skills/$s/SKILL.md has no line reading exactly 'description: >-'"
     [ "$desc_body" -gt 0 ] || die "check 4: skills/$s/SKILL.md line $desc_at opens a description block with nothing in it"
-  done
-  ok "4 the three SKILL.md frontmatters are well formed"
+  done <<< "$(kit_skills)"
+  ok "4 the SKILL.md frontmatters are well formed"
 }
 
 # The character is built from its bytes and never written in this file, so

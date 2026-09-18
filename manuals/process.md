@@ -3,9 +3,9 @@
 
 # The delivery process
 
-This manual explains the three commands the focus-kit installs in a
-repository (`/initialize`, `/propose`, `/apply`), the files they read and
-write, and the rules behind them. It is kit-owned: `focus-kit update`
+This manual explains the four commands the focus-kit installs in a
+repository (`/initialize`, `/discuss`, `/propose`, `/apply`), the files they
+read and write, and the rules behind them. It is kit-owned: `focus-kit update`
 overwrites it. Project-specific slots (the verify command, the
 environments, the git policy) live in `docs/05-Process.md`, which is yours.
 
@@ -13,7 +13,9 @@ environments, the git policy) live in `docs/05-Process.md`, which is yours.
 
 ## 1. The idea in one paragraph
 
-Work moves through a **queue** of one-line deliveries. Each delivery is
+Work moves through a **queue** of one-line deliveries. The line itself is
+written by conversation, from an idea and whatever the project documents
+already decide about it. Each delivery is then
 **defined** in a one-page file by conversation, then **built** in a clean
 session that reads only that page and the project docs. Deciding and doing
 are separated on purpose: it is what keeps scope from growing while code is
@@ -39,7 +41,7 @@ work/
   <slug>.md              a delivery being defined or built
   done/<slug>.md         a delivery that shipped, with what happened
 graphify-out/            the knowledge graph of the codebase (docs/manuals/graphify.md)
-.claude/skills/          /initialize, /propose, /apply (kit-owned)
+.claude/skills/          /initialize, /discuss, /propose, /apply (kit-owned)
 ```
 
 ## 3. `/initialize`
@@ -67,7 +69,32 @@ writes `docs/00` to `06`, `docs/adr/`, `CLAUDE.md`, and the `work/` folder.
 
 Run it again at any time to review the documents against the code.
 
-## 4. `/propose <slug>`
+## 4. `/discuss <the idea>`
+
+A conversation that ends in one line of `docs/06-Queue.md`, and in nothing
+else. It is where an idea becomes a delivery someone can pick up, so that
+the `/propose` after it starts from something already decided.
+
+It reads the product, the domain, the queue and the deliveries in flight,
+and no more: it asks the graph nothing. It offers the alternatives it sees,
+says what each one buys and what it costs, puts its own recommendation
+first, and asks you whenever more than one reading survives those files. A
+matter one of them decides is said out loud with the file cited, and never
+put in front of you. Where the line goes it asks, because the order is the
+decision and the decision is yours.
+
+It writes the line, and a term in `docs/03-Domain.md` when the idea names a
+concept that document does not have. It writes no delivery page, no ADR and
+no code, it moves no existing line and it changes no mark. When the idea is
+already a line, or a bullet under "Later, not scheduled", it says which one
+and writes nothing.
+
+The line is the whole record: what the conversation settled travels in its
+own words, in the project's documentation language, with the slug in
+English. Its last words name `/propose <slug>`, which may run in the same
+session.
+
+## 5. `/propose <slug>`
 
 A conversation that ends in `work/<slug>.md`, one page, in the format
 `docs/05-Process.md` §3 defines:
@@ -97,7 +124,7 @@ words name the new session to type `/apply` in.
 If a scope does not fit on one page, it is two deliveries. The page is the
 test that the scope was understood.
 
-## 5. `/apply <slug>`
+## 6. `/apply <slug>`
 
 Implements the page, in a clean session, one where `/apply` is the
 first thing typed; when it is not, it says so in one line and stops. End to
@@ -122,7 +149,7 @@ end:
 6. stages with `git add -A` and suggests the commit message. **It does not
    commit.** The post-commit hook rebuilds the graph when you do.
 
-## 6. The house rules
+## 7. The house rules
 
 These are fixed in every project the kit installs. They are not up for a
 per-project vote, which is why `/initialize` does not ask about them.
@@ -155,7 +182,7 @@ offered first and never assumed, and they live in `docs/01-Architecture.md`
 §3 of the project that answered them. FOCUS (`docs/manuals/focus.md`) is the
 name for saying yes to all four.
 
-## 7. The queue
+## 8. The queue
 
 `docs/06-Queue.md` is one line per delivery, in order, grouped by
 milestone. A line never leaves; it changes mark. A milestone is the unit
@@ -163,7 +190,7 @@ of "something a person can use end to end". At the close of a milestone the
 stakeholder runs a whole-branch review; each confirmed finding becomes a
 queue line named after what it fixes.
 
-## 8. What the process deliberately lacks
+## 9. What the process deliberately lacks
 
 No formal spec, no spec delta, no archiving step, no numbered tasks, no
 pre-implementation gate, no specialized subagents, no architecture linter.
@@ -171,7 +198,7 @@ Each of these was tried in the project the kit came from and removed. If
 one reappears, the question is which concrete error it would have caught,
 and the answer has to name one that happened.
 
-## 9. Commit message
+## 10. Commit message
 
 Subject up to 72 characters, imperative, with the slug as scope. Body up
 to five one-line bullets: the highlights, not the reasoning. Last line
@@ -188,9 +215,9 @@ feat(place-order): order placed with idempotency key
 Details in work/done/place-order.md
 ```
 
-## 10. Updating the kit
+## 11. Updating the kit
 
-`focus-kit update <repo>` overwrites the three skills and the three
+`focus-kit update <repo>` overwrites the four skills and the three
 manuals and merges configuration. It never touches `docs/00` to `06`,
 `CLAUDE.md`, `docs/adr/` or `work/`. `focus-kit doctor <repo>` says what is
 installed and what is missing, and it names the kit-owned files that are

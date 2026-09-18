@@ -3,13 +3,15 @@
 A delivery process for repositories worked on with Claude Code, built on
 the FOCUS architecture (Feature-Oriented, Clean, Unidirectional, Scalable).
 
-It installs three commands into a repository:
+It installs four commands into a repository:
 
 * **`/initialize`**: writes the project's `docs/` (product, architecture,
   backend, domain, conventions, process, queue, ADRs) and `CLAUDE.md`. On a
   greenfield project it asks, in short rounds. On a brownfield project it
   reads the code, builds a graphify knowledge graph, and asks only what the
   code cannot answer.
+* **`/discuss <the idea>`**: turns an idea into one line of the queue, by
+  conversation, and asks where the line goes. Writes nothing else.
 * **`/propose <slug>`**: defines the next delivery in a one-page file, by
   conversation. Writes no code.
 * **`/apply <slug>`**: builds that page end to end, proves it, updates the
@@ -66,7 +68,7 @@ This installs the dependencies on the machine (uv, graphify, the global
 
 | Path | Owner | What |
 |---|---|---|
-| `.claude/skills/{initialize,propose,apply}/` | kit | the three commands; overwritten on update |
+| `.claude/skills/<command>/` | kit | one folder per command; overwritten on update |
 | `docs/manuals/{process,focus,graphify}.md` | kit | the manuals; overwritten on update |
 | `.claude/skills/.focus-kit-manifest` | kit | what the install wrote, so `doctor` can tell an edited file from a stale one |
 | `.claude/settings.json` | merged | baseline permissions: git commit and push always ask |
@@ -86,12 +88,14 @@ which is what the next update would erase.
 One page: `manuals/process.md`. The short version:
 
 ```
-docs/06-Queue.md → /propose <slug> → work/<slug>.md → /apply <slug>
-                                                          ↓
+an idea → /discuss → docs/06-Queue.md → /propose <slug> → work/<slug>.md
+                                                              ↓
+                                                        /apply <slug>
+                                                              ↓
                                        verify green, environments as docs/05 says
-                                                          ↓
+                                                              ↓
                                         work/done/<slug>.md + git add -A
-                                                          ↓
+                                                              ↓
                                             a person reviews and commits
 ```
 
@@ -183,7 +187,8 @@ notices, and running a modified version so that people use it over a network
 counts as distribution: the source of that version has to be offered to them.
 
 **Additional permission under AGPL-3.0 section 7.** The documents that
-`/initialize`, `/propose` and `/apply` write into a target repository
+`/initialize`, `/discuss`, `/propose` and `/apply` write into a target
+repository
 (`docs/00` to `06`, `docs/adr/`, `CLAUDE.md`, `work/`) are not covered works
 of focus-kit. They belong to that repository, under whatever license its
 owner chooses. The kit-owned copies in `.claude/skills/` and `docs/manuals/`
@@ -198,7 +203,7 @@ request through this repository's GitHub issues.
 
 ```
 bin/focus-kit                  the CLI (bash 3.2 compatible; macOS, Linux, Windows)
-skills/<name>/SKILL.md         the three commands
+skills/<name>/SKILL.md         one folder per command
 skills/initialize/templates/   CLAUDE.md and docs/ templates the command fills
 manuals/                       the three kit-owned manuals
 config/                        the two JSON baselines and the two ignore fragments

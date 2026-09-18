@@ -15,7 +15,8 @@ Prose in English; identifiers in English.
 - the codebase graph: graphify-out/ (who depends on what goes to it, text goes to grep; docs/manuals/graphify.md)
 
 ## Non-negotiables
-- One delivery = one page in work/<slug>.md. /propose to define, /apply to build.
+- One delivery = one page in work/<slug>.md. /initialize to set the docs up,
+  /discuss to put the line in the queue, /propose to define, /apply to build.
 <!-- init: one line per practice answered in docs/01-Architecture.md §3,
      in that table's order, each pointing at it: what the structure is,
      where the rules live, how errors travel, what gets a test. When all

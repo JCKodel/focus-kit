@@ -28,14 +28,24 @@ decided yet.
 ## 2. The flow
 
 ```
-docs/06-Queue.md  →  /propose <slug>  →  work/<slug>.md  →  /apply <slug>
-                                                                 ↓
-                                        verify green, environments as §5 says
-                                                                 ↓
-                                          work/done/<slug>.md + git add -A
-                                                                 ↓
-                                             a person reviews and commits
+an idea  →  /discuss  →  docs/06-Queue.md  →  /propose <slug>  →  work/<slug>.md
+                                                                        ↓
+                                                                  /apply <slug>
+                                                                        ↓
+                                              verify green, environments as §5 says
+                                                                        ↓
+                                                work/done/<slug>.md + git add -A
+                                                                        ↓
+                                                   a person reviews and commits
 ```
+
+**`/discuss <the idea>`** is a conversation that ends in one line of
+`docs/06-Queue.md` and in nothing else. It reads `docs/00-Product.md`,
+`docs/03-Domain.md`, `docs/06-Queue.md` and what is in `work/`; it offers
+alternatives with what each one buys and costs; it asks where the line goes,
+because the order is the decision. **It writes no delivery page.** It is
+where the product decision behind a line is taken, so that the `/propose`
+after it starts from something already decided.
 
 **`/propose <slug>`** is a conversation. It reads `docs/00-Product.md`,
 `docs/03-Domain.md`, `docs/06-Queue.md` and what is in `work/`; asks
@@ -148,7 +158,7 @@ It runs six checks, in this order, and stops at the first red:
    failure. **Missing:** `.claude/skills/initialize/templates/CLAUDE.md` is
    deleted and one `doctor` run must both name it as missing and not print
    the drift `ok` line, which is the only way a deleted template is ever
-   caught: ten of the sixteen paths the manifest names are templates and no
+   caught: ten of the seventeen paths the manifest names are templates and no
    presence line covers them. It is restored by a copy alone, because a
    deletion does not change the manifest. Then the other half of that rule,
    on a kit-owned path a presence line **does** name:
@@ -187,7 +197,7 @@ It runs six checks, in this order, and stops at the first red:
    3 snapshots the scratch, and the existing `trap` removes them.
 3. The same install again into the same scratch repository, trees compared.
    The install is idempotent.
-4. The frontmatter of each of the three `SKILL.md` files, against four
+4. The frontmatter of each `SKILL.md` the kit ships, against four
    structural rules: line 1 is `---` and a closing `---` exists; `name:`
    equals the folder name; one line reads exactly `description: >-`; every
    line of that block is indented until the next top-level key. The rules
@@ -325,8 +335,9 @@ The post-commit hook rebuilds the graph when the commit lands
 ## 8. Queue
 
 `docs/06-Queue.md`: one line per delivery, in order. Not a schedule, not a
-narrative. A line **never leaves** the queue: it changes mark. `/propose`
-turns `[ ]` into `[>]` (defined in `work/<slug>.md`, not yet built);
+narrative. `/discuss` is what adds a line, in conversation, and where it
+goes is asked. A line **never leaves** the queue: it changes mark.
+`/propose` turns `[ ]` into `[>]` (defined in `work/<slug>.md`, not yet built);
 `/apply` turns `[>]` into `[x]` and moves the file to `work/done/`.
 
 ## 9. Milestone review

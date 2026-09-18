@@ -10,7 +10,8 @@ argument-hint: <slug>
 Implement `work/$ARGUMENTS.md` in this session, completely.
 
 `/apply` is the first thing typed in its session. When the conversation
-already holds a `/propose`, an `/initialize` or an `/apply` before this one,
+already holds a `/discuss`, a `/propose`, an `/initialize` or an `/apply`
+before this one,
 say `this session already ran <command>; open a new one (/clear, or a new
 terminal) and type /apply $ARGUMENTS` and stop, before Read first: nothing
 read, nothing built, nothing staged.

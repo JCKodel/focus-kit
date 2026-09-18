@@ -45,7 +45,7 @@ ceremony.
 ## Positioning
 
 An installable delivery process for repositories worked on with Claude Code.
-Three commands and three manuals, installed by one script, that make a
+Four commands and three manuals, installed by one script, that make a
 repository ready for a coding agent to work in without renegotiating the
 rules every session.
 
@@ -63,7 +63,7 @@ without review. The last one matters most. The kit's whole shape assumes a
 person reads the diff and commits it.
 
 **What it costs.** Measured over 194 sessions on 2026-09-17, counted by hand
-from the transcripts: a session that starts with one of the three commands
+from the transcripts: a session that starts with one of the commands
 opens at 42k to 49k tokens, the same range in this repository, in the first
 target and in the project the kit came from, whose process was hand written
 into `CLAUDE.md` and had no kit at all; a kit `/apply` ran 105 turns to a
@@ -72,7 +72,8 @@ per session than the hand-written original, and the case for it is not that
 it is cheaper. What each command reads of a manual is the part the kit
 controls, and it is pinned by a file rather than by a transcript, in words
 through `wc -w` at this commit: `graphify.md` fell from 2,626 words read
-whole to the 1,352 of §Ensuring the graph, in all three commands, and
+whole to the 1,352 of §Ensuring the graph, in the three commands that read
+it, and
 `focus.md` from 5,152 to 1,870 in `/apply`, 1,584 at Read first for §2, §3
 and §10 and 286 at Build for §8. A command reads the section it names and
 nothing else of the manual around it (`docs/03-Domain.md`, Named section).
@@ -115,7 +116,7 @@ personal data.
 
 A person clones the kit and symlinks `bin/focus-kit` onto their PATH, then
 runs `focus-kit install .` inside a repository. The script does two things
-in order (`bin/focus-kit:1006`): it makes sure the machine has what it needs,
+in order (`bin/focus-kit:1029`): it makes sure the machine has what it needs,
 and it writes into the repository.
 
 On the machine: uv, then graphify as a uv tool, then the global `/graphify`
@@ -144,7 +145,7 @@ and nothing else. What the old rule cost was worse than the file it protected:
 graphify prints a warning on **every** invocation while the skill is stale,
 and the kit printed a green line over it.
 
-In the repository: the three skills and the three manuals are copied over
+In the repository: the skills and the three manuals are copied over
 whatever is there; `.claude/settings.json` is merged into, never replaced;
 the `.gitignore` and `.graphifyignore` fragments are each
 appended once, the second one keeping the kit's own skills and manuals out
@@ -181,9 +182,33 @@ command does not know what goes in a section, it asks. If the section does
 not apply, it writes one line saying why and moves on. A half-filled
 template is worse than no template, because the next session trusts it.
 
+### Putting a line in the queue
+
+`/discuss <the idea>` is a conversation that ends in one line of
+`docs/06-Queue.md`, and in nothing else. It reads the product, the domain,
+the queue and whatever is in flight; it offers the alternatives it sees with
+what each one buys and what it costs, its own recommendation first; it asks
+whenever more than one reading survives those files, and says out loud, with
+the file cited, what one of them already decided. It asks the graph nothing,
+because where a line belongs is not a Structure question.
+
+Where the line goes it asks, and never assumes. The order is the decision
+(`docs/03-Domain.md`, The queue), and it is the person's to take.
+
+Where the idea adds a part to the process itself, the conversation asks the
+question this document asks of every such part: which concrete error that
+happened would it have caught.
+
+**Rule of product:** it writes the line and nothing else. No delivery page,
+no ADR, no notes file. What the conversation settled travels in the line's
+own words, because a line that needs a second file to be understood is a
+delivery nobody has decided yet, and the page too early is the thing this
+command exists to prevent.
+
 ### Defining a delivery
 
-`/propose <slug>` is a conversation that ends in `work/<slug>.md`. It reads
+`/propose <slug>` is a conversation that ends in `work/<slug>.md`. It starts
+from a line `/discuss` already placed. It reads
 the product, the domain, the queue and whatever is already in flight; it
 asks the graph what depends on what the delivery names; it asks the person
 whenever there is more than one reading and no file it read closes it, with
@@ -247,7 +272,7 @@ the code wins and the graph gets rebuilt.
   diff and committing it.
 * **Not a project management tool.** The queue has no dates, no estimates,
   no assignees and no status beyond three marks.
-* **Not stack-specific.** The three commands name no language, no framework
+* **Not stack-specific.** The commands name no language, no framework
   and no test runner. Everything specific is a slot in the target's
   `docs/05-Process.md`.
 * **Not a linter.** Nothing here checks an architecture automatically. The

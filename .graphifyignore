@@ -1,6 +1,7 @@
 # --- focus-kit ---
 # graphify: the kit's own skills and manuals are not this project's code
 .claude/skills/initialize/
+.claude/skills/discuss/
 .claude/skills/propose/
 .claude/skills/apply/
 docs/manuals/process.md

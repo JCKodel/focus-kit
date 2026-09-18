@@ -23,7 +23,9 @@ own text sets the example.
 - `bin/focus-kit`: the CLI. bash 3.2 (macOS default); no associative
   arrays, no `mapfile`. JSON merging goes through python3. Why:
   docs/adr/ADR-0001-bash-and-python3.md. The functions: docs/01-Architecture.md §3.
-- `skills/<name>/SKILL.md`: the three commands copied into target repos.
+- `skills/<name>/SKILL.md`: the commands copied into target repos. The CLI
+  names none of them: it reads the folders (`kit_skills`), so a fifth is a
+  folder and no edit.
   Frontmatter `description` uses a `>-` block: a bare colon in the value
   breaks the YAML and the skill silently disappears (docs/04-Conventions.md §3).
 - `skills/initialize/templates/`: what `/initialize` fills. Guidance to the
@@ -35,12 +37,13 @@ own text sets the example.
 - The whole tree, and which part owns what: docs/01-Architecture.md §4.
 
 ## Non-negotiables
-- One delivery = one page in work/<slug>.md. /propose to define, /apply to build.
+- One delivery = one page in work/<slug>.md. /discuss to put the line in the
+  queue, /propose to define, /apply to build.
 - Every file is kit-owned, project-owned, merged or appended once. Kit-owned
   files are overwritten on `focus-kit update`; project-owned files (`docs/00`
   to `06`, `CLAUDE.md`, `docs/adr/`, `work/`) are never touched by the CLI.
   Keep that line sharp (docs/adr/ADR-0002-file-ownership.md).
-- The three skills are stack-agnostic. Anything project-specific (verify
+- The skills are stack-agnostic. Anything project-specific (verify
   command, environments, publish policy, git policy, proof) is a slot in
   `docs/05-Process.md`, filled by `/initialize`, read by `/apply`.
 - FOCUS (docs/manuals/focus.md) is what the kit teaches, not how the kit is

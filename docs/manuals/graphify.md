@@ -213,8 +213,8 @@ It is gitignore syntax, it is read on top of `.gitignore`, and it only ever
 excludes more.
 
 `focus-kit install` appends a block to it once, under the marker `# ---
-focus-kit ---`, naming the six files the kit itself put in the repository:
-the three skills and the three manuals. They are the kit's documentation,
+focus-kit ---`, naming the files the kit itself put in the repository: every
+skill folder and the three manuals. They are the kit's documentation,
 not the project's code, and without the block they answer questions asked
 about the project. In the first two repositories this ran on they were 214
 of 498 nodes and 139 of 502, so more than a quarter of the graph was the
@@ -257,8 +257,8 @@ on graphify 0.9.63. An older graphify that keeps them needs a full rebuild.
   take them out. Delete the `graphify` entry under `mcpServers`, and the file
   itself when nothing else is in it; delete the `graphify` item under
   `enabledMcpjsonServers`, and the key itself when the list is then empty.
-  Nothing in the kit reads either one: the three commands drive the graphify
-  CLI through the shell.
+  Nothing in the kit reads either one: the commands that ask the graph drive
+  the graphify CLI through the shell.
 * **Every graphify command warns that the skill is from an older version.**
   The global `/graphify` skill under `~/.claude/skills/graphify/` was written
   by a graphify older than the one installed, and graphify says so on every

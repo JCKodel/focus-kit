@@ -21,12 +21,14 @@ built · `[x]` done, in `work/done/`. The process is `docs/05-Process.md`.
      migration is the state the person was warned about when they chose.
      A line speaks in the terms of docs/03-Domain.md: an identifier it names
      is in that table, or the line says it in words and the term enters
-     docs/03 when /propose defines the delivery. -->
+     docs/03 through the /discuss that adds the line or the /propose that
+     defines the delivery. -->
 
 ```
 [ ] <slug>               <one line of scope>
 [ ] <slug>               <one line of scope>
 ```
+
 
 Close of milestone 1: whole-branch review (`docs/05-Process.md` §9).
 
