@@ -255,7 +255,7 @@ about brownfield repositories is untested.
                               gives way: the two rules say what a backtick and a bold mean in a text
                               that is asked as written, or the five texts and the confirmation stop
                               being written with marks that read as bytes to reproduce
-[>] run-ignores-a-stray-word  a word typed after /initialize is explained back to the person, although
+[x] run-ignores-a-stray-word  a word typed after /initialize is explained back to the person, although
                               nothing in the skill names an argument any more. Measured on 2026-09-17
                               in the second scratch of initialize-trusts-the-argument, the kit at
                               0.22.3: /initialize green produced the same count line and the same kind
