@@ -519,7 +519,9 @@ have.
                               one page), then the four problems above as a table of problem, mechanism
                               and path, greenfield and brownfield, the slug in git, portable markdown
                               with Copilot pointing at copilot-port, then Ninjobs; docs/00 Audience
-                              widened in the same delivery
+                              widened in the same delivery. It must contain the seed: the brainstorm
+                              file that describes the project (only in greenfield), something like a
+                              brainstorm so the focus-kit can have a bit more on initial information
 [ ] readme-real-walkthrough   a four-step section, install, /initialize, /propose, /apply, every
                               transcript taken from a real run in a scratch repository on a fictional
                               domain, condensed only by cutting lines, never by inventing one; each
@@ -676,7 +678,7 @@ have.
                               stays out, having never leaked (CLAUDE.md, abstraction on the second
                               concrete occurrence); it is its own line the day it does. Ahead of
                               codex-port, for the reason the line above it gives
-[ ] pointer-file-is-written-where-the-rule-stands
+[>] pointer-file-is-written-where-the-rule-stands
                               /initialize writes the Host instructions file at the step that
                               asks for it, on whatever host, because the rule names the file
                               and not what a table does not name. Measured on 2026-09-19 in
@@ -705,7 +707,7 @@ have.
                               three host lines come back, left as they are by that delivery on
                               this milestone's own clause. codex-port is [>] and adds a third
                               host, so whichever of the two runs second inherits the other
-[ ] tooling-card-follows-the-answer-on-every-host
+[x] tooling-card-follows-the-answer-on-every-host
                               the tooling card of /initialize offers the ecosystem the person
                               answered, on whatever host. Second occurrence of
                               tools-follow-the-stack, [x] since 2026-09-18, and the first after
@@ -724,7 +726,18 @@ have.
                               was wrong and no file in that scratch records it. Why the host
                               offered it is not in the transcript and this line does not guess:
                               the delivery measures first, on both hosts, and the answer comes
-                              out of that
+                              out of that. Measured on 2026-09-19 at 0.40.0, against a
+                              skills/initialize/SKILL.md byte for byte the one that composed the
+                              wrong card at 0.38.0: six greenfield scratches, three surfaces,
+                              round 3 answered Flutter or Dart in each. Five runs reached the
+                              tooling card and all five composed it of the answered ecosystem,
+                              Copilot in VS Code included, which is the surface the defect came
+                              from. The sixth stalled in round 2 and never reached the card, so
+                              that surface stands on one card-reaching run rather than the two
+                              the page asks of a passing verdict, its second run having run out
+                              of Copilot credits. Nothing reproduced, so the third branch: no
+                              file under skills/, manuals/, config/ or bin/ changed and VERSION
+                              stayed at 0.40.0. Three findings went to Found, not discussed
 [>] codex-port                the kit's commands as Codex repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
@@ -841,6 +854,108 @@ graph-accepts-off-spec-nodes  a session can write nodes into graph.json that
                               replacing them. The graph reads as healthy
                               meanwhile
                               2026-09-19, /apply, in build-now-reaches-every-host
+
+non-goal-names-the-house-stack
+                              docs/00-Product.md, Non-goals says the commands
+                              name no language, no framework and no test
+                              runner, while round 3 of Step 1 (greenfield)
+                              names C# on .NET and the Mediator pattern with
+                              MediatR, and docs/manuals/process.md says the
+                              command defaults the house stack rather than
+                              asking it. Two texts a target reads contradict
+                              each other, and that default is the only stack
+                              the file names
+                              skills/initialize/SKILL.md:421, 2026-09-19,
+                              /propose, in
+                              tooling-card-follows-the-answer-on-every-host
+
+first-target-row-outlived-its-milestone
+                              docs/05-Process.md §5 keeps a First target row
+                              saying it leaves with milestone 2, and every
+                              line of milestone 2 is [x], so the row's own
+                              condition expired; docs/03-Domain.md, First
+                              target carries the same sentence. Recorded once
+                              inside work/done/tools-follow-the-stack.md as
+                              left as found, and never queued
+                              docs/05-Process.md:341, 2026-09-19, /propose,
+                              in tooling-card-follows-the-answer-on-every-host
+
+process-names-a-line-the-queue-lost
+                              docs/05-Process.md §7 names
+                              git-policy-for-a-second-person as a line "under
+                              Later" where the git strategy answer is
+                              revisited, and the Later block holds one struck
+                              through line and nothing else;
+                              distribution-beyond-clone, named the same way in
+                              work/done/help-names-what-install-writes.md, is
+                              not there either. A project-owned document a
+                              command reads points at a queue line that does
+                              not exist, and the queue says a line never
+                              leaves
+                              docs/05-Process.md:420, 2026-09-19, /propose,
+                              in pointer-file-is-written-where-the-rule-stands
+
+two-proposes-share-one-queue  a second /propose changed docs/06-Queue.md
+                              under this one while the page was being
+                              written, so the page went to disk saying
+                              tooling-card-follows-the-answer-on-every-host
+                              was [ ] when that session had just made it [>].
+                              docs/05-Process.md §7 already names the cost of
+                              one working tree and calls it the price of
+                              having nobody on the other side of a branch;
+                              what it measured was /apply staging another
+                              delivery's page, and this is the second
+                              occurrence and the first where what comes out
+                              wrong is the text of the page itself. Only the
+                              editing tool's own stale-file notice caught it
+                              docs/05-Process.md:407, 2026-09-19, /propose,
+                              in pointer-file-is-written-where-the-rule-stands
+
+tooling-card-shape-varies-by-host
+                              round 5's tooling card has a contracted shape,
+                              three options in a fixed order and the verify
+                              command asked only after it, and none of the five
+                              runs that reached the card held it: one offered no
+                              options at all, a free text field with a default,
+                              so neither the credible alternative nor deciding
+                              later was offered; one named no alternative and
+                              asked the person to name one; two asked the verify
+                              command inside the same card as the tooling, which
+                              is what the file separates so the answer is a
+                              command and not a promise; one added a question
+                              about the orchestrator that the file does not ask.
+                              Every one of the five named the right ecosystem,
+                              so this is the card's shape and not its content.
+                              work/done/tools-follow-the-stack.md records one
+                              order divergence already, under one host
+                              skills/initialize/SKILL.md:429, 2026-09-19, /apply,
+                              in tooling-card-follows-the-answer-on-every-host
+
+initialize-loops-a-round      a greenfield /initialize under GitHub Copilot in
+                              VS Code confirmed the kind of project, answered
+                              round 1 and then asked round 2's domain question
+                              four times, in four differently worded cards,
+                              never reaching round 3. Six cards and no
+                              progress. The step says to ask in rounds, each
+                              round only about what the previous one settled,
+                              and says nothing about what a round does with an
+                              answer it finds short
+                              skills/initialize/SKILL.md:418, 2026-09-19, /apply,
+                              in tooling-card-follows-the-answer-on-every-host
+
+initialize-cites-manuals-by-number
+                              /initialize wrote nine citations of
+                              docs/manuals/focus.md by number into the documents
+                              it had just produced, in docs/01, docs/04 and
+                              ADR-0002, and the focus-kit doctor the same run
+                              then ran printed a warn for each one. The kit
+                              cites a manual by heading and never by number,
+                              because a section added to a manual renumbers
+                              every one below it, and the rule is written for
+                              the documents a target keeps. The run had to ask
+                              the person what to do about its own output
+                              skills/initialize/SKILL.md:467, 2026-09-19, /apply,
+                              in tooling-card-follows-the-answer-on-every-host
 ```
 
 ## Later, not scheduled
