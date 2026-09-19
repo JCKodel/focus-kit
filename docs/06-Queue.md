@@ -572,7 +572,7 @@ have.
                               the fix, and it names the graph that same run left unbuilt, the third
                               of that page's smaller findings, so the mechanism is there and only
                               the reading of it is missing (work/done/copilot-port.md, The proof run)
-[>] graph-builds-without-a-key
+[x] graph-builds-without-a-key
                               the graph is built in a session with no model key exported,
                               whatever host reads the manual. Measured on 2026-09-18 in
                               copilot-port's proof run, ~/Downloads/quiltline-copilot-proof
@@ -771,6 +771,36 @@ piece of friction found before this milestone would otherwise appear in it.
 `doctor`, `selftest` and the ownership table; its `/propose` settles how the
 prompts are versioned and whether `update` overwrites them like the skills,
 and `codex-port` follows whatever it decides.
+
+## Found, not discussed
+
+What a delivery found and did not build. One entry per finding and no mark,
+because a mark is where a queue line stands and an entry is not one.
+`/propose` and `/apply` write them here at their Close, and `/discuss <name>`
+is the single exit: it holds the conversation it always holds, writes the line
+where the milestone paragraphs place it, and removes the entry in the same
+edit (`docs/manuals/process.md` §The queue).
+
+```
+doctor-tells-a-guess          focus-kit doctor cannot tell a guessed document
+                              from an answered one: seven documents with the
+                              right headings come back green
+                              bin/focus-kit:988, 2026-09-18, /apply,
+                              in graph-builds-without-a-key
+
+initialize-writes-beyond-its-documents
+                              /initialize under GitHub Copilot in VS Code wrote
+                              past the seven documents: pytest.ini, a .venv, a
+                              pip install, a rewritten .claude/settings.json, a
+                              work/<slug>-initialization.md the command never
+                              writes, and a docs/06-Queue.md in a shape the
+                              template does not have. The evidence is kit
+                              0.34.0, before the paragraph render_prompt has
+                              emitted since 0.35.0, and no run after that
+                              paragraph was carried as far as writing the
+                              documents, so the /discuss starts by measuring.
+                              2026-09-18, /apply, in graph-builds-without-a-key
+```
 
 ## Later, not scheduled
 

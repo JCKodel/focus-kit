@@ -183,16 +183,19 @@ non-green shapes name the two versions and the command, as they do now.
   (`docs/05-Process.md` §5), and check 6 of the verify command empty.
 * [x] `VERSION` bumped: a target's machine receives a skill it did not have and
   the manual's text changed. 0.30.1 to 0.31.0.
-* [ ] The first branch of Ensuring the graph run by the person under the second
+* [x] The first branch of Ensuring the graph run by the person under the second
   Host, in a scratch repository, with none of the keys the branch unsets
   exported, and what it produced recorded in
   `work/done/graph-builds-without-a-key.md`, every divergence from this page
   included (`docs/05-Process.md` §6). `/apply` stops there and asks for the
   transcript, because it runs in Claude Code and cannot drive the other Host.
-  **Open.** This is why the file is still in `work/` and the queue line is
-  still `[>]`. The run was made on 2026-09-18 and did not reach the branch:
-  §The proof run under the second Host has what it found, and why the item
-  stays where it is.
+  Run eight times under that Host between 2026-09-18 and the close, at six kit
+  versions and two surfaces; `~/Downloads/seedledger-copilot-F` and `-G`, both
+  at 0.37.0, reached the branch and asked the question the item exists to
+  answer. **The answer is no**, and §The question was answered, and the answer
+  is no has it. The behaviour that answer denies is
+  `build-now-reaches-every-host`, `[>]`; why this page closes with it denied is
+  §Why this page closes on a no.
 * [x] `docs/00-Product.md` Installing, `docs/01-Architecture.md` §3 (the
   `ensure_graphify`, `global_skill_state` and `doctor` rows) and
   `docs/03-Domain.md` (Global skill, Skill stamp, As written) written.
@@ -822,3 +825,106 @@ spends a delivery on it.
 | `~/Downloads/seedledger-copilot-E` | 0.36.0 | answered in words, it resumed by itself and reached the Graph confirmation. Nothing written; waiting at that question |
 | `~/Downloads/seedledger-copilot-F` | 0.37.0 | the run that answered this page: numbered text at Step 0, a real card for the four Practices, the keyless attempt, the Graph confirmation, `Construir agora`, and then `graphify .` instead of `/graphify .`. No `graph.json`, no hook |
 | `~/Downloads/seedledger-copilot-G` | 0.37.0 | the Copilot CLI at the same version: native widget kept at every question, and the same `graphify .` for `Build now`. No `graph.json`, no hook; its transcript is in the directory |
+
+---
+
+## Why this page closes on a no
+
+Written on 2026-09-19, in the session that closed it. Nothing was built here:
+no file of the kit moved, `VERSION` stays where `a-finding-reaches-the-queue`
+left it, and all of this section is a record.
+
+### What was checked before deciding
+
+* `bin/focus-kit selftest`: six checks green at 0.39.0.
+* `focus-kit doctor .` here: zero warns. Both Hosts' graphify skill green, the
+  kit version green, and check 6 of the verify command empty without an
+  install being needed.
+* Ensuring the graph: `graphify-out/graph.json` stamped `8f2719e`, which is
+  `HEAD`, and the post-commit hook installed, so all four branches were
+  already satisfied and the procedure said nothing.
+* `graph: explain "ensure_graphify" named 1 file, affected "ensure_graphify"
+  named 1`, both `bin/focus-kit`, which is what the Slice says.
+* `manuals/graphify.md` has not moved since `74b7f3b`, this delivery's own
+  commit. So a run under the second Host today would read the same **Build
+  now** that F and G read, and produce what they produced. There was nothing
+  new to measure.
+
+### The deadlock, and the way out the page had already written
+
+The last "Done when" item asks for a run that ends in a graph under the second
+Host. It cannot, and the reason is not this page's to fix: **Build now** names
+`/graphify .`, an invocation GitHub Copilot does not offer, and the sentence
+that has to change is `manuals/graphify.md`, which is
+`build-now-reaches-every-host`. The queue orders that line **after** this page.
+So the item waited on a line that waited on the item.
+
+The page had written the way out before the run. *What is claimed after the
+proof* pre-committed to both outcomes: "where it did not, the record says what
+it found and nothing a user reads claims that the graph builds there". That is
+the closing condition for the negative case, and it is met.
+`docs/05-Process.md` §6 says the rest: what the command produced wins, and the
+page is what was wrong. Behaviour's last bullet, "under the second Host, in a
+scratch repository with none of the keys exported, the first branch of Ensuring
+the graph ends in a graph", is **falsified and not delivered**. It is left
+standing in Behaviour on purpose, because §6 forbids editing an expectation
+quietly.
+
+### What the `[x]` means, and what it does not
+
+The line's name outran its scope, so this is worth saying plainly. What this
+delivery made true is that graphify's skill reaches every Host the kit ships
+Commands for, that `doctor` reports it once per Host in five states, that
+`manuals/graphify.md` names no Host, and that the Graph confirmation carries
+the As written phrase. All of that is proven, on this machine and in check 2.
+
+What is still false is that the graph builds under the second Host with no key
+exported. Nothing a user reads says it does: `docs/00-Product.md` Installing
+and `README.md` claim the skill is placed once per Host, which the run
+verified, and neither claims a graph. The one place the `[x]` could be misread
+is this delivery's own queue line, whose summary sentence describes the second
+claim and not the first. `build-now-reaches-every-host` is where that one comes
+true, and its line already names this page as carrying the nine runs behind it.
+
+### The five findings this page held, and where each one is now
+
+`docs/06-Queue.md`, inside the closed line of `a-finding-reaches-the-queue`,
+records five findings stranded in this page on 2026-09-18, one of them already
+carried into the queue by hand. At the close none is left only in a done page:
+
+* **The graph step under Copilot** is `build-now-reaches-every-host`, `[>]`,
+  with its own page in `work/`. It is the one the person carried by hand, which
+  is what that line exists to replace.
+* **`doctor` not telling a guessed document from an answered one** entered
+  Found, not discussed today, as `doctor-tells-a-guess`, which is the name
+  `docs/manuals/process.md` §The queue gives its own example of an entry.
+* **The run writing into the target beyond the seven documents** entered it as
+  `initialize-writes-beyond-its-documents`, with its evidence dated and its
+  first step named, since it was measured before the paragraph `render_prompt`
+  emits.
+* **The run that asked nothing at all** and **the questions under Copilot in
+  VS Code** are one finding at two sizes, and this page closed it itself. What
+  was built is §The attempt at a workaround, and what it is waiting on; what
+  measured it is D through G, in §Both halves hold, and the branch this page
+  needs ran and §The cards came back, where the Host has a widget. No line is
+  needed and none is written.
+
+### The state of each environment, on 2026-09-19
+
+| Environment | At | Note |
+|---|---|---|
+| Kit source | 0.39.0 | untouched in this session; the two deliveries that moved it since 0.37.0 are `copilot-reads-the-project-rules` and `a-finding-reaches-the-queue` |
+| Dogfood copy | 0.39.0 | in sync; check 6 green with no install run |
+| Machine | 0.39.0 | the CLI is a symlink and follows the source; graphify 0.9.63, its skill placed and current for both Hosts, both green in `doctor` |
+| Target repositories | untouched | they move when their owner runs `focus-kit update` |
+| First target (`~/Downloads/vaulted`) | gone | still gone; the row leaves with milestone 2 |
+| Every scratch the 2026-09-18 table lists | gone | `~/Downloads` is empty. `quiltline-copilot-proof`, `seedledger-copilot-proof`, `seedledger-claude-proof` and `seedledger-copilot-A` to `-G` no longer exist on this machine. What they measured is in the two records above and nowhere else now, which is why those records are long |
+
+### One citation left as measured
+
+`docs/06-Queue.md:376`, inside the closed line of
+`a-finding-reaches-the-queue`, cites `work/graph-builds-without-a-key.md:428`
+and `:785`. Moving this file to `work/done/` makes that path false. It is left
+alone, the same way the `bin/focus-kit:191` citation in this delivery's own
+queue line is: both are dated measurements of what was true when they were
+taken, and a measurement is not a citation to keep current.
