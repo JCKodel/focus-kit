@@ -928,3 +928,25 @@ and `:785`. Moving this file to `work/done/` makes that path false. It is left
 alone, the same way the `bin/focus-kit:191` citation in this delivery's own
 queue line is: both are dated measurements of what was true when they were
 taken, and a measurement is not a citation to keep current.
+
+---
+
+## The run its last item waited for, appended on 2026-09-19
+
+This page closed on a **no**: its last "Done when" item asked for a run that
+ends in a graph under the second Host, and §Why this page closes on a no
+records why it could not, that **Build now** named `/graphify .` and the
+sentence that had to change was `build-now-reaches-every-host`'s.
+
+That sentence changed, and the run happened. Under GitHub Copilot, both
+surfaces, in scratch repositories with none of the six keys exported, the first
+branch of Ensuring the graph was reached, **Build now** was answered, and both
+ended with `graphify-out/graph.json` present: the CLI by graphify's own Part B,
+113 nodes with 16 documents in them, and VS Code by a recipe of its own, 71
+nodes with 11 document nodes it composed itself. What this page's Behaviour
+asked for is therefore true now, by the route this page could not take.
+
+It took five rounds and three wordings to get there, and the one that worked is
+the one that forbids the binary rather than describing the skill. The whole
+record, the falsifications included, is
+`work/done/build-now-reaches-every-host.md`.

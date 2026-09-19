@@ -35,6 +35,10 @@ nodes and the communities once, to describe a codebase it has never seen.
 | post-commit hook | rebuilds the graph after every commit, no LLM needed | `.git/hooks/post-commit`, installed by `/initialize`, ensured by `/propose` and `/apply` |
 | `graphify-out/` | `graph.json` (the graph, stamped with the commit it was built from), `GRAPH_REPORT.md` (plain-language map), `graph.html` (interactive) | not versioned; rebuilt on demand by `/propose` and `/apply` |
 
+Whether `/graphify` can be typed at all depends on your agent. What the skill
+is, and how a session reaches it where it cannot be typed, is §Ensuring the
+graph, under **Build now**.
+
 ## Everyday use
 
 ```
@@ -109,10 +113,20 @@ the graph?`, written here once and said entire, in the conversation's
 language, where `<the found line>` is the count line above without its
 `[graphify extract]` prefix, and three options, in this order:
 
-* **Build now.** `/graphify .` in this session, billed as its tokens. When
-  one of the six keys is exported, `graphify .` instead, billed to that
-  key's account. Two runs from the Cost ledger, for scale: 38 files cost
-  187,743 input tokens, 62 files cost 433,524.
+* **Build now.** Read graphify's own skill, the `SKILL.md` in the skills
+  directory your agent reads on this machine, and follow its procedure. With
+  none of the six keys exported, that procedure extracts the documents on
+  **this session's own model**, and it never calls `graphify .` to do it. The
+  refusal printed above is the CLI refusing, not the skill, so **do not run
+  `graphify .` here**, and do not take the `--code-only` the refusal suggests:
+  that is the next option, **Code only**, and it hands back a graph with no
+  document in it. Billed as this session's tokens. When one of the six keys is
+  exported, `graphify .` is the whole build instead, billed to that key's
+  account. Two runs from the Cost ledger, for scale: 38 files cost 187,743
+  input tokens, 62 files cost 433,524. A session that ends this answer with a
+  code-only graph anyway says so in place of the cost line, `graph built from
+  code only under Build now; the documents are not in it`, because a person
+  who chose this one is owed the difference.
 * **Code only.** `graphify . --code-only && graphify cluster-only .
   --no-label`, free, no model; the second command writes the Graph report
   with the stamp and numbered communities. Docs, papers and images stay out

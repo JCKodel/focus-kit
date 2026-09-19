@@ -598,7 +598,7 @@ have.
                               control group questions-reach-the-persons-language recorded. Ahead
                               of codex-port, already proposed, which reads this for whether it
                               installs that host's graphify skill too
-[>] build-now-reaches-every-host
+[x] build-now-reaches-every-host
                               choosing Build now ends in a graph on whatever host the person
                               runs, because the option says what the session does and not what
                               the person types. Measured on 2026-09-18 in the proof runs of
@@ -800,6 +800,47 @@ initialize-writes-beyond-its-documents
                               paragraph was carried as far as writing the
                               documents, so the /discuss starts by measuring.
                               2026-09-18, /apply, in graph-builds-without-a-key
+
+cost-line-trusts-an-unfilled-number
+                              the cost line after Build now, "graph built: <N>
+                              input tokens (graphify-out/cost.json)", prints a
+                              number nothing is obliged to fill: it read 0 over
+                              two real builds and cost.json was absent after two
+                              others, across all three surfaces. The number is
+                              right only when the session writes the subagent's
+                              usage back into the chunk, which is Step B3 of
+                              graphify's skill and which no run does unless it
+                              is told to. So a person reads a free graph where
+                              tokens were spent
+                              docs/manuals/graphify.md:127, 2026-09-19, /apply,
+                              in build-now-reaches-every-host
+
+initialize-skips-ensuring-the-graph
+                              /initialize under GitHub Copilot reaches
+                              §Ensuring the graph about half the time: in two of
+                              four runs at kit 0.40.0, on both surfaces, the
+                              session never opened the section, never ran the
+                              keyless attempt and never asked the Graph
+                              confirmation. The CLI wrote the decision down, "I
+                              wonder if I can skip it completely", and its whole
+                              transcript holds zero occurrences of the section's
+                              name. /propose reached the branch both times it
+                              was tried, so the difference is the command's
+                              length and not the Host
+                              skills/initialize/SKILL.md:202, 2026-09-19,
+                              /apply, in build-now-reaches-every-host
+
+graph-accepts-off-spec-nodes  a session can write nodes into graph.json that
+                              break graphify's own node-ID rule and nothing
+                              catches it: GitHub Copilot in VS Code composed 11
+                              of them by hand, with ids like concept:season and
+                              file:docs/00-Product.md, where the extraction spec
+                              allows [a-z0-9_] alone and forbids dots and
+                              slashes. A later graphify update would not match
+                              them and would accumulate duplicates instead of
+                              replacing them. The graph reads as healthy
+                              meanwhile
+                              2026-09-19, /apply, in build-now-reaches-every-host
 ```
 
 ## Later, not scheduled
