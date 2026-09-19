@@ -277,12 +277,16 @@ kit makes about brownfield repositories is untested.
 
 When this milestone closes, an idea reaches the queue as one line in the
 milestone it serves, written in conversation and not as a page opened too
-early or a hand edit with no placement, and the repository says which git
-strategy a delivery works by, so `/propose` and `/apply` stop inventing the
-branch, the worktree or the absence of both. Neither is a defect a check
-reports: both are friction the process itself produces, the first found when
-the queue grew past what one paragraph admitted, the second when two
-deliveries shared one working tree on 2026-09-18 and `git add -A` of one
+early or a hand edit with no placement; an idea a delivery finds while it is
+being defined or built reaches the queue too, as an entry a later `/discuss`
+turns into a line, instead of a note the person keeps outside the repository;
+and the repository says which git strategy a delivery works by, so `/propose`
+and `/apply` stop inventing the branch, the worktree or the absence of both.
+None of the three is a defect a check reports: all three are friction the
+process itself produces, the first found when the queue grew past what one
+paragraph admitted, the second when a delivery's own record held five findings
+on 2026-09-18 and one of them reached the queue, the third when two
+deliveries shared one working tree that same day and `git add -A` of one
 staged the other's page.
 
 ```
@@ -339,6 +343,49 @@ staged the other's page.
                               of 2026-09-18, because this milestone closes at an idea reaching the
                               queue as one line in the milestone it serves, which it cannot while a
                               paragraph admits a line that is under another
+[>] a-finding-reaches-the-queue
+                              what a delivery found and did not build reaches the queue by itself,
+                              instead of a note the person keeps outside the repository because the
+                              session that found it is cleared before the /discuss that would say
+                              it. /propose and /apply end by asking about every such finding, one
+                              card at the Close with one item per finding, so the build is never
+                              interrupted and the person decides the whole set at once, and each
+                              one the person says yes to is written into a new block of this file,
+                              "## Found, not discussed", above "## Later, not scheduled". An entry
+                              explains itself: what was found, the file and line, the date, the
+                              command that found it, and the page it was found in when there is
+                              one, so the /discuss that reads it starts from a clean session and
+                              opens nothing else. It opens with a short name in the slug's shape,
+                              which that /discuss may keep or replace, the slug naming a delivery
+                              and the delivery not being decided yet, and it carries no mark, a
+                              mark being where a queue line stands and an entry not being one; for
+                              the same reason /propose stops on a name that is only an entry here,
+                              the way it stops on a slug under Later. Later is not where a finding
+                              goes: a Later line is a delivery wanted and not ordered and enters
+                              that block through /discuss (docs/03, Later), and an entry nobody has
+                              discussed is not one. The new block has the same single exit, the
+                              /discuss that turns an entry into a line, and sits outside the order
+                              like Later, so this file's opening prose gains it in the same
+                              delivery. CLAUDE.md Non-negotiables and docs/00, Putting a line in
+                              the queue, give way there too and narrowly: /discuss stays the owner
+                              of the queue's lines, and the new block is the antechamber of a line
+                              and not a line. Measured here on 2026-09-18, in flight while this was
+                              queued: work/graph-builds-without-a-key.md:428 holds "Three more
+                              things the run found, none of them this page's" and :785 holds "The
+                              line the queue is missing", five items in all, inside a 48 KB page
+                              that doctor does not read and that work/done/ takes when the delivery
+                              closes; the same page states the rule that left them there, "/apply
+                              names them and does not write them: the queue is /discuss's". One of
+                              the five reached the queue, build-now-reaches-every-host, and it got
+                              there the way this line exists to replace, the person carrying it by
+                              hand into a later session; the other four were still only in that
+                              page when this was written, the run that asked nothing at all, the
+                              run that wrote into the target beyond the seven documents, doctor not
+                              telling a guessed document from an answered one, and the questions
+                              under Copilot in VS Code. /initialize and /discuss stay out
+                              until an occurrence is recorded in one of them (docs/00, product
+                              question 6), and the two commands that are in get one text written
+                              once
 ```
 
 `queue-line-finds-its-place` needs the fourth skill `discuss-adds-queue-line`
@@ -480,7 +527,7 @@ have.
                               same ownership rules; docs/00 Positioning stops naming Claude Code as
                               the only host, and the README promise made in readme-makes-the-case
                               becomes true. Hooks are necessary and available on copilot?
-[>] copilot-reads-the-project-rules
+[x] copilot-reads-the-project-rules
                               the second half of copilot-port, whose page puts both out of scope:
                               /initialize writes, in every target and without asking, a Host
                               instructions file that points at CLAUDE.md instead of copying it, so
@@ -548,13 +595,41 @@ have.
                               control group questions-reach-the-persons-language recorded. Ahead
                               of codex-port, already proposed, which reads this for whether it
                               installs that host's graphify skill too
+[>] build-now-reaches-every-host
+                              choosing Build now ends in a graph on whatever host the person
+                              runs, because the option says what the session does and not what
+                              the person types. Measured on 2026-09-18 in the proof runs of
+                              graph-builds-without-a-key, ~/Downloads/seedledger-copilot-F under
+                              GitHub Copilot in VS Code and ~/Downloads/seedledger-copilot-G
+                              under the GitHub Copilot CLI, same corpus, no key exported: both
+                              reached the first branch, asked the Graph confirmation, were told
+                              Build now, and then ran the binary graphify ., took error: no LLM
+                              API key found and went on with no graph and no hook. Neither host
+                              misread the option: Build now names /graphify . and that
+                              invocation exists in neither, .github/prompts/ holding the kit's
+                              four commands alone while the skill graphify placed at
+                              ~/.copilot/skills/graphify/ is readable there, a transcript showing
+                              Read skill graphify against it, and not typeable. So
+                              graph-builds-without-a-key kept /graphify in the manual on the
+                              ground that graphify's own skill-copilot.md documents it, and
+                              documenting an invocation is not offering one, which is the
+                              divergence that page records and this line answers. The first thing
+                              the delivery does is measure, not write: whether a host that reads
+                              graphify's SKILL.md can run the extraction with its own model at
+                              all, and the wording of Build now comes out of what that run shows,
+                              never out of this line. Whatever it says has to say it once and for
+                              every host, the manual being one file copied to every target as it
+                              is and reached by no substitution of render_prompt (docs/03, Manual
+                              and Ported command). After graph-builds-without-a-key, whose page
+                              carries the nine runs behind this, and codex-port is [>] and adds a
+                              third host, so whichever of the two runs second inherits the other
 [x] tools-follow-the-stack    the tooling card of /initialize offers the ecosystem the person
                               answered, not the house one. Round 3 of Step 1 greenfield asks the
                               language and "Test framework, linter, formatter" in the same card
                               set, so the tooling options cannot depend on an answer given beside
                               them, and the only stack the skill names is the house default
                               (skills/initialize/SKILL.md, Step 1 greenfield item 3, citing
-                              docs/manuals/focus.md §9). Measured on 2026-09-18 in the proof run
+                              docs/manuals/focus.md §FOCUS in C#). Measured on 2026-09-18 in the proof
                               of initialize-names-what-it-skipped,
                               ~/Downloads/lanternfile-initialize-proof under Claude Code: the
                               person answered TypeScript on Node and the tooling card came out
@@ -566,7 +641,7 @@ have.
                               5, beside the verify command, where the language is already answered
                               and where the tooling answer feeds that command anyway. The house
                               default stays the offer when the language answered is C# on .NET,
-                              since manuals/process.md §3 keeps it as what the command defaults to.
+                              since manuals/process.md §`/initialize` keeps it as what the command defaults
                               Ahead of codex-port, which renders its prompts from the skills, so
                               the port ships the fixed text and not the fix afterwards
 [x] proof-is-asked-without-a-screen
@@ -598,6 +673,55 @@ have.
                               stays out, having never leaked (CLAUDE.md, abstraction on the second
                               concrete occurrence); it is its own line the day it does. Ahead of
                               codex-port, for the reason the line above it gives
+[ ] pointer-file-is-written-where-the-rule-stands
+                              /initialize writes the Host instructions file at the step that
+                              asks for it, on whatever host, because the rule names the file
+                              and not what a table does not name. Measured on 2026-09-19 in
+                              the proof run of copilot-reads-the-project-rules,
+                              ~/Downloads/copilot-rules-proof under GitHub Copilot with the kit
+                              at 0.38.0, a greenfield Flutter repository and a Portuguese
+                              session: the run wrote the nine documents and CLAUDE.md, ran
+                              focus-kit doctor . as Step 5 asks, printed its
+                              ! .github/copilot-instructions.md missing (run /initialize), and
+                              only then wrote that file, which is the one thing Step 5 says not
+                              to do. The file arrived and doctor is what put it there. Two
+                              consequences, one cause: nothing in the transcript lists the
+                              template tree, which is what the Step 3 rule needs, the nine
+                              documents being named by path in Step 2's table while this one is
+                              named only as what that table does not account for; and the file
+                              came out in English in a pt-BR target, since a warn that says
+                              missing says nothing about language while Step 3 would have
+                              translated it with the rest. Same shape as
+                              build-now-reaches-every-host, where documenting an invocation was
+                              not offering one. The first thing the delivery does is measure and
+                              not write, under both hosts, because that run exercised one of the
+                              two and whether the rule fires under Claude Code is unknown; the
+                              wording comes out of what the runs show and never out of this
+                              line, and whatever it says has to keep naming no host
+                              (docs/03, Host). It is also where docs/00 Positioning and the CLI's
+                              three host lines come back, left as they are by that delivery on
+                              this milestone's own clause. codex-port is [>] and adds a third
+                              host, so whichever of the two runs second inherits the other
+[ ] tooling-card-follows-the-answer-on-every-host
+                              the tooling card of /initialize offers the ecosystem the person
+                              answered, on whatever host. Second occurrence of
+                              tools-follow-the-stack, [x] since 2026-09-18, and the first after
+                              its fix. Measured on 2026-09-19 in the same proof run: round 3
+                              answered Flutter and the card came out reading "Qual conjunto de
+                              ferramentas de teste, lint e formatação deve ser usado para este
+                              projeto?" with "Padrão do ecossistema .NET, xUnit, dotnet format e
+                              um linter .NET padrão do ecossistema" as its first option. The text
+                              the host received says it in so many words, the tooling of "the
+                              ecosystem round 3 answered, and of no other" and "no tool is named
+                              here", and the only stack the file names is still the house default
+                              round 3 offers. So the fix was a move, from round 3 to round 5, and
+                              a second move is not the answer. The documents came out right once
+                              more, docs/05 §4 reading flutter test && flutter analyze and no
+                              .NET tool anywhere under docs/ or in CLAUDE.md, so only the asking
+                              was wrong and no file in that scratch records it. Why the host
+                              offered it is not in the transcript and this line does not guess:
+                              the delivery measures first, on both hosts, and the answer comes
+                              out of that
 [>] codex-port                the kit's commands as Codex repository instructions and
                               reusable prompts, installed by focus-kit install alongside the skills,
                               same ownership rules; docs/00 Positioning stops naming Claude Code as

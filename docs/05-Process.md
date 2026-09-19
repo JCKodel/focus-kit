@@ -112,12 +112,16 @@ It runs six checks, in this order, and stops at the first red:
    commands are, because an assertion that read the same list as the
    reporter would assert nothing. A scratch repository has
    not had `/initialize` run in it, so `doctor` correctly warns that
-   `docs/00` to `06`, `CLAUDE.md`, the graph and the hook are missing.
-   Those ten warnings are the expected output, and the check **asserts**
+   `docs/00` to `06`, `CLAUDE.md`, the Host instructions file of every other
+   host (`docs/03-Domain.md`), the graph and the hook are missing.
+   Those eleven warnings are the expected output, and the check **asserts**
    them, each line built by calling `warn`, the way it builds every green
    line by calling `ok`: they carry the command that fixes each one
    (`docs/04-Conventions.md` §1), and a parenthesis edited in `doctor` and
-   nowhere else has to turn the check red.
+   nowhere else has to turn the check red. The Host instructions file is
+   asserted by its path here, as the four Ported commands are by name and for
+   the same reason: `doctor` reads that path out of the Template tree, and an
+   assertion that read the same tree would assert nothing.
    The two **Appended once** files get a green line each, `<file> (kit
    fragment current)`, asserted the same way, because a scratch receives both
    fragments whole and a scratch that did not is a broken `install`.
@@ -177,8 +181,10 @@ It runs six checks, in this order, and stops at the first red:
    failure. **Missing:** `.claude/skills/initialize/templates/CLAUDE.md` is
    deleted and one `doctor` run must both name it as missing and not print
    the drift `ok` line, which is the only way a deleted template is ever
-   caught: ten of the seventeen paths the manifest names are templates and no
-   presence line covers them. It is restored by a copy alone, because a
+   caught: eleven of the twenty-two paths the manifest names are templates and
+   no presence line covers them. The count was written as ten of seventeen and
+   was stale by four: `copilot-port` added the Ported commands to the manifest
+   without moving it. It is restored by a copy alone, because a
    deletion does not change the manifest. Then the other half of that rule,
    on a kit-owned path a presence line **does** name:
    `docs/manuals/process.md` is deleted and one `doctor` run must carry its

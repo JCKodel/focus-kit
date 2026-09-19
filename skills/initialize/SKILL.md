@@ -535,7 +535,7 @@ document, the identifier and which of the two happened. When every
 identifier was already in the table, that first line alone, ending `all in
 docs/03`.
 
-## Step 3: CLAUDE.md
+## Step 3: CLAUDE.md, and the files that point at it
 
 If there is no `CLAUDE.md`, write it from the template. If there is one,
 **merge**: keep everything that is there, add the language line and the
@@ -547,6 +547,28 @@ that doc, leaving a pointer. Show the person the diff before writing it.
 Also add to `.claude/settings.json` the permission allows this stack needs
 (`Bash(dotnet *)`, `Bash(npm *)`, `Bash(make *)`, and so on) and the one the
 Proof tool needs, when it has one, so `/apply` does not stop on every build.
+
+**`CLAUDE.md` is not the only file read at the start of a session.** Another
+tool reads another path, and the template tree holds one file for each of
+them: **every template that the Step 2 table above does not account for, and
+that is not `templates/CLAUDE.md`, is a file of this kind.** The table
+accounts for a path it names and for everything under a directory it names,
+so `templates/docs/` in all its depth is Step 2's and nothing of it is
+reached here. Write each of the rest to the path it mirrors, at the root of
+this repository, without asking and in every repository: `templates/<path>`
+becomes `<path>`. Fill it and translate it the way you filled the nine
+documents, remove its `<!-- init: ... -->` comment, and keep every path and
+file name inside it as it is.
+
+Each of those files points at `CLAUDE.md` and carries no rule of its own.
+**Copy nothing out of `CLAUDE.md` into one**, however useful the line looks:
+the whole point is that one edit by hand to `CLAUDE.md` moves every tool at
+once, and a second copy of a rule is a rule that disagrees with itself by
+the second edit.
+
+If one of them is already there, **merge**, the way you merge `CLAUDE.md`
+above: keep everything that is in it, add the pointer if it is missing, and
+show the person the diff before writing it.
 
 ## Step 4: the manuals follow the language
 

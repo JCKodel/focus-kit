@@ -114,6 +114,24 @@ category determines the write:
   otherwise report all three as edited locally in every translated target.
   What is asked of them instead is whether a translation happened at all
   (`docs/adr/ADR-0008`). No fifth category, and the four are still four.
+
+  **2026-09-19, `copilot-reads-the-project-rules`:** the list gains the Host
+  instructions file of every Host that is not Claude Code
+  (`docs/03-Domain.md`), one per Host, which for GitHub Copilot is
+  `.github/copilot-instructions.md`. Project-owned by the same test as
+  everything else here, which is who writes it: `/initialize` does, from a
+  Template, in every target and without asking, and `install` and `update`
+  never do. It is project-owned and not kit-owned for one reason, and the
+  reason is the point of the file: a person may add a line to it, and an
+  `update` that overwrote it would take that line away. What keeps it from
+  drifting is not ownership but content, and that is a rule of
+  `/initialize` rather than of this ADR: the file points at `CLAUDE.md` and
+  carries no rule of its own, so the rules a target has are in one file
+  whatever reads them. The read count above goes from three to four:
+  `doctor` tests whether each one is there, at the path the Template tree
+  gives it, and names it missing in the wording the eight other
+  project-owned files already print. No write was added, no fifth category,
+  and Forbidden stands.
 * **Merged**, written with `merge_json` (`bin/focus-kit:376`): `.mcp.json`
   and `.claude/settings.json`. Keys are added; nothing is ever removed.
 

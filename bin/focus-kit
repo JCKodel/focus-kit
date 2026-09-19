@@ -31,7 +31,8 @@
 # install time, never authored beside them, so the two can never disagree.
 #
 # Everything the kit owns is overwritten on update. Everything the project owns
-# (docs/00 to 06, CLAUDE.md, ADRs, work/, .claude/skills/.focus-kit-language)
+# (docs/00 to 06, CLAUDE.md, the instructions file of every other host that
+# reads this repository, ADRs, work/, .claude/skills/.focus-kit-language)
 # is never touched here: that is /initialize's job, and it merges instead of
 # overwriting. The manuals are the kit's, so update writes them back in
 # English over a translation /initialize made; doctor names each one.
@@ -774,15 +775,30 @@ doctor() {
       fi
     fi
   fi
-  # Two loops over the eleven paths and not one, because the fix differs: the
-  # eight project-owned files are what /initialize writes, and the three
+  # Two loops over the twelve paths and not one, because the fix differs: the
+  # nine project-owned files are what /initialize writes, and the three
   # manuals are kit-owned, so their line carries the drift wording verbatim.
   # The order of the output is the order of the single loop these two replace.
   # Both feed $missing, as the one loop did: the drift pass reads it to avoid
   # naming a second time what a presence line named.
+  #
+  # The ninth is the Host instructions file (docs/03-Domain.md) of every host
+  # but the one CLAUDE.md is for, and its path is read out of the Template tree
+  # at KIT_DIR rather than written here, the way manuals/*.md is read just
+  # below: Steps 2 and 3 of /initialize account for templates/docs/ and
+  # templates/CLAUDE.md, and every other template is one of these files, so a
+  # second host is a file under templates/ and no edit here and the script goes
+  # on naming no host outside render_prompt's substitution list. Markdown only,
+  # because a .DS_Store left at the root of that tree would otherwise become a
+  # warn naming a command that would not clear it, which is a warn that lies
+  # (docs/04-Conventions.md §1). Presence only: what is inside the file is the
+  # person's.
   local f
+  local tpl="$KIT_DIR/skills/initialize/templates"
   for f in docs/00-Product.md docs/01-Architecture.md docs/02-Backend.md docs/03-Domain.md \
-           docs/04-Conventions.md docs/05-Process.md docs/06-Queue.md CLAUDE.md; do
+           docs/04-Conventions.md docs/05-Process.md docs/06-Queue.md CLAUDE.md \
+           $( (cd "$tpl" && find . -name '*.md' -type f ! -path './docs/*' ! -path './CLAUDE.md') \
+              | sed 's|^\./||' | LC_ALL=C sort ); do
     if [ -f "$target/$f" ]; then
       ok "$f"
     else
@@ -1113,12 +1129,17 @@ check_install() { # scratch
       die "check 2: doctor did not report $expected in the scratch repository"
     }
   done
-  # The ten warns of the same run. A scratch repository has not had
+  # The eleven warns of the same run. A scratch repository has not had
   # /initialize run in it, so these are the expected output and not a failure,
   # and each one has to name the command that puts it right
   # (docs/04-Conventions.md §1). Asserted through warn, as the green lines are
   # through ok: a parenthesis edited in doctor and not here turns check 2 red.
+  # The Host instructions file is named by its path here, the way the four
+  # command names and the two host names below are: doctor reads that path out
+  # of the Template tree, and an assertion that read the same tree would assert
+  # nothing (docs/05-Process.md §4).
   for expected in "docs/00-Product.md missing (run /initialize)" \
+                  ".github/copilot-instructions.md missing (run /initialize)" \
                   "docs/01-Architecture.md missing (run /initialize)" \
                   "docs/02-Backend.md missing (run /initialize)" \
                   "docs/03-Domain.md missing (run /initialize)" \
