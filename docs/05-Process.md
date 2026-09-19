@@ -61,6 +61,11 @@ way §6 says; leaves the environments as §5 says; updates the docs the
 delivery changed; ticks "Done when"; moves the file to `work/done/`; stages
 and **suggests** the commit message. **It does not commit.**
 
+`/propose` and `/apply` both end by asking about what they found and did not
+build, and writing what the person takes under `## Found, not discussed` in
+`docs/06-Queue.md` (§8, and `docs/manuals/process.md` §The queue). That is
+the one thing either writes into the queue besides the mark.
+
 ## 3. The format of `work/<slug>.md`
 
 ```markdown
@@ -440,6 +445,14 @@ line **never leaves** the queue: it changes mark.
 `/propose` turns `[ ]` into `[>]` (defined in `work/<slug>.md`, not yet built)
 and stops on a slug standing under Later, which is not ordered yet;
 `/apply` turns `[>]` into `[x]` and moves the file to `work/done/`.
+
+Plus `## Found, not discussed`, the block directly above Later: what a
+delivery found and did not build, one entry per finding, written by
+`/propose` or `/apply` at its Close and turned into a line by the `/discuss`
+that removes it. An entry carries no mark and is not a line, `/propose` stops
+on a name that is only one, and the heading arrives with the first entry and
+never as an empty heading. The block, the entry's six fields, the card and
+the removal are `docs/manuals/process.md` §The queue, written there once.
 
 ## 9. Milestone review
 

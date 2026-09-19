@@ -38,7 +38,10 @@ own text sets the example.
 
 ## Non-negotiables
 - One delivery = one page in work/<slug>.md. /discuss to put the line in the
-  queue, /propose to define, /apply to build.
+  queue, /propose to define, /apply to build. /discuss owns the queue's
+  lines, with one narrow exception: /propose and /apply write what they found
+  and did not build under "Found, not discussed", which is the antechamber of
+  a line and not a line (`docs/manuals/process.md` §The queue).
 - Every file is kit-owned, project-owned, merged or appended once. Kit-owned
   files are overwritten on `focus-kit update`; project-owned files (`docs/00`
   to `06`, `CLAUDE.md`, `docs/adr/`, `work/`) are never touched by the CLI.

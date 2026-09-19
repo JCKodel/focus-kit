@@ -48,12 +48,14 @@ You are the stakeholder's thinking partner. The goal is a one-page file,
 is in `work/` (the deliveries in flight).
 
 **Stop there when the queue does not hold `${input:arguments}` as an ordered line.**
-Two cases and one answer: the queue has no such slug, or the slug stands
-under `## Later, not scheduled`, which is wanted and not ordered. Say the
-line is not ordered yet, name `/discuss <the idea>` as what orders it, and
-stop. Nothing is written, no mark changes and the graph is not ensured, so a
-run that stops costs neither a page nor a build. A mark never appears under
-Later.
+Three cases and one answer: the queue has no such slug; the slug stands
+under `## Later, not scheduled`, which is wanted and not ordered; or
+`${input:arguments}` is only the name of an entry under `## Found, not discussed`,
+which nobody has discussed yet. Say the line is not ordered yet, name
+`/discuss <the idea>` as what orders it, and stop. Nothing is written, no
+mark changes and the graph is not ensured, so a run that stops costs neither
+a page nor a build. A mark never appears under Later, and never under Found,
+not discussed.
 
 Read `docs/01-Architecture.md`
 for where the slice would live, its §3 for which pieces a slice has here.
@@ -164,8 +166,20 @@ already there and already placed, because Read first stopped otherwise.
 
 ## Close
 
+**What you found and did not put on the page.** After the mark and before
+the closing report, ask about every finding this conversation made that the
+page does not ask for, and write the ones the person takes under
+`## Found, not discussed` in `docs/06-Queue.md`. The block, the entry's six
+fields, the card and its two options are
+`docs/manuals/process.md` §The queue, and this file repeats none of them.
+Read the named section alone: one `grep -n '^#'` over the manual gives its
+heading's line and the next heading of the same level, and you read that
+range and nothing else of the manual. When you found nothing, ask nothing,
+write nothing and say nothing about the block.
+
 End by listing what you wrote: `work/${input:arguments}.md`, the `docs/06-Queue.md`
-line and its new mark, and the `docs/03-Domain.md` row when you added a
+line and its new mark, the `docs/06-Queue.md` entries you wrote under
+`## Found, not discussed`, and the `docs/03-Domain.md` row when you added a
 term. Then say that nothing is staged and nothing is committed: the commit
 is the person's, the way `docs/05-Process.md` §Git says.
 
@@ -177,8 +191,10 @@ wrote the page:
 ```
 Made: <the branch <slug> | the worktree <directory>, on branch <slug> | it was
 already there | nothing; docs/05 §7 names none>.
-Written: work/${input:arguments}.md; docs/06-Queue.md line marked [>]; docs/03-Domain.md
-row <Term> (or: no new term). Nothing staged, nothing committed.
+Written: work/${input:arguments}.md; docs/06-Queue.md line marked [>]; docs/06-Queue.md
+entries <name>, <name> under Found, not discussed (or: no finding);
+docs/03-Domain.md row <Term> (or: no new term). Nothing staged, nothing
+committed.
 
 Open a new session (a new chat here, or a new terminal) and type:
 /apply ${input:arguments}

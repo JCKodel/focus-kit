@@ -7,6 +7,9 @@ built · `[x]` done, in `work/done/`. The process is `docs/05-Process.md`.
 The order starts at the first milestone. A `[ ]` line under "Later, not
 scheduled" sits outside it: a delivery that is wanted and not ordered,
 which `/discuss` moves into a milestone when a paragraph admits it.
+"Found, not discussed", above it, holds what a delivery found and did not
+build: entries and not lines, written by `/propose` and `/apply` and turned
+into a line by `/discuss` (`docs/manuals/process.md` §The queue).
 
 ---
 
@@ -343,7 +346,7 @@ staged the other's page.
                               of 2026-09-18, because this milestone closes at an idea reaching the
                               queue as one line in the milestone it serves, which it cannot while a
                               paragraph admits a line that is under another
-[>] a-finding-reaches-the-queue
+[x] a-finding-reaches-the-queue
                               what a delivery found and did not build reaches the queue by itself,
                               instead of a note the person keeps outside the repository because the
                               session that found it is cleared before the /discuss that would say

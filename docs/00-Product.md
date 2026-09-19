@@ -2,7 +2,7 @@
 
 **Project:** focus-kit
 **Status:** active
-**Last updated:** 2026-09-18
+**Last updated:** 2026-09-19
 
 ---
 
@@ -260,6 +260,12 @@ command to write under that slug, so it is the one that makes the worktree or
 the branch, and the line goes there. Under none it makes nothing and writes
 where the session is.
 
+An argument that names an entry under "Found, not discussed" is where the
+conversation starts instead of a description, and the entry goes in the edit
+that writes the line: that block is the antechamber of a line, `/discuss` is
+its single exit, and the lines themselves stay this command's
+(`docs/manuals/process.md` §The queue).
+
 **Rule of product:** it writes the line and nothing else. No delivery page,
 no ADR, no notes file. A branch or a worktree is not an exception to that: it
 is where the line is written, not a second thing written. What the conversation settled travels in the line's
@@ -289,6 +295,13 @@ exact, because it is the only one that is expensive to reverse, and exact
 means what must hold, never what only a run settles and never a fact
 the run rechecks.
 
+What the conversation found and the page does not ask for is asked about at
+the Close and written under "Found, not discussed", one entry per finding the
+person takes, which is the narrow exception to the queue's lines being
+`/discuss`'s (`docs/manuals/process.md` §The queue). A name that is only an
+entry stops the command the way a Later slug does, because nobody has
+discussed it yet.
+
 **Rule of product:** if the scope does not fit on one page, it is two
 deliveries. This is not a style preference about concision. A scope that
 needs five pages has not been decided yet, and the page is how you find out
@@ -309,8 +322,15 @@ Then it writes back into the delivery file what actually happened: what
 diverged from the plan, what was dropped, what the proof found, what
 decisions were taken along the way. It updates the documents the delivery
 changed, ticks the "Done when" list, moves the page to `work/done/`, turns
-the queue line to `[x]`, stages everything with `git add -A` and suggests a
-commit message.
+the queue line to `[x]`, asks about what it found and did not build and
+writes what the person takes under "Found, not discussed", stages everything
+with `git add -A` and suggests a commit message.
+
+That block is the narrow exception to the queue's lines being `/discuss`'s
+(`docs/manuals/process.md` §The queue), and the reason it is asked at the
+Close is that a build is never interrupted by it. What a session found and
+nobody wrote down is lost the moment the session is cleared, which is the
+cost this pays.
 
 **Rule of product:** it does not commit, and it does not merge. Ever, in any
 configuration, whatever the project's git strategy says: under a branch or a

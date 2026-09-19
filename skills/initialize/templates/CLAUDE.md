@@ -17,6 +17,10 @@ Prose in English; identifiers in English.
 ## Non-negotiables
 - One delivery = one page in work/<slug>.md. /initialize to set the docs up,
   /discuss to put the line in the queue, /propose to define, /apply to build.
+  /discuss owns the queue's lines, with one narrow exception: /propose and
+  /apply write what they found and did not build under "Found, not
+  discussed", which is the antechamber of a line and not a line
+  (`docs/manuals/process.md` §The queue).
 <!-- init: one line per practice answered in docs/01-Architecture.md §3,
      in that table's order, each pointing at it: what the structure is,
      where the rules live, how errors travel, what gets a test. When all

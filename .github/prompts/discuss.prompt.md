@@ -62,6 +62,18 @@ When a queue line already covers the idea, say which one in its own words
 and write nothing. An idea already in the queue is a `/propose`, not a
 second line.
 
+**When `${input:arguments}` names an entry under `## Found, not discussed`**, that
+entry is the idea's starting point and not a description of it: read it,
+say what it says, and hold the conversation you always hold from there. The
+line goes where the milestone paragraphs place it, the way every other line
+does, and the entry is removed in the same edit that writes it. That is the
+block's single exit, and how the removal is written is
+`docs/manuals/process.md` §The queue, which this file repeats none of. Read
+the named section alone: one `grep -n '^#'` over the manual gives its
+heading's line and the next heading of the same level, and you read that
+range and nothing else of the manual. A run that ends in no line leaves the
+entry where it is.
+
 When a line under `## Later, not scheduled` covers it, say which one, then
 read the milestone paragraphs again. When one of them admits the idea now,
 offer the move of that single line into that milestone, with the reason,
@@ -165,6 +177,9 @@ conversation knows it, and otherwise a parenthetical saying where it will be
 named, the way `(per stack)` and `(prose, in the manuals)` already read
 there.
 
+When the idea came from an entry under `## Found, not discussed`, that entry
+goes in the same edit, the way Read first says.
+
 Nothing else is written: no `work/<slug>.md`, no ADR, no code, no notes
 file. No existing line is edited and no mark changes. No existing line
 moves either, with two exceptions, and each one is a move the person
@@ -181,7 +196,8 @@ Placed: <the milestone whose paragraph admits it | the milestone whose
 paragraph you amended | Later, no paragraph admits it>.
 Made: <the branch <slug> | the worktree <directory>, on branch <slug> | nothing;
 docs/05 §7 names none>.
-Written: docs/06-Queue.md, one line <slug> under <where>; docs/03-Domain.md
+Written: docs/06-Queue.md, one line <slug> under <where>; docs/06-Queue.md
+entry <name> removed from Found, not discussed (or: none); docs/03-Domain.md
 row <Term> (or: no new term); <the amended paragraph, the milestone
 proposed and its three lines, or the promoted line, when there was one>.
 Nothing staged, nothing committed.

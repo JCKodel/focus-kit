@@ -118,12 +118,22 @@ others.
    and leaves the doc stale is not done.
 3. Tick every item of "Done when". Move the file to `work/done/`.
 4. Mark the line in `docs/06-Queue.md`: `[>]` becomes `[x]`.
-5. `git add -A`. Suggest the commit message in the format
+5. **What you found and did not build.** Ask about every finding this run
+   made that the delivery did not ask for, and write the ones the person
+   takes under `## Found, not discussed` in `docs/06-Queue.md`, so the edit
+   is staged with the delivery. The block, the entry's six fields, the card
+   and its two options are `docs/manuals/process.md` §The queue, and this
+   file repeats none of them. Read the named section alone: one `grep -n
+   '^#'` over the manual gives its heading's line and the next heading of the
+   same level, and you read that range and nothing else of the manual. When
+   you found nothing, ask nothing, write nothing and say nothing about the
+   block.
+6. `git add -A`. Suggest the commit message in the format
    `docs/05-Process.md` defines: subject up to 72 characters, body up to
    five one-line bullets, last line pointing at `work/done/<slug>.md`.
    **Do not commit.** The graph rebuilds itself on the person's commit
    (post-commit hook).
-6. When `docs/05-Process.md` §7 names a worktree per delivery or a branch
+7. When `docs/05-Process.md` §7 names a worktree per delivery or a branch
    per slug, name the command that brings this slug's branch to the trunk,
    and under a worktree the removal of the directory too, the way
    `docs/manuals/process.md` §The git strategy words them. Name them and run

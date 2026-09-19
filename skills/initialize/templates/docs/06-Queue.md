@@ -7,6 +7,9 @@ built · `[x]` done, in `work/done/`. The process is `docs/05-Process.md`.
 The order starts at the first milestone. A `[ ]` line under "Later, not
 scheduled" sits outside it: a delivery that is wanted and not ordered,
 which `/discuss` moves into a milestone when a paragraph admits it.
+"Found, not discussed", above it, holds what a delivery found and did not
+build: entries and not lines, written by `/propose` and `/apply` and turned
+into a line by `/discuss` (`docs/manuals/process.md` §The queue).
 
 ---
 

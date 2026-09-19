@@ -224,7 +224,12 @@ second thing with that shape: what `/discuss`, `/propose` and `/apply` do
 under each of the three answers is written once in
 `manuals/process.md` §The git strategy, and the three skills read the
 project's answer in
-`docs/05-Process.md` §7 and point at that section for the rest. Cited by
+`docs/05-Process.md` §7 and point at that section for the rest. The third is
+the Found, not discussed block: the block's shape, the entry's six fields,
+the card `/propose` and `/apply` ask and the removal `/discuss` makes are
+written once in
+`manuals/process.md` §The queue, and the same three skills cite that heading
+and repeat none of it. Cited by
 heading and never by number, because a section added to that manual
 renumbers the ones below it.
 

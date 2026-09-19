@@ -105,6 +105,10 @@ milestone whose paragraph admits it now. When the idea is already a line it
 says which one and writes nothing; when it is already a line under Later,
 it says which one and offers that promotion.
 
+An argument that names an entry under "Found, not discussed" is the idea's
+starting point rather than a description of it, and the entry goes in the
+edit that writes the line (§The queue).
+
 The line is the whole record: what the conversation settled travels in its
 own words, in the project's documentation language, with the slug in
 English. Its last words name `/propose <slug>`, which may run in the same
@@ -138,10 +142,14 @@ When it is done, it turns the queue line from `[ ]` to `[>]`, and its last
 words name the new session to type `/apply` in.
 
 It starts from a line the queue already holds and already placed. A slug
-the queue does not have, and a slug standing under "Later, not scheduled",
-both stop it before it reads anything else: it says the line is not ordered
-yet and names `/discuss`, so a run that stops costs neither a page nor a
-graph build.
+the queue does not have, a slug standing under "Later, not scheduled", and a
+name that is only an entry under "Found, not discussed" all stop it before it
+reads anything else: it says the line is not ordered yet and names
+`/discuss`, so a run that stops costs neither a page nor a graph build.
+
+What it found and did not build it asks about at its Close, after the mark
+and before its closing report, and writes what you take under "Found, not
+discussed" (§The queue).
 
 If a scope does not fit on one page, it is two deliveries. The page is the
 test that the scope was understood.
@@ -168,7 +176,10 @@ end:
    dropped, what the proof found, decisions taken), updates the docs the
    delivery changed, ticks "Done when", moves the file to `work/done/`,
    turns `[>]` into `[x]`;
-6. stages with `git add -A` and suggests the commit message. **It does not
+6. asks about what it found and did not build, and writes what you take
+   under "Found, not discussed" (§The queue), so the finding reaches the
+   queue before the session is cleared;
+7. stages with `git add -A` and suggests the commit message. **It does not
    commit.** The post-commit hook rebuilds the graph when you do.
 
 ## 7. The house rules
@@ -231,6 +242,83 @@ So a placement ends in one of three places, and `/discuss` is what takes
 it: the milestone whose paragraph admits the line, the milestone whose
 paragraph you amended to admit it, or Later. A line leaves Later only the
 way it arrived, through `/discuss` and a move you accepted.
+
+**"Found, not discussed" is the block above Later**: what a delivery found
+and did not build. `/propose` and `/apply` write an entry there at their
+Close, and `/discuss` is the only way one leaves. It is neither the order
+nor Later: a Later line is a delivery that is wanted and not ordered and
+entered through `/discuss`, and an entry here is a finding nobody has
+discussed yet. It is the one thing those two commands write into the queue
+besides the mark, and `/discuss` stays the owner of the queue's lines: the
+block is the antechamber of a line, not a line.
+
+**The heading arrives with the first entry**, never before it, because an
+empty heading says a thing exists that does not. The command that writes the
+first entry writes, in one edit, the heading directly above `## Later, not
+scheduled` and below every milestone, one paragraph of prose under it, the
+fence, the entry, and the sentence naming the block in the queue's own
+opening prose. A queue whose prose already names the block keeps it.
+
+**The entry.** One per finding, inside that fence, carrying no mark: a mark
+is where a queue line stands, and an entry is not one. Six fields, in this
+order:
+
+* the **name**, short, lowercase and hyphenated, in the slug's shape and not
+  a slug, because the delivery is not decided yet and the `/discuss` that
+  reads the entry may keep the name or replace it;
+* **what was found**, in the documentation language;
+* the **file and line** it stands at, when it has one;
+* the **date**;
+* the **command** that found it;
+* the **delivery** it was found in, by slug and never by path, when there is
+  one, because `/apply` writes the entry after moving its page to
+  `work/done/` and a path would name a file that is no longer there.
+
+The name sits in the first column and what was found in the second, in the
+scope column of the lines around it; the last continuation line carries the
+address, the date, the command and the slug:
+
+```
+doctor-tells-a-guess       focus-kit doctor cannot tell a guessed document
+                           from an answered one: seven documents with the
+                           right headings come back green
+                           bin/focus-kit:661, 2026-09-18, /apply,
+                           in graph-builds-without-a-key
+```
+
+An entry explains itself, because the `/discuss` that reads it runs in a
+session that holds none of the conversation that found it, and the page that
+held the detail may already be a done page.
+
+**The card.** One question per finding, with two options each: the finding
+enters the queue, or it does not. It is asked at the Close and nowhere
+earlier, so a build is never interrupted, and after every other file of the
+Close is written, so nothing but the queue waits on the answer. Every
+question goes in one card; where your host's widget cannot carry them all,
+the command asks in as many cards as it takes, back to back, and writes
+nothing until the last one is answered. Nothing is written for a finding you
+did not take, and no finding is asked twice. A command that found nothing
+asks nothing, writes nothing and says nothing about the block.
+
+The question and its two options are conversation and not document
+(`docs/03-Domain.md`, As written): written here once and said entire, in the
+conversation's language, with the name, every path, every file name and every
+command kept in English.
+
+* `<name> reaches the queue?`
+* **Yes, write it under Found, not discussed.** The entry goes into
+  `docs/06-Queue.md` and waits for a `/discuss`.
+* **No, it does not enter.** Nothing is written, and the finding stays in
+  what this run recorded.
+
+**The removal.** `/discuss <name of an entry>` starts from that entry rather
+than from a description: it holds the conversation it always holds, writes
+the line where the milestone paragraphs place it, and removes the entry in
+the same edit. That is the block's single exit. When the entry it removes was
+the last one, the heading, its paragraph and the fence go with it, because
+the block is never an empty heading; the sentence in the queue's opening
+prose stays, since the next finding brings the block back. A `/discuss` that
+ends in no line leaves the entry where it is.
 
 ## 9. What the process deliberately lacks
 
