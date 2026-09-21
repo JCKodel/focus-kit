@@ -4,8 +4,9 @@ In English: [README.md](README.md).
 
 Um processo de entrega para repositórios trabalhados com um agente de
 código. É um arquivo só, `SETUP.md`, que qualquer agente lê e transforma
-em quatro comandos no seu repositório. Funciona com Claude Code, Codex e
-GitHub Copilot, em qualquer língua.
+em quatro comandos no seu repositório. Funciona com Claude Code, Codex,
+GitHub Copilot, Cursor, Google Antigravity, Gemini CLI, Windsurf e qualquer
+outro host que leia `AGENTS.md`, em qualquer língua.
 
 ```
 /brainstorm  ou  /analyze     uma vez: os documentos do projeto, por conversa ou lendo o código
@@ -22,10 +23,12 @@ Read https://raw.githubusercontent.com/JCKodel/focus-kit/main/SETUP.md and do wh
 ```
 
 Ou baixe o `SETUP.md` ao lado do repositório e aponte o agente para o
-arquivo. O agente escreve os quatro comandos na pasta que o host dele lê
-(`.claude/skills/`, `.agents/skills/` ou `.github/skills/`) e nada mais.
-Não há nada a instalar na máquina: nenhum CLI, nenhum runtime, nenhuma
-dependência. Para atualizar, diga a mesma frase de novo.
+arquivo. O agente escreve os quatro comandos para todos os hosts que o kit
+conhece (`.claude/skills/`, `.agents/skills/`, `.windsurf/skills/` e os
+arquivos-ponteiro de Copilot, Cursor, Gemini CLI e Antigravity) e nada
+mais, e o repositório abre pronto em qualquer um deles. Não há nada a
+instalar na máquina: nenhum CLI, nenhum runtime, nenhuma dependência. Para
+atualizar, diga a mesma frase de novo.
 
 ## Usar
 
@@ -85,7 +88,7 @@ instalador, um grafo de conhecimento, um doctor, um selftest, manifests e
 comandos dez vezes mais longos que os que tinham funcionado, fazendo
 perguntas que o próprio autor não sabia responder. Esta versão é a volta ao
 tamanho que funcionou, com uma adição de que o Ninjobs não precisava: roda
-em três hosts e em qualquer língua.
+em qualquer host que leia `AGENTS.md` e em qualquer língua.
 
 ## FOCUS e git, oferecidos e não impostos
 

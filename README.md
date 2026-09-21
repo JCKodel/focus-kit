@@ -4,8 +4,9 @@ Em português: [README.pt.md](README.pt.md).
 
 A delivery process for repositories worked on with a coding agent. It is
 one file, `SETUP.md`, that any agent reads and turns into four commands in
-your repository. It works with Claude Code, Codex and GitHub Copilot, in
-any language.
+your repository. It works with Claude Code, Codex, GitHub Copilot, Cursor,
+Google Antigravity, Gemini CLI, Windsurf and any other host that reads
+`AGENTS.md`, in any language.
 
 ```
 /brainstorm  or  /analyze     once: the project's documents, by conversation or by reading the code
@@ -22,10 +23,12 @@ Read https://raw.githubusercontent.com/JCKodel/focus-kit/main/SETUP.md and do wh
 ```
 
 Or download `SETUP.md` next to the repository and point the agent at the
-file. The agent writes the four commands under the folder its host reads
-(`.claude/skills/`, `.agents/skills/` or `.github/skills/`) and nothing
-else. There is nothing to install on the machine: no CLI, no runtime, no
-dependency. To update, say the same sentence again.
+file. The agent writes the four commands for every host the kit knows
+(`.claude/skills/`, `.agents/skills/`, `.windsurf/skills/` and the pointer
+files of Copilot, Cursor, Gemini CLI and Antigravity) and nothing else, so
+the repository opens ready in any of them. There is nothing to install on
+the machine: no CLI, no runtime, no dependency. To update, say the same
+sentence again.
 
 ## Use
 
@@ -83,8 +86,8 @@ An earlier version of this kit forgot the last rule. It grew an installer,
 a knowledge graph, a doctor, a self-test, manifests, and commands ten times
 longer than the ones that had worked, asking questions their own author
 could not answer. This version is the return to the size that worked, with
-one addition Ninjobs did not need: it runs on three hosts and in any
-language.
+one addition Ninjobs did not need: it runs on every host that reads
+`AGENTS.md` and in any language.
 
 ## FOCUS and git, offered and not imposed
 

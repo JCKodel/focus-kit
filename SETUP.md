@@ -7,20 +7,18 @@ is in section 2 and the whole of it in section 3.
 
 ## 1. What to do
 
-1. Find out which host you are, and take its row of the table below. A
-   host not in the table that follows the Agent Skills standard takes the
-   Codex row.
-2. Write every file of section 3, byte for byte, at the path its heading
-   names, relative to that host's skills folder (so `brainstorm/SKILL.md`
-   becomes `.claude/skills/brainstorm/SKILL.md` on Claude Code). The one
-   exception is 3.7, whose paths are relative to the repository root. Do
-   not reformat, summarize, translate or improve any of them; the only
-   thing you fill is the `<name>` placeholder of 3.6 and 3.7, once per
-   skill. The same content goes to every path a heading lists. A section
-   marked "Codex only" or "GitHub Copilot only" is written on that host
-   and skipped on the others.
-3. Touch nothing else. Do not run `git init`, do not stage, do not commit.
-4. Tell the person which files you wrote and what comes next: on a
+1. Write every file of section 3, byte for byte, at every path its
+   heading names. Sections 3.1 to 3.5 name paths relative to a skills
+   folder, and each of those files goes to all three: `.claude/skills/`,
+   `.agents/skills/` and `.windsurf/skills/` (so `brainstorm/SKILL.md`
+   is written three times). Sections 3.6 to 3.11 name paths relative to
+   the repository root. Do not reformat, summarize, translate or improve
+   any of them; the only thing you fill is the `<name>` placeholder of 3.6
+   to 3.9, once per skill. The one file you never replace is a `GEMINI.md`
+   that already holds the project's own content: add the line of 3.11 to
+   its top instead.
+2. Touch nothing else. Do not run `git init`, do not stage, do not commit.
+3. Tell the person which files you wrote and what comes next: on a
    repository with no code, `/brainstorm`; on a repository with code,
    `/analyze`. Both run in a fresh session.
 
@@ -29,14 +27,49 @@ the kit is updated. Everything the four commands write afterwards (`docs/`,
 `work/`, `AGENTS.md`, `CLAUDE.md`) belongs to the project and is never
 touched by this file.
 
-| Host | Skills folder | Invoked as | Also write |
+Every host gets its files on every run, whichever host runs this file, so
+the repository opens ready in any of them and switching hosts changes
+nothing. The rules live in `AGENTS.md`, which every host below reads on its
+own or through the pointer the table names. Skill folders overlap on
+purpose: `.agents/skills/` is read by Codex, Copilot, Antigravity, OpenCode
+and Zed; `.claude/skills/` by Claude Code and Copilot. What a host that
+reads two of them does with the same name in both, the kit has not tested.
+
+| Host | Reads the rules from | Reads the commands from | Invoked as |
 |---|---|---|---|
-| Claude Code | `.claude/skills/<name>/SKILL.md` | `/<name> <slug>` | nothing |
-| Codex | `.agents/skills/<name>/SKILL.md` | `$<name> <slug>` | nothing |
-| GitHub Copilot | `.github/skills/<name>/SKILL.md` | `/<name>` | the four prompt files of 3.7 |
+| Claude Code | `CLAUDE.md`, which imports `AGENTS.md` | `.claude/skills/<name>/SKILL.md` | `/<name> <slug>` |
+| Codex | `AGENTS.md` | `.agents/skills/<name>/SKILL.md` | `$<name> <slug>` |
+| GitHub Copilot | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.github/prompts/<name>.prompt.md` | `/<name>` |
+| Cursor | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.cursor/commands/<name>.md` | `/<name>`; whether a slug typed after it reaches the command is not documented |
+| Google Antigravity | `AGENTS.md`, through `.agents/rules/focus-kit.md` | `.agents/skills/<name>/SKILL.md` | `/<name> <slug>` |
+| Gemini CLI | `AGENTS.md`, through `GEMINI.md` | `.agents/skills/<name>/SKILL.md`, through `.gemini/commands/<name>.toml` | `/<name> <slug>` |
+| Windsurf | `AGENTS.md` | `.windsurf/skills/<name>/SKILL.md` | `@<name> <slug>` |
+| OpenCode, Zed | `AGENTS.md` | `.agents/skills/<name>/SKILL.md` | by asking for the skill |
+| Jules, Junie, Warp, Kiro, Roo Code, Cline | `AGENTS.md` | none; ask in words for `.agents/skills/<name>/SKILL.md` | |
+
+Each row was read off the vendor's documentation on 2026-09-21, and a host
+enters this table only with its documentation in hand: Claude Code
+https://code.claude.com/docs/en/memory and https://code.claude.com/docs/en/skills;
+Codex https://developers.openai.com/codex/skills and
+https://developers.openai.com/codex/guides/agents-md; Copilot
+https://docs.github.com/en/copilot/concepts/agents/about-agent-skills and
+https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/your-first-prompt-file;
+Cursor https://cursor.com/docs/rules and
+https://cursor.com/docs/cli/reference/slash-commands; Antigravity
+https://antigravity.google/docs/rules-workflows/ and
+https://antigravity.google/docs/skills/; Gemini CLI
+https://geminicli.com/docs/cli/gemini-md/ and
+https://geminicli.com/docs/cli/custom-commands/; Windsurf
+https://docs.windsurf.com/windsurf/cascade/skills and
+https://docs.devin.ai/desktop/cascade/agents-md; OpenCode
+https://opencode.ai/docs/skills/; Zed https://zed.dev/docs/ai/skills; the
+last row https://agents.md. What the documentation does not say, the kit
+does not rely on: Antigravity reading `AGENTS.md` directly, a skills folder
+for Cursor, and Amp altogether are left out until their pages say so.
 
 In the skills, `$ARGUMENTS` stands for what the person typed after the
-command. Claude Code substitutes it; on any other host, read it as "the
+command. Claude Code substitutes it; the Copilot and Gemini CLI files of
+3.7 and 3.9 hand it over themselves; on any other host, read it as "the
 word after the command" and leave the token as it is.
 
 ## 2. What the kit is
@@ -124,8 +157,8 @@ When the six subjects are covered, write, in the documentation language:
 docs/00 to 06 as `references/documents.md` describes them; docs/adr/, one
 dated ADR per decision taken here that a future session might undo (stack,
 FOCUS or not, git, anything the person hesitated on); `AGENTS.md` from the
-template; `CLAUDE.md` holding the single line `@AGENTS.md`; and the folder
-`work/done/` with a `.gitkeep`, so it survives a clone. The numbers of the
+template; `CLAUDE.md` holding the line `@AGENTS.md` and nothing else yet;
+and the folder `work/done/` with a `.gitkeep`, so it survives a clone. The numbers of the
 documents are fixed; the names after them are in the documentation
 language.
 
@@ -183,11 +216,12 @@ is not asked to settle it now.
 In the documentation language: docs/00 to 06 describing what exists, not
 what should exist; docs/adr/ with the decisions the code already embodies
 and the ones this round took, one dated paragraph each; `AGENTS.md` from the
-template; `CLAUDE.md` holding the single line `@AGENTS.md`; and the folder
+template; `CLAUDE.md` holding the line `@AGENTS.md`; and the folder
 `work/done/`. The rules live in `AGENTS.md`: what an existing `CLAUDE.md`,
 `.github/copilot-instructions.md` or similar file already says moves into
-it, and that file becomes the one import line (or, when its host cannot
-import, a one-line pointer to `AGENTS.md`). Show the diff before writing.
+it, and that file becomes the import line (or, when its host cannot
+import, a one-line pointer to `AGENTS.md`), keeping below it only what
+applies to that host alone. Show the diff before writing.
 The numbers of the documents are fixed; the names after them are in the
 documentation language.
 
@@ -340,8 +374,11 @@ edited by conversation in any session; no command owns it.
 decision, the consequences, the date. An ADR is amended, never rewritten.
 
 **AGENTS.md.** The template below. Read at the start of every session by
-Codex and Copilot; Claude Code reads it through `CLAUDE.md`, which holds
-the single line `@AGENTS.md`.
+every host in the table of SETUP.md §1, on its own or through the pointer
+the table names; Claude Code reads it through `CLAUDE.md`, which holds `@AGENTS.md`
+and, below that line, only what applies to Claude Code alone: a tool name,
+a command that exists only there. `AGENTS.md` itself names no host's tool,
+so it reads the same in every one.
 
 **work/.** One page per delivery in flight; `work/done/` holds the finished
 ones. Created with a `.gitkeep` in `work/done/`, so the folder survives a
@@ -525,10 +562,11 @@ is the only place a rule is written.
 ```
 ````
 
-### 3.6 `brainstorm/agents/openai.yaml`, `analyze/agents/openai.yaml`, `propose/agents/openai.yaml`, `apply/agents/openai.yaml`
+### 3.6 `.agents/skills/<name>/agents/openai.yaml`
 
-Codex only. Four files, one per skill, `<name>` replaced by the skill's
-name. They stop a message that happens to contain the word "apply" from
+For Codex. Four files, one per skill, `<name>` replaced by `brainstorm`,
+`analyze`, `propose` and `apply`, next to the `SKILL.md` of `.agents/skills/`
+only. They stop a message that happens to contain the word "apply" from
 building anything unasked.
 
 ````yaml
@@ -542,22 +580,62 @@ policy:
 
 ### 3.7 `.github/prompts/<name>.prompt.md`
 
-GitHub Copilot only, and relative to the repository root, not to the
-skills folder. Four files, `<name>` replaced by `brainstorm`, `analyze`,
-`propose` and `apply`, so the commands exist as slash commands in the
-chat. Each one is three lines:
+For GitHub Copilot. Four files, `<name>` replaced by `brainstorm`,
+`analyze`, `propose` and `apply`, so the commands exist as slash commands
+in the chat. Each one is three lines:
 
 ````markdown
 ---
 agent: 'agent'
 ---
-Read `.github/skills/<name>/SKILL.md` and follow it. `$ARGUMENTS` is `${input:slug}`.
+Read `.agents/skills/<name>/SKILL.md` and follow it. `$ARGUMENTS` is `${input:slug}`.
+````
+
+### 3.8 `.cursor/commands/<name>.md`
+
+For Cursor. Four files, `<name>` replaced as in 3.7, so the commands exist
+as slash commands in the agent chat. Each one is one line:
+
+````markdown
+Read `.agents/skills/<name>/SKILL.md` and follow it. `$ARGUMENTS` is the word typed after the command.
+````
+
+### 3.9 `.gemini/commands/<name>.toml`
+
+For the Gemini CLI. Four files, `<name>` replaced as in 3.7, so the
+commands exist as slash commands. Each one is two lines:
+
+````toml
+description = "focus-kit: the <name> command. Reads .agents/skills/<name>/SKILL.md."
+prompt = "Read .agents/skills/<name>/SKILL.md and follow it. $ARGUMENTS is {{args}}."
+````
+
+### 3.10 `.agents/rules/focus-kit.md`
+
+For Google Antigravity, which reads its rules from `.agents/rules/`. One
+file, holding no rule of its own:
+
+````markdown
+Read `AGENTS.md` at the repository root before acting: it holds this project's rules. The four commands of the process are the skills in `.agents/skills/`.
+````
+
+### 3.11 `GEMINI.md`
+
+For the Gemini CLI, which reads `GEMINI.md` unless told otherwise. The same
+content as 3.10. When the project already has a `GEMINI.md` of its own,
+this line goes to its top and the rest of the file stays.
+
+````markdown
+Read `AGENTS.md` at the repository root before acting: it holds this project's rules. The four commands of the process are the skills in `.agents/skills/`.
 ````
 
 ## 4. Check
 
-Before reporting, confirm: four `SKILL.md` files under the host's skills
-folder; two `references/documents.md`; on Codex, four `agents/openai.yaml`;
-on Copilot, four prompt files; no other file changed; the string `$ARGUMENTS`
-still present in `propose` and `apply`; no em dash in anything you wrote.
-Then report the list and the next command.
+Before reporting, confirm: eighteen files across `.claude/skills/`,
+`.agents/skills/` and `.windsurf/skills/` (four `SKILL.md` and two
+`references/documents.md` in each); four `agents/openai.yaml` under
+`.agents/skills/`; four prompt files, four Cursor commands and four Gemini
+commands; `.agents/rules/focus-kit.md` and `GEMINI.md`; no other file
+changed; the string `$ARGUMENTS` still present in every `propose` and
+`apply`; no em dash in anything you wrote. Then report the list and the
+next command.
