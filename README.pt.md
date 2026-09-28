@@ -40,7 +40,8 @@ atualizar, diga a mesma frase de novo.
    documentos, seja qual for a língua em que você conversa.
 2. **A cada entrega.** Escolha uma linha da fila (`docs/06`) e rode
    `/propose <slug>`: uma conversa que termina em `work/<slug>.md`, uma
-   página. Abra uma sessão nova e rode `/apply <slug>`: ele constrói a
+   página. Leia e peça cada correção nessa mesma conversa; depois abra uma
+   sessão nova e rode `/apply <slug>`: ele constrói a
    página, roda o comando de verificação, prova o resultado, atualiza os
    documentos, move a página para `work/done/`, faz o stage e sugere a
    mensagem de commit. Você revisa e commita.
@@ -106,8 +107,9 @@ uma recomendação para a sua stack, e registram o que você escolher:
   trabalhando sozinha; uma branch por entrega, para trabalho sequencial
   revisado por pull request; ou uma worktree por entrega, para que vários
   agentes construam entregas diferentes em paralelo, depois de decidir
-  quais podem rodar juntas. Em todos os casos a página e a sua construção
-  entram no mesmo commit, e o agente nunca commita nem faz merge.
+  quais podem rodar juntas. Em todos os casos a página e a construção de
+  uma entrega são uma mudança só, revertida em um passo (um commit na
+  trunk, um merge nas outras), e o agente nunca commita nem faz merge.
 
 ## Língua
 

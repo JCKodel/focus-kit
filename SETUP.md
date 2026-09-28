@@ -254,7 +254,7 @@ it is two deliveries: say so, propose the split, and write only the first.
 
 Before writing, follow the git strategy of docs/05: with a branch or a
 worktree per delivery, create it, named after the slug, and write there,
-so the page and its build land in the same commit.
+so the page and its build reach the main branch as one change.
 
 Write `work/<slug>.md` in the format docs/05 §The page defines. The
 **Contract** section (data, schema, API, message shapes) is the only one
@@ -268,8 +268,16 @@ queue, add the line where it belongs and say so.
 Files in the documentation language docs/05 declares; talk in the language
 the person writes in. Do not write, edit or generate code, migration, test
 or configuration: separating deciding from doing is what keeps scope from
-growing during implementation. End with: open a fresh session and type
-`/apply <slug>`.
+growing during implementation.
+
+The page is written to be read, not generated and applied at once: it
+records what you understood, and it is what `/apply` will build. End by
+telling the person to read it and question it (each Behaviour line
+checkable, the Contract exact, Out of scope naming what they assumed was
+in, the choices you made on your own first), to ask for every correction
+in this conversation, and only then to open a fresh session and type
+`/apply <slug>`. A hole found on the page costs a turn; found after
+`/apply`, it costs another `/apply`, the most expensive command.
 ````
 
 ### 3.4 `apply/SKILL.md`
@@ -423,20 +431,26 @@ On a repository with code the default is what the code already does.
 | Repository | fetch and save; the only place an infra exception becomes a Result | business rules |
 
 **Git.** A strategy, not a silver bullet: pick the one that fits how the
-project is worked. Three answers, and in every one the page `/propose`
-writes and the build `/apply` makes land in the same commit, and the agent
-never commits and never merges:
+project is worked. Three answers, and in every one a delivery's page and
+build are one change that reverts in one step, because undoing a whole
+delivery must be one step; the agent never commits and never merges:
 
-* **trunk:** everything on the main branch, one delivery at a time, the
-  person reviews and commits after each. Only for one person working
+* **trunk:** everything on the main branch, one delivery at a time. The
+  page waits uncommitted in the working tree between `/propose` and
+  `/apply`; page and build land in one commit, which the person makes
+  after reviewing. Only for one person working
   alone: with two, their deliveries share one branch and one commit
   carries the other's half-done work. What Ninjobs did;
 * **a branch per delivery:** `/propose` creates a branch named after the
-  slug and writes the page there; `/apply` builds on it; the person merges
-  through a pull request. For sequential work reviewed by pull request;
+  slug and writes the page there; `/apply` builds on it. The branch may
+  carry several commits, the page first and the build after; the person
+  merges it through a pull request in one merge, so reverting the delivery
+  is one revert of that merge. For sequential work reviewed by pull
+  request;
 * **a worktree per delivery:** `/propose` creates a git worktree on a
   branch named after the slug and writes the page there; `/apply` runs in
-  it; the person merges. For parallel work: one branch does not touch
+  it; the branch reaches the main branch in one merge, as above. For
+  parallel work: one branch does not touch
   another, so several agents build different deliveries at the same time.
   Before running two at once, decide which deliveries can run in parallel
   and which touch the same files, or their merges conflict. Costs a
@@ -510,8 +524,9 @@ built, `[x]` done. Edited by conversation in any session.
 * **Proof of a screen:** <tool, viewports, reference>, or "no screens".
 * **Publish policy:** when an environment beyond the local one is updated,
   and whether the agent asks first.
-* **Git:** trunk | a branch per delivery | a worktree per delivery. The
-  agent stages; it never commits or merges.
+* **Git:** trunk | a branch per delivery | a worktree per delivery. A
+  delivery's page and build are one change: one commit on trunk, one merge
+  otherwise. The agent stages; it never commits or merges.
 
 ## 6. Commit
 

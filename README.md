@@ -40,7 +40,8 @@ sentence again.
    documents, whatever language you talk in.
 2. **Every delivery.** Pick a line of the queue (`docs/06`) and run
    `/propose <slug>`: a conversation that ends in `work/<slug>.md`, one
-   page. Open a fresh session and run `/apply <slug>`: it builds the page,
+   page. Read it and ask for every correction in that conversation; then
+   open a fresh session and run `/apply <slug>`: it builds the page,
    runs the verify command, proves the result, updates the documents,
    moves the page to `work/done/`, stages and suggests the commit message.
    You review and commit.
@@ -104,8 +105,9 @@ a recommendation for your stack, and record what you choose:
   working alone; a branch per delivery, for sequential work reviewed by pull
   request; or a worktree per delivery, so several agents build different
   deliveries in parallel, once you decide which can run together. In every
-  case the page and its build land in the same commit, and the agent never
-  commits or merges.
+  case a delivery's page and build are one change that reverts in one step
+  (one commit on trunk, one merge otherwise), and the agent never commits
+  or merges.
 
 ## Language
 
