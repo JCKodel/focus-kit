@@ -100,9 +100,12 @@ a recommendation for your stack, and record what you choose:
   two principles (vertical slices and errors as values) with the structure
   your stack favors, or keep your own conventions. Ninjobs took the two
   principles. The book is FOCUS by J.C. Ködel (https://books.kodel.com.br).
-* **Git**: everything on trunk with one delivery at a time; a branch per
-  delivery; or a worktree per delivery, so several agents build different
-  deliveries in parallel. In every case the agent never commits or merges.
+* **Git**: everything on trunk with one delivery at a time, for one person
+  working alone; a branch per delivery, for sequential work reviewed by pull
+  request; or a worktree per delivery, so several agents build different
+  deliveries in parallel, once you decide which can run together. In every
+  case the page and its build land in the same commit, and the agent never
+  commits or merges.
 
 ## Language
 

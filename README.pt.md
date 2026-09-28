@@ -102,10 +102,12 @@ uma recomendação para a sua stack, e registram o que você escolher:
   estrutura que a sua stack favorece, ou manter as suas convenções. O
   Ninjobs adotou os dois princípios. O livro é FOCUS, de J.C. Ködel
   (https://books.kodel.com.br).
-* **Git**: tudo na trunk com uma entrega por vez; uma branch por entrega;
-  ou uma worktree por entrega, para que vários agentes construam entregas
-  diferentes em paralelo. Em todos os casos o agente nunca commita nem faz
-  merge.
+* **Git**: tudo na trunk com uma entrega por vez, para uma pessoa
+  trabalhando sozinha; uma branch por entrega, para trabalho sequencial
+  revisado por pull request; ou uma worktree por entrega, para que vários
+  agentes construam entregas diferentes em paralelo, depois de decidir
+  quais podem rodar juntas. Em todos os casos a página e a sua construção
+  entram no mesmo commit, e o agente nunca commita nem faz merge.
 
 ## Língua
 
