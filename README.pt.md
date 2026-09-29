@@ -47,6 +47,12 @@ atualizar, diga a mesma frase de novo.
    mensagem de commit. Você revisa e commita.
 3. **Repita** até a fila acabar. Ideias novas viram linhas novas na fila,
    por conversa, em qualquer sessão.
+4. **Todo milestone** termina com uma linha de revisão, rodada como
+   qualquer entrega. Ela confere, cláusula por cláusula, que as entregas
+   do milestone somam o que o seu parágrafo prometeu, e revisa o código.
+   Cada achado que você confirma vira uma linha num milestone novo, `.1`
+   depois do revisado, pronta para `/propose` e `/apply`; esse termina com
+   a sua própria revisão.
 
 Os documentos carregam o peso; os comandos só apontam para eles. O que
 cada documento guarda, o formato da página e a fila estão no `SETUP.md`

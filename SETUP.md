@@ -143,7 +143,8 @@ order. Move on when you could write the section yourself.
    screen is proven, publish policy. What does not exist yet is written as
    "created by the first delivery".
 6. **The first milestone** (docs/06): three to eight deliveries, one line
-   each, in order. The first ones are the skeleton the others stand on.
+   each, in order, then its review. The first ones are the skeleton the
+   others stand on.
 
 Ask only what you cannot decide with a sensible default. State the default
 and ask whether it holds: a person who cannot answer must be able to say
@@ -205,7 +206,7 @@ host's question form when it has one:
   presented in their own words. The default is what the code already does,
   and you say what that is;
 * the first milestone: three to eight deliveries, or where to read them
-  from (issues, a TODO file, a roadmap).
+  from (issues, a TODO file, a roadmap), then its review.
 
 Everything else you decide from the code and mark as observed. Where the
 code contradicts itself, the document records an open question; the person
@@ -373,7 +374,8 @@ Where tests live and what is tested at each level. Commit message format.
 **docs/05, the process.** The template below, with its slots filled.
 
 **docs/06, the queue.** Milestones, each with a paragraph saying what is
-true when it closes, and under it one line per delivery, in order:
+true when it closes, and under it one line per delivery, in order, the
+last one its review (docs/05 §8):
 
 ```
 [ ] <slug>    <what it delivers, one line>
@@ -512,7 +514,8 @@ dropped, what the proof found, the decisions taken.
 
 docs/06: one line per delivery, in order, under milestones. The line never
 leaves the queue; it changes mark: `[ ]` not defined, `[>]` defined and not
-built, `[x]` done. Edited by conversation in any session.
+built, `[x]` done. The last line of each milestone is its review (§8). Edited by
+conversation in any session.
 
 ## 5. This project
 
@@ -546,9 +549,19 @@ that happened.
 
 ## 8. Closing a milestone
 
-When a milestone closes, review the whole with what the host offers, and
-each confirmed finding becomes a line in the queue, not a fix in the middle
-of the next milestone.
+The last line of every milestone is its review, `<milestone>-review`, a
+delivery like the others: /propose writes its page, /apply runs it. It
+checks the milestone's paragraph clause by clause against what the
+deliveries built, and reviews the code with what the host offers. A clause
+no delivery answers is a finding. The review fixes nothing; the person
+decides each finding, confirmed or rejected, with a reason.
+
+Each confirmed finding becomes a `[ ]` line in a new milestone placed
+right after the reviewed one, numbered with `.1` (M3 is followed by M3.1),
+with its own paragraph, so the lines wait for /propose and nothing
+renumbers. That milestone ends with its own review, which may open `.2`.
+No confirmed finding, no new milestone. A finding is never a fix in the
+middle of the next milestone.
 ```
 
 ## AGENTS.md
