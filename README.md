@@ -57,6 +57,21 @@ The documents carry the weight; the commands only point at them. What each
 document holds, the format of the page, and the queue are in `SETUP.md`
 §3.5, which is also what the agent installs as the commands' reference.
 
+## Documentation
+
+This page is the short version. The long one is a free book, in English
+and Portuguese: **One Page at a Time: Delivering Software and Projects
+with Coding Agents**, by J.C. Ködel. It takes a reader who has never
+followed any process to running whole projects with coding agents:
+Spec-Driven Development as the idea, focus-kit as the method and its tool,
+FOCUS as the optional architecture, and just enough git to work with
+parallel agents and teams.
+
+* Site: https://jckodel.github.io/focus-kit-book/
+* PDF and EPUB: https://github.com/JCKodel/focus-kit-book/releases
+* Source: https://github.com/JCKodel/focus-kit-book, a book written with
+  the kit, as its example of a project that is not software
+
 ## Why this shape
 
 The process was born in **Ninjobs** (https://www.ninjobs.app), a job
@@ -105,7 +120,8 @@ a recommendation for your stack, and record what you choose:
   values, code organized by feature. You can take it whole, take only the
   two principles (vertical slices and errors as values) with the structure
   your stack favors, or keep your own conventions. Ninjobs took the two
-  principles. The book is FOCUS by J.C. Ködel (https://books.kodel.com.br).
+  principles. FOCUS is chapter 7 of the book
+  (https://jckodel.github.io/focus-kit-book/07-four-pieces/).
 * **Git**: everything on trunk with one delivery at a time, for one person
   working alone; a branch per delivery, for sequential work reviewed by pull
   request; or a worktree per delivery, so several agents build different

@@ -58,6 +58,21 @@ Os documentos carregam o peso; os comandos só apontam para eles. O que
 cada documento guarda, o formato da página e a fila estão no `SETUP.md`
 §3.5, que é também o que o agente instala como referência dos comandos.
 
+## Documentação
+
+Esta página é a versão curta. A longa é um livro gratuito, em português e
+inglês: **Uma Página de Cada Vez: entregando software e projetos com
+agentes de IA**, de J.C. Ködel. Ele leva quem nunca seguiu processo algum
+a conduzir projetos inteiros com agentes de IA: Spec-Driven Development
+como ideia, focus-kit como método e ferramenta, FOCUS como arquitetura
+opcional e o git necessário para trabalhar com agentes em paralelo e com
+equipes.
+
+* Site: https://jckodel.github.io/focus-kit-book/pt/
+* PDF e EPUB: https://github.com/JCKodel/focus-kit-book/releases
+* Fonte: https://github.com/JCKodel/focus-kit-book, um livro escrito com
+  o kit, como o seu exemplo de projeto que não é software
+
 ## Por que este formato
 
 O processo nasceu no **Ninjobs** (https://www.ninjobs.app), uma plataforma
@@ -107,8 +122,8 @@ uma recomendação para a sua stack, e registram o que você escolher:
   valores, código organizado por feature. Você pode adotar inteira, adotar
   só os dois princípios (vertical slices e erros como valores) com a
   estrutura que a sua stack favorece, ou manter as suas convenções. O
-  Ninjobs adotou os dois princípios. O livro é FOCUS, de J.C. Ködel
-  (https://books.kodel.com.br).
+  Ninjobs adotou os dois princípios. O FOCUS é o capítulo 7 do livro
+  (https://jckodel.github.io/focus-kit-book/pt/07-four-pieces/).
 * **Git**: tudo na trunk com uma entrega por vez, para uma pessoa
   trabalhando sozinha; uma branch por entrega, para trabalho sequencial
   revisado por pull request; ou uma worktree por entrega, para que vários

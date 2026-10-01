@@ -411,8 +411,9 @@ rule, publishes one state. Use Cases hold every business rule as pure
 functions that take data and return a Result, no IO, no framework. The
 Repository fetches and saves, and is the only place an infrastructure
 exception becomes a value. Code is organized by feature (vertical slices),
-not by layer, and a layer exists only when it pays its own way. The book is
-FOCUS by J.C. Ködel (https://books.kodel.com.br). Three answers:
+not by layer, and a layer exists only when it pays its own way. FOCUS
+is chapter 7 of the book One Page at a Time by J.C. Ködel
+(https://jckodel.github.io/focus-kit-book/07-four-pieces/). Three answers:
 
 * **FOCUS whole:** the four pieces, errors as values, vertical slices.
   docs/01 gets the responsibility table below and names the pieces a slice
