@@ -374,8 +374,8 @@ Where tests live and what is tested at each level. Commit message format.
 **docs/05, the process.** The template below, with its slots filled.
 
 **docs/06, the queue.** Milestones, each with a paragraph saying what is
-true when it closes, and under it one line per delivery, in order, the
-last one its review (docs/05 §8):
+true when it closes, and under it one line per delivery, in order, then
+its review (docs/05 §8):
 
 ```
 [ ] <slug>    <what it delivers, one line>
@@ -515,8 +515,8 @@ dropped, what the proof found, the decisions taken.
 
 docs/06: one line per delivery, in order, under milestones. The line never
 leaves the queue; it changes mark: `[ ]` not defined, `[>]` defined and not
-built, `[x]` done. The last line of each milestone is its review (§8). Edited by
-conversation in any session.
+built, `[x]` done. Each milestone is planned with its review as the last
+line (§8). Edited by conversation in any session.
 
 ## 5. This project
 
@@ -543,26 +543,26 @@ reasoning lives.
 ## 7. What this process does not have
 
 No formal spec, no spec delta, no change folder, no numbered tasks, no
-gate before implementation, no specialized subagent, no tool the
-deliveries did not ask for. When one of these is proposed, the question
-is: which concrete error would it have caught? The answer names an error
-that happened.
+gate before implementation, no review of a review, no specialized
+subagent, no tool the deliveries did not ask for. When one of these is
+proposed, the question is: which concrete error would it have caught? The
+answer names an error that happened.
 
 ## 8. Closing a milestone
 
-The last line of every milestone is its review, `<milestone>-review`, a
-delivery like the others: /propose writes its page, /apply runs it. It
-checks the milestone's paragraph clause by clause against what the
-deliveries built, and reviews the code with what the host offers. A clause
-no delivery answers is a finding. The review fixes nothing; the person
-decides each finding, confirmed or rejected, with a reason.
+A milestone is planned with its review as its last line,
+`<milestone>-review`, a delivery like the others: /propose writes its
+page, /apply runs it. It takes the milestone's paragraph clause by clause
+and writes, for each, which delivery answers it and how a person tests it.
+It reviews no code and fixes nothing. The person tests each clause by
+hand: a clause no delivery answers, or one that fails in the person's
+hands, is a finding.
 
-Each confirmed finding becomes a `[ ]` line in a new milestone placed
-right after the reviewed one, numbered with `.1` (M3 is followed by M3.1),
-with its own paragraph, so the lines wait for /propose and nothing
-renumbers. That milestone ends with its own review, which may open `.2`.
-No confirmed finding, no new milestone. A finding is never a fix in the
-middle of the next milestone.
+Each finding becomes a `[ ]` line in the same milestone, under the review
+line, waiting for /propose. The milestone closes when those lines are
+`[x]`. They get no second review: each one passes through its own page,
+its proof and the person's commit, which is the review. A finding is
+never a fix in the middle of the next milestone.
 ```
 
 ## AGENTS.md

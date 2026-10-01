@@ -47,11 +47,12 @@ sentence again.
    You review and commit.
 3. **Repeat** until the queue is done. New ideas become new lines in the
    queue, by conversation, in any session.
-4. **Every milestone** ends with a review line, run like any delivery. It
-   checks, clause by clause, that the milestone's deliveries add up to
-   what its paragraph promised, and reviews the code. Each finding you
-   confirm becomes a line in a new milestone, `.1` after the reviewed one,
-   ready for `/propose` and `/apply`; that one ends with its own review.
+4. **Every milestone** is planned with a review as its last line, run like
+   any delivery. It takes the milestone's paragraph clause by clause and
+   says which delivery answers each one and how you test it. You test;
+   what is missing or fails in your hands becomes a line in the same
+   milestone, under the review, ready for `/propose` and `/apply`. Those
+   lines get no second review: your commit is the review.
 
 The documents carry the weight; the commands only point at them. What each
 document holds, the format of the page, and the queue are in `SETUP.md`
