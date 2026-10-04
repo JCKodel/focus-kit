@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.04
+Version: 2026.10.04.1
 
 ## 1. What to do
 
@@ -122,11 +122,13 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.04"
+  version: "2026.10.04.1"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
-session reads before acting. Read that file first, whole.
+session reads before acting. Read that file first, whole. When the root
+holds `context/`, read it whole too, before talking: it is what people
+already said, and a question it answers is not asked.
 
 ## Talk
 
@@ -144,7 +146,8 @@ order. Move on when you could write the section yourself.
 4. **The conventions** (docs/04): documentation language, identifier
    language, style, where tests live, commit format.
 5. **The process slots** (docs/05): verify command, environments, how a
-   screen is proven, publish policy. What does not exist yet is written as
+   screen is proven, publish policy, whether `context/` is committed. What
+   does not exist yet is written as
    "created by the first delivery".
 6. **The first milestone** (docs/06): three to eight deliveries, one line
    each, in order, then its review. The first ones are the skeleton the
@@ -182,7 +185,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.04"
+  version: "2026.10.04.1"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -190,6 +193,7 @@ what each document holds.
 
 ## Read
 
+`context/`, whole, when it exists: what people said that the code cannot.
 The README and any existing docs; the manifests (package.json, pyproject,
 go.mod, *.csproj, pubspec.yaml, Cargo.toml, Gemfile, and the like); the
 folder tree two levels deep; the entry points; the tests and how they run;
@@ -211,6 +215,8 @@ host's question form when it has one:
 * the two choices of `references/documents.md` §Choices, FOCUS and git,
   presented in their own words. The default is what the code already does,
   and you say what that is;
+* whether `context/` is committed. Default: committed when the repository
+  stays with the team, in `.gitignore` when it is delivered or public;
 * the first milestone: three to eight deliveries, or where to read them
   from (issues, a TODO file, a roadmap), then its review.
 
@@ -246,7 +252,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.04"
+  version: "2026.10.04.1"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -299,7 +305,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.04"
+  version: "2026.10.04.1"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. The page is the
 scope; do not widen it.
@@ -347,7 +353,7 @@ The same content at both paths.
 # The documents
 
 Seven numbered documents, a folder of decisions, a rules file and a work
-folder. The numbers are fixed, because the four commands cite them; the
+folder, written from a context folder. The numbers are fixed, because the four commands cite them; the
 name after the number is in the documentation language (`00-Product.md`,
 `00-Produto.md`, `00-Produkt.md`). Prose in the documentation language;
 identifiers in English unless docs/04 says otherwise.
@@ -408,6 +414,20 @@ so it reads the same in every one.
 **work/.** One page per delivery in flight; `work/done/` holds the finished
 ones. Created with a `.gitkeep` in `work/done/`, so the folder survives a
 clone.
+
+**context/.** What people said, as it arrived: the proposal, the client's
+emails, the notes of a meeting, a brief. `context/` is what the agent reads
+from; `docs/` is what it writes. Each item is a pair: the original, kept
+byte for byte, and beside it `<original name>.md` (`proposal.pdf.md`)
+holding what the original says, whole, in Markdown; a summary is not a
+conversion. An item that arrives as text is the `.md` alone. Subfolders
+are the project's. `/brainstorm` and `/analyze` read it whole; an item that
+arrives later is read on the person's request, and what it changes goes
+into the documents (a rule into docs/00, a term into docs/03, a line into
+docs/06), so `/propose` reads the decision, not the message. Whether it is
+committed is a slot of docs/05 §5; personal data and anything under a
+confidentiality clause stay out of a committed folder, because git keeps a
+removed file in its history.
 
 ## Choices
 
@@ -538,6 +558,8 @@ line (§8). Edited by conversation in any session.
 * **Proof of a screen:** <tool, viewports, reference>, or "no screens".
 * **Publish policy:** when an environment beyond the local one is updated,
   and whether the agent asks first.
+* **Context:** `context/` is committed | listed in `.gitignore`, and why
+  (who reads the repository).
 * **Git:** trunk | a branch per delivery | a worktree per delivery. A
   delivery's page and build are one change: one commit on trunk, one merge
   otherwise. The agent stages; it never commits or merges.
