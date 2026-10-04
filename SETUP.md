@@ -5,6 +5,8 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
+Version: 2026.10.04
+
 ## 1. What to do
 
 1. Write every file of section 3, byte for byte, at every path its
@@ -119,6 +121,8 @@ description: >-
   Start a new project by conversation, from what it is to how it is
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
+metadata:
+  version: "2026.10.04"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -177,6 +181,8 @@ description: >-
   Document an existing repository. Reads the code, writes docs/00 to 06,
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
+metadata:
+  version: "2026.10.04"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -239,6 +245,8 @@ description: >-
   Define the next delivery in work/<slug>.md, one page, by conversation.
   Writes no code, migration or test.
 argument-hint: <slug>
+metadata:
+  version: "2026.10.04"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -290,6 +298,8 @@ description: >-
   Implement work/<slug>.md end to end: code, tests, verify, proof, docs,
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
+metadata:
+  version: "2026.10.04"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. The page is the
 scope; do not widen it.

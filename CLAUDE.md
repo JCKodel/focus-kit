@@ -10,6 +10,12 @@ their reference), `README.md` and its Brazilian Portuguese twin
 no version file, no manifest. Updating a repository is running `SETUP.md`
 again.
 
+The version is the `Version: YYYY.MM.DD` line near the top of `SETUP.md`
+(a fourth `.N` part for a second release on one day), and the same value in
+`metadata.version` of the four `SKILL.md` frontmatters, so a planted
+repository says which kit it has. A change to any file of §3 bumps all five
+together; ace reads them to tell a person their kit is outdated.
+
 ## Rules
 
 - English prose, English identifiers. The one exception is `README.pt.md`,
