@@ -151,6 +151,7 @@ documents still come out in the language the project chose.
 SETUP.md       the kit: what the agent does, and the four commands with their reference
 README.md      this file
 README.pt.md   the same, in Brazilian Portuguese
+CHANGELOG.md   what changed in each version (CHANGELOG.pt.md in Brazilian Portuguese)
 LICENSE        AGPL-3.0-only
 ```
 

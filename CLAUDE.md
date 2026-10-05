@@ -5,8 +5,9 @@ a repository with one sentence to their coding agent. This repository is
 the kit, not a project that uses it.
 
 The kit is `SETUP.md` (what the agent does, and the four commands with
-their reference), `README.md` and its Brazilian Portuguese twin
-`README.pt.md` (for people), and `LICENSE`. There is no CLI, no installer,
+their reference), `README.md` and `CHANGELOG.md` with their Brazilian
+Portuguese twins `README.pt.md` and `CHANGELOG.pt.md` (for people), and
+`LICENSE`. There is no CLI, no installer,
 no version file, no manifest. Updating a repository is running `SETUP.md`
 again.
 
@@ -14,13 +15,16 @@ The version is the `Version: YYYY.MM.DD` line near the top of `SETUP.md`
 (a fourth `.N` part for a second release on one day), and the same value in
 `metadata.version` of the four `SKILL.md` frontmatters, so a planted
 repository says which kit it has. A change to any file of §3 bumps all five
-together; ace reads them to tell a person their kit is outdated.
+together; ace reads them to tell a person their kit is outdated. Every
+bump adds an entry at the top of `CHANGELOG.md` and `CHANGELOG.pt.md`,
+headed by the new version, saying what a person who reruns `SETUP.md`
+will find changed.
 
 ## Rules
 
-- English prose, English identifiers. The one exception is `README.pt.md`,
-  which says what `README.md` says, in Brazilian Portuguese; a change to
-  one is a change to both. No em dash anywhere in this repository: it is
+- English prose, English identifiers. The exceptions are `README.pt.md`
+  and `CHANGELOG.pt.md`, which say what `README.md` and `CHANGELOG.md`
+  say, in Brazilian Portuguese; a change to one is a change to both. No em dash anywhere in this repository: it is
   the signature of AI text, and the kit's text sets the example for every
   project it reaches.
 - **Nothing enters the kit without naming the concrete error it would have

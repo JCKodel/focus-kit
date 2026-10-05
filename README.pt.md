@@ -153,6 +153,7 @@ sessão, e os documentos continuam saindo na língua que o projeto escolheu.
 SETUP.md       o kit: o que o agente faz, e os quatro comandos com a referência deles
 README.md      a documentação em inglês
 README.pt.md   este arquivo
+CHANGELOG.md   o que mudou em cada versão (CHANGELOG.pt.md em português)
 LICENSE        AGPL-3.0-only
 ```
 
