@@ -45,8 +45,13 @@ sentence again.
    runs the verify command, proves the result, updates the documents,
    moves the page to `work/done/`, stages and suggests the commit message.
    You review and commit.
+   The queue shows it while it happens: the line is `[~]` while `/propose`
+   talks, `[>]` when the page is written, `[*]` while `/apply` builds and
+   `[x]` when it is done.
 3. **Repeat** until the queue is done. New ideas become new lines in the
-   queue, by conversation, in any session.
+   queue, by conversation, in any session. A line that waits on an answer,
+   on another line, or on anything you name becomes `[?]`, with the reason
+   at its end, until the reason is resolved.
 4. **Every milestone** is planned with a review as its last line, run like
    any delivery. It takes the milestone's paragraph clause by clause and
    says which delivery answers each one and how you test it. You test;

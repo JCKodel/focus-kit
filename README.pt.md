@@ -45,8 +45,13 @@ atualizar, diga a mesma frase de novo.
    página, roda o comando de verificação, prova o resultado, atualiza os
    documentos, move a página para `work/done/`, faz o stage e sugere a
    mensagem de commit. Você revisa e commita.
+   A fila mostra isso enquanto acontece: a linha fica `[~]` enquanto o
+   `/propose` conversa, `[>]` quando a página está escrita, `[*]` enquanto
+   o `/apply` constrói e `[x]` quando termina.
 3. **Repita** até a fila acabar. Ideias novas viram linhas novas na fila,
-   por conversa, em qualquer sessão.
+   por conversa, em qualquer sessão. Uma linha que espera uma resposta,
+   outra linha ou qualquer motivo que você diga vira `[?]`, com o motivo no
+   fim, até ele se resolver.
 4. **Todo milestone** é planejado com uma revisão como última linha,
    rodada como qualquer entrega. Ela percorre o parágrafo do milestone
    cláusula por cláusula e diz qual entrega responde a cada uma e como

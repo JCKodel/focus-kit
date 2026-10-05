@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.04.1
+Version: 2026.10.05
 
 ## 1. What to do
 
@@ -122,7 +122,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.04.1"
+  version: "2026.10.05"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -185,7 +185,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.04.1"
+  version: "2026.10.05"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -252,7 +252,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.04.1"
+  version: "2026.10.05"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -262,14 +262,18 @@ project's slots and the format of the page), docs/06 (queue) and whatever
 is in `work/` (deliveries in flight). Read docs/01 for where the change
 lives.
 
+When the line is `[?]`, say what it waits on and go on only when the
+person says it is resolved. Before talking, follow the git strategy of
+docs/05: with a branch or a worktree per delivery, create it, named after
+the slug, and work there, so the page and its build reach the main branch
+as one change. Mark the line in docs/06 `[~]`, so the queue shows the
+conversation is under way; when the slug is not in the queue, add the line
+where it belongs and say so.
+
 Talk until the scope fits one page. Ask whenever there is more than one
 reading and no document closes it; give your assessment in prose first, and
 your recommendation first in every question. If it does not fit one page,
 it is two deliveries: say so, propose the split, and write only the first.
-
-Before writing, follow the git strategy of docs/05: with a branch or a
-worktree per delivery, create it, named after the slug, and write there,
-so the page and its build reach the main branch as one change.
 
 Write `work/<slug>.md` in the format docs/05 §The page defines. The
 **Contract** section (data, schema, API, message shapes) is the only one
@@ -277,8 +281,12 @@ that must be exact: a wrong screen is fixed in a session, a wrong column is
 a migration. Use the terms of docs/03; a new concept goes into docs/03
 first, with its identifier, and only then onto the page.
 
-Mark the line in docs/06: `[ ]` becomes `[>]`. When the slug is not in the
-queue, add the line where it belongs and say so.
+When the page is written, `[~]` becomes `[>]`. When the scope waits on an
+answer nobody has given yet, or on another line not yet `[x]`, write the
+page as far as it goes and mark the line `[?]` instead, with what it waits
+on at the end of the line: `· blocked: <reason>` or
+`· blocked: after <slug>, <slug>`. Do the same, at any moment, when the
+person says the line is blocked.
 
 Files in the documentation language docs/05 declares; talk in the language
 the person writes in. Do not write, edit or generate code, migration, test
@@ -305,7 +313,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.04.1"
+  version: "2026.10.05"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. The page is the
 scope; do not widen it.
@@ -318,6 +326,18 @@ git strategy. Work where the git strategy says: on the branch or worktree
 `/propose` created for the slug, if any. If the page contradicts a
 document, stop and say which: the document changes in the same delivery or
 the page is wrong. Do not resolve it silently.
+
+When the line is `[?]`, say what it waits on and go on only when the
+person says it is resolved. Then mark the line in docs/06: `[>]` becomes
+`[*]`, so the queue shows the build is under way.
+
+When the work cannot go on, because it needs an answer nobody has given
+yet, because another line must be done first (a fix you found becomes a
+`[ ]` line above this one), or because the person says it is blocked,
+stop: write into the page what was built and what it waits on, leave the
+page in `work/`, mark the line `[?]` with `· blocked: <reason>` or
+`· blocked: after <slug>, <slug>` at its end, then stage and suggest the
+commit as below.
 
 Build every piece where docs/01 says it goes, with the error convention
 docs/01 names. Write the tests docs/04 asks for. Abstraction on the second
@@ -337,7 +357,9 @@ why, what was dropped, what the proof found, decisions taken (and the ADR,
 if one). Update the documents the delivery changed: a new term into
 docs/03, a new rule into the document that owns it, a decision into
 docs/adr/. Tick every item of "Done when". Move the page to `work/done/`.
-Mark the line in docs/06: `[>]` becomes `[x]`.
+Mark the line in docs/06: `[*]` becomes `[x]`. A `[?]` line whose
+`after` names only lines now `[x]` loses its suffix and goes back to
+`[>]`, or `[ ]` when it has no page; say which.
 
 `git add -A` and suggest the commit message in the format docs/05 defines.
 Do not commit and do not merge, whatever the git strategy is. Files and
@@ -397,9 +419,12 @@ its review (docs/05 §8):
 [ ] <slug>    <what it delivers, one line>
 ```
 
-`[ ]` not yet defined · `[>]` defined, `work/<slug>.md` exists · `[x]` done,
-page in `work/done/`. A line never leaves; it changes mark. The queue is
-edited by conversation in any session; no command owns it.
+`[ ]` not yet defined · `[~]` being defined · `[>]` defined,
+`work/<slug>.md` exists · `[*]` being built · `[x]` done, page in
+`work/done/` · `[?]` waiting, with `· blocked: <reason>` or
+`· blocked: after <slug>, <slug>` at the end of the line. A line never
+leaves; it changes mark, at the moment the work changes (docs/05 §4). The
+queue is edited by conversation in any session; no command owns it.
 
 **docs/adr/.** One file per decision, `ADR-NNNN-<slug>.md`: context, the
 decision, the consequences, the date. An ADR is amended, never rewritten.
@@ -544,9 +569,30 @@ dropped, what the proof found, the decisions taken.
 ## 4. The queue
 
 docs/06: one line per delivery, in order, under milestones. The line never
-leaves the queue; it changes mark: `[ ]` not defined, `[>]` defined and not
-built, `[x]` done. Each milestone is planned with its review as the last
-line (§8). Edited by conversation in any session.
+leaves the queue; it changes mark, at the moment the work changes, so the
+queue shows what is happening while it happens:
+
+| Mark | Means | Set by |
+|---|---|---|
+| `[ ]` | not defined | the conversation that adds the line |
+| `[~]` | being defined | /propose, when it starts |
+| `[>]` | defined, `work/<slug>.md` exists | /propose, when the page is written |
+| `[*]` | being built | /apply, when it starts |
+| `[x]` | done, page in `work/done/` | /apply, with verify green |
+| `[?]` | waiting | any session, in the three cases below |
+
+A line waits when the person says it is blocked, when it needs an answer
+that was asked and not given, or when it needs another line done first,
+such as a fix found in the middle of an /apply. The reason goes at the end
+of the line, `· blocked: <reason>` or `· blocked: after <slug>, <slug>`.
+Any mark before `[x]` can become `[?]`. The line leaves `[?]` when the
+reason is resolved: the person says so, the session that records the
+answer clears it, or /apply clears it when it marks `[x]` the last line of
+an `after`. It goes back to `[>]` when its page exists and `[ ]`
+otherwise, and the next command marks it again.
+
+Each milestone is planned with its review as the last line (§8). Edited by
+conversation in any session.
 
 ## 5. This project
 
