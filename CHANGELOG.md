@@ -7,6 +7,18 @@ latest version, run `SETUP.md` again.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.06.1
+
+- Code changes only inside `/apply`. A change asked anywhere else, however
+  small, becomes a `[ ]` line in docs/06 and the answer stops there. Before,
+  the rule lived only inside `/apply`, for a fix found in the middle of it:
+  asked for a correction in an ordinary session, an agent edited the code
+  directly, with no line in the queue, no page and no verify.
+- The rule is in docs/05 §2 and in the Non-negotiables of `AGENTS.md`, as
+  `/brainstorm` and `/analyze` write them. Both files belong to the
+  project, so rerunning `SETUP.md` does not touch them: in a repository
+  already planted, add the sentence to each by hand.
+
 ## 2026.10.06
 
 - `/apply` ends the page with the commit message it suggests, in a fenced

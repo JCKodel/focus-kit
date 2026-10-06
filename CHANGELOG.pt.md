@@ -7,6 +7,18 @@ repositório à versão mais recente, rode o `SETUP.md` de novo.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.06.1
+
+- Código só muda dentro do `/apply`. Uma mudança pedida em qualquer outro
+  lugar, por menor que seja, vira uma linha `[ ]` no docs/06 e a resposta
+  para aí. Antes, a regra só existia dentro do `/apply`, para uma correção
+  achada no meio dele: pedida uma correção numa sessão comum, um agente
+  editou o código direto, sem linha na fila, sem página e sem verify.
+- A regra está na §2 do docs/05 e nos Non-negotiables do `AGENTS.md`, como
+  o `/brainstorm` e o `/analyze` os escrevem. Os dois arquivos são do
+  projeto, então rodar o `SETUP.md` de novo não mexe neles: num
+  repositório já plantado, acrescente a frase em cada um à mão.
+
 ## 2026.10.06
 
 - O `/apply` termina a página com a mensagem de commit que sugere, num

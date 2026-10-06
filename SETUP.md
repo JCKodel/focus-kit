@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.06
+Version: 2026.10.06.1
 
 ## 1. What to do
 
@@ -122,7 +122,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.06"
+  version: "2026.10.06.1"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -185,7 +185,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.06"
+  version: "2026.10.06.1"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -252,7 +252,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.06"
+  version: "2026.10.06.1"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -313,7 +313,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.06"
+  version: "2026.10.06.1"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. The page is the
 scope; do not widen it.
@@ -541,6 +541,8 @@ git add → a person reviews and commits.
 
 /propose talks and writes the page, never code. /apply builds, proves,
 updates the documents, stages and suggests the commit, never commits.
+Code changes only inside /apply: a change asked anywhere else, however
+small, becomes a `[ ]` line in docs/06 and the answer stops there.
 
 ## 3. The page
 
@@ -665,7 +667,9 @@ is the only place a rule is written.
 - <three to six rules that protect what the product is; from docs/00 and
   docs/01, one line each>
 - One delivery = one page in work/<slug>.md: /propose to define, /apply
-  to build.
+  to build. Code changes only inside /apply: a change asked outside it,
+  however small, becomes a `[ ]` line in docs/06 and the answer stops
+  there.
 - No em dash in any text a user reads.
 - The agent stages and suggests the commit message. It never commits.
 
