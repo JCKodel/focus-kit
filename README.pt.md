@@ -43,8 +43,9 @@ atualizar, diga a mesma frase de novo.
    página. Leia e peça cada correção nessa mesma conversa; depois abra uma
    sessão nova e rode `/apply <slug>`: ele constrói a
    página, roda o comando de verificação, prova o resultado, atualiza os
-   documentos, move a página para `work/done/`, faz o stage e sugere a
-   mensagem de commit. Você revisa e commita.
+   documentos, move a página para `work/done/`, termina a página com a
+   mensagem de commit que sugere, faz o stage e sugere essa mensagem. Você
+   revisa e commita.
    A fila mostra isso enquanto acontece: a linha fica `[~]` enquanto o
    `/propose` conversa, `[>]` quando a página está escrita, `[*]` enquanto
    o `/apply` constrói e `[x]` quando termina.

@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.05
+Version: 2026.10.06
 
 ## 1. What to do
 
@@ -122,7 +122,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.05"
+  version: "2026.10.06"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -185,7 +185,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.05"
+  version: "2026.10.06"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -252,7 +252,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.05"
+  version: "2026.10.06"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -313,7 +313,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.05"
+  version: "2026.10.06"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. The page is the
 scope; do not widen it.
@@ -336,8 +336,8 @@ yet, because another line must be done first (a fix you found becomes a
 `[ ]` line above this one), or because the person says it is blocked,
 stop: write into the page what was built and what it waits on, leave the
 page in `work/`, mark the line `[?]` with `· blocked: <reason>` or
-`· blocked: after <slug>, <slug>` at its end, then stage and suggest the
-commit as below.
+`· blocked: after <slug>, <slug>` at its end, then end the page with the
+commit message, stage and suggest it as below.
 
 Build every piece where docs/01 says it goes, with the error convention
 docs/01 names. Write the tests docs/04 asks for. Abstraction on the second
@@ -361,7 +361,9 @@ Mark the line in docs/06: `[*]` becomes `[x]`. A `[?]` line whose
 `after` names only lines now `[x]` loses its suffix and goes back to
 `[>]`, or `[ ]` when it has no page; say which.
 
-`git add -A` and suggest the commit message in the format docs/05 defines.
+End the page with the commit message you suggest, in the format docs/05
+defines, in a fenced block whose info string is `commit`: whoever commits
+later starts from it. Then `git add -A` and suggest the same message.
 Do not commit and do not merge, whatever the git strategy is. Files and
 message in the documentation language; talk in the language the person
 writes in.
@@ -564,7 +566,8 @@ updates the documents, stages and suggests the commit, never commits.
     screenshot matches Y.
 
 After /apply the page also records what happened: what diverged, what was
-dropped, what the proof found, the decisions taken.
+dropped, what the proof found, the decisions taken. It ends with the commit
+message /apply suggested, in a fenced block whose info string is `commit`.
 
 ## 4. The queue
 

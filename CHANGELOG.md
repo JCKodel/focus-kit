@@ -7,6 +7,15 @@ latest version, run `SETUP.md` again.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.06
+
+- `/apply` ends the page with the commit message it suggests, in a fenced
+  block whose info string is `commit`, on the done path and on the blocked
+  one. Before, the message lived only in the chat: an agent answered with
+  `git commit -m` lines, and whoever committed later, in another window or
+  another session, had nowhere to start from.
+- docs/05 §3 says the done page ends in that block.
+
 ## 2026.10.05
 
 - The queue shows work while it happens. Two marks join `[ ]`, `[>]` and

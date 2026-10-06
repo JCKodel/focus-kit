@@ -43,8 +43,8 @@ sentence again.
    page. Read it and ask for every correction in that conversation; then
    open a fresh session and run `/apply <slug>`: it builds the page,
    runs the verify command, proves the result, updates the documents,
-   moves the page to `work/done/`, stages and suggests the commit message.
-   You review and commit.
+   moves the page to `work/done/`, ends it with the commit message it
+   suggests, stages and suggests that message. You review and commit.
    The queue shows it while it happens: the line is `[~]` while `/propose`
    talks, `[>]` when the page is written, `[*]` while `/apply` builds and
    `[x]` when it is done.

@@ -7,6 +7,15 @@ repositório à versão mais recente, rode o `SETUP.md` de novo.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.06
+
+- O `/apply` termina a página com a mensagem de commit que sugere, num
+  bloco cercado cuja info string é `commit`, no caminho feito e no
+  bloqueado. Antes, a mensagem só existia no chat: um agente respondeu com
+  linhas `git commit -m`, e quem commitava depois, noutra janela ou noutra
+  sessão, não tinha de onde partir.
+- A §3 do docs/05 diz que a página feita termina nesse bloco.
+
 ## 2026.10.05
 
 - A fila mostra o trabalho enquanto ele acontece. Duas marcas se juntam a
