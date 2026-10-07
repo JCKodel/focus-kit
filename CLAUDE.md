@@ -8,8 +8,8 @@ The kit is `SETUP.md` (what the agent does, and the four commands with
 their reference), `README.md` and `CHANGELOG.md` with their Brazilian
 Portuguese twins `README.pt.md` and `CHANGELOG.pt.md` (for people), and
 `LICENSE`. There is no CLI, no installer,
-no version file, no manifest. Updating a repository is running `SETUP.md`
-again.
+no version file, no manifest. Updating the installed commands is running
+`SETUP.md` again; its report lists pending migrations to project documents.
 
 The version is the `Version: YYYY.MM.DD` line near the top of `SETUP.md`
 (a fourth `.N` part for a second release on one day), and the same value in
@@ -31,9 +31,12 @@ will find changed.
   caught.** The answer names an error that happened in a real project. This
   is the rule Ninjobs kept in its process document and the one an earlier
   version of this kit broke; `README.md` §Why this shape says how.
-- Each command stays about the size of Ninjobs' originals: `/propose`
-  eleven lines, `/apply` forty-eight. A command says which documents to
-  read, what to do and what never to do. Anything project-specific is a
+- Commands stay short enough to read whole: their bodies target at most
+  thirty prose lines for `/propose` and fifty for `/apply`, excluding
+  frontmatter and blank lines. Ninjobs' eleven and forty-eight lines are
+  the historical starting point, not the current templates' line counts.
+  A command says which documents to read, what to do and what never to do.
+  Anything project-specific is a
   slot in the project's `docs/05`, filled once by `/brainstorm` or
   `/analyze` and read by `/apply`. A procedure, a report format or a
   cross-reference chain inside a command is the smell.

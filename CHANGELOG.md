@@ -3,9 +3,24 @@
 What changed in the kit, newest first. The version is the `Version:` line
 of `SETUP.md`, the same value a planted repository carries in the
 `metadata.version` of its four `SKILL.md`. To move a repository to the
-latest version, run `SETUP.md` again.
+latest version, run `SETUP.md` again and apply any project-document
+migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
+
+## 2026.10.07
+
+- Blocked lines remember whether to resume `/propose` or `/apply`;
+  saved drafts must be fully defined before implementation. Parallel
+  branches reconcile the queue without losing findings or dependencies.
+- `/apply` stages only its delivery and preserves unrelated changes.
+  Blocked work keeps a partial message on the page; on trunk, it stays
+  uncommitted. docs/05 §6 owns the commit format.
+- Setup preserves custom commands, avoids duplicate Gemini pointers and
+  fixes Antigravity activation, Claude Code invocation and Copilot inputs.
+  `/propose` and `/apply` now point to their shared process rules.
+- Existing projects get a migration report for docs/04, docs/05 and
+  `AGENTS.md`, with paths and proposed wording; setup preserves those files.
 
 ## 2026.10.06.1
 

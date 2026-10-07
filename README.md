@@ -30,6 +30,13 @@ the repository opens ready in any of them. There is nothing to install on
 the machine: no CLI, no runtime, no dependency. To update, say the same
 sentence again.
 
+Setup checks existing destinations before writing: a custom command or
+unrecognized edit is reported with a diff for you to resolve. Updates
+replace recognized kit files and keep one pointer in `GEMINI.md`, preserving
+its project content. They leave your documents intact and report any rules
+still needing migration, with their paths and proposed wording. The skills'
+version describes the installed commands, not completion of those migrations.
+
 ## Use
 
 1. **Once.** On an empty repository, `/brainstorm`: a conversation about
@@ -46,12 +53,17 @@ sentence again.
    moves the page to `work/done/`, ends it with the commit message it
    suggests, stages and suggests that message. You review and commit.
    The queue shows it while it happens: the line is `[~]` while `/propose`
-   talks, `[>]` when the page is written, `[*]` while `/apply` builds and
-   `[x]` when it is done.
+   talks, `[>]` when the page is completely defined, `[*]` while `/apply`
+   builds and `[x]` when it is done. Only the delivery's changes are staged;
+   unrelated edits and existing index entries are preserved and reported.
+   A blocked build on trunk stays uncommitted until the whole delivery is
+   ready; its page keeps a draft message pointing to its current path.
 3. **Repeat** until the queue is done. New ideas become new lines in the
    queue, by conversation, in any session. A line that waits on an answer,
    on another line, or on anything you name becomes `[?]`, with the reason
-   at its end, until the reason is resolved.
+   at its end, until the reason is resolved. It also records whether to
+   resume `/propose` or `/apply`: a partial proposal must finish definition
+   before it can be built.
 4. **Every milestone** is planned with a review as its last line, run like
    any delivery. It takes the milestone's paragraph clause by clause and
    says which delivery answers each one and how you test it. You test;
@@ -134,7 +146,10 @@ a recommendation for your stack, and record what you choose:
   deliveries in parallel, once you decide which can run together. In every
   case a delivery's page and build are one change that reverts in one step
   (one commit on trunk, one merge otherwise), and the agent never commits
-  or merges.
+  or merges. Parallel worktrees each show their own queue state; when their
+  branches are integrated, reconcile `docs/06` by slug, preserving every
+  delivery and its latest state. The queue is a shared file even when the
+  deliveries change different code.
 
 ## Language
 

@@ -30,6 +30,14 @@ mais, e o repositório abre pronto em qualquer um deles. Não há nada a
 instalar na máquina: nenhum CLI, nenhum runtime, nenhuma dependência. Para
 atualizar, diga a mesma frase de novo.
 
+O setup confere os destinos existentes antes de escrever: um comando
+próprio ou uma edição não reconhecida é reportado com um diff para você
+resolver. Atualizações substituem arquivos reconhecidos do kit e mantêm
+um único ponteiro no `GEMINI.md`, preservando o conteúdo do projeto. Seus
+documentos ficam intactos; regras que ainda precisam de migração são
+reportadas com os caminhos e o texto proposto. A versão das skills indica
+os comandos instalados, não a conclusão dessas migrações.
+
 ## Usar
 
 1. **Uma vez.** Num repositório vazio, `/brainstorm`: uma conversa sobre o
@@ -47,12 +55,18 @@ atualizar, diga a mesma frase de novo.
    mensagem de commit que sugere, faz o stage e sugere essa mensagem. Você
    revisa e commita.
    A fila mostra isso enquanto acontece: a linha fica `[~]` enquanto o
-   `/propose` conversa, `[>]` quando a página está escrita, `[*]` enquanto
-   o `/apply` constrói e `[x]` quando termina.
+   `/propose` conversa, `[>]` quando a página está completamente definida,
+   `[*]` enquanto o `/apply` constrói e `[x]` quando termina. Só as mudanças
+   da entrega entram no stage; edições alheias e entradas já existentes no
+   índice são preservadas e reportadas. Uma construção bloqueada na trunk
+   fica sem commit até a entrega inteira estar pronta; sua página guarda
+   um rascunho de mensagem apontando para o caminho atual.
 3. **Repita** até a fila acabar. Ideias novas viram linhas novas na fila,
    por conversa, em qualquer sessão. Uma linha que espera uma resposta,
    outra linha ou qualquer motivo que você diga vira `[?]`, com o motivo no
-   fim, até ele se resolver.
+   fim, até ele se resolver. Ela também registra se deve retomar o
+   `/propose` ou o `/apply`: uma proposta parcial precisa terminar a
+   definição antes de ser construída.
 4. **Todo milestone** é planejado com uma revisão como última linha,
    rodada como qualquer entrega. Ela percorre o parágrafo do milestone
    cláusula por cláusula e diz qual entrega responde a cada uma e como
@@ -138,6 +152,10 @@ uma recomendação para a sua stack, e registram o que você escolher:
   quais podem rodar juntas. Em todos os casos a página e a construção de
   uma entrega são uma mudança só, revertida em um passo (um commit na
   trunk, um merge nas outras), e o agente nunca commita nem faz merge.
+  Worktrees em paralelo mostram o estado da sua própria fila; ao integrar
+  suas branches, concilie o `docs/06` por slug, preservando cada entrega e
+  seu estado mais recente. A fila é um arquivo compartilhado mesmo quando
+  as entregas mudam códigos diferentes.
 
 ## Língua
 

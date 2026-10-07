@@ -5,24 +5,43 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.06.1
+Version: 2026.10.07
 
 ## 1. What to do
 
-1. Write every file of section 3, byte for byte, at every path its
+1. Before writing anything, inspect every destination in section 3. An
+   existing file may be replaced only when it matches a file shipped by
+   focus-kit, in this version or a prior version verified from the kit's
+   source history. A familiar name or a `metadata.version` alone does not
+   establish ownership. If a destination contains a custom command or an
+   unrecognized edit, show its diff against the proposed file and stop
+   before writing any file; the person decides how to preserve or replace
+   it. `GEMINI.md` is the exception: preserve its project content as 3.11
+   says. Do not create a manifest to track ownership.
+2. Write every file of section 3, byte for byte, at every path its
    heading names. Sections 3.1 to 3.5 name paths relative to a skills
    folder, and each of those files goes to all three: `.claude/skills/`,
    `.agents/skills/` and `.windsurf/skills/` (so `brainstorm/SKILL.md`
    is written three times). Sections 3.6 to 3.11 name paths relative to
    the repository root. Do not reformat, summarize, translate or improve
-   any of them; the only thing you fill is the `<name>` placeholder of 3.6
-   to 3.9, once per skill. The one file you never replace is a `GEMINI.md`
-   that already holds the project's own content: add the line of 3.11 to
-   its top instead.
-2. Touch nothing else. Do not run `git init`, do not stage, do not commit.
-3. Tell the person which files you wrote and what comes next: on a
+   any of them; fill only the `<name>` placeholder of 3.6 to 3.9, using
+   the two prompt templates of 3.7 for their respective commands.
+3. Touch nothing else. Do not run `git init`, do not stage, do not commit.
+4. When the project already has docs/ or AGENTS.md, compare its rules with
+   the current templates and report every migration still needed, with
+   the actual path, section and proposed wording in its documentation
+   language. Check docs/05 §§2, 3, 4 and 6 (code only inside /apply,
+   completed proposals, resumption, shared queue and isolated staging),
+   docs/04's pointer to docs/05 §6, and AGENTS.md's process rules. Include
+   any missing slots of docs/05 §5, such as Context. Preserve project
+   choices; do not edit these files during setup. Report installed skill
+   version separately from pending process migrations; an updated skill
+   version does not mean the project's process is updated.
+5. Tell the person which files you wrote and what comes next: on a
    repository with no code, `/brainstorm`; on a repository with code,
-   `/analyze`. Both run in a fresh session.
+   `/analyze`. Both run in a fresh session. On an already documented
+   project, report the pending migrations first, or say there are none;
+   do not ask it to repeat /brainstorm or /analyze to update its process.
 
 Running this file again replaces those files and nothing else. That is how
 the kit is updated. Everything the four commands write afterwards (`docs/`,
@@ -43,13 +62,15 @@ reads two of them does with the same name in both, the kit has not tested.
 | Codex | `AGENTS.md` | `.agents/skills/<name>/SKILL.md` | `$<name> <slug>` |
 | GitHub Copilot | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.github/prompts/<name>.prompt.md` | `/<name>` |
 | Cursor | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.cursor/commands/<name>.md` | `/<name>`; whether a slug typed after it reaches the command is not documented |
-| Google Antigravity | `AGENTS.md`, through `.agents/rules/focus-kit.md` | `.agents/skills/<name>/SKILL.md` | `/<name> <slug>` |
+| Google Antigravity | `AGENTS.md` directly; `.agents/rules/focus-kit.md` is an always-on pointer | `.agents/skills/<name>/SKILL.md` | `/<name> <slug>` |
 | Gemini CLI | `AGENTS.md`, through `GEMINI.md` | `.agents/skills/<name>/SKILL.md`, through `.gemini/commands/<name>.toml` | `/<name> <slug>` |
 | Windsurf | `AGENTS.md` | `.windsurf/skills/<name>/SKILL.md` | `@<name> <slug>` |
 | OpenCode, Zed | `AGENTS.md` | `.agents/skills/<name>/SKILL.md` | by asking for the skill |
 | Jules, Junie, Warp, Kiro, Roo Code, Cline | `AGENTS.md` | none; ask in words for `.agents/skills/<name>/SKILL.md` | |
 
-Each row was read off the vendor's documentation on 2026-09-21, and a host
+Each row was read off the vendor's documentation on 2026-09-21; the Claude
+Code invocation policy, Copilot prompts and Antigravity rules were checked
+again on 2026-10-07. A host
 enters this table only with its documentation in hand: Claude Code
 https://code.claude.com/docs/en/memory and https://code.claude.com/docs/en/skills;
 Codex https://developers.openai.com/codex/skills and
@@ -58,7 +79,7 @@ https://docs.github.com/en/copilot/concepts/agents/about-agent-skills and
 https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/your-first-prompt-file;
 Cursor https://cursor.com/docs/rules and
 https://cursor.com/docs/cli/reference/slash-commands; Antigravity
-https://antigravity.google/docs/rules-workflows/ and
+https://antigravity.google/docs/rules and
 https://antigravity.google/docs/skills/; Gemini CLI
 https://geminicli.com/docs/cli/gemini-md/ and
 https://geminicli.com/docs/cli/custom-commands/; Windsurf
@@ -66,8 +87,10 @@ https://docs.windsurf.com/windsurf/cascade/skills and
 https://docs.devin.ai/desktop/cascade/agents-md; OpenCode
 https://opencode.ai/docs/skills/; Zed https://zed.dev/docs/ai/skills; the
 last row https://agents.md. What the documentation does not say, the kit
-does not rely on: Antigravity reading `AGENTS.md` directly, a skills folder
-for Cursor, and Amp altogether are left out until their pages say so.
+does not rely on: a skills folder for Cursor and Amp altogether are left
+out until their pages say so. Claude Code's skills disable model invocation;
+Codex's policy disables implicit invocation. On other hosts, invoke these
+workflows explicitly; the kit does not claim equivalent host enforcement.
 
 In the skills, `$ARGUMENTS` stands for what the person typed after the
 command. Claude Code substitutes it; the Copilot and Gemini CLI files of
@@ -117,12 +140,13 @@ talks in whatever language the person writes in.
 ````markdown
 ---
 name: brainstorm
+disable-model-invocation: true
 description: >-
   Start a new project by conversation, from what it is to how it is
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.06.1"
+  version: "2026.10.07"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -144,7 +168,7 @@ order. Move on when you could write the section yourself.
    git, in their own words, with your recommendation for this stack, and
    record the answers.
 4. **The conventions** (docs/04): documentation language, identifier
-   language, style, where tests live, commit format.
+   language, style, where tests live; commit format lives in docs/05 §6.
 5. **The process slots** (docs/05): verify command, environments, how a
    screen is proven, publish policy, whether `context/` is committed. What
    does not exist yet is written as
@@ -180,12 +204,13 @@ file: the first delivery does that, with a page of its own.
 ````markdown
 ---
 name: analyze
+disable-model-invocation: true
 description: >-
   Document an existing repository. Reads the code, writes docs/00 to 06,
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.06.1"
+  version: "2026.10.07"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -247,60 +272,37 @@ line, in a fresh session. Change no code.
 ````markdown
 ---
 name: propose
+disable-model-invocation: true
 description: >-
   Define the next delivery in work/<slug>.md, one page, by conversation.
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.06.1"
+  version: "2026.10.07"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
 
-Read docs/00 (product), docs/03 (domain), docs/05 (process: it holds this
-project's slots and the format of the page), docs/06 (queue) and whatever
-is in `work/` (deliveries in flight). Read docs/01 for where the change
-lives.
+Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
+(process) and docs/06 (queue), and the deliveries in flight in `work/`.
+Follow docs/05 §§2, 4 and 5 to start or resume the definition in the right
+branch or worktree and mark the queue `[~]`. Do not start a blocked line
+until its recorded reason is resolved.
 
-When the line is `[?]`, say what it waits on and go on only when the
-person says it is resolved. Before talking, follow the git strategy of
-docs/05: with a branch or a worktree per delivery, create it, named after
-the slug, and work there, so the page and its build reach the main branch
-as one change. Mark the line in docs/06 `[~]`, so the queue shows the
-conversation is under way; when the slug is not in the queue, add the line
-where it belongs and say so.
+Talk until the scope fits one page. When documents leave more than one
+reading, give your assessment and ask, recommendation first. If it does
+not fit one page, propose a split and write only the first delivery.
 
-Talk until the scope fits one page. Ask whenever there is more than one
-reading and no document closes it; give your assessment in prose first, and
-your recommendation first in every question. If it does not fit one page,
-it is two deliveries: say so, propose the split, and write only the first.
+Write `work/<slug>.md` as docs/05 §3 defines, using docs/03's terms; add a
+new concept there first. Mark `[>]` only when the definition is complete.
+If an answer or a dependency is missing, save the draft and block it as
+docs/05 §4 says, with `resume: propose`.
 
-Write `work/<slug>.md` in the format docs/05 §The page defines. The
-**Contract** section (data, schema, API, message shapes) is the only one
-that must be exact: a wrong screen is fixed in a session, a wrong column is
-a migration. Use the terms of docs/03; a new concept goes into docs/03
-first, with its identifier, and only then onto the page.
+Files in docs/05's documentation language; talk in the person's language.
+Write no code, migration, test or configuration. End by asking the person
+to read and question the page as docs/05 §3 says, request corrections in
+this conversation, then run `/apply <slug>` in a fresh session.
 
-When the page is written, `[~]` becomes `[>]`. When the scope waits on an
-answer nobody has given yet, or on another line not yet `[x]`, write the
-page as far as it goes and mark the line `[?]` instead, with what it waits
-on at the end of the line: `· blocked: <reason>` or
-`· blocked: after <slug>, <slug>`. Do the same, at any moment, when the
-person says the line is blocked.
-
-Files in the documentation language docs/05 declares; talk in the language
-the person writes in. Do not write, edit or generate code, migration, test
-or configuration: separating deciding from doing is what keeps scope from
-growing during implementation.
-
-The page is written to be read, not generated and applied at once: it
-records what you understood, and it is what `/apply` will build. End by
-telling the person to read it and question it (each Behaviour line
-checkable, the Contract exact, Out of scope naming what they assumed was
-in, the choices you made on your own first), to ask for every correction
-in this conversation, and only then to open a fresh session and type
-`/apply <slug>`. A hole found on the page costs a turn; found after
-`/apply`, it costs another `/apply`, the most expensive command.
 ````
 
 ### 3.4 `apply/SKILL.md`
@@ -308,65 +310,53 @@ in this conversation, and only then to open a fresh session and type
 ````markdown
 ---
 name: apply
+disable-model-invocation: true
 description: >-
   Implement work/<slug>.md end to end: code, tests, verify, proof, docs,
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.06.1"
+  version: "2026.10.07"
 ---
-Implement `work/$ARGUMENTS.md` in this session, completely. The page is the
-scope; do not widen it.
+Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
+is missing, ask for it. The page is the scope; do not widen it.
 
-Read the page, `AGENTS.md`, docs/01 (architecture), docs/04 (conventions)
-and docs/05 (process). docs/05 holds this project's slots and you follow
-them literally: the verify command, the environments and what a delivery
-leaves up to date in each, how a screen is proven, the publish policy, the
-git strategy. Work where the git strategy says: on the branch or worktree
-`/propose` created for the slug, if any. If the page contradicts a
-document, stop and say which: the document changes in the same delivery or
-the page is wrong. Do not resolve it silently.
+Read the page, `AGENTS.md`, docs/01 (architecture), docs/04 (conventions),
+docs/05 (process) and docs/06 (queue). Follow docs/05's project slots
+literally: verify, environments, proof, publish policy and git strategy.
+Before editing, record the working tree and index as docs/05 §6 says.
+Work on the branch or worktree /propose created, if any.
 
-When the line is `[?]`, say what it waits on and go on only when the
-person says it is resolved. Then mark the line in docs/06: `[>]` becomes
-`[*]`, so the queue shows the build is under way.
+If the page contradicts a document, stop and say which: the document changes
+in this delivery or the page is wrong. Do not resolve it silently. Follow
+docs/05 §4 to resume a blocked line; refuse an incomplete proposal and
+point to /propose. Only a fully defined `[>]` line becomes `[*]`.
 
-When the work cannot go on, because it needs an answer nobody has given
-yet, because another line must be done first (a fix you found becomes a
-`[ ]` line above this one), or because the person says it is blocked,
-stop: write into the page what was built and what it waits on, leave the
-page in `work/`, mark the line `[?]` with `· blocked: <reason>` or
-`· blocked: after <slug>, <slug>` at its end, then end the page with the
-commit message, stage and suggest it as below.
+When work cannot go on, record what was built and what it waits on, leave
+the page in `work/` and block it with `resume: apply` as docs/05 §4 says.
+A prerequisite fix becomes a `[ ]` line above this one. End the page with
+the partial message and follow docs/05 §6's blocked-work staging rule;
+report verify and environments, and stop without claiming completion.
 
-Build every piece where docs/01 says it goes, with the error convention
-docs/01 names. Write the tests docs/04 asks for. Abstraction on the second
-concrete occurrence, and the page says which was the first. Add no
-dependency, layer or tool the page did not name. No em dash in any text a
-user reads.
+Build where docs/01 says, with its error convention. Write docs/04's tests.
+Abstraction on the second concrete occurrence; the page names the first.
+Add no dependency, layer or tool the page did not name. No em dash in any
+text a user reads.
 
-Run the verify command until it is green. Prove the delivery the way
-docs/05 says (screenshot against the reference, end-to-end run, manual
-check): list what diverges, fix it until only what you can justify
-remains. Leave every environment as docs/05 requires, and never end silent
-about them: the last thing you say is which environment is at which
-version and the command that updates the others.
+Run verify until green. Prove the delivery as docs/05 says; list divergences
+and fix them until only what you can justify remains. Leave environments
+as required. Record divergences, omissions, proof and decisions on the
+page; update their owning documents and ADRs. Tick every Done when item,
+move the page to `work/done/` and mark `[x]`. Resolve dependent queue lines
+by docs/05 §4, preserving their definition or implementation phase.
 
-Then write into the page what happened: what diverged from the plan and
-why, what was dropped, what the proof found, decisions taken (and the ADR,
-if one). Update the documents the delivery changed: a new term into
-docs/03, a new rule into the document that owns it, a decision into
-docs/adr/. Tick every item of "Done when". Move the page to `work/done/`.
-Mark the line in docs/06: `[*]` becomes `[x]`. A `[?]` line whose
-`after` names only lines now `[x]` loses its suffix and goes back to
-`[>]`, or `[ ]` when it has no page; say which.
+End the page with one final `commit` block in docs/05 §6's format, replacing
+any earlier suggestion.
+Stage only this delivery's changes as that section says and suggest the
+same message. Never commit or merge. Files and message in the documentation
+language; talk in the person's language. End by reporting which environment
+is at which version and the command that updates the others.
 
-End the page with the commit message you suggest, in the format docs/05
-defines, in a fenced block whose info string is `commit`: whoever commits
-later starts from it. Then `git add -A` and suggest the same message.
-Do not commit and do not merge, whatever the git strategy is. Files and
-message in the documentation language; talk in the language the person
-writes in.
 ````
 
 ### 3.5 `brainstorm/references/documents.md` and `analyze/references/documents.md`
@@ -409,7 +399,8 @@ test uses the terms of this table. A new concept enters here first.
 
 **docs/04, the conventions.** Documentation language and identifier
 language. Naming. Style and formatting, and the tool that enforces them.
-Where tests live and what is tested at each level. Commit message format.
+Where tests live and what is tested at each level. A pointer to docs/05 §6
+for the commit message format; do not copy that format here.
 
 **docs/05, the process.** The template below, with its slots filled.
 
@@ -421,10 +412,11 @@ its review (docs/05 §8):
 [ ] <slug>    <what it delivers, one line>
 ```
 
-`[ ]` not yet defined · `[~]` being defined · `[>]` defined,
-`work/<slug>.md` exists · `[*]` being built · `[x]` done, page in
-`work/done/` · `[?]` waiting, with `· blocked: <reason>` or
-`· blocked: after <slug>, <slug>` at the end of the line. A line never
+`[ ]` not yet defined · `[~]` being defined · `[>]` completely defined,
+`work/<slug>.md` ready for /apply · `[*]` being built · `[x]` done, page in
+`work/done/` · `[?]` waiting, with `· resume: propose` or `· resume: apply`
+before `· blocked: <reason>` or `· blocked: after <slug>, <slug>` at the
+end of the line (docs/05 §4). A line never
 leaves; it changes mark, at the moment the work changes (docs/05 §4). The
 queue is edited by conversation in any session; no command owns it.
 
@@ -513,8 +505,9 @@ delivery must be one step; the agent never commits and never merges:
   parallel work: one branch does not touch
   another, so several agents build different deliveries at the same time.
   Before running two at once, decide which deliveries can run in parallel
-  and which touch the same files, or their merges conflict. Costs a
-  directory per delivery.
+  and which touch the same files, including docs/06 and other shared
+  documents. Reconcile the queue by docs/05 §4 when their branches are
+  integrated. Costs a directory per delivery.
 
 ## The process document (docs/05)
 
@@ -544,6 +537,14 @@ updates the documents, stages and suggests the commit, never commits.
 Code changes only inside /apply: a change asked anywhere else, however
 small, becomes a `[ ]` line in docs/06 and the answer stops there.
 
+Before /propose changes the queue or the page, use §5's git strategy:
+create the branch or worktree named after the slug, or reuse its existing
+one on resumption. Add a missing queue line where it belongs and say so.
+Start defining with `[~]`; start building only a completely defined `[>]`
+page, with `[*]`. Follow §4 for blocked lines and §6 before changing code
+or staging. Keep project slots and rules current before using them; report
+a missing process rule rather than falling back to a retired instruction.
+
 ## 3. The page
 
     # <slug>
@@ -570,6 +571,15 @@ small, becomes a `[ ]` line in docs/06 and the answer stops there.
 After /apply the page also records what happened: what diverged, what was
 dropped, what the proof found, the decisions taken. It ends with the commit
 message /apply suggested, in a fenced block whose info string is `commit`.
+There is one final block: a resumed /apply replaces the earlier suggestion.
+
+A draft with unanswered scope questions is not ready for /apply, even
+when its file exists. Before marking `[>]`, every section above is filled
+or explicitly inapplicable and no scope decision remains open. Ask the
+person to review the page: Behaviour is checkable, Contract exact, Out of
+scope names what they assumed was included, and choices made on their
+behalf are explicit. Corrections happen in the /propose conversation;
+/apply starts in a fresh session afterwards.
 
 ## 4. The queue
 
@@ -581,7 +591,7 @@ queue shows what is happening while it happens:
 |---|---|---|
 | `[ ]` | not defined | the conversation that adds the line |
 | `[~]` | being defined | /propose, when it starts |
-| `[>]` | defined, `work/<slug>.md` exists | /propose, when the page is written |
+| `[>]` | completely defined, page ready for /apply | /propose, when §3 is complete |
 | `[*]` | being built | /apply, when it starts |
 | `[x]` | done, page in `work/done/` | /apply, with verify green |
 | `[?]` | waiting | any session, in the three cases below |
@@ -590,11 +600,29 @@ A line waits when the person says it is blocked, when it needs an answer
 that was asked and not given, or when it needs another line done first,
 such as a fix found in the middle of an /apply. The reason goes at the end
 of the line, `· blocked: <reason>` or `· blocked: after <slug>, <slug>`.
+Before that reason, record the phase to resume: `· resume: propose` for
+`[ ]` or `[~]`, and `· resume: apply` for `[>]` or `[*]`. A draft saved
+by /propose always uses `resume: propose` until §3 is complete.
 Any mark before `[x]` can become `[?]`. The line leaves `[?]` when the
 reason is resolved: the person says so, the session that records the
 answer clears it, or /apply clears it when it marks `[x]` the last line of
-an `after`. It goes back to `[>]` when its page exists and `[ ]`
-otherwise, and the next command marks it again.
+an `after`. Remove both suffixes and return `resume: propose` to `[ ]`,
+keeping any draft for /propose to finish; return `resume: apply` to `[>]`
+only when its page still satisfies §3. Existence alone is insufficient.
+If scope became undecided, return `[ ]` and say what /propose must settle.
+For an old blocked line without `resume`, recover the phase from its page
+and history; if completeness cannot be established, return `[ ]`.
+
+In parallel work, each worktree's queue shows that branch's state, not a
+global live view. Change only the current delivery's line, its new findings
+and the dependent lines this session can resolve. When branches are
+integrated, reconcile docs/06 by slug: retain every delivery and finding,
+and each owning branch's latest state. Do not replace the whole file with
+one side or downgrade a completed line using a stale copy. Check the page
+at the expected path and keep a dependency blocked until its completed
+changes are available in the branch that needs them. A conflicting state
+or scope is reported for resolution, never guessed. Apply the same care
+to shared domain terms and ADRs.
 
 Each milestone is planned with its review as the last line (§8). Edited by
 conversation in any session.
@@ -617,11 +645,41 @@ conversation in any session.
 
 ## 6. Commit
 
-The agent stages and suggests the message; the person commits after
-reviewing. Imperative subject up to 72 characters, scope in parentheses
+This section owns the commit format; docs/04 points here. Before editing,
+inspect git status, the staged and unstaged diffs, and untracked files.
+Record which changes already belong to this delivery (its /propose page
+and queue changes, or a previous partial /apply) and which are unrelated;
+do not assume an existing edit belongs to it because it shares a path.
+Preserve unrelated edits and the pre-existing index entries. If ownership
+cannot be established or changes overlap inseparably, stop and report the
+affected paths before editing them or staging; do not reset or stash them.
+
+Stage only this delivery's files or hunks, including the page move and its
+documentation changes. Use explicit paths for files wholly owned by it,
+and selective staging for mixed files; never `git add -A` or `git add .`.
+Inspect the staged diff afterwards and report any unrelated entries that
+were already staged, so the person knows a plain commit would include
+them. Do not unstage those entries yourself. A commit must contain only
+this delivery for the one-change promise to hold.
+
+The agent suggests the message; the person commits after reviewing.
+Imperative subject up to 72 characters, scope in parentheses
 when it helps; body up to five one-line bullets, the highlights and not
-the reasoning; last line points to `work/done/<slug>.md`, where the
-reasoning lives.
+the reasoning; last line points to the page's actual path, where the
+reasoning lives: `work/done/<slug>.md` when done, `work/<slug>.md` when
+blocked. A partial message says it is partial and names the blocker;
+it must not imply verify passed or the delivery is done.
+
+When blocked on trunk, keep the work uncommitted and do not add it to the
+index; the `commit` block is a draft for the eventual whole delivery.
+Resume with the same page and record the current verify result. If a
+prerequisite must be implemented separately before resumption, move this
+partial delivery to its own branch/worktree, preserving its edits and
+index ownership, before starting the prerequisite; ask for help if safe
+separation is not possible. Do not mix their commits on trunk.
+On a delivery branch or worktree, partial changes may be staged and
+suggested for the person to commit there. Keep the branch unmerged until
+the delivery is complete, so one merge still contains the whole delivery.
 
 ## 7. What this process does not have
 
@@ -672,6 +730,8 @@ is the only place a rule is written.
   there.
 - No em dash in any text a user reads.
 - The agent stages and suggests the commit message. It never commits.
+- Stage only this delivery's changes as docs/05 §6 says; preserve unrelated
+  edits and existing index entries.
 
 ## Do not rebuild
 - <what was tried and removed on purpose, with the ADR that says why>
@@ -707,7 +767,16 @@ policy:
 
 For GitHub Copilot. Four files, `<name>` replaced by `brainstorm`,
 `analyze`, `propose` and `apply`, so the commands exist as slash commands
-in the chat. Each one is three lines:
+in the chat. For `brainstorm` and `analyze`, which take no slug:
+
+````markdown
+---
+agent: 'agent'
+---
+Read `.agents/skills/<name>/SKILL.md` and follow it.
+````
+
+For `propose` and `apply`, which take a slug:
 
 ````markdown
 ---
@@ -737,18 +806,23 @@ prompt = "Read .agents/skills/<name>/SKILL.md and follow it. $ARGUMENTS is {{arg
 
 ### 3.10 `.agents/rules/focus-kit.md`
 
-For Google Antigravity, which reads its rules from `.agents/rules/`. One
-file, holding no rule of its own:
+For Google Antigravity. One always-on pointer, holding no project rule
+of its own; its required frontmatter keeps the pointer active:
 
 ````markdown
+---
+trigger: always_on
+---
 Read `AGENTS.md` at the repository root before acting: it holds this project's rules. The four commands of the process are the skills in `.agents/skills/`.
 ````
 
 ### 3.11 `GEMINI.md`
 
-For the Gemini CLI, which reads `GEMINI.md` unless told otherwise. The same
-content as 3.10. When the project already has a `GEMINI.md` of its own,
-this line goes to its top and the rest of the file stays.
+For the Gemini CLI, which reads `GEMINI.md` unless told otherwise. Use the
+line below without the rule frontmatter of 3.10. If the file exists, remove
+only exact occurrences of this pointer line and put one at the top;
+preserve every other line in its original order. This also removes copies
+left by older updates. A second run produces no further change.
 
 ````markdown
 Read `AGENTS.md` at the repository root before acting: it holds this project's rules. The four commands of the process are the skills in `.agents/skills/`.
@@ -762,5 +836,9 @@ Before reporting, confirm: eighteen files across `.claude/skills/`,
 `.agents/skills/`; four prompt files, four Cursor commands and four Gemini
 commands; `.agents/rules/focus-kit.md` and `GEMINI.md`; no other file
 changed; the string `$ARGUMENTS` still present in every `propose` and
-`apply`; no em dash in anything you wrote. Then report the list and the
-next command.
+`apply`; no slug input in the brainstorm or analyze Copilot prompts; all
+four skills disable model invocation in Claude Code; the Antigravity
+pointer has `trigger: always_on`; GEMINI.md has exactly one pointer line;
+no em dash in anything you wrote. Check that any existing custom file was
+preserved and every pending project migration from §1 was reported.
+Then report the list, the installed version and the next command.

@@ -3,9 +3,27 @@
 O que mudou no kit, do mais recente ao mais antigo. A versão é a linha
 `Version:` do `SETUP.md`, o mesmo valor que um repositório plantado traz
 no `metadata.version` dos seus quatro `SKILL.md`. Para levar um
-repositório à versão mais recente, rode o `SETUP.md` de novo.
+repositório à versão mais recente, rode o `SETUP.md` de novo e aplique as
+migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
+
+## 2026.10.07
+
+- Linhas bloqueadas lembram se retomam o `/propose` ou o `/apply`;
+  rascunhos salvos precisam estar definidos por completo antes da
+  implementação. Branches paralelas conciliam a fila sem perder achados
+  ou dependências.
+- O `/apply` faz stage só da sua entrega e preserva mudanças alheias.
+  Trabalho bloqueado mantém uma mensagem parcial na página; na trunk,
+  fica sem commit. A §6 do docs/05 é dona do formato de commit.
+- O setup preserva comandos próprios, evita ponteiros duplicados no Gemini
+  e corrige a ativação no Antigravity, a invocação no Claude Code e as
+  entradas no Copilot. `/propose` e `/apply` apontam para as regras comuns
+  do processo.
+- Projetos existentes recebem um relatório de migração para docs/04,
+  docs/05 e `AGENTS.md`, com caminhos e texto proposto; o setup preserva
+  esses arquivos.
 
 ## 2026.10.06.1
 
