@@ -38,6 +38,25 @@ documentos ficam intactos; regras que ainda precisam de migração são
 reportadas com os caminhos e o texto proposto. A versão das skills indica
 os comandos instalados, não a conclusão dessas migrações.
 
+### Hosts que ninguém da equipe usa
+
+Os arquivos deles podem sair, mas cada atualização os escreve de novo, e
+quem abrir o repositório nesse host depois não encontra os comandos nem
+aviso algum. Nunca remova `AGENTS.md`, `docs/`, `work/` ou
+`.agents/skills/`: apesar do nome, `.agents/` não é a pasta de um host, e
+sim a cópia dos comandos que Codex, Copilot, Cursor, Gemini CLI,
+Antigravity, OpenCode e Zed leem. O que pertence a um host só:
+
+| Host | Seus arquivos | Antes de remover |
+|---|---|---|
+| Gemini CLI | `.gemini/commands/` e `GEMINI.md` | `GEMINI.md` pode ter conteúdo do projeto; remova só a linha-ponteiro |
+| Cursor | `.cursor/commands/` | |
+| GitHub Copilot | os quatro `.github/prompts/<name>.prompt.md` | o resto de `.github/` não é do kit |
+| Antigravity | `.agents/rules/focus-kit.md` | só esse arquivo, não `.agents/` |
+| Windsurf | `.windsurf/skills/` | |
+| Claude Code | `.claude/skills/` e `CLAUDE.md` | `CLAUDE.md` pode ter notas além de `@AGENTS.md` |
+| Codex | os quatro `.agents/skills/<name>/agents/openai.yaml` | eles impedem o Codex de rodar o `apply` só porque uma mensagem contém a palavra |
+
 ## Usar
 
 1. **Uma vez.** Num repositório vazio, `/brainstorm`: uma conversa sobre o
