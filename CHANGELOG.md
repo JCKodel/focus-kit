@@ -8,6 +8,17 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.08
+
+- Behaviour scenarios on the page name a concrete input and the result
+  the user sees, and include the cases that must fail and the edges the
+  documents imply. `/propose` drafts them from the documents; the person
+  corrects them instead of writing them. Before, a person who did not know
+  the tool being built left the expected result to the agent, which
+  delivered one solution, happy path only, and the client rejected it.
+- docs/05 §3 belongs to the project, so rerunning `SETUP.md` reports the
+  new Behaviour wording as a migration instead of writing it.
+
 ## 2026.10.07
 
 - Blocked lines remember whether to resume `/propose` or `/apply`;

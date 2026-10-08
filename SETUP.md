@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.07
+Version: 2026.10.08
 
 ## 1. What to do
 
@@ -31,7 +31,8 @@ Version: 2026.10.07
    the current templates and report every migration still needed, with
    the actual path, section and proposed wording in its documentation
    language. Check docs/05 §§2, 3, 4 and 6 (code only inside /apply,
-   completed proposals, resumption, shared queue and isolated staging),
+   completed proposals, Behaviour scenarios with concrete input and
+   failure cases, resumption, shared queue and isolated staging),
    docs/04's pointer to docs/05 §6, and AGENTS.md's process rules. Include
    any missing slots of docs/05 §5, such as Context. Preserve project
    choices; do not edit these files during setup. Report installed skill
@@ -146,7 +147,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.07"
+  version: "2026.10.08"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -210,7 +211,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.07"
+  version: "2026.10.08"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -278,7 +279,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.07"
+  version: "2026.10.08"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -294,7 +295,9 @@ reading, give your assessment and ask, recommendation first. If it does
 not fit one page, propose a split and write only the first delivery.
 
 Write `work/<slug>.md` as docs/05 §3 defines, using docs/03's terms; add a
-new concept there first. Mark `[>]` only when the definition is complete.
+new concept there first. Draft the Behaviour scenarios yourself from the
+documents, failures and edges included; the person corrects them and does
+not write them. Mark `[>]` only when the definition is complete.
 If an answer or a dependency is missing, save the draft and block it as
 docs/05 §4 says, with `resume: propose`.
 
@@ -316,7 +319,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.07"
+  version: "2026.10.08"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -551,8 +554,10 @@ a missing process rule rather than falling back to a retired instruction.
 
     **Objective.** One sentence: what the user can do afterwards.
 
-    **Behaviour.** Verifiable scenarios in user language. Each line becomes
-    a test or a manual check.
+    **Behaviour.** Verifiable scenarios in user language, each an action
+    with concrete input and the result the user sees. Include the cases
+    that must fail and the edges the documents imply. Each line becomes a
+    test or a manual check.
 
     **Contract.** Data, schema, API, message shapes, or "none". The only
     section that must be exact.

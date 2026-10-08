@@ -8,6 +8,18 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.08
+
+- Os cenários de Behaviour da página dizem uma entrada concreta e o
+  resultado que o usuário vê, e incluem os casos que devem falhar e as
+  bordas que os documentos implicam. O `/propose` os rascunha a partir dos
+  documentos; a pessoa corrige em vez de escrever. Antes, uma pessoa que
+  não conhecia a ferramenta sendo construída deixou o resultado esperado
+  com o agente, que entregou uma solução só com o caminho feliz, e o
+  cliente a recusou.
+- A §3 do docs/05 pertence ao projeto, então rodar o `SETUP.md` de novo
+  reporta o novo texto de Behaviour como migração em vez de escrevê-lo.
+
 ## 2026.10.07
 
 - Linhas bloqueadas lembram se retomam o `/propose` ou o `/apply`;
