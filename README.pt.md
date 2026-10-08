@@ -14,6 +14,10 @@ outro host que leia `AGENTS.md`, em qualquer língua.
 /apply <slug>                 constrói a página, prova, atualiza os docs, faz o stage; nunca commita
 ```
 
+A `/` é como o Claude Code e a maioria dos hosts os invocam; o Codex e o
+Windsurf usam outro prefixo, que a tabela do `SETUP.md` §1 traz. Todo
+comando escreve o próximo na forma que o seu host espera.
+
 ## Instalar
 
 Abra o seu agente no repositório e diga:
@@ -71,8 +75,10 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
    sessão nova e rode `/apply <slug>`: ele constrói a
    página, roda o comando de verificação, prova o resultado, atualiza os
    documentos, move a página para `work/done/`, termina a página com a
-   mensagem de commit que sugere, faz o stage e sugere essa mensagem. Você
-   revisa e commita.
+   mensagem de commit que sugere, faz o stage e sugere essa mensagem.
+   Termina com os seus próximos passos, com os comandos por extenso:
+   revisar, commitar e então a próxima linha da fila. Você revisa e
+   commita.
    A fila mostra isso enquanto acontece: a linha fica `[~]` enquanto o
    `/propose` conversa, `[>]` quando a página está completamente definida,
    `[*]` enquanto o `/apply` constrói e `[x]` quando termina. Só as mudanças
@@ -80,7 +86,9 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
    índice são preservadas e reportadas. Uma construção bloqueada na trunk
    fica sem commit até a entrega inteira estar pronta; sua página guarda
    um rascunho de mensagem apontando para o caminho atual.
-3. **Repita** até a fila acabar. Ideias novas viram linhas novas na fila,
+3. **Repita** até a fila acabar. Perdido? Pergunte ao agente em que ponto
+   está, em qualquer sessão: ele responde a partir do `docs/06` e do
+   `work/`, com o próximo comando. Ideias novas viram linhas novas na fila,
    por conversa, em qualquer sessão. Uma linha que espera uma resposta,
    outra linha ou qualquer motivo que você diga vira `[?]`, com o motivo no
    fim, até ele se resolver. Ela também registra se deve retomar o

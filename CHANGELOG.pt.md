@@ -8,6 +8,22 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.08.1
+
+- Todo comando escreve o próximo como o host o invoca. Antes, um usuário
+  do Codex era orientado a rodar `/propose`, que o Codex não reconhece; o
+  Codex invoca skills com `$`.
+- O `/apply` termina com os próximos passos da pessoa, com os comandos por
+  extenso: revisar o diff no stage, commitar (e fazer o merge, num branch
+  de entrega) e então a próxima linha da fila. Antes, uma pessoa usando o
+  kit pela primeira vez sabia que devia commitar, mas teve de procurar na
+  documentação o que vinha depois. O `/propose` também mostra a linha da
+  página na fila.
+- O `AGENTS.md` responde "em que ponto estamos?" a partir do docs/06 e do
+  `work/`, com o próximo comando. Não há comando de status: a fila já é o
+  status. O `AGENTS.md` pertence ao projeto, então rodar o `SETUP.md` de
+  novo reporta essa linha como migração.
+
 ## 2026.10.08
 
 - Os cenários de Behaviour da página dizem uma entrada concreta e o

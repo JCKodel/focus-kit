@@ -8,6 +8,21 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.08.1
+
+- Every command writes the next one as the host invokes it. Before, a
+  Codex user was told to run `/propose`, which Codex does not recognize;
+  Codex invokes skills with `$`.
+- `/apply` ends with the person's next steps, commands written out:
+  review the staged diff, commit (and merge, on a delivery branch), then
+  the queue's next line. Before, a person who had just used the kit for
+  the first time knew to commit but had to search the documentation for
+  what came after. `/propose` also shows the page's queue line.
+- `AGENTS.md` answers "where are we?" from docs/06 and `work/`, with the
+  next command. There is no status command: the queue already is the
+  status. `AGENTS.md` belongs to the project, so rerunning `SETUP.md`
+  reports this line as a migration.
+
 ## 2026.10.08
 
 - Behaviour scenarios on the page name a concrete input and the result

@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.08
+Version: 2026.10.08.1
 
 ## 1. What to do
 
@@ -33,14 +33,16 @@ Version: 2026.10.08
    language. Check docs/05 §§2, 3, 4 and 6 (code only inside /apply,
    completed proposals, Behaviour scenarios with concrete input and
    failure cases, resumption, shared queue and isolated staging),
-   docs/04's pointer to docs/05 §6, and AGENTS.md's process rules. Include
+   docs/04's pointer to docs/05 §6, and AGENTS.md's process rules,
+   including the line on where things stand. Include
    any missing slots of docs/05 §5, such as Context. Preserve project
    choices; do not edit these files during setup. Report installed skill
    version separately from pending process migrations; an updated skill
    version does not mean the project's process is updated.
 5. Tell the person which files you wrote and what comes next: on a
    repository with no code, `/brainstorm`; on a repository with code,
-   `/analyze`. Both run in a fresh session. On an already documented
+   `/analyze`. Both run in a fresh session. Write the command as the table
+   below says this host invokes it. On an already documented
    project, report the pending migrations first, or say there are none;
    do not ask it to repeat /brainstorm or /analyze to update its process.
 
@@ -147,7 +149,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.08"
+  version: "2026.10.08.1"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -196,7 +198,8 @@ documents are fixed; the names after them are in the documentation
 language.
 
 Show the queue and stop. The next step is `/propose <slug>` for its first
-line, in a fresh session. Write no code, no configuration and no dependency
+line, in a fresh session; write it as this host invokes commands, which may
+not be `/`. Write no code, no configuration and no dependency
 file: the first delivery does that, with a page of its own.
 ````
 
@@ -211,7 +214,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.08"
+  version: "2026.10.08.1"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -265,7 +268,8 @@ The numbers of the documents are fixed; the names after them are in the
 documentation language.
 
 Show the queue and stop. The next step is `/propose <slug>` for its first
-line, in a fresh session. Change no code.
+line, in a fresh session; write it as this host invokes commands, which may
+not be `/`. Change no code.
 ````
 
 ### 3.3 `propose/SKILL.md`
@@ -279,7 +283,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.08"
+  version: "2026.10.08.1"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -302,9 +306,10 @@ If an answer or a dependency is missing, save the draft and block it as
 docs/05 §4 says, with `resume: propose`.
 
 Files in docs/05's documentation language; talk in the person's language.
-Write no code, migration, test or configuration. End by asking the person
-to read and question the page as docs/05 §3 says, request corrections in
-this conversation, then run `/apply <slug>` in a fresh session.
+Write no code, migration, test or configuration. End by showing the
+page's queue line and asking the person to read and question the page as
+docs/05 §3 says, request corrections in this conversation, then run
+`/apply <slug>` in a fresh session, written as this host invokes commands.
 
 ````
 
@@ -319,7 +324,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.08"
+  version: "2026.10.08.1"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -357,8 +362,12 @@ End the page with one final `commit` block in docs/05 §6's format, replacing
 any earlier suggestion.
 Stage only this delivery's changes as that section says and suggest the
 same message. Never commit or merge. Files and message in the documentation
-language; talk in the person's language. End by reporting which environment
-is at which version and the command that updates the others.
+language; talk in the person's language. Report which environment is at
+which version and the command that updates the others. End with the
+person's next steps, each command written out: review the staged diff;
+commit with the suggested message, and on a delivery branch merge it as
+docs/05 §5 says; then the queue's next line and its command, written as
+this host invokes commands, in a fresh session.
 
 ````
 
@@ -749,6 +758,8 @@ is the only place a rule is written.
   which was the first.
 - Ambiguity → ask. Documents are living: a delivery that changes behaviour
   updates the document that owns it, in the same delivery.
+- Asked where things stand, answer from docs/06 and work/: the lines in
+  flight, their marks, and the next command, as this host invokes it.
 ```
 ````
 

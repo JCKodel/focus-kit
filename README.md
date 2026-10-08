@@ -14,6 +14,10 @@ Google Antigravity, Gemini CLI, Windsurf and any other host that reads
 /apply <slug>                 build that page, prove it, update the docs, stage; never commit
 ```
 
+The `/` is how Claude Code and most hosts invoke them; Codex and Windsurf
+use another prefix, which the table in `SETUP.md` §1 gives. Every command
+writes the next one in the form your host expects.
+
 ## Install
 
 Open your agent in the repository and say:
@@ -70,14 +74,17 @@ read. What belongs to a single host:
    open a fresh session and run `/apply <slug>`: it builds the page,
    runs the verify command, proves the result, updates the documents,
    moves the page to `work/done/`, ends it with the commit message it
-   suggests, stages and suggests that message. You review and commit.
-   The queue shows it while it happens: the line is `[~]` while `/propose`
+   suggests, stages and suggests that message. It ends with your next
+   steps, commands written out: review, commit, then the next line of the
+   queue. You review and commit. The queue shows it while it happens: the line is `[~]` while `/propose`
    talks, `[>]` when the page is completely defined, `[*]` while `/apply`
    builds and `[x]` when it is done. Only the delivery's changes are staged;
    unrelated edits and existing index entries are preserved and reported.
    A blocked build on trunk stays uncommitted until the whole delivery is
    ready; its page keeps a draft message pointing to its current path.
-3. **Repeat** until the queue is done. New ideas become new lines in the
+3. **Repeat** until the queue is done. Lost? Ask the agent where things
+   stand, in any session: it answers from `docs/06` and `work/`, with the
+   next command. New ideas become new lines in the
    queue, by conversation, in any session. A line that waits on an answer,
    on another line, or on anything you name becomes `[?]`, with the reason
    at its end, until the reason is resolved. It also records whether to
