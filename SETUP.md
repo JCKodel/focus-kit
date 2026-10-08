@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.08.1
+Version: 2026.10.08.2
 
 ## 1. What to do
 
@@ -149,7 +149,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.08.1"
+  version: "2026.10.08.2"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -214,7 +214,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.08.1"
+  version: "2026.10.08.2"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -283,7 +283,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.08.1"
+  version: "2026.10.08.2"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -324,7 +324,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.08.1"
+  version: "2026.10.08.2"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -343,8 +343,9 @@ point to /propose. Only a fully defined `[>]` line becomes `[*]`.
 When work cannot go on, record what was built and what it waits on, leave
 the page in `work/` and block it with `resume: apply` as docs/05 §4 says.
 A prerequisite fix becomes a `[ ]` line above this one. End the page with
-the partial message and follow docs/05 §6's blocked-work staging rule;
-report verify and environments, and stop without claiming completion.
+the partial message, show it in the conversation in the same `commit`
+block, and follow docs/05 §6's blocked-work staging rule; report verify
+and environments, and stop without claiming completion.
 
 Build where docs/01 says, with its error convention. Write docs/04's tests.
 Abstraction on the second concrete occurrence; the page names the first.
@@ -361,7 +362,8 @@ by docs/05 §4, preserving their definition or implementation phase.
 End the page with one final `commit` block in docs/05 §6's format, replacing
 any earlier suggestion.
 Stage only this delivery's changes as that section says and suggest the
-same message. Never commit or merge. Files and message in the documentation
+same message in the conversation too, in the same `commit` block. Never
+commit or merge. Files and message in the documentation
 language; talk in the person's language. Report which environment is at
 which version and the command that updates the others. End with the
 person's next steps, each command written out: review the staged diff;

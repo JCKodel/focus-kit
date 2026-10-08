@@ -8,6 +8,15 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.08.2
+
+- O `/apply` mostra a mensagem de commit sugerida também na conversa, no
+  mesmo bloco `commit` que fecha a página, tanto quando a entrega fica
+  pronta quanto quando para bloqueada com uma mensagem parcial. Desde
+  2026.10.06 a mensagem mora na página, e o agente passou a sugeri-la na
+  conversa como texto puro; num terminal ela perdeu o destaque que um
+  bloco cercado dava e se misturou com o resto da resposta.
+
 ## 2026.10.08.1
 
 - Todo comando escreve o próximo como o host o invoca. Antes, um usuário

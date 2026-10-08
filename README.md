@@ -74,7 +74,8 @@ read. What belongs to a single host:
    open a fresh session and run `/apply <slug>`: it builds the page,
    runs the verify command, proves the result, updates the documents,
    moves the page to `work/done/`, ends it with the commit message it
-   suggests, stages and suggests that message. It ends with your next
+   suggests, stages and shows that message in the conversation too, in
+   the same `commit` block. It ends with your next
    steps, commands written out: review, commit, then the next line of the
    queue. You review and commit. The queue shows it while it happens: the line is `[~]` while `/propose`
    talks, `[>]` when the page is completely defined, `[*]` while `/apply`

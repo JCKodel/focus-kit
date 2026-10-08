@@ -8,6 +8,15 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.08.2
+
+- `/apply` shows the suggested commit message in the conversation too, in
+  the same `commit` block that ends the page, both when the delivery is
+  done and when it stops blocked with a partial message. Since 2026.10.06
+  the message lives on the page, and the agent began suggesting it in the
+  conversation as plain text; in a terminal it lost the highlight a fenced
+  block gave and blended into the rest of the reply.
+
 ## 2026.10.08.1
 
 - Every command writes the next one as the host invokes it. Before, a

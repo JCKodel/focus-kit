@@ -75,7 +75,8 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
    sessão nova e rode `/apply <slug>`: ele constrói a
    página, roda o comando de verificação, prova o resultado, atualiza os
    documentos, move a página para `work/done/`, termina a página com a
-   mensagem de commit que sugere, faz o stage e sugere essa mensagem.
+   mensagem de commit que sugere, faz o stage e mostra essa mensagem
+   também na conversa, no mesmo bloco `commit`.
    Termina com os seus próximos passos, com os comandos por extenso:
    revisar, commitar e então a próxima linha da fila. Você revisa e
    commita.
