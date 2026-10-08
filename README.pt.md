@@ -71,7 +71,9 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
    documentos, seja qual for a língua em que você conversa.
 2. **A cada entrega.** Escolha uma linha da fila (`docs/06`) e rode
    `/propose <slug>`: uma conversa que termina em `work/<slug>.md`, uma
-   página. Leia e peça cada correção nessa mesma conversa; depois abra uma
+   página. O que os documentos já respondem ele decide e escreve na
+   página, nomeando a fonte; pergunta só o que eles não respondem. Leia a
+   página e peça cada correção nessa mesma conversa; depois abra uma
    sessão nova e rode `/apply <slug>`: ele constrói a
    página, roda o comando de verificação, prova o resultado, atualiza os
    documentos, move a página para `work/done/`, termina a página com a
@@ -94,7 +96,12 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
    outra linha ou qualquer motivo que você diga vira `[?]`, com o motivo no
    fim, até ele se resolver. Ela também registra se deve retomar o
    `/propose` ou o `/apply`: uma proposta parcial precisa terminar a
-   definição antes de ser construída.
+   definição antes de ser construída. A ordem da fila é a prioridade: a
+   próxima entrega é a primeira linha livre, e você reordena por
+   conversa. Uma linha que precisa de outra pronta antes diz isso no fim,
+   `· after <slug>`, e fica livre quando aquela está `[x]`. Linhas livres
+   que tocam arquivos diferentes podem rodar ao mesmo tempo, uma sessão
+   cada, na mesma pasta de trabalho; pergunte ao agente quais podem.
 4. **Todo milestone** é planejado com uma revisão como última linha,
    rodada como qualquer entrega. Ela percorre o parágrafo do milestone
    cláusula por cláusula e diz qual entrega responde a cada uma e como
@@ -173,11 +180,13 @@ uma recomendação para a sua stack, e registram o que você escolher:
   estrutura que a sua stack favorece, ou manter as suas convenções. O
   Ninjobs adotou os dois princípios. O FOCUS é o capítulo 7 do livro
   (https://jckodel.github.io/focus-kit-book/pt/07-four-pieces/).
-* **Git**: tudo na trunk com uma entrega por vez, para uma pessoa
-  trabalhando sozinha; uma branch por entrega, para trabalho sequencial
-  revisado por pull request; ou uma worktree por entrega, para que vários
-  agentes construam entregas diferentes em paralelo, depois de decidir
-  quais podem rodar juntas. Em todos os casos a página e a construção de
+* **Git**: tudo na trunk, para uma pessoa, sozinha ou com várias sessões
+  em linhas livres que tocam arquivos diferentes, cada uma fazendo o stage
+  só da sua entrega, commitadas uma por vez; uma branch por entrega, para
+  trabalho sequencial revisado por pull request; ou uma worktree por
+  entrega, para que várias pessoas, ou entregas que tocam os mesmos
+  arquivos, construam em paralelo sem se tocar. Em todos os casos a
+  página e a construção de
   uma entrega são uma mudança só, revertida em um passo (um commit na
   trunk, um merge nas outras), e o agente nunca commita nem faz merge.
   Worktrees em paralelo mostram o estado da sua própria fila; ao integrar

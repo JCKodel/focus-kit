@@ -8,6 +8,40 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.08.3
+
+- Duas sessões na mesma pasta de trabalho, em linhas livres que tocam
+  arquivos diferentes, passam a ser o caso normal de trabalho paralelo na
+  trunk, no docs/05 §§4 e 6 e na escolha de git. Outra linha mudando de
+  marca, arquivos de outra entrega na pasta e entradas de outra sessão no
+  índice são trabalho daquela sessão, não conflito; conflito é o mesmo
+  trecho editado pelas duas, ou um arquivo de que a página precisa e que
+  a outra entrega está mudando. Um usuário rodou duas sessões do Codex no
+  mesmo repositório, em módulos diferentes; a segunda parou porque a
+  primeira tinha mudado o docs/06, quando tinha tudo o que precisava para
+  seguir.
+- As linhas da fila registram ordem e dependências: a ordem é a
+  prioridade, a próxima entrega é a primeira linha livre, e uma linha que
+  precisa de outra pronta antes termina com `· after <slug>`, uma ordem e
+  não um bloqueio, livre quando aquela está `[x]`. Perguntada o que pode
+  rodar ao mesmo tempo, uma sessão responde a partir da fila: as linhas
+  livres que tocam arquivos diferentes, a julgar pelas suas páginas e pelo
+  docs/01. A regra de que a ordem é a prioridade sempre valeu e não
+  estava escrita em lugar nenhum, então um usuário pediu uma forma de
+  ranquear entregas; e nada dizia quais linhas podiam rodar juntas, então
+  a pessoa tinha que descobrir sozinha antes de abrir duas sessões. A
+  mesma regra, uma linha num template que o agente preenche, é tudo o que
+  o Spec Kit do GitHub tem para o seu marcador `[P]`.
+- O `/propose` decide o que os documentos já respondem, escreve na página
+  nomeando a fonte e pergunta só o que eles não respondem, a regra que o
+  `/analyze` já tinha para o código. Um usuário mediu o kit contra o
+  trabalho manual numa cópia do mesmo projeto e o achou bem mais lento, em
+  parte porque o `/propose` perguntava o que o docs/00 a 05 já tinham
+  decidido.
+- Migração: docs/05 §4 e §6 e o slot de git do §5, num projeto que roda
+  várias sessões; `· after <slug>` nas linhas da fila que dependem de
+  outra, a critério da pessoa.
+
 ## 2026.10.08.2
 
 - O `/apply` mostra a mensagem de commit sugerida também na conversa, no

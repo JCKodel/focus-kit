@@ -70,7 +70,9 @@ read. What belongs to a single host:
    documents, whatever language you talk in.
 2. **Every delivery.** Pick a line of the queue (`docs/06`) and run
    `/propose <slug>`: a conversation that ends in `work/<slug>.md`, one
-   page. Read it and ask for every correction in that conversation; then
+   page. What the documents already answer it decides and writes on the
+   page, naming the source; it asks only what they cannot answer. Read
+   the page and ask for every correction in that conversation; then
    open a fresh session and run `/apply <slug>`: it builds the page,
    runs the verify command, proves the result, updates the documents,
    moves the page to `work/done/`, ends it with the commit message it
@@ -90,7 +92,12 @@ read. What belongs to a single host:
    on another line, or on anything you name becomes `[?]`, with the reason
    at its end, until the reason is resolved. It also records whether to
    resume `/propose` or `/apply`: a partial proposal must finish definition
-   before it can be built.
+   before it can be built. The order of the queue is the priority: the
+   next delivery is the first free line, and you reorder by conversation.
+   A line that needs another done first says so at its end, `· after
+   <slug>`, and is free once that one is `[x]`. Free lines that touch
+   different files can run at the same time, one session each, in the
+   same working tree; ask the agent which ones can.
 4. **Every milestone** is planned with a review as its last line, run like
    any delivery. It takes the milestone's paragraph clause by clause and
    says which delivery answers each one and how you test it. You test;
@@ -167,10 +174,12 @@ a recommendation for your stack, and record what you choose:
   your stack favors, or keep your own conventions. Ninjobs took the two
   principles. FOCUS is chapter 7 of the book
   (https://jckodel.github.io/focus-kit-book/07-four-pieces/).
-* **Git**: everything on trunk with one delivery at a time, for one person
-  working alone; a branch per delivery, for sequential work reviewed by pull
-  request; or a worktree per delivery, so several agents build different
-  deliveries in parallel, once you decide which can run together. In every
+* **Git**: everything on trunk, for one person, alone or with several
+  sessions on free lines that touch different files, each staging only
+  its delivery and committed one at a time; a branch per delivery, for
+  sequential work reviewed by pull request; or a worktree per delivery,
+  so several people, or deliveries that touch the same files, build in
+  parallel without touching each other. In every
   case a delivery's page and build are one change that reverts in one step
   (one commit on trunk, one merge otherwise), and the agent never commits
   or merges. Parallel worktrees each show their own queue state; when their

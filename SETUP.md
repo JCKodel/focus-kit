@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.08.2
+Version: 2026.10.08.3
 
 ## 1. What to do
 
@@ -32,8 +32,9 @@ Version: 2026.10.08.2
    the actual path, section and proposed wording in its documentation
    language. Check docs/05 §§2, 3, 4 and 6 (code only inside /apply,
    completed proposals, Behaviour scenarios with concrete input and
-   failure cases, resumption, shared queue and isolated staging),
-   docs/04's pointer to docs/05 §6, and AGENTS.md's process rules,
+   failure cases, resumption, order as priority and `after` on queue
+   lines, two sessions in one working tree, shared queue and isolated
+   staging), docs/04's pointer to docs/05 §6, and AGENTS.md's process rules,
    including the line on where things stand. Include
    any missing slots of docs/05 §5, such as Context. Preserve project
    choices; do not edit these files during setup. Report installed skill
@@ -149,7 +150,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.08.2"
+  version: "2026.10.08.3"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -214,7 +215,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.08.2"
+  version: "2026.10.08.3"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -283,7 +284,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.08.2"
+  version: "2026.10.08.3"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -292,11 +293,15 @@ Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
 (process) and docs/06 (queue), and the deliveries in flight in `work/`.
 Follow docs/05 §§2, 4 and 5 to start or resume the definition in the right
 branch or worktree and mark the queue `[~]`. Do not start a blocked line
-until its recorded reason is resolved.
+until its recorded reason is resolved, nor a line whose `after` is not
+done. Another line changing mark meanwhile is another session's work.
 
-Talk until the scope fits one page. When documents leave more than one
-reading, give your assessment and ask, recommendation first. If it does
-not fit one page, propose a split and write only the first delivery.
+What the documents answer, you do not ask: decide, write it on the page,
+and name the document it came from, so the person corrects it in the
+review instead of answering it twice. Talk until the scope fits one page.
+When documents leave more than one reading, give your assessment and
+ask, recommendation first. If it does not fit one page, propose a split
+and write only the first delivery.
 
 Write `work/<slug>.md` as docs/05 §3 defines, using docs/03's terms; add a
 new concept there first. Draft the Behaviour scenarios yourself from the
@@ -324,7 +329,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.08.2"
+  version: "2026.10.08.3"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -338,7 +343,9 @@ Work on the branch or worktree /propose created, if any.
 If the page contradicts a document, stop and say which: the document changes
 in this delivery or the page is wrong. Do not resolve it silently. Follow
 docs/05 §4 to resume a blocked line; refuse an incomplete proposal and
-point to /propose. Only a fully defined `[>]` line becomes `[*]`.
+point to /propose. Only a fully defined `[>]` line whose `after` is done
+becomes `[*]`. Another session's delivery in the same tree is not a
+conflict; docs/05 §§4 and 6 say what is.
 
 When work cannot go on, record what was built and what it waits on, leave
 the page in `work/` and block it with `resume: apply` as docs/05 §4 says.
@@ -432,6 +439,13 @@ its review (docs/05 §8):
 before `· blocked: <reason>` or `· blocked: after <slug>, <slug>` at the
 end of the line (docs/05 §4). A line never
 leaves; it changes mark, at the moment the work changes (docs/05 §4). The
+order is the priority: a session asked for the next delivery takes the
+first free line, and the person reorders by conversation in any session;
+what is not in the current milestone is not planned yet. A line that
+needs another done first ends with `· after <slug>`, written when the
+line is added; it is an order, not a block. A line is free when every
+`after` it names is `[x]`. Free lines that touch different files may run
+at the same time, in different sessions (docs/05 §4). The
 queue is edited by conversation in any session; no command owns it.
 
 **docs/adr/.** One file per decision, `ADR-NNNN-<slug>.md`: context, the
@@ -501,12 +515,15 @@ project is worked. Three answers, and in every one a delivery's page and
 build are one change that reverts in one step, because undoing a whole
 delivery must be one step; the agent never commits and never merges:
 
-* **trunk:** everything on the main branch, one delivery at a time. The
+* **trunk:** everything on the main branch. The
   page waits uncommitted in the working tree between `/propose` and
   `/apply`; page and build land in one commit, which the person makes
-  after reviewing. Only for one person working
-  alone: with two, their deliveries share one branch and one commit
-  carries the other's half-done work. What Ninjobs did;
+  after reviewing. For one person, alone or with several sessions open
+  on free lines that touch different files: each session stages only its
+  delivery, and the person commits one delivery at a time, from the paths
+  that session staged. Not for two people: their deliveries share one
+  branch and one commit carries the other's half-done work. What Ninjobs
+  did;
 * **a branch per delivery:** `/propose` creates a branch named after the
   slug and writes the page there; `/apply` builds on it. The branch may
   carry several commits, the page first and the build after; the person
@@ -516,10 +533,11 @@ delivery must be one step; the agent never commits and never merges:
 * **a worktree per delivery:** `/propose` creates a git worktree on a
   branch named after the slug and writes the page there; `/apply` runs in
   it; the branch reaches the main branch in one merge, as above. For
-  parallel work: one branch does not touch
+  parallel work by several people, or by one person whose deliveries
+  touch the same files: one branch does not touch
   another, so several agents build different deliveries at the same time.
-  Before running two at once, decide which deliveries can run in parallel
-  and which touch the same files, including docs/06 and other shared
+  Before running two at once, pick free lines (docs/06's `after`) and
+  decide which touch the same files, including docs/06 and other shared
   documents. Reconcile the queue by docs/05 §4 when their branches are
   integrated. Costs a directory per delivery.
 
@@ -599,7 +617,13 @@ behalf are explicit. Corrections happen in the /propose conversation;
 
 ## 4. The queue
 
-docs/06: one line per delivery, in order, under milestones. The line never
+docs/06: one line per delivery, in order, under milestones. The order is
+the priority: the next delivery is the first free line, and the person
+reorders by conversation. A line that needs another done first ends with
+`· after <slug>`, written when the line is added; it is free when every
+line it names is `[x]`. Asked what can run at the same time, answer from
+the queue: the free lines, and among them the ones that touch different
+files, judged from their pages and docs/01. The line never
 leaves the queue; it changes mark, at the moment the work changes, so the
 queue shows what is happening while it happens:
 
@@ -613,9 +637,12 @@ queue shows what is happening while it happens:
 | `[?]` | waiting | any session, in the three cases below |
 
 A line waits when the person says it is blocked, when it needs an answer
-that was asked and not given, or when it needs another line done first,
-such as a fix found in the middle of an /apply. The reason goes at the end
+that was asked and not given, or when work already started finds it needs
+another line done first, such as a fix found in the middle of an /apply.
+The reason goes at the end
 of the line, `· blocked: <reason>` or `· blocked: after <slug>, <slug>`.
+A dependency known when the line is added is `· after <slug>` alone,
+without `[?]`: an order, not an interruption.
 Before that reason, record the phase to resume: `· resume: propose` for
 `[ ]` or `[~]`, and `· resume: apply` for `[>]` or `[*]`. A draft saved
 by /propose always uses `resume: propose` until §3 is complete.
@@ -629,7 +656,15 @@ If scope became undecided, return `[ ]` and say what /propose must settle.
 For an old blocked line without `resume`, recover the phase from its page
 and history; if completeness cannot be established, return `[ ]`.
 
-In parallel work, each worktree's queue shows that branch's state, not a
+Two sessions in one working tree, on free lines that touch different
+files, are the normal case of parallel work on trunk. Another line
+changing mark, another delivery's page or files appearing in the tree,
+and another session's index entries are that session's work, not a
+conflict: do not stop for them, do not touch them, change only this
+delivery's line and stage only this delivery's paths and hunks, including
+its own hunk of docs/06. A conflict is the same hunk edited by both, or a
+file this page needs that the other delivery is changing; then stop and
+report. In worktrees, each worktree's queue shows that branch's state, not a
 global live view. Change only the current delivery's line, its new findings
 and the dependent lines this session can resolve. When branches are
 integrated, reconcile docs/06 by slug: retain every delivery and finding,
@@ -666,9 +701,12 @@ inspect git status, the staged and unstaged diffs, and untracked files.
 Record which changes already belong to this delivery (its /propose page
 and queue changes, or a previous partial /apply) and which are unrelated;
 do not assume an existing edit belongs to it because it shares a path.
-Preserve unrelated edits and the pre-existing index entries. If ownership
-cannot be established or changes overlap inseparably, stop and report the
-affected paths before editing them or staging; do not reset or stash them.
+Another delivery's page, its files and its hunk of docs/06 belong to the
+session building it (§4); they are unrelated here. Preserve unrelated
+edits and the pre-existing index entries. If ownership of a change this
+delivery must edit cannot be established, or changes overlap in the same
+hunk, stop and report the affected paths before editing them or staging;
+do not reset or stash them.
 
 Stage only this delivery's files or hunks, including the page move and its
 documentation changes. Use explicit paths for files wholly owned by it,
@@ -676,7 +714,8 @@ and selective staging for mixed files; never `git add -A` or `git add .`.
 Inspect the staged diff afterwards and report any unrelated entries that
 were already staged, so the person knows a plain commit would include
 them. Do not unstage those entries yourself. A commit must contain only
-this delivery for the one-change promise to hold.
+this delivery for the one-change promise to hold: with two sessions on
+trunk, the person commits one delivery at a time, naming its paths.
 
 The agent suggests the message; the person commits after reviewing.
 Imperative subject up to 72 characters, scope in parentheses

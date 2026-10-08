@@ -8,6 +8,37 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.08.3
+
+- Two sessions in one working tree, on free lines that touch different
+  files, are now the normal case of parallel work on trunk, in docs/05
+  §§4 and 6 and in the git choice. Another line changing mark, another
+  delivery's files in the tree and another session's index entries are
+  that session's work, not a conflict; a conflict is the same hunk edited
+  by both, or a file the page needs that the other delivery is changing.
+  A user ran two Codex sessions on one repository, on different modules;
+  the second stopped because the first had changed docs/06, when it had
+  everything it needed to go on.
+- Queue lines record their order and dependencies: the order is the
+  priority, the next delivery is the first free line, and a line that
+  needs another done first ends with `· after <slug>`, an order rather
+  than a block, free once that line is `[x]`. Asked what can run at the
+  same time, a session answers from the queue: the free lines that touch
+  different files, judged from their pages and docs/01. The rule that
+  order is priority always held and was written nowhere, so a user asked
+  for a way to rank deliveries; and nothing said which lines could run
+  together, so the person had to work it out alone before opening two
+  sessions. The same rule, one line in a template filled by the agent,
+  is all GitHub's Spec Kit has for its `[P]` marker.
+- `/propose` decides what the documents already answer, writes it on the
+  page naming the source, and asks only what they cannot answer, the
+  rule `/analyze` already had for code. A user measured the kit against
+  working by hand on a copy of the same project and found it much slower,
+  in part because `/propose` asked what docs/00 to 05 already settled.
+- Migration: docs/05 §4 and §6 and the git slot of §5, on a project that
+  runs several sessions; `· after <slug>` on queue lines that depend on
+  another, as the person sees fit.
+
 ## 2026.10.08.2
 
 - `/apply` shows the suggested commit message in the conversation too, in
