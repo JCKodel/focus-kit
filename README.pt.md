@@ -110,6 +110,12 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
    `/apply`. Essas linhas não passam por segunda revisão: o seu commit é a
    revisão.
 
+O que você faz à mão fora de uma entrega (publicar o site, voltar uma
+versão, configurar um serviço) está em `docs/manuals/`, um arquivo para
+cada coisa, com o nome do que ele faz e legível sem os outros documentos.
+O `/analyze` escreve os manuais do que o repositório já roda à mão; o
+`/apply` escreve ou atualiza um quando uma entrega cria ou muda isso.
+
 Os documentos carregam o peso; os comandos só apontam para eles. O que
 cada documento guarda, o formato da página e a fila estão no `SETUP.md`
 §3.5, que é também o que o agente instala como referência dos comandos.

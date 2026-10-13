@@ -105,6 +105,12 @@ read. What belongs to a single host:
    milestone, under the review, ready for `/propose` and `/apply`. Those
    lines get no second review: your commit is the review.
 
+What you do by hand outside a delivery (publish the site, roll back, set
+up a service) is in `docs/manuals/`, one file each, named after what it
+does and readable without the other documents. `/analyze` writes the
+manuals for what the repository already runs by hand; `/apply` writes or
+updates one when a delivery adds or changes it.
+
 The documents carry the weight; the commands only point at them. What each
 document holds, the format of the page, and the queue are in `SETUP.md`
 §3.5, which is also what the agent installs as the commands' reference.

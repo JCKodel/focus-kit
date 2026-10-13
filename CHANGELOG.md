@@ -8,6 +8,26 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.13
+
+- What a person does by hand outside a delivery (publish the site, roll
+  back, rotate a secret, set up a service) gets a manual in
+  `docs/manuals/`, one file each, named after what it does and readable
+  alone: what it does and when, what must be in place, the commands in
+  order, how to tell it worked, how to undo it. docs/05 §5 gains the
+  Manuals slot that says so and lists them, and a slot that names such a
+  command points to its manual instead of holding the steps. `/analyze`
+  writes the manuals for what the repository already runs by hand;
+  `/apply` writes or updates one when a delivery adds or changes it;
+  `AGENTS.md` points to the folder. A user went to republish a project's
+  site and found no instructions: the steps existed, but as a sub-item of
+  the Environments slot of docs/05 §5, written for the agent, where a
+  person looking for how to publish does not look.
+- Migration: the Manuals slot in docs/05 §5; each procedure written only
+  inside a slot or another document becomes a manual in `docs/manuals/`,
+  the slot keeping the command and pointing to it; the `docs/manuals/`
+  line in AGENTS.md's Read before acting.
+
 ## 2026.10.08.3
 
 - Two sessions in one working tree, on free lines that touch different

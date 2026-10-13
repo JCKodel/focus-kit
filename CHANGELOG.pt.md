@@ -8,6 +8,26 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.13
+
+- O que uma pessoa faz à mão fora de uma entrega (publicar o site, voltar
+  uma versão, trocar um segredo, configurar um serviço) ganha um manual em
+  `docs/manuals/`, um arquivo para cada coisa, com o nome do que ele faz e
+  legível sozinho: o que faz e quando, o que precisa estar pronto antes,
+  os comandos em ordem, como saber que deu certo, como desfazer. O
+  docs/05 §5 ganha o slot Manuals, que diz isso e os lista, e um slot que
+  cita um comando desses aponta para o manual em vez de guardar os passos.
+  O `/analyze` escreve os manuais do que o repositório já roda à mão; o
+  `/apply` escreve ou atualiza um quando uma entrega cria ou muda isso; o
+  `AGENTS.md` aponta para a pasta. Uma pessoa foi republicar o site de um
+  projeto e não achou instruções: os passos existiam, mas como subitem do
+  slot Environments do docs/05 §5, escritos para o agente, onde quem
+  procura como publicar não olha.
+- Migração: o slot Manuals no docs/05 §5; cada procedimento escrito só
+  dentro de um slot ou de outro documento vira um manual em
+  `docs/manuals/`, e o slot fica com o comando e aponta para ele; a linha
+  de `docs/manuals/` no Read before acting do AGENTS.md.
+
 ## 2026.10.08.3
 
 - Duas sessões na mesma pasta de trabalho, em linhas livres que tocam

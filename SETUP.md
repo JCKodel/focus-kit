@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.08.3
+Version: 2026.10.13
 
 ## 1. What to do
 
@@ -35,8 +35,12 @@ Version: 2026.10.08.3
    failure cases, resumption, order as priority and `after` on queue
    lines, two sessions in one working tree, shared queue and isolated
    staging), docs/04's pointer to docs/05 §6, and AGENTS.md's process rules,
-   including the line on where things stand. Include
-   any missing slots of docs/05 §5, such as Context. Preserve project
+   including the line on where things stand and the line on
+   docs/manuals/. Include
+   any missing slots of docs/05 §5, such as Context and Manuals; a
+   procedure a person runs by hand that is written only inside a slot or
+   another document becomes a manual in docs/manuals/, its slot keeping
+   the command and pointing to it. Preserve project
    choices; do not edit these files during setup. Report installed skill
    version separately from pending process migrations; an updated skill
    version does not mean the project's process is updated.
@@ -150,7 +154,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.08.3"
+  version: "2026.10.13"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -215,7 +219,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.08.3"
+  version: "2026.10.13"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -227,7 +231,7 @@ what each document holds.
 The README and any existing docs; the manifests (package.json, pyproject,
 go.mod, *.csproj, pubspec.yaml, Cargo.toml, Gemfile, and the like); the
 folder tree two levels deep; the entry points; the tests and how they run;
-CI; the last fifty commit subjects; any agent rules file already there
+CI, and any Makefile or script a person runs by hand; the last fifty commit subjects; any agent rules file already there
 (CLAUDE.md, AGENTS.md, .github/copilot-instructions.md, .cursorrules).
 
 From that, infer the stack, how the code is organized, where business rules
@@ -258,7 +262,9 @@ is not asked to settle it now.
 
 In the documentation language: docs/00 to 06 describing what exists, not
 what should exist; docs/adr/ with the decisions the code already embodies
-and the ones this round took, one dated paragraph each; `AGENTS.md` from the
+and the ones this round took, one dated paragraph each; docs/manuals/, one
+manual per thing a person already does by hand (a Makefile target, a
+deploy script, steps in a README), as docs/05 §5 says; `AGENTS.md` from the
 template; `CLAUDE.md` holding the line `@AGENTS.md`; and the folder
 `work/done/`. The rules live in `AGENTS.md`: what an existing `CLAUDE.md`,
 `.github/copilot-instructions.md` or similar file already says moves into
@@ -284,7 +290,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.08.3"
+  version: "2026.10.13"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -329,7 +335,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.08.3"
+  version: "2026.10.13"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -362,7 +368,9 @@ text a user reads.
 Run verify until green. Prove the delivery as docs/05 says; list divergences
 and fix them until only what you can justify remains. Leave environments
 as required. Record divergences, omissions, proof and decisions on the
-page; update their owning documents and ADRs. Tick every Done when item,
+page; update their owning documents and ADRs. When the delivery adds or
+changes something a person does by hand, write or update its manual as
+docs/05 §5 says. Tick every Done when item,
 move the page to `work/done/` and mark `[x]`. Resolve dependent queue lines
 by docs/05 §4, preserving their definition or implementation phase.
 
@@ -387,8 +395,8 @@ The same content at both paths.
 ````markdown
 # The documents
 
-Seven numbered documents, a folder of decisions, a rules file and a work
-folder, written from a context folder. The numbers are fixed, because the four commands cite them; the
+Seven numbered documents, a folder of decisions, a folder of manuals, a
+rules file and a work folder, written from a context folder. The numbers are fixed, because the four commands cite them; the
 name after the number is in the documentation language (`00-Product.md`,
 `00-Produto.md`, `00-Produkt.md`). Prose in the documentation language;
 identifiers in English unless docs/04 says otherwise.
@@ -450,6 +458,11 @@ queue is edited by conversation in any session; no command owns it.
 
 **docs/adr/.** One file per decision, `ADR-NNNN-<slug>.md`: context, the
 decision, the consequences, the date. An ADR is amended, never rewritten.
+
+**docs/manuals/.** One file per thing a person does by hand outside a
+delivery, so it is found by its name and not inside a slot: publish, roll
+back, set up a service. docs/05 §5 says what each one holds. Created with
+the first one; there is no empty folder.
 
 **AGENTS.md.** The template below. Read at the start of every session by
 every host in the table of SETUP.md §1, on its own or through the pointer
@@ -684,12 +697,22 @@ conversation in any session.
 * **Verify:** `<command>`, which runs <what>. Green before anything is
   declared done. <Or: created by the first delivery.>
 * **Environments:** one line each: name, what runs there, what a delivery
-  must leave up to date there, and the command that does it.
+  must leave up to date there, and the command that does it, or its
+  manual when a person does it by hand.
 * **Proof of a screen:** <tool, viewports, reference>, or "no screens".
 * **Publish policy:** when an environment beyond the local one is updated,
   and whether the agent asks first.
 * **Context:** `context/` is committed | listed in `.gitignore`, and why
   (who reads the repository).
+* **Manuals:** `docs/manuals/`, one file per thing a person does by hand
+  outside a delivery (publish, roll back, rotate a secret, set up a
+  service), named in the documentation language after what it does. Each
+  stands alone for a person who has read nothing else: what it does and
+  when, what must be in place, the commands in order, how to tell it
+  worked, how to undo it, what breaks if a step is skipped. A slot that
+  names such a command points to its manual instead of holding the steps;
+  a delivery that changes one updates its manual. <The manuals, one line
+  each, or: none yet.>
 * **Git:** trunk | a branch per delivery | a worktree per delivery. A
   delivery's page and build are one change: one commit on trunk, one merge
   otherwise. The agent stages; it never commits or merges.
@@ -775,6 +798,8 @@ is the only place a rule is written.
 - the product: docs/00 · the vocabulary: docs/03
 - how it is built: docs/01 · the server: docs/02
 - style and tests: docs/04 · process: docs/05 · queue: docs/06
+- what a person does by hand (publish, roll back): docs/manuals/, when
+  it exists
 
 ## Non-negotiables
 - <three to six rules that protect what the product is; from docs/00 and
