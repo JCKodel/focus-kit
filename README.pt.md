@@ -191,7 +191,8 @@ uma recomendação para a sua stack, e registram o que você escolher:
   só da sua entrega, commitadas uma por vez; uma branch por entrega, para
   trabalho sequencial revisado por pull request; ou uma worktree por
   entrega, para que várias pessoas, ou entregas que tocam os mesmos
-  arquivos, construam em paralelo sem se tocar. Em todos os casos a
+  arquivos, construam em paralelo sem se tocar, cada worktree numa pasta
+  oculta da pasta cujo `main/` é o checkout. Em todos os casos a
   página e a construção de
   uma entrega são uma mudança só, revertida em um passo (um commit na
   trunk, um merge nas outras), e o agente nunca commita nem faz merge.

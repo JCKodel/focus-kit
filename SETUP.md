@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.13
+Version: 2026.10.15
 
 ## 1. What to do
 
@@ -154,7 +154,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.13"
+  version: "2026.10.15"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -219,7 +219,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.13"
+  version: "2026.10.15"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -290,7 +290,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.13"
+  version: "2026.10.15"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -298,7 +298,8 @@ there is none, ask for it.
 Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
 (process) and docs/06 (queue), and the deliveries in flight in `work/`.
 Follow docs/05 §§2, 4 and 5 to start or resume the definition in the right
-branch or worktree and mark the queue `[~]`. Do not start a blocked line
+branch or worktree, a worktree where docs/05's Git slot puts it and
+reused when it exists, and mark the queue `[~]`. Do not start a blocked line
 until its recorded reason is resolved, nor a line whose `after` is not
 done. Another line changing mark meanwhile is another session's work.
 
@@ -335,7 +336,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.13"
+  version: "2026.10.15"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -543,9 +544,16 @@ delivery must be one step; the agent never commits and never merges:
   merges it through a pull request in one merge, so reverting the delivery
   is one revert of that merge. For sequential work reviewed by pull
   request;
-* **a worktree per delivery:** `/propose` creates a git worktree on a
-  branch named after the slug and writes the page there; `/apply` runs in
-  it; the branch reaches the main branch in one merge, as above. For
+* **a worktree per delivery:** the checkout is the `main/` of a
+  container folder, which keeps the bare repository in a hidden folder
+  of it (`<hidden>/repo.git/`) and each delivery's worktree in
+  `<hidden>/worktrees/<slug>/`, on the branch `<prefix>/<slug>`; docs/05's
+  Git slot names the hidden folder and the prefix, and a slot that names
+  neither means `.face/` and `face/`. `/propose` creates the slug's
+  worktree there, from the main branch's HEAD, or reuses the one that
+  exists, and writes the page in it; a branch `<slug>` without the prefix
+  is someone else's, not the delivery's. `/apply` runs in it; the branch
+  reaches the main branch in one merge, as above. For
   parallel work by several people, or by one person whose deliveries
   touch the same files: one branch does not touch
   another, so several agents build different deliveries at the same time.
@@ -715,7 +723,9 @@ conversation in any session.
   each, or: none yet.>
 * **Git:** trunk | a branch per delivery | a worktree per delivery. A
   delivery's page and build are one change: one commit on trunk, one merge
-  otherwise. The agent stages; it never commits or merges.
+  otherwise. The agent stages; it never commits or merges. <With a
+  worktree per delivery: the hidden folder of the container, `.face/`, and
+  the branch prefix, `face/`.>
 
 ## 6. Commit
 

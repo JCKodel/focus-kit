@@ -8,6 +8,22 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.15
+
+- A worktree per delivery now has one shape, the same for every tool and
+  every person: the checkout is the `main/` of a container folder, the
+  bare repository lives in a hidden folder of it, and each delivery's
+  worktree lives in `<hidden>/worktrees/<slug>/` on the branch
+  `<prefix>/<slug>`. docs/05's Git slot may name the hidden folder and the
+  prefix; a slot that names neither means `.face/` and `face/`. `/propose`
+  creates the worktree there, or reuses the one that exists, and a branch
+  `<slug>` without the prefix is not the delivery's. A `/propose` running
+  in the background entered a worktree its host had created on its own,
+  in the host's folder, and the person copied the page to the main branch
+  by hand: nothing said where a delivery's worktree belongs.
+- No migration: a docs/05 whose Git slot names no hidden folder and no
+  prefix already means `.face/` and `face/`.
+
 ## 2026.10.13
 
 - What a person does by hand outside a delivery (publish the site, roll

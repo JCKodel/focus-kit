@@ -185,7 +185,8 @@ a recommendation for your stack, and record what you choose:
   its delivery and committed one at a time; a branch per delivery, for
   sequential work reviewed by pull request; or a worktree per delivery,
   so several people, or deliveries that touch the same files, build in
-  parallel without touching each other. In every
+  parallel without touching each other, each worktree inside a hidden
+  folder of the folder whose `main/` is the checkout. In every
   case a delivery's page and build are one change that reverts in one step
   (one commit on trunk, one merge otherwise), and the agent never commits
   or merges. Parallel worktrees each show their own queue state; when their

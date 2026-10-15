@@ -8,6 +8,22 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.15
+
+- A worktree por entrega passa a ter uma forma só, a mesma para toda
+  ferramenta e toda pessoa: o checkout é o `main/` de uma pasta contêiner,
+  o repositório bare mora numa pasta oculta dela, e a worktree de cada
+  entrega mora em `<oculta>/worktrees/<slug>/`, na branch
+  `<prefixo>/<slug>`. O slot Git do docs/05 pode nomear a pasta oculta e o
+  prefixo; um slot que não nomeia nenhum dos dois vale `.face/` e `face/`.
+  O `/propose` cria a worktree ali, ou reaproveita a que existe, e uma
+  branch `<slug>` sem o prefixo não é a da entrega. Um `/propose` rodando
+  em segundo plano entrou numa worktree que o host dele criou por conta
+  própria, na pasta do host, e a pessoa copiou a página para a branch
+  principal à mão: nada dizia onde fica a worktree de uma entrega.
+- Sem migração: um docs/05 cujo slot Git não nomeia pasta oculta nem
+  prefixo já vale `.face/` e `face/`.
+
 ## 2026.10.13
 
 - O que uma pessoa faz à mão fora de uma entrega (publicar o site, voltar
