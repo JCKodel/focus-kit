@@ -46,9 +46,28 @@ In English: [CHANGELOG.md](CHANGELOG.md).
   a complete page", que o kit de fato exige; a estratégia trunk não diz
   mais que o Ninjobs fazia stage por sessão, o que ele nunca fez.
   Encontrados por uma revisão do kit inteiro em 2026-10-16.
-- Migração: o relatório de uma nova execução confere o docs/05 §§2, 3, 7
-  e 8, o slot Milestone review, a última frase da Publish policy e a
-  linha do `AGENTS.md` sobre uma mudança pedida fora do `/apply`.
+- Uma marca muda na hora: `[~]` é a primeira coisa que o `/propose`
+  escreve, `[*]` a primeira que o `/apply` escreve e `[x]` a última,
+  depois do stage. Num projeto a fila alimentava um board no Azure DevOps
+  ou no GitHub Projects de onde as pessoas puxavam trabalho, e escolher o
+  que puxar exige que o board mostre na hora o que já foi pego. Sem board, as
+  marcas não custam nada.
+- As regras de retomada do docs/05 §4 e de commit do §6 ficaram mais
+  curtas: `resume:` é uma frase, a recuperação de linhas bloqueadas
+  antigas e a mudança de uma entrega bloqueada na trunk para branch
+  própria saíram, a reconciliação de worktrees é uma frase e a posse vira
+  "o que esta entrega não mudou não é dela". A regra das duas sessões e o
+  "nunca `git add -A`" ficam inteiros. A 2026.10.16 cortou uma leitura de
+  180KB antes da primeira edição; o documento de processo faz parte dela.
+- Uma worktree por entrega, quando escolhida, usa por padrão a pasta
+  oculta `.focus-kit/` e o prefixo de branch `focus-kit/`, que dizem o que
+  os criou; `.face/` não dizia nada a quem o encontrava.
+- Migração: o relatório de uma nova execução confere o docs/05 §§2, 3, 4,
+  6, 7 e 8, o slot Milestone review, a última frase da Publish policy e a
+  linha do `AGENTS.md` sobre uma mudança pedida fora do `/apply`. Um slot
+  Git de worktree que não nomeia pasta, num repositório cujo container já
+  usa `.face/`, recebe `.face/` e `face/` por escrito, para nada mudar de
+  lugar.
 
 ## 2026.10.16
 

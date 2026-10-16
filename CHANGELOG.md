@@ -44,9 +44,26 @@ Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
   page", which the kit does require; the trunk strategy no longer says
   Ninjobs staged per session, which it never did. Found by a review of
   the whole kit on 2026-10-16.
-- Migration: the report of a rerun checks docs/05 §§2, 3, 7 and 8, the
-  Milestone review slot, the Publish policy's last sentence and
-  `AGENTS.md`'s line on a change asked outside `/apply`.
+- A mark changes at once: `[~]` is the first thing `/propose` writes,
+  `[*]` the first thing `/apply` writes and `[x]` the last, after staging.
+  In one project the queue fed a board in Azure DevOps or GitHub Projects
+  that people pulled work from, and choosing what to pull needs the board
+  to show at once what is taken. Without a board the marks cost nothing.
+- docs/05 §4's resumption and §6's commit rules are shorter: `resume:`
+  is one sentence, the recovery of old blocked lines and the move of a
+  blocked trunk delivery to its own branch are gone, worktree
+  reconciliation is one sentence and ownership is "what this delivery did
+  not change is not its own". The two-sessions rule and "never `git add
+  -A`" stay whole. 2026.10.16 cut a 180KB read before the first edit; the
+  process document is part of that read.
+- A worktree per delivery, when chosen, defaults to the hidden folder
+  `.focus-kit/` and the branch prefix `focus-kit/`, which say what made
+  them; `.face/` said nothing to a person who found it.
+- Migration: the report of a rerun checks docs/05 §§2, 3, 4, 6, 7 and 8,
+  the Milestone review slot, the Publish policy's last sentence and
+  `AGENTS.md`'s line on a change asked outside `/apply`. A worktree Git
+  slot that names no folder, where the container already uses `.face/`,
+  gets `.face/` and `face/` written in, so nothing moves.
 
 ## 2026.10.16
 

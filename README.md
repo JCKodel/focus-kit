@@ -78,11 +78,13 @@ read. What belongs to a single host:
    runs the verify command, proves the result, updates the documents,
    moves the page to `work/done/`, ends it with the commit message it
    suggests, stages and shows that message in the conversation too, in
-   the same `commit` block. It ends with your next
+   the same `commit` block. It gives your next
    steps, commands written out: review, commit, then the next line of the
-   queue. You review and commit. The queue shows it while it happens: the line is `[~]` while `/propose`
-   talks, `[>]` when the page is completely defined, `[*]` while `/apply`
-   builds and `[x]` when it is done. Only the delivery's changes are staged;
+   queue, and ends saying which environment is at which version. You
+   review and commit. The queue shows it while it happens, so a board
+   that reads it stays current: the line is `[~]` from the first thing
+   `/propose` writes, `[>]` when the page is completely defined, `[*]`
+   from the first thing `/apply` writes and `[x]` as its last. Only the delivery's changes are staged;
    unrelated edits and existing index entries are preserved and reported.
    A blocked build on trunk stays uncommitted until the whole delivery is
    ready; its page keeps a draft message pointing to its current path.

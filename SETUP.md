@@ -34,14 +34,17 @@ Version: 2026.10.16.1
    /apply, a change asked elsewhere ending as a line, a draft page and the
    /propose command, completed proposals, why the Contract is exact,
    Behaviour scenarios with concrete input and failure cases, resumption,
-   order as priority and `after` on queue lines, two sessions in one
+   when each mark changes, order as priority and `after` on queue lines, two sessions in one
    working tree, shared queue and isolated staging, the gate wording, the
    milestone's code review), docs/04's pointer to docs/05 §6, and
    AGENTS.md's process rules, including the line on a change asked
    outside /apply, the line on where things stand and the line on
    docs/manuals/. Include
    any missing slots of docs/05 §5, such as Context, Manuals and Milestone
-   review, and the Publish policy's last sentence; a
+   review, and the Publish policy's last sentence. A Git slot for a
+   worktree per delivery that names no folder, in a repository whose
+   container already uses `.face/`, gets `.face/` and `face/` written in,
+   so nothing moves; a
    procedure a person runs by hand that is written only inside a slot or
    another document becomes a manual in docs/manuals/, its slot keeping
    the command and pointing to it. A slot that narrates steps or output
@@ -307,11 +310,12 @@ there is none, ask for it.
 
 Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
 (process) and docs/06 (queue), and the deliveries in flight in `work/`.
-Follow docs/05 §§2, 4 and 5 to start or resume the definition in the right
-branch or worktree, a worktree where docs/05's Git slot puts it and
-reused when it exists, and mark the queue `[~]`. Do not start a blocked line
-until its recorded reason is resolved, nor a line whose `after` is not
-done. Another line changing mark meanwhile is another session's work.
+Do not start a blocked line until its recorded reason is resolved, nor a
+line whose `after` is not done. Otherwise your first edit marks the line
+`[~]` (docs/05 §4); then follow docs/05 §§2, 4 and 5 to start or resume
+the definition in the right branch or worktree, a worktree where docs/05's
+Git slot puts it and reused when it exists. Another line changing mark
+meanwhile is another session's work.
 
 What the documents answer, you do not ask: decide, write it on the page,
 and name the document it came from, so the person corrects it in the
@@ -353,14 +357,14 @@ is missing, ask for it. The page is the scope; do not widen it.
 Read the page, `AGENTS.md`, docs/01 (architecture), docs/04 (conventions),
 docs/05 (process) and docs/06 (queue). Follow docs/05's project slots
 literally: verify, environments, proof, publish policy and git strategy.
-Before editing, record the working tree and index as docs/05 §6 says.
+Before editing, inspect the working tree and index as docs/05 §6 says.
 Work on the branch or worktree /propose created, if any.
 
 If the page contradicts a document, stop and say which: the document changes
 in this delivery or the page is wrong. Do not resolve it silently. Follow
 docs/05 §4 to resume a blocked line; refuse an incomplete proposal and
 point to /propose. Only a fully defined `[>]` line whose `after` is done
-becomes `[*]`. Another session's delivery in the same tree is not a
+becomes `[*]`, your first edit. Another session's delivery in the same tree is not a
 conflict; docs/05 §§4 and 6 say what is.
 
 When work cannot go on, record what was built and what it waits on, leave
@@ -380,14 +384,15 @@ and fix them until only what you can justify remains. Leave environments
 as required. Record divergences, omissions, proof and decisions on the
 page; update their owning documents and ADRs. When the delivery adds or
 changes something a person does by hand, write or update its manual as
-docs/05 §5 says. Tick every Done when item,
-move the page to `work/done/` and mark `[x]`. Resolve dependent queue lines
-by docs/05 §4, preserving their definition or implementation phase.
+docs/05 §5 says. Tick every Done when item and
+move the page to `work/done/`. Resolve dependent queue lines by docs/05 §4,
+preserving their definition or implementation phase.
 
 End the page with one final `commit` block in docs/05 §6's format, replacing
 any earlier suggestion.
 Stage only this delivery's changes as that section says and suggest the
-same message in the conversation too, in the same `commit` block. Never
+same message in the conversation too, in the same `commit` block. Your
+last edit marks the line `[x]` and stages that hunk. Never
 commit or merge. Files and message in the documentation
 language; talk in the person's language. Give the person's next steps,
 each command written out: review the staged diff; commit with the
@@ -560,7 +565,7 @@ delivery must be one step; the agent never commits and never merges:
   of it (`<hidden>/repo.git/`) and each delivery's worktree in
   `<hidden>/worktrees/<slug>/`, on the branch `<prefix>/<slug>`; docs/05's
   Git slot names the hidden folder and the prefix, and a slot that names
-  neither means `.face/` and `face/`. `/propose` creates the slug's
+  neither means `.focus-kit/` and `focus-kit/`. `/propose` creates the slug's
   worktree there, from the main branch's HEAD, or reuses the one that
   exists, and writes the page in it; a branch `<slug>` without the prefix
   is someone else's, not the delivery's. `/apply` runs in it; the branch
@@ -676,25 +681,21 @@ queue shows what is happening while it happens:
 | `[x]` | done, page in `work/done/` | /apply, with verify green |
 | `[?]` | waiting | any session, in the three cases below |
 
+A board may read the queue, and people pull work from it, so a mark
+changes at once: `[~]` is /propose's first edit, `[*]` is /apply's first,
+and `[x]` is /apply's last. Without a board the marks cost nothing.
+
 A line waits when the person says it is blocked, when it needs an answer
 that was asked and not given, or when work already started finds it needs
 another line done first, such as a fix found in the middle of an /apply.
-The reason goes at the end
-of the line, `· blocked: <reason>` or `· blocked: after <slug>, <slug>`.
-A dependency known when the line is added is `· after <slug>` alone,
-without `[?]`: an order, not an interruption.
-Before that reason, record the phase to resume: `· resume: propose` for
-`[ ]` or `[~]`, and `· resume: apply` for `[>]` or `[*]`. A draft saved
-by /propose always uses `resume: propose` until §3 is complete.
-Any mark before `[x]` can become `[?]`. The line leaves `[?]` when the
-reason is resolved: the person says so, the session that records the
-answer clears it, or /apply clears it when it marks `[x]` the last line of
-an `after`. Remove both suffixes and return `resume: propose` to `[ ]`,
-keeping any draft for /propose to finish; return `resume: apply` to `[>]`
-only when its page still satisfies §3. Existence alone is insufficient.
-If scope became undecided, return `[ ]` and say what /propose must settle.
-For an old blocked line without `resume`, recover the phase from its page
-and history; if completeness cannot be established, return `[ ]`.
+The line ends with the command that picks it up, `· resume: propose` or
+`· resume: apply`, then the reason, `· blocked: <reason>` or
+`· blocked: after <slug>, <slug>`. A dependency known when the line is
+added is `· after <slug>` alone, without `[?]`: an order, not an
+interruption. When the reason is resolved (the person says so, the
+session that records the answer clears it, or /apply marks `[x]` the last
+line of an `after`), remove both suffixes: `resume: propose` returns to
+`[ ]`, keeping any draft, and `resume: apply` to `[>]`.
 
 Two sessions in one working tree, on free lines that touch different
 files, are the normal case of parallel work on trunk. Another line
@@ -704,16 +705,9 @@ conflict: do not stop for them, do not touch them, change only this
 delivery's line and stage only this delivery's paths and hunks, including
 its own hunk of docs/06. A conflict is the same hunk edited by both, or a
 file this page needs that the other delivery is changing; then stop and
-report. In worktrees, each worktree's queue shows that branch's state, not a
-global live view. Change only the current delivery's line, its new findings
-and the dependent lines this session can resolve. When branches are
-integrated, reconcile docs/06 by slug: retain every delivery and finding,
-and each owning branch's latest state. Do not replace the whole file with
-one side or downgrade a completed line using a stale copy. Check the page
-at the expected path and keep a dependency blocked until its completed
-changes are available in the branch that needs them. A conflicting state
-or scope is reported for resolution, never guessed. Apply the same care
-to shared domain terms and ADRs.
+report. In worktrees, change only this delivery's line; when branches are
+integrated, reconcile docs/06 by slug, keeping every line at its latest
+state, never one side's whole file.
 
 Each milestone is planned with its review as the last line (§8). Edited by
 conversation in any session.
@@ -751,22 +745,17 @@ time. Steps go in a manual, and what a command prints stays in its help.
 * **Git:** trunk | a branch per delivery | a worktree per delivery. A
   delivery's page and build are one change: one commit on trunk, one merge
   otherwise. The agent stages; it never commits or merges. <With a
-  worktree per delivery: the hidden folder of the container, `.face/`, and
-  the branch prefix, `face/`.>
+  worktree per delivery: the hidden folder of the container, `.focus-kit/`,
+  and the branch prefix, `focus-kit/`.>
 
 ## 6. Commit
 
 This section owns the commit format; docs/04 points here. Before editing,
-inspect git status, the staged and unstaged diffs, and untracked files.
-Record which changes already belong to this delivery (its /propose page
-and queue changes, or a previous partial /apply) and which are unrelated;
-do not assume an existing edit belongs to it because it shares a path.
-Another delivery's page, its files and its hunk of docs/06 belong to the
-session building it (§4); they are unrelated here. Preserve unrelated
-edits and the pre-existing index entries. If ownership of a change this
-delivery must edit cannot be established, or changes overlap in the same
-hunk, stop and report the affected paths before editing them or staging;
-do not reset or stash them.
+inspect git status, the diffs and untracked files. What this delivery did
+not change (another session's page, files and hunk of docs/06, anyone's
+edit) is not its own: preserve it and the existing index entries. When a
+change this delivery must edit is not clearly its own, stop and report
+the paths; do not reset or stash them.
 
 Stage only this delivery's files or hunks, including the page move and its
 documentation changes. Use explicit paths for files wholly owned by it,
@@ -785,16 +774,11 @@ reasoning lives: `work/done/<slug>.md` when done, `work/<slug>.md` when
 blocked. A partial message says it is partial and names the blocker;
 it must not imply verify passed or the delivery is done.
 
-When blocked on trunk, keep the work uncommitted and do not add it to the
-index; the `commit` block is a draft for the eventual whole delivery.
-Resume with the same page and record the current verify result. If a
-prerequisite must be implemented separately before resumption, move this
-partial delivery to its own branch/worktree, preserving its edits and
-index ownership, before starting the prerequisite; ask for help if safe
-separation is not possible. Do not mix their commits on trunk.
-On a delivery branch or worktree, partial changes may be staged and
-suggested for the person to commit there. Keep the branch unmerged until
-the delivery is complete, so one merge still contains the whole delivery.
+When blocked on trunk, keep the work uncommitted and out of the index;
+the `commit` block is a draft for the whole delivery. On a delivery
+branch or worktree, partial changes may be staged for the person to
+commit there, and the branch stays unmerged until the delivery is
+complete, so one merge still holds the whole delivery.
 
 ## 7. What this process does not have
 

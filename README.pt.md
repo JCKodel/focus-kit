@@ -80,12 +80,13 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
    documentos, move a página para `work/done/`, termina a página com a
    mensagem de commit que sugere, faz o stage e mostra essa mensagem
    também na conversa, no mesmo bloco `commit`.
-   Termina com os seus próximos passos, com os comandos por extenso:
-   revisar, commitar e então a próxima linha da fila. Você revisa e
-   commita.
-   A fila mostra isso enquanto acontece: a linha fica `[~]` enquanto o
-   `/propose` conversa, `[>]` quando a página está completamente definida,
-   `[*]` enquanto o `/apply` constrói e `[x]` quando termina. Só as mudanças
+   Dá os seus próximos passos, com os comandos por extenso: revisar,
+   commitar e então a próxima linha da fila, e termina dizendo qual
+   ambiente está em qual versão. Você revisa e commita.
+   A fila mostra isso enquanto acontece, então um board que a lê fica em
+   dia: a linha fica `[~]` desde a primeira coisa que o `/propose`
+   escreve, `[>]` quando a página está completamente definida, `[*]` desde
+   a primeira coisa que o `/apply` escreve e `[x]` como a última. Só as mudanças
    da entrega entram no stage; edições alheias e entradas já existentes no
    índice são preservadas e reportadas. Uma construção bloqueada na trunk
    fica sem commit até a entrega inteira estar pronta; sua página guarda
