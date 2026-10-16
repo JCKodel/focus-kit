@@ -8,6 +8,27 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.16
+
+- `/apply` reads in docs/06 only the lines that name its slug and their
+  milestone heading, not the whole queue. A queue line is the mark, the
+  slug, one sentence and its suffixes; what happened goes on the page.
+  A docs/05 §5 slot says what and the command in a few lines; steps go in
+  a manual and what a command prints stays in its help. In one project
+  every `/apply` read about 180KB of documents before its first edit: an
+  80KB queue whose lines reached 4.7KB, and a process document whose
+  Environments slot ran about 120 lines.
+- A change asked outside `/propose` still becomes a `[ ]` line, but when
+  the person wants it defined now, the conversation continues as
+  `/propose <slug>` in the same session and what was said becomes the
+  page. That project's request lines grew to 4.7KB because the detail of
+  a request had nowhere to go but the line.
+- A manual in docs/manuals/ also holds a proof `/apply` runs on another
+  machine, not only what a person does by hand: that project's proof
+  steps had nowhere to go but the slot.
+- Migration: the report of a rerun lists queue lines that carry history
+  and slots that narrate steps or output, with the shorter wording.
+
 ## 2026.10.15
 
 - A worktree per delivery now has one shape, the same for every tool and

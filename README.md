@@ -106,7 +106,8 @@ read. What belongs to a single host:
    lines get no second review: your commit is the review.
 
 What you do by hand outside a delivery (publish the site, roll back, set
-up a service) is in `docs/manuals/`, one file each, named after what it
+up a service), and a proof `/apply` runs on another machine, is in
+`docs/manuals/`, one file each, named after what it
 does and readable without the other documents. `/analyze` writes the
 manuals for what the repository already runs by hand; `/apply` writes or
 updates one when a delivery adds or changes it.

@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.15
+Version: 2026.10.16
 
 ## 1. What to do
 
@@ -40,7 +40,10 @@ Version: 2026.10.15
    any missing slots of docs/05 §5, such as Context and Manuals; a
    procedure a person runs by hand that is written only inside a slot or
    another document becomes a manual in docs/manuals/, its slot keeping
-   the command and pointing to it. Preserve project
+   the command and pointing to it. A slot that narrates steps or output
+   shrinks to what and the command, and a docs/06 line that carries
+   history keeps the mark, the slug, one sentence and its suffixes, the
+   rest moved to its page when the page lacks it. Preserve project
    choices; do not edit these files during setup. Report installed skill
    version separately from pending process migrations; an updated skill
    version does not mean the project's process is updated.
@@ -154,7 +157,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.15"
+  version: "2026.10.16"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -219,7 +222,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.15"
+  version: "2026.10.16"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -290,7 +293,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.15"
+  version: "2026.10.16"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -336,13 +339,14 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.15"
+  version: "2026.10.16"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
 
 Read the page, `AGENTS.md`, docs/01 (architecture), docs/04 (conventions),
-docs/05 (process) and docs/06 (queue). Follow docs/05's project slots
+docs/05 (process), and in docs/06 (queue) only the lines naming the slug
+and their milestone heading. Follow docs/05's project slots
 literally: verify, environments, proof, publish policy and git strategy.
 Before editing, record the working tree and index as docs/05 §6 says.
 Work on the branch or worktree /propose created, if any.
@@ -446,7 +450,8 @@ its review (docs/05 §8):
 `work/<slug>.md` ready for /apply · `[*]` being built · `[x]` done, page in
 `work/done/` · `[?]` waiting, with `· resume: propose` or `· resume: apply`
 before `· blocked: <reason>` or `· blocked: after <slug>, <slug>` at the
-end of the line (docs/05 §4). A line never
+end of the line (docs/05 §4). A line holds the mark, the slug, one
+sentence and its suffixes; what happened goes on the page. A line never
 leaves; it changes mark, at the moment the work changes (docs/05 §4). The
 order is the priority: a session asked for the next delivery takes the
 first free line, and the person reorders by conversation in any session;
@@ -460,9 +465,10 @@ queue is edited by conversation in any session; no command owns it.
 **docs/adr/.** One file per decision, `ADR-NNNN-<slug>.md`: context, the
 decision, the consequences, the date. An ADR is amended, never rewritten.
 
-**docs/manuals/.** One file per thing a person does by hand outside a
-delivery, so it is found by its name and not inside a slot: publish, roll
-back, set up a service. docs/05 §5 says what each one holds. Created with
+**docs/manuals/.** One file per action that takes more than one command,
+so it is found by its name and not inside a slot: what a person does by
+hand outside a delivery (publish, roll back, set up a service), and a
+proof /apply runs on another machine. docs/05 §5 says what each one holds. Created with
 the first one; there is no empty folder.
 
 **AGENTS.md.** The template below. Read at the start of every session by
@@ -588,7 +594,9 @@ git add → a person reviews and commits.
 /propose talks and writes the page, never code. /apply builds, proves,
 updates the documents, stages and suggests the commit, never commits.
 Code changes only inside /apply: a change asked anywhere else, however
-small, becomes a `[ ]` line in docs/06 and the answer stops there.
+small, becomes a `[ ]` line in docs/06 and the answer stops there, or,
+when the person wants it defined now, the conversation continues as
+/propose <slug> in the same session, and what was said becomes the page.
 
 Before /propose changes the queue or the page, use §5's git strategy:
 create the branch or worktree named after the slug, or reuse its existing
@@ -640,7 +648,9 @@ behalf are explicit. Corrections happen in the /propose conversation;
 
 docs/06: one line per delivery, in order, under milestones. The order is
 the priority: the next delivery is the first free line, and the person
-reorders by conversation. A line that needs another done first ends with
+reorders by conversation. A line is the mark, the slug, one sentence and
+its suffixes; what happened goes on the page, because /propose reads the
+whole queue. A line that needs another done first ends with
 `· after <slug>`, written when the line is added; it is free when every
 line it names is `[x]`. Asked what can run at the same time, answer from
 the queue: the free lines, and among them the ones that touch different
@@ -701,6 +711,9 @@ conversation in any session.
 
 ## 5. This project
 
+A slot says what and the command, in a few lines: /apply reads it every
+time. Steps go in a manual, and what a command prints stays in its help.
+
 * **Documentation language:** <language>. Identifiers in <language>.
 * **Verify:** `<command>`, which runs <what>. Green before anything is
   declared done. <Or: created by the first delivery.>
@@ -712,10 +725,11 @@ conversation in any session.
   and whether the agent asks first.
 * **Context:** `context/` is committed | listed in `.gitignore`, and why
   (who reads the repository).
-* **Manuals:** `docs/manuals/`, one file per thing a person does by hand
-  outside a delivery (publish, roll back, rotate a secret, set up a
-  service), named in the documentation language after what it does. Each
-  stands alone for a person who has read nothing else: what it does and
+* **Manuals:** `docs/manuals/`, one file per action that takes more than
+  one command: what a person does by hand outside a delivery (publish,
+  roll back, rotate a secret, set up a service) and a proof /apply runs
+  on another machine, named in the documentation language after what it
+  does. Each stands alone for whoever runs it, having read nothing else: what it does and
   when, what must be in place, the commands in order, how to tell it
   worked, how to undo it, what breaks if a step is skipped. A slot that
   names such a command points to its manual instead of holding the steps;

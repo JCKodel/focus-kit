@@ -8,6 +8,28 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.16
+
+- `/apply` lê no docs/06 só as linhas que nomeiam seu slug e o cabeçalho
+  do marco delas, não a fila inteira. Uma linha da fila é a marca, o
+  slug, uma frase e os sufixos; o que aconteceu vai para a página. Um
+  slot do docs/05 §5 diz o quê e o comando em poucas linhas; os passos
+  vão para um manual e o que um comando imprime fica no help dele. Num
+  projeto, cada `/apply` lia uns 180KB de documentos antes da primeira
+  edição: uma fila de 80KB com linhas de até 4,7KB, e um documento de
+  processo cujo slot de ambientes tinha umas 120 linhas.
+- Uma mudança pedida fora do `/propose` continua virando uma linha
+  `[ ]`, mas quando a pessoa quer defini-la agora a conversa segue como
+  `/propose <slug>` na mesma sessão e o que foi dito vira a página. As
+  linhas de pedido daquele projeto chegaram a 4,7KB porque o detalhe de
+  um pedido não tinha outro lugar além da linha.
+- Um manual em docs/manuals/ também guarda uma prova que o `/apply` roda
+  em outra máquina, não só o que uma pessoa faz à mão: os passos de prova
+  daquele projeto não tinham outro lugar além do slot.
+- Migração: o relatório de uma nova rodada lista as linhas da fila que
+  carregam histórico e os slots que narram passos ou saída, com a
+  redação mais curta.
+
 ## 2026.10.15
 
 - A worktree por entrega passa a ter uma forma só, a mesma para toda
