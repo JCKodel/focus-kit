@@ -8,6 +8,46 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.16.1
+
+- A milestone's review reads the code again: its page names the commit
+  that closed the previous milestone, and the person launches the deep
+  review docs/05 §5's new Milestone review slot names, such as Claude
+  Code's `/code-review ultra <base>`. Each confirmed finding is a line
+  under the review, with no second review. In Ninjobs a code review of
+  the whole code found a 620 ms call, a page that could be framed, a visitor's address sent to
+  a third party and a function reaching the internal network; testing
+  clauses by hand finds none of these.
+- The last thing `/apply` says is which environment is at which version
+  and the command that updates the others, and docs/05's Publish policy
+  says so. In Ninjobs a person twice opened a published site believing
+  it current after a session that ended without saying it was not.
+- `/apply` reads the whole queue again. With 2026.10.16 it read only its
+  own lines, so it could not see whether the lines its `after` names are
+  done, nor name the next line. Queue lines stay one sentence, which is
+  what keeps the read small.
+- A change asked outside `/apply` becomes a `[ ]` line, with a draft
+  `work/<slug>.md` for what the line cannot hold, and the answer ends
+  naming `/propose <slug>` for a fresh session. This replaces 2026.10.16's
+  "continue as `/propose` in the same session": that session ran without
+  the propose skill, which no host lets the agent invoke on its own, and a
+  request not defined now had nowhere to keep its detail. `AGENTS.md`'s
+  rule, which still said the answer stops at the line, now says the same.
+- The Contract section of the page says again why it must be exact: a
+  wrong screen is fixed in a session, a wrong column is a migration, and
+  a wrong access rule has already leaked. Ninjobs' process said it, and
+  the kit kept the rule without the reason that makes an agent take it
+  seriously.
+- Smaller: `/analyze` creates `work/done/.gitkeep` as `/brainstorm` does;
+  `/brainstorm` asks for the manuals and the milestone review with the
+  other slots, and `/analyze` asks for the milestone review; "no gate before implementation" reads "beyond a complete
+  page", which the kit does require; the trunk strategy no longer says
+  Ninjobs staged per session, which it never did. Found by a review of
+  the whole kit on 2026-10-16.
+- Migration: the report of a rerun checks docs/05 §§2, 3, 7 and 8, the
+  Milestone review slot, the Publish policy's last sentence and
+  `AGENTS.md`'s line on a change asked outside `/apply`.
+
 ## 2026.10.16
 
 - `/apply` reads in docs/06 only the lines that name its slug and their

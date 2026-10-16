@@ -67,7 +67,8 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
    que o produto é, para quem, como é construído e como é entregue. Num
    repositório com código, `/analyze`: o agente lê o código e pergunta só o
    que o código não responde. Os dois terminam escrevendo `docs/00` a `06`,
-   `docs/adr/` e `AGENTS.md`, na língua que você escolher para os
+   `docs/adr/`, `docs/manuals/` quando algo é feito à mão, e `AGENTS.md`,
+   na língua que você escolher para os
    documentos, seja qual for a língua em que você conversa.
 2. **A cada entrega.** Escolha uma linha da fila (`docs/06`) e rode
    `/propose <slug>`: uma conversa que termina em `work/<slug>.md`, uma
@@ -105,10 +106,12 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
 4. **Todo milestone** é planejado com uma revisão como última linha,
    rodada como qualquer entrega. Ela percorre o parágrafo do milestone
    cláusula por cláusula e diz qual entrega responde a cada uma e como
-   você testa. Você testa; o que falta ou falha nas suas mãos vira uma
-   linha no mesmo milestone, abaixo da revisão, pronta para `/propose` e
-   `/apply`. Essas linhas não passam por segunda revisão: o seu commit é a
-   revisão.
+   você testa. Você testa e dispara uma revisão profunda de todo o código
+   do milestone, como o `/code-review ultra` do Claude Code, o único olhar
+   sobre o conjunto em vez da entrega. O que falta, falha nas suas mãos ou
+   a revisão de código confirma vira uma linha no mesmo milestone, abaixo
+   da revisão, pronta para `/propose` e `/apply`. Essas linhas não passam
+   por segunda revisão: o seu commit é a revisão.
 
 O que você faz à mão fora de uma entrega (publicar o site, voltar uma
 versão, configurar um serviço), e uma prova que o `/apply` roda em outra

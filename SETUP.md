@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.16
+Version: 2026.10.16.1
 
 ## 1. What to do
 
@@ -30,20 +30,25 @@ Version: 2026.10.16
 4. When the project already has docs/ or AGENTS.md, compare its rules with
    the current templates and report every migration still needed, with
    the actual path, section and proposed wording in its documentation
-   language. Check docs/05 §§2, 3, 4 and 6 (code only inside /apply,
-   completed proposals, Behaviour scenarios with concrete input and
-   failure cases, resumption, order as priority and `after` on queue
-   lines, two sessions in one working tree, shared queue and isolated
-   staging), docs/04's pointer to docs/05 §6, and AGENTS.md's process rules,
-   including the line on where things stand and the line on
+   language. Check docs/05 §§2, 3, 4, 6, 7 and 8 (code only inside
+   /apply, a change asked elsewhere ending as a line, a draft page and the
+   /propose command, completed proposals, why the Contract is exact,
+   Behaviour scenarios with concrete input and failure cases, resumption,
+   order as priority and `after` on queue lines, two sessions in one
+   working tree, shared queue and isolated staging, the gate wording, the
+   milestone's code review), docs/04's pointer to docs/05 §6, and
+   AGENTS.md's process rules, including the line on a change asked
+   outside /apply, the line on where things stand and the line on
    docs/manuals/. Include
-   any missing slots of docs/05 §5, such as Context and Manuals; a
+   any missing slots of docs/05 §5, such as Context, Manuals and Milestone
+   review, and the Publish policy's last sentence; a
    procedure a person runs by hand that is written only inside a slot or
    another document becomes a manual in docs/manuals/, its slot keeping
    the command and pointing to it. A slot that narrates steps or output
    shrinks to what and the command, and a docs/06 line that carries
    history keeps the mark, the slug, one sentence and its suffixes, the
-   rest moved to its page when the page lacks it. Preserve project
+   rest moved to its page, or to a draft `work/<slug>.md` for a `[ ]`
+   line, when the page lacks it. Preserve project
    choices; do not edit these files during setup. Report installed skill
    version separately from pending process migrations; an updated skill
    version does not mean the project's process is updated.
@@ -157,7 +162,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.16"
+  version: "2026.10.16.1"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -181,9 +186,9 @@ order. Move on when you could write the section yourself.
 4. **The conventions** (docs/04): documentation language, identifier
    language, style, where tests live; commit format lives in docs/05 §6.
 5. **The process slots** (docs/05): verify command, environments, how a
-   screen is proven, publish policy, whether `context/` is committed. What
-   does not exist yet is written as
-   "created by the first delivery".
+   screen is proven, publish policy, whether `context/` is committed, the
+   manuals ("none yet"), the milestone review. What does not exist yet is
+   written as "created by the first delivery".
 6. **The first milestone** (docs/06): three to eight deliveries, one line
    each, in order, then its review. The first ones are the skeleton the
    others stand on.
@@ -222,7 +227,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.16"
+  version: "2026.10.16.1"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -254,6 +259,8 @@ host's question form when it has one:
   and you say what that is;
 * whether `context/` is committed. Default: committed when the repository
   stays with the team, in `.gitignore` when it is delivered or public;
+* the milestone review: the deep code review the person will launch at
+  each milestone's close. Default: the one this host offers, if any;
 * the first milestone: three to eight deliveries, or where to read them
   from (issues, a TODO file, a roadmap), then its review.
 
@@ -269,11 +276,11 @@ and the ones this round took, one dated paragraph each; docs/manuals/, one
 manual per thing a person already does by hand (a Makefile target, a
 deploy script, steps in a README), as docs/05 §5 says; `AGENTS.md` from the
 template; `CLAUDE.md` holding the line `@AGENTS.md`; and the folder
-`work/done/`. The rules live in `AGENTS.md`: what an existing `CLAUDE.md`,
-`.github/copilot-instructions.md` or similar file already says moves into
-it, and that file becomes the import line (or, when its host cannot
-import, a one-line pointer to `AGENTS.md`), keeping below it only what
-applies to that host alone. Show the diff before writing.
+`work/done/` with a `.gitkeep`. The rules live in `AGENTS.md`: what an
+existing `CLAUDE.md`, `.github/copilot-instructions.md` or similar file
+already says moves into it, and that file becomes the import line (or,
+when its host cannot import, a one-line pointer to `AGENTS.md`), keeping
+below it only what applies to that host alone. Show the diff before writing.
 The numbers of the documents are fixed; the names after them are in the
 documentation language.
 
@@ -293,7 +300,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.16"
+  version: "2026.10.16.1"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -325,7 +332,6 @@ Write no code, migration, test or configuration. End by showing the
 page's queue line and asking the person to read and question the page as
 docs/05 §3 says, request corrections in this conversation, then run
 `/apply <slug>` in a fresh session, written as this host invokes commands.
-
 ````
 
 ### 3.4 `apply/SKILL.md`
@@ -339,14 +345,13 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.16"
+  version: "2026.10.16.1"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
 
 Read the page, `AGENTS.md`, docs/01 (architecture), docs/04 (conventions),
-docs/05 (process), and in docs/06 (queue) only the lines naming the slug
-and their milestone heading. Follow docs/05's project slots
+docs/05 (process) and docs/06 (queue). Follow docs/05's project slots
 literally: verify, environments, proof, publish policy and git strategy.
 Before editing, record the working tree and index as docs/05 §6 says.
 Work on the branch or worktree /propose created, if any.
@@ -384,13 +389,13 @@ any earlier suggestion.
 Stage only this delivery's changes as that section says and suggest the
 same message in the conversation too, in the same `commit` block. Never
 commit or merge. Files and message in the documentation
-language; talk in the person's language. Report which environment is at
-which version and the command that updates the others. End with the
-person's next steps, each command written out: review the staged diff;
-commit with the suggested message, and on a delivery branch merge it as
-docs/05 §5 says; then the queue's next line and its command, written as
-this host invokes commands, in a fresh session.
-
+language; talk in the person's language. Give the person's next steps,
+each command written out: review the staged diff; commit with the
+suggested message, and on a delivery branch merge it as docs/05 §5 says;
+then the queue's next line and its command, written as this host invokes
+commands, in a fresh session. The last thing you say is which environment
+is at which version and the command that updates the others; never end
+silent about it.
 ````
 
 ### 3.5 `brainstorm/references/documents.md` and `analyze/references/documents.md`
@@ -538,12 +543,12 @@ delivery must be one step; the agent never commits and never merges:
 * **trunk:** everything on the main branch. The
   page waits uncommitted in the working tree between `/propose` and
   `/apply`; page and build land in one commit, which the person makes
-  after reviewing. For one person, alone or with several sessions open
+  after reviewing. What Ninjobs did, one session at a time. For one
+  person, alone or with several sessions open
   on free lines that touch different files: each session stages only its
   delivery, and the person commits one delivery at a time, from the paths
   that session staged. Not for two people: their deliveries share one
-  branch and one commit carries the other's half-done work. What Ninjobs
-  did;
+  branch and one commit carries the other's half-done work;
 * **a branch per delivery:** `/propose` creates a branch named after the
   slug and writes the page there; `/apply` builds on it. The branch may
   carry several commits, the page first and the build after; the person
@@ -594,13 +599,15 @@ git add → a person reviews and commits.
 /propose talks and writes the page, never code. /apply builds, proves,
 updates the documents, stages and suggests the commit, never commits.
 Code changes only inside /apply: a change asked anywhere else, however
-small, becomes a `[ ]` line in docs/06 and the answer stops there, or,
-when the person wants it defined now, the conversation continues as
-/propose <slug> in the same session, and what was said becomes the page.
+small, becomes a `[ ]` line in docs/06; what was said that the line
+cannot hold goes into a draft `work/<slug>.md`. The answer stops there
+and names `/propose <slug>` for a fresh session, as this host invokes
+commands.
 
 Before /propose changes the queue or the page, use §5's git strategy:
 create the branch or worktree named after the slug, or reuse its existing
-one on resumption. Add a missing queue line where it belongs and say so.
+one on resumption, bringing into it any draft left for the slug. Add a
+missing queue line where it belongs and say so.
 Start defining with `[~]`; start building only a completely defined `[>]`
 page, with `[*]`. Follow §4 for blocked lines and §6 before changing code
 or staging. Keep project slots and rules current before using them; report
@@ -618,7 +625,9 @@ a missing process rule rather than falling back to a retired instruction.
     test or a manual check.
 
     **Contract.** Data, schema, API, message shapes, or "none". The only
-    section that must be exact.
+    section that must be exact: a wrong screen is fixed in a session, a
+    wrong column is a migration, and a wrong access rule has already
+    leaked.
 
     **States.** Empty, loading, error, offline: one line each, or "the
     defaults". Only when there is a screen.
@@ -722,7 +731,8 @@ time. Steps go in a manual, and what a command prints stays in its help.
   manual when a person does it by hand.
 * **Proof of a screen:** <tool, viewports, reference>, or "no screens".
 * **Publish policy:** when an environment beyond the local one is updated,
-  and whether the agent asks first.
+  and whether the agent asks first. Whatever it is, /apply's last words
+  say which environment is at which version.
 * **Context:** `context/` is committed | listed in `.gitignore`, and why
   (who reads the repository).
 * **Manuals:** `docs/manuals/`, one file per action that takes more than
@@ -735,6 +745,9 @@ time. Steps go in a manual, and what a command prints stays in its help.
   names such a command points to its manual instead of holding the steps;
   a delivery that changes one updates its manual. <The manuals, one line
   each, or: none yet.>
+* **Milestone review:** <the command a person launches for a deep review
+  of a whole branch's code against a base, such as Claude Code's
+  `/code-review ultra <base>`, or: none>.
 * **Git:** trunk | a branch per delivery | a worktree per delivery. A
   delivery's page and build are one change: one commit on trunk, one merge
   otherwise. The agent stages; it never commits or merges. <With a
@@ -786,8 +799,8 @@ the delivery is complete, so one merge still contains the whole delivery.
 ## 7. What this process does not have
 
 No formal spec, no spec delta, no change folder, no numbered tasks, no
-gate before implementation, no review of a review, no specialized
-subagent, no tool the deliveries did not ask for. When one of these is
+gate before implementation beyond a complete page, no review of a review,
+no specialized subagent, no tool the deliveries did not ask for. When one of these is
 proposed, the question is: which concrete error would it have caught? The
 answer names an error that happened.
 
@@ -797,9 +810,15 @@ A milestone is planned with its review as its last line,
 `<milestone>-review`, a delivery like the others: /propose writes its
 page, /apply runs it. It takes the milestone's paragraph clause by clause
 and writes, for each, which delivery answers it and how a person tests it.
-It reviews no code and fixes nothing. The person tests each clause by
-hand: a clause no delivery answers, or one that fails in the person's
-hands, is a finding.
+It fixes nothing. The person tests each clause by hand: a clause no
+delivery answers, or one that fails in the person's hands, is a finding.
+
+The review also reads the code, the one look at the whole instead of a
+delivery: every page can be right and the whole wrong. Its page names the
+commit that closed the previous milestone, or the first commit, and the
+person launches §5's Milestone review against it; the agent may say it is
+time and never launches it. A finding the code review confirms is a
+finding like the others.
 
 Each finding becomes a `[ ]` line in the same milestone, under the review
 line, waiting for /propose. The milestone closes when those lines are
@@ -830,8 +849,9 @@ is the only place a rule is written.
   docs/01, one line each>
 - One delivery = one page in work/<slug>.md: /propose to define, /apply
   to build. Code changes only inside /apply: a change asked outside it,
-  however small, becomes a `[ ]` line in docs/06 and the answer stops
-  there.
+  however small, becomes a `[ ]` line in docs/06, with a draft page for
+  what the line cannot hold, and the answer stops there, naming /propose
+  for a fresh session (docs/05 §2).
 - No em dash in any text a user reads.
 - The agent stages and suggests the commit message. It never commits.
 - Stage only this delivery's changes as docs/05 §6 says; preserve unrelated

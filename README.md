@@ -66,7 +66,8 @@ read. What belongs to a single host:
    what the product is, for whom, how it is built and how it is delivered.
    On a repository with code, `/analyze`: the agent reads the code and asks
    only what the code cannot answer. Both end by writing `docs/00` to
-   `06`, `docs/adr/` and `AGENTS.md`, in the language you choose for the
+   `06`, `docs/adr/`, `docs/manuals/` when something is done by hand, and
+   `AGENTS.md`, in the language you choose for the
    documents, whatever language you talk in.
 2. **Every delivery.** Pick a line of the queue (`docs/06`) and run
    `/propose <slug>`: a conversation that ends in `work/<slug>.md`, one
@@ -100,10 +101,13 @@ read. What belongs to a single host:
    same working tree; ask the agent which ones can.
 4. **Every milestone** is planned with a review as its last line, run like
    any delivery. It takes the milestone's paragraph clause by clause and
-   says which delivery answers each one and how you test it. You test;
-   what is missing or fails in your hands becomes a line in the same
-   milestone, under the review, ready for `/propose` and `/apply`. Those
-   lines get no second review: your commit is the review.
+   says which delivery answers each one and how you test it. You test,
+   and you launch a deep review of the milestone's whole code, such as
+   Claude Code's `/code-review ultra`, the one look at the whole instead
+   of a delivery. What is missing, fails in your hands or the code review
+   confirms becomes a line in the same milestone, under the review, ready
+   for `/propose` and `/apply`. Those lines get no second review: your
+   commit is the review.
 
 What you do by hand outside a delivery (publish the site, roll back, set
 up a service), and a proof `/apply` runs on another machine, is in

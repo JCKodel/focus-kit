@@ -8,6 +8,48 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.16.1
+
+- A revisão de um marco volta a ler o código: a página dela nomeia o
+  commit que fechou o marco anterior, e a pessoa dispara a revisão
+  profunda que o novo slot Milestone review do docs/05 §5 nomeia, como o
+  `/code-review ultra <base>` do Claude Code. Cada achado confirmado vira
+  uma linha abaixo da revisão, sem segunda revisão. No Ninjobs uma
+  revisão de todo o código achou uma chamada de 620 ms, uma página que podia ser
+  enquadrada, o endereço do visitante enviado a terceiros e uma função
+  alcançando a rede interna; testar cláusulas à mão não acha nenhum deles.
+- A última coisa que o `/apply` diz é qual ambiente está em qual versão e
+  o comando que atualiza os outros, e a Publish policy do docs/05 diz o
+  mesmo. No Ninjobs uma pessoa abriu duas vezes um site publicado achando
+  que estava em dia, depois de uma sessão que terminou sem dizer que não
+  estava.
+- O `/apply` volta a ler a fila inteira. Com a 2026.10.16 ele lia só as
+  próprias linhas, então não via se as linhas que o seu `after` nomeia
+  estavam prontas, nem conseguia nomear a próxima linha. As linhas da
+  fila continuam com uma frase, e é isso que mantém a leitura pequena.
+- Uma mudança pedida fora do `/apply` vira uma linha `[ ]`, com um
+  rascunho `work/<slug>.md` para o que a linha não comporta, e a resposta
+  termina nomeando `/propose <slug>` para uma sessão nova. Isso substitui
+  o "continuar como `/propose` na mesma sessão" da 2026.10.16: aquela
+  sessão rodava sem a skill propose, que nenhum host deixa o agente
+  invocar sozinho, e um pedido não definido agora não tinha onde guardar
+  o detalhe. A regra do `AGENTS.md`, que ainda dizia que a resposta para
+  na linha, agora diz o mesmo.
+- A seção Contract da página volta a dizer por que precisa ser exata:
+  uma tela errada se corrige numa sessão, uma coluna errada é uma
+  migration, e uma regra de acesso errada já vazou. O processo do Ninjobs
+  dizia isso, e o kit guardou a regra sem o motivo que faz um agente
+  levá-la a sério.
+- Menores: o `/analyze` cria `work/done/.gitkeep` como o `/brainstorm`; o
+  `/brainstorm` pergunta pelos manuais e pela revisão do marco junto com
+  os outros slots, e o `/analyze` pergunta pela revisão do marco; "no gate before implementation" passa a dizer "beyond
+  a complete page", que o kit de fato exige; a estratégia trunk não diz
+  mais que o Ninjobs fazia stage por sessão, o que ele nunca fez.
+  Encontrados por uma revisão do kit inteiro em 2026-10-16.
+- Migração: o relatório de uma nova execução confere o docs/05 §§2, 3, 7
+  e 8, o slot Milestone review, a última frase da Publish policy e a
+  linha do `AGENTS.md` sobre uma mudança pedida fora do `/apply`.
+
 ## 2026.10.16
 
 - `/apply` lê no docs/06 só as linhas que nomeiam seu slug e o cabeçalho
