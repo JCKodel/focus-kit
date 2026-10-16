@@ -8,6 +8,21 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.16.2
+
+- O kit não nomeia nenhuma ferramenta que o planta. A migração de uma
+  nova execução para um slot Git de worktree que não nomeia pasta, num
+  contêiner cuja pasta oculta já tem `repo.git/`, escreve o nome dessa
+  pasta e o prefixo que as branches das entregas já usam, para nada mudar
+  de lugar; sem contêiner, o slot continua valendo `.focus-kit/` e
+  `focus-kit/`. A 2026.10.16.1 mandava o agente escrever no docs/05 de um
+  projeto o nome da pasta de uma ferramenta que a pessoa não usava, e
+  quem achava essa pasta não sabia de onde ela vinha. As entradas
+  2026.10.15 e 2026.10.16.1 abaixo não a nomeiam mais.
+- A 2026.10.16.1 saiu duas vezes, com `SETUP.md` diferente, então um
+  repositório que diz 2026.10.16.1 não diz qual das duas tem. Rode o
+  `SETUP.md` de novo; um número de versão não é reaproveitado.
+
 ## 2026.10.16.1
 
 - A revisão de um marco volta a ler o código: a página dela nomeia o
@@ -61,13 +76,13 @@ In English: [CHANGELOG.md](CHANGELOG.md).
   180KB antes da primeira edição; o documento de processo faz parte dela.
 - Uma worktree por entrega, quando escolhida, usa por padrão a pasta
   oculta `.focus-kit/` e o prefixo de branch `focus-kit/`, que dizem o que
-  os criou; `.face/` não dizia nada a quem o encontrava.
+  os criou; o padrão anterior não dizia nada a quem o encontrava.
 - Migração: o relatório de uma nova execução confere o docs/05 §§2, 3, 4,
   6, 7 e 8, o slot Milestone review, a última frase da Publish policy e a
   linha do `AGENTS.md` sobre uma mudança pedida fora do `/apply`. Um slot
   Git de worktree que não nomeia pasta, num repositório cujo container já
-  usa `.face/`, recebe `.face/` e `face/` por escrito, para nada mudar de
-  lugar.
+  usa o padrão anterior, recebe esse padrão por escrito, para nada mudar
+  de lugar.
 
 ## 2026.10.16
 
@@ -98,14 +113,14 @@ In English: [CHANGELOG.md](CHANGELOG.md).
   o repositório bare mora numa pasta oculta dela, e a worktree de cada
   entrega mora em `<oculta>/worktrees/<slug>/`, na branch
   `<prefixo>/<slug>`. O slot Git do docs/05 pode nomear a pasta oculta e o
-  prefixo; um slot que não nomeia nenhum dos dois vale `.face/` e `face/`.
+  prefixo; um slot que não nomeia nenhum dos dois vale um padrão do kit.
   O `/propose` cria a worktree ali, ou reaproveita a que existe, e uma
   branch `<slug>` sem o prefixo não é a da entrega. Um `/propose` rodando
   em segundo plano entrou numa worktree que o host dele criou por conta
   própria, na pasta do host, e a pessoa copiou a página para a branch
   principal à mão: nada dizia onde fica a worktree de uma entrega.
 - Sem migração: um docs/05 cujo slot Git não nomeia pasta oculta nem
-  prefixo já vale `.face/` e `face/`.
+  prefixo já vale o padrão.
 
 ## 2026.10.13
 

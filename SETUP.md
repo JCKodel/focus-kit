@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.16.1
+Version: 2026.10.16.2
 
 ## 1. What to do
 
@@ -42,9 +42,10 @@ Version: 2026.10.16.1
    docs/manuals/. Include
    any missing slots of docs/05 §5, such as Context, Manuals and Milestone
    review, and the Publish policy's last sentence. A Git slot for a
-   worktree per delivery that names no folder, in a repository whose
-   container already uses `.face/`, gets `.face/` and `face/` written in,
-   so nothing moves; a
+   worktree per delivery that names no folder, in a container whose
+   hidden folder already holds `repo.git/`, gets that folder's name and
+   the prefix its delivery branches already use written in, so nothing
+   moves; a
    procedure a person runs by hand that is written only inside a slot or
    another document becomes a manual in docs/manuals/, its slot keeping
    the command and pointing to it. A slot that narrates steps or output
@@ -165,7 +166,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.16.1"
+  version: "2026.10.16.2"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -230,7 +231,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.16.1"
+  version: "2026.10.16.2"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -303,7 +304,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.16.1"
+  version: "2026.10.16.2"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -349,7 +350,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.16.1"
+  version: "2026.10.16.2"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.

@@ -8,6 +8,21 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.16.2
+
+- The kit names no tool that plants it. A rerun's migration for a
+  worktree Git slot that names no folder, in a container whose hidden
+  folder already holds `repo.git/`, writes in that folder's name and the
+  prefix its delivery branches already use, so nothing moves; without a
+  container, the slot keeps meaning `.focus-kit/` and `focus-kit/`.
+  2026.10.16.1 told the agent to write into a project's docs/05 the
+  folder name of a tool the person did not use, and a person who found
+  that folder could not tell where it came from. The entries of
+  2026.10.15 and 2026.10.16.1 below no longer name it.
+- 2026.10.16.1 was released twice, with different `SETUP.md` text, so a
+  repository that says 2026.10.16.1 does not say which one it has. Run
+  `SETUP.md` again; a version number is not reused.
+
 ## 2026.10.16.1
 
 - A milestone's review reads the code again: its page names the commit
@@ -58,12 +73,12 @@ Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
   process document is part of that read.
 - A worktree per delivery, when chosen, defaults to the hidden folder
   `.focus-kit/` and the branch prefix `focus-kit/`, which say what made
-  them; `.face/` said nothing to a person who found it.
+  them; the earlier default said nothing to a person who found it.
 - Migration: the report of a rerun checks docs/05 §§2, 3, 4, 6, 7 and 8,
   the Milestone review slot, the Publish policy's last sentence and
   `AGENTS.md`'s line on a change asked outside `/apply`. A worktree Git
-  slot that names no folder, where the container already uses `.face/`,
-  gets `.face/` and `face/` written in, so nothing moves.
+  slot that names no folder, where the container already uses the
+  earlier default, gets that default written in, so nothing moves.
 
 ## 2026.10.16
 
@@ -93,14 +108,14 @@ Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
   bare repository lives in a hidden folder of it, and each delivery's
   worktree lives in `<hidden>/worktrees/<slug>/` on the branch
   `<prefix>/<slug>`. docs/05's Git slot may name the hidden folder and the
-  prefix; a slot that names neither means `.face/` and `face/`. `/propose`
+  prefix; a slot that names neither means a default of the kit. `/propose`
   creates the worktree there, or reuses the one that exists, and a branch
   `<slug>` without the prefix is not the delivery's. A `/propose` running
   in the background entered a worktree its host had created on its own,
   in the host's folder, and the person copied the page to the main branch
   by hand: nothing said where a delivery's worktree belongs.
 - No migration: a docs/05 whose Git slot names no hidden folder and no
-  prefix already means `.face/` and `face/`.
+  prefix already means the default.
 
 ## 2026.10.13
 
