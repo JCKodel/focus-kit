@@ -8,6 +8,58 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.17
+
+- `/apply` has each delivery's own changes reviewed before it ends, by a
+  context that did not write them, as docs/05 §5's new Delivery review
+  slot says: the host's own review, as a skill the agent invokes or a
+  command it runs, limited to the delivery's paths, or else a read-only
+  agent reading their diff. It fixes what breaks the page, docs/04 or its
+  own lines and runs verify again; anything else becomes a `[ ]` line. In
+  the book's repository the milestone review added 21 lines of rework,
+  ten of them a fault inside one build file, such as a file name every
+  check skipped and a hook that missed part of a commit message, each
+  waiting for the milestone's end instead of being fixed in the
+  delivery that wrote it. No host documents a review of the staged
+  changes alone, so the slot says how the host's review is kept to the
+  delivery's paths while another session works in the same tree.
+- A milestone's code reading is the kit's own, in any host that runs
+  agents, not a host's command, and looks for what no delivery's own
+  review could see: one delivery against another, a document against
+  another. docs/05 §8 reads `git diff <base>..HEAD`
+  from the commit that closed the previous milestone, split into the
+  areas the Milestone review slot names, one read-only agent each, in
+  parallel where the host runs agents and one fresh session per area
+  where it does not. Each reader lists the paths it read; when they miss
+  part of the range, the review line waits as `[?]`. One checker marks
+  each candidate seen, latent or weak against its file before the person
+  sees it. In the book's repository the slot's `/code-review ultra` was
+  cancelled for cost and speed, a review launched with a bare commit read
+  that one commit and not the milestone, the agents that replaced them
+  read part of the chapters and no one saw it until the next review, and
+  a candidate that did not hold was caught only because each one was
+  checked against its file. The cloud review also refuses a change
+  larger than its file and line limits, and runs in one host only.
+- The Milestone review slot names the areas and the model its readers
+  and checker run on, or the session's; `/analyze` and `/brainstorm`
+  propose docs/01's modules, and ask for the Delivery review. A rerun
+  proposes the areas for a slot that
+  names a command, and the person says whether that command still runs.
+- The review starts on the person's word, since it costs; the session
+  says when it is time. docs/05 §7's "no specialized subagent" makes its
+  one exception for these readers and their checker, which in the book's
+  repository found a file name that every check, the disclosure scan
+  included, silently skipped.
+- Windsurf is now Devin Desktop, whose only agent, Devin Local, replaced
+  Cascade in September 2026. It reads `AGENTS.md` and the skills in
+  `.agents/skills/`, and invokes them as `/<name>`; `@<name>` was
+  Cascade's. `SETUP.md` no longer writes `.windsurf/skills/`, which no
+  host needs, and a rerun removes the kit's own copies there, so Devin
+  Desktop, which still reads that folder, finds no older copy of a
+  command beside the current one. Every other file there is reported
+  and left. The table of `SETUP.md` §1 cites Codex's documentation at
+  its new address, with nothing else changed.
+
 ## 2026.10.16.2
 
 - The kit names no tool that plants it. A rerun's migration for a

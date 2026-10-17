@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.16.2
+Version: 2026.10.17
 
 ## 1. What to do
 
@@ -20,13 +20,17 @@ Version: 2026.10.16.2
    says. Do not create a manifest to track ownership.
 2. Write every file of section 3, byte for byte, at every path its
    heading names. Sections 3.1 to 3.5 name paths relative to a skills
-   folder, and each of those files goes to all three: `.claude/skills/`,
-   `.agents/skills/` and `.windsurf/skills/` (so `brainstorm/SKILL.md`
-   is written three times). Sections 3.6 to 3.11 name paths relative to
+   folder, and each of those files goes to both: `.claude/skills/` and
+   `.agents/skills/` (so `brainstorm/SKILL.md` is written twice). Sections 3.6 to 3.11 name paths relative to
    the repository root. Do not reformat, summarize, translate or improve
    any of them; fill only the `<name>` placeholder of 3.6 to 3.9, using
    the two prompt templates of 3.7 for their respective commands.
-3. Touch nothing else. Do not run `git init`, do not stage, do not commit.
+3. Touch nothing else, with one exception: versions before 2026.10.17
+   also wrote 3.1 to 3.5 under `.windsurf/skills/`, which no host needs
+   now. Remove each file there that matches a file shipped by focus-kit,
+   as step 1 establishes it, and the folders that leaves empty; report
+   any other file there and leave it. Do not run `git init`, do not
+   stage, do not commit.
 4. When the project already has docs/ or AGENTS.md, compare its rules with
    the current templates and report every migration still needed, with
    the actual path, section and proposed wording in its documentation
@@ -36,12 +40,16 @@ Version: 2026.10.16.2
    Behaviour scenarios with concrete input and failure cases, resumption,
    when each mark changes, order as priority and `after` on queue lines, two sessions in one
    working tree, shared queue and isolated staging, the gate wording, the
-   milestone's code review), docs/04's pointer to docs/05 §6, and
+   milestone's code review over the range by areas, with its checker and
+   the paths read, and §7's exception for its agents), docs/04's pointer to docs/05 §6, and
    AGENTS.md's process rules, including the line on a change asked
    outside /apply, the line on where things stand and the line on
    docs/manuals/. Include
-   any missing slots of docs/05 §5, such as Context, Manuals and Milestone
-   review, and the Publish policy's last sentence. A Git slot for a
+   any missing slots of docs/05 §5, such as Context, Manuals, Delivery
+   review and Milestone review, and the Publish policy's last sentence. A Milestone review
+   slot that names a command a person launches becomes its areas and
+   model, proposed from docs/01; the person says whether that command
+   still runs too. A Git slot for a
    worktree per delivery that names no folder, in a container whose
    hidden folder already holds `repo.git/`, gets that folder's name and
    the prefix its delivery branches already use written in, so nothing
@@ -72,8 +80,9 @@ Every host gets its files on every run, whichever host runs this file, so
 the repository opens ready in any of them and switching hosts changes
 nothing. The rules live in `AGENTS.md`, which every host below reads on its
 own or through the pointer the table names. Skill folders overlap on
-purpose: `.agents/skills/` is read by Codex, Copilot, Antigravity, OpenCode
-and Zed; `.claude/skills/` by Claude Code and Copilot. What a host that
+purpose: `.agents/skills/` is read by Codex, Copilot, Antigravity, Devin
+Desktop, OpenCode and Zed; `.claude/skills/` by Claude Code, Copilot and
+Devin Desktop. What a host that
 reads two of them does with the same name in both, the kit has not tested.
 
 | Host | Reads the rules from | Reads the commands from | Invoked as |
@@ -84,17 +93,17 @@ reads two of them does with the same name in both, the kit has not tested.
 | Cursor | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.cursor/commands/<name>.md` | `/<name>`; whether a slug typed after it reaches the command is not documented |
 | Google Antigravity | `AGENTS.md` directly; `.agents/rules/focus-kit.md` is an always-on pointer | `.agents/skills/<name>/SKILL.md` | `/<name> <slug>` |
 | Gemini CLI | `AGENTS.md`, through `GEMINI.md` | `.agents/skills/<name>/SKILL.md`, through `.gemini/commands/<name>.toml` | `/<name> <slug>` |
-| Windsurf | `AGENTS.md` | `.windsurf/skills/<name>/SKILL.md` | `@<name> <slug>` |
+| Devin Desktop, formerly Windsurf | `AGENTS.md` | `.agents/skills/<name>/SKILL.md` | `/<name>`; whether a slug typed after it reaches the command is not documented |
 | OpenCode, Zed | `AGENTS.md` | `.agents/skills/<name>/SKILL.md` | by asking for the skill |
 | Jules, Junie, Warp, Kiro, Roo Code, Cline | `AGENTS.md` | none; ask in words for `.agents/skills/<name>/SKILL.md` | |
 
 Each row was read off the vendor's documentation on 2026-09-21; the Claude
 Code invocation policy, Copilot prompts and Antigravity rules were checked
-again on 2026-10-07. A host
+again on 2026-10-07, and Codex and Devin Desktop on 2026-10-17. A host
 enters this table only with its documentation in hand: Claude Code
 https://code.claude.com/docs/en/memory and https://code.claude.com/docs/en/skills;
-Codex https://developers.openai.com/codex/skills and
-https://developers.openai.com/codex/guides/agents-md; Copilot
+Codex https://learn.chatgpt.com/docs/build-skills and
+https://learn.chatgpt.com/docs/agent-configuration/agents-md; Copilot
 https://docs.github.com/en/copilot/concepts/agents/about-agent-skills and
 https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/your-first-prompt-file;
 Cursor https://cursor.com/docs/rules and
@@ -102,9 +111,9 @@ https://cursor.com/docs/cli/reference/slash-commands; Antigravity
 https://antigravity.google/docs/rules and
 https://antigravity.google/docs/skills/; Gemini CLI
 https://geminicli.com/docs/cli/gemini-md/ and
-https://geminicli.com/docs/cli/custom-commands/; Windsurf
-https://docs.windsurf.com/windsurf/cascade/skills and
-https://docs.devin.ai/desktop/cascade/agents-md; OpenCode
+https://geminicli.com/docs/cli/custom-commands/; Devin Desktop
+https://docs.devin.ai/cli/extensibility/skills/overview and
+https://docs.devin.ai/cli/extensibility/rules; OpenCode
 https://opencode.ai/docs/skills/; Zed https://zed.dev/docs/ai/skills; the
 last row https://agents.md. What the documentation does not say, the kit
 does not rely on: a skills folder for Cursor and Amp altogether are left
@@ -166,7 +175,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.16.2"
+  version: "2026.10.17"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -191,7 +200,9 @@ order. Move on when you could write the section yourself.
    language, style, where tests live; commit format lives in docs/05 §6.
 5. **The process slots** (docs/05): verify command, environments, how a
    screen is proven, publish policy, whether `context/` is committed, the
-   manuals ("none yet"), the milestone review. What does not exist yet is
+   manuals ("none yet"), the delivery review (the host's own, limited to
+   a delivery's paths, else a read-only agent), the milestone review
+   (docs/01's modules as its areas, the session's model). What does not exist yet is
    written as "created by the first delivery".
 6. **The first milestone** (docs/06): three to eight deliveries, one line
    each, in order, then its review. The first ones are the skeleton the
@@ -231,7 +242,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.16.2"
+  version: "2026.10.17"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -263,8 +274,13 @@ host's question form when it has one:
   and you say what that is;
 * whether `context/` is committed. Default: committed when the repository
   stays with the team, in `.gitignore` when it is delivered or public;
-* the milestone review: the deep code review the person will launch at
-  each milestone's close. Default: the one this host offers, if any;
+* the delivery review: the host's own review that the agent can run on a
+  delivery's paths, as a skill or a command, else a read-only agent
+  (docs/05 §5). Default: the host's, when it can be limited to those
+  paths;
+* the milestone review: the areas its code reading splits into and the
+  model its agents run on (docs/05 §8). Default: docs/01's modules and
+  the session's model;
 * the first milestone: three to eight deliveries, or where to read them
   from (issues, a TODO file, a roadmap), then its review.
 
@@ -304,7 +320,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.16.2"
+  version: "2026.10.17"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -350,7 +366,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.16.2"
+  version: "2026.10.17"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -381,8 +397,12 @@ Add no dependency, layer or tool the page did not name. No em dash in any
 text a user reads.
 
 Run verify until green. Prove the delivery as docs/05 says; list divergences
-and fix them until only what you can justify remains. Leave environments
-as required. Record divergences, omissions, proof and decisions on the
+and fix them until only what you can justify remains. Then have this
+delivery's changes, by its paths, reviewed as docs/05 §5's Delivery review
+says, by a context that did not write them; another delivery's file is not
+this review's. Fix what breaks the page, docs/04 or this delivery's own
+lines and run verify again; anything else becomes a `[ ]` line. Leave environments
+as required. Record divergences, omissions, proof, the review and decisions on the
 page; update their owning documents and ADRs. When the delivery adds or
 changes something a person does by hand, write or update its manual as
 docs/05 §5 says. Tick every Done when item and
@@ -730,6 +750,11 @@ time. Steps go in a manual, and what a command prints stays in its help.
   say which environment is at which version.
 * **Context:** `context/` is committed | listed in `.gitignore`, and why
   (who reads the repository).
+* **Delivery review:** <how /apply has a delivery's changes reviewed by a
+  context that did not write them: the host's own review, as a skill the
+  agent invokes or a command it runs, and how it is limited to the
+  delivery's paths; else a read-only agent on the session's model reading
+  `git diff` of those paths; or: none>.
 * **Manuals:** `docs/manuals/`, one file per action that takes more than
   one command: what a person does by hand outside a delivery (publish,
   roll back, rotate a secret, set up a service) and a proof /apply runs
@@ -740,9 +765,9 @@ time. Steps go in a manual, and what a command prints stays in its help.
   names such a command points to its manual instead of holding the steps;
   a delivery that changes one updates its manual. <The manuals, one line
   each, or: none yet.>
-* **Milestone review:** <the command a person launches for a deep review
-  of a whole branch's code against a base, such as Claude Code's
-  `/code-review ultra <base>`, or: none>.
+* **Milestone review:** <the areas a milestone's changes split into for
+  the code reading of §8, one reader each, and the model its readers and
+  checker run on, or the session's; or: none>.
 * **Git:** trunk | a branch per delivery | a worktree per delivery. A
   delivery's page and build are one change: one commit on trunk, one merge
   otherwise. The agent stages; it never commits or merges. <With a
@@ -785,7 +810,8 @@ complete, so one merge still holds the whole delivery.
 
 No formal spec, no spec delta, no change folder, no numbered tasks, no
 gate before implementation beyond a complete page, no review of a review,
-no specialized subagent, no tool the deliveries did not ask for. When one of these is
+no specialized subagent beyond the reviews' readers and checker (§5's
+Delivery review, §8), no tool the deliveries did not ask for. When one of these is
 proposed, the question is: which concrete error would it have caught? The
 answer names an error that happened.
 
@@ -800,10 +826,23 @@ delivery answers, or one that fails in the person's hands, is a finding.
 
 The review also reads the code, the one look at the whole instead of a
 delivery: every page can be right and the whole wrong. Its page names the
-commit that closed the previous milestone, or the first commit, and the
-person launches §5's Milestone review against it; the agent may say it is
-time and never launches it. A finding the code review confirms is a
-finding like the others.
+commit that closed the previous milestone, or the first commit, as the
+base, and lists, by §5's areas, the paths `git diff --stat <base>..HEAD`
+shows: always the range, since a bare commit reads that one commit. An
+area too large for one careful reading splits again. It costs, so the
+session says it is time and starts it only on the person's word: one
+read-only agent per area, in parallel where the host runs agents, or one
+fresh session per area, opened by the person, where it does not. Each
+reader has the whole repository open and reads its area's changes for
+what no delivery's own review could see, one delivery's work against
+another's, a document against another, the whole against docs/01, and
+reports candidates by file and line and the paths it read. One checker,
+an agent or the review's session, opens each candidate's file and marks
+it seen, latent (nothing triggers it today) or weak (the claim does not
+hold as stated) before the person sees it. They fix nothing. When the
+paths read miss some of the range's, the page says which and the line
+waits as `[?]` with `· resume: apply` (§4). A candidate the person confirms is a finding like
+the others.
 
 Each finding becomes a `[ ]` line in the same milestone, under the review
 line, waiting for /propose. The milestone closes when those lines are
@@ -941,9 +980,9 @@ Read `AGENTS.md` at the repository root before acting: it holds this project's r
 
 ## 4. Check
 
-Before reporting, confirm: eighteen files across `.claude/skills/`,
-`.agents/skills/` and `.windsurf/skills/` (four `SKILL.md` and two
-`references/documents.md` in each); four `agents/openai.yaml` under
+Before reporting, confirm: twelve files across `.claude/skills/` and
+`.agents/skills/` (four `SKILL.md` and two `references/documents.md` in
+each); no kit file left under `.windsurf/skills/`; four `agents/openai.yaml` under
 `.agents/skills/`; four prompt files, four Cursor commands and four Gemini
 commands; `.agents/rules/focus-kit.md` and `GEMINI.md`; no other file
 changed; the string `$ARGUMENTS` still present in every `propose` and

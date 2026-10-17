@@ -5,7 +5,7 @@ In English: [README.md](README.md).
 Um processo de entrega para repositórios trabalhados com um agente de
 código. É um arquivo só, `SETUP.md`, que qualquer agente lê e transforma
 em quatro comandos no seu repositório. Funciona com Claude Code, Codex,
-GitHub Copilot, Cursor, Google Antigravity, Gemini CLI, Windsurf e qualquer
+GitHub Copilot, Cursor, Google Antigravity, Gemini CLI, Devin Desktop e qualquer
 outro host que leia `AGENTS.md`, em qualquer língua.
 
 ```
@@ -14,8 +14,8 @@ outro host que leia `AGENTS.md`, em qualquer língua.
 /apply <slug>                 constrói a página, prova, atualiza os docs, faz o stage; nunca commita
 ```
 
-A `/` é como o Claude Code e a maioria dos hosts os invocam; o Codex e o
-Windsurf usam outro prefixo, que a tabela do `SETUP.md` §1 traz. Todo
+A `/` é como o Claude Code e a maioria dos hosts os invocam; o Codex usa
+outro prefixo, que a tabela do `SETUP.md` §1 traz. Todo
 comando escreve o próximo na forma que o seu host espera.
 
 ## Instalar
@@ -28,7 +28,7 @@ Read https://raw.githubusercontent.com/JCKodel/focus-kit/main/SETUP.md and do wh
 
 Ou baixe o `SETUP.md` ao lado do repositório e aponte o agente para o
 arquivo. O agente escreve os quatro comandos para todos os hosts que o kit
-conhece (`.claude/skills/`, `.agents/skills/`, `.windsurf/skills/` e os
+conhece (`.claude/skills/`, `.agents/skills/` e os
 arquivos-ponteiro de Copilot, Cursor, Gemini CLI e Antigravity) e nada
 mais, e o repositório abre pronto em qualquer um deles. Não há nada a
 instalar na máquina: nenhum CLI, nenhum runtime, nenhuma dependência. Para
@@ -49,7 +49,7 @@ quem abrir o repositório nesse host depois não encontra os comandos nem
 aviso algum. Nunca remova `AGENTS.md`, `docs/`, `work/` ou
 `.agents/skills/`: apesar do nome, `.agents/` não é a pasta de um host, e
 sim a cópia dos comandos que Codex, Copilot, Cursor, Gemini CLI,
-Antigravity, OpenCode e Zed leem. O que pertence a um host só:
+Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
 
 | Host | Seus arquivos | Antes de remover |
 |---|---|---|
@@ -57,7 +57,6 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
 | Cursor | `.cursor/commands/` | |
 | GitHub Copilot | os quatro `.github/prompts/<name>.prompt.md` | o resto de `.github/` não é do kit |
 | Antigravity | `.agents/rules/focus-kit.md` | só esse arquivo, não `.agents/` |
-| Windsurf | `.windsurf/skills/` | |
 | Claude Code | `.claude/skills/` e `CLAUDE.md` | `CLAUDE.md` pode ter notas além de `@AGENTS.md` |
 | Codex | os quatro `.agents/skills/<name>/agents/openai.yaml` | eles impedem o Codex de rodar o `apply` só porque uma mensagem contém a palavra |
 
@@ -76,8 +75,10 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
    página, nomeando a fonte; pergunta só o que eles não respondem. Leia a
    página e peça cada correção nessa mesma conversa; depois abra uma
    sessão nova e rode `/apply <slug>`: ele constrói a
-   página, roda o comando de verificação, prova o resultado, atualiza os
-   documentos, move a página para `work/done/`, termina a página com a
+   página, roda o comando de verificação, prova o resultado, faz as
+   mudanças da própria entrega serem revisadas por um contexto que não as
+   escreveu, com a revisão do seu host onde ele tem uma, corrige o que
+   essa revisão confirma, atualiza os documentos, move a página para `work/done/`, termina a página com a
    mensagem de commit que sugere, faz o stage e mostra essa mensagem
    também na conversa, no mesmo bloco `commit`.
    Dá os seus próximos passos, com os comandos por extenso: revisar,
@@ -107,10 +108,14 @@ Antigravity, OpenCode e Zed leem. O que pertence a um host só:
 4. **Todo milestone** é planejado com uma revisão como última linha,
    rodada como qualquer entrega. Ela percorre o parágrafo do milestone
    cláusula por cláusula e diz qual entrega responde a cada uma e como
-   você testa. Você testa e dispara uma revisão profunda de todo o código
-   do milestone, como o `/code-review ultra` do Claude Code, o único olhar
-   sobre o conjunto em vez da entrega. O que falta, falha nas suas mãos ou
-   a revisão de código confirma vira uma linha no mesmo milestone, abaixo
+   você testa. Você testa e, com a sua palavra, o agente lê todo o código
+   do milestone, o único olhar sobre o conjunto em vez da entrega, pelo
+   que a revisão de nenhuma entrega podia ver: o
+   intervalo desde o milestone anterior dividido em áreas, um agente
+   somente leitura em cada uma, em qualquer host que rode agentes, e cada
+   candidato conferido no seu arquivo antes de chegar a você. O que falta,
+   falha nas suas mãos ou você confirma da leitura do código vira uma
+   linha no mesmo milestone, abaixo
    da revisão, pronta para `/propose` e `/apply`. Essas linhas não passam
    por segunda revisão: o seu commit é a revisão.
 

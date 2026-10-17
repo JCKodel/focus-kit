@@ -18,7 +18,12 @@ repository says which kit it has. A change to any file of §3 bumps all five
 together; ace reads them to tell a person their kit is outdated. Every
 bump adds an entry at the top of `CHANGELOG.md` and `CHANGELOG.pt.md`,
 headed by the new version, saying what a person who reruns `SETUP.md`
-will find changed.
+will find changed. Every bump also adds, in the same session, its lines
+to the queue of the book that teaches the kit, `../focus-kit-book`
+(`docs/06-Queue.md`): a `## M<n>. focus-kit <version>` milestone with
+`[ ] kit-<version>` and a `[ ]` line per chapter that teaches what
+changed, so the book stays paired with the latest kit. Lines only: the
+book changes its chapters through its own `/apply`.
 
 ## Rules
 

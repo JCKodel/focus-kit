@@ -8,6 +8,62 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.17
+
+- O `/apply` faz as mudanças da própria entrega serem revisadas antes de
+  terminar, por um contexto que não as escreveu, como diz o novo slot
+  Delivery review do docs/05 §5: a revisão do próprio host, como uma
+  skill que o agente invoca ou um comando que ele roda, limitada aos
+  caminhos da entrega, ou então um agente somente leitura lendo o diff
+  deles. Ele corrige o que quebra a página, o docs/04 ou as suas próprias
+  linhas e roda a verificação de novo; o resto vira uma linha `[ ]`. No
+  repositório do livro, a revisão do milestone acrescentou 21 linhas de
+  retrabalho, dez delas uma falha dentro de um arquivo do build, como um
+  nome de arquivo que todas as verificações pulavam e um hook que deixava
+  passar parte de uma mensagem de commit, cada uma esperando o fim do
+  milestone em vez de ser corrigida na entrega que a escreveu. Nenhum
+  host documenta uma revisão só das mudanças em stage, então o slot diz
+  como a revisão do host fica nos caminhos da entrega enquanto outra
+  sessão trabalha na mesma pasta.
+- A leitura do código de um milestone é do próprio kit, em qualquer host
+  que rode agentes, e não um comando de um host, e procura o que a
+  revisão de nenhuma entrega podia ver: uma entrega contra outra, um
+  documento contra outro. O docs/05 §8 lê
+  `git diff <base>..HEAD` a partir do commit que fechou o milestone
+  anterior, dividido nas áreas que o slot Milestone review nomeia, um
+  agente somente leitura em cada uma, em paralelo onde o host roda
+  agentes e uma sessão nova por área onde não roda. Cada leitor lista os
+  caminhos que leu; quando eles deixam de fora parte do intervalo, a
+  linha da revisão espera como `[?]`. Um verificador marca cada candidato
+  como visto, latente ou fraco contra o seu arquivo antes de a pessoa
+  vê-lo. No repositório do livro, o `/code-review ultra` do slot foi
+  cancelado por custo e demora, uma revisão disparada com um commit solto
+  leu só aquele commit e não o milestone, os agentes que os substituíram
+  leram parte dos capítulos e ninguém viu até a revisão seguinte, e um
+  candidato que não se sustentava só foi barrado porque cada um foi
+  conferido no seu arquivo. A revisão na nuvem também recusa uma mudança
+  maior que os seus limites de arquivos e linhas, e roda em um host só.
+- O slot Milestone review nomeia as áreas e o modelo em que rodam os
+  leitores e o verificador, ou o da sessão; `/analyze` e `/brainstorm`
+  propõem os módulos do docs/01, e perguntam pela Delivery review. Uma
+  nova execução propõe as áreas para
+  um slot que nomeia um comando, e a pessoa diz se esse comando continua
+  rodando.
+- A revisão começa com a palavra da pessoa, porque custa; a sessão diz
+  quando é a hora. O "no specialized subagent" do docs/05 §7 abre a sua
+  única exceção para esses leitores e o seu verificador, que no
+  repositório do livro acharam um nome de arquivo que todas as
+  verificações, a de divulgação incluída, pulavam sem aviso.
+- O Windsurf agora é o Devin Desktop, cujo único agente, o Devin Local,
+  substituiu o Cascade em setembro de 2026. Ele lê o `AGENTS.md` e as
+  skills em `.agents/skills/`, e as invoca como `/<name>`; `@<name>` era
+  do Cascade. O `SETUP.md` não escreve mais `.windsurf/skills/`, de que
+  nenhum host precisa, e uma nova execução remove as cópias do próprio
+  kit ali, para que o Devin Desktop, que ainda lê essa pasta, não ache
+  uma cópia antiga de um comando ao lado da atual. Qualquer outro
+  arquivo ali é reportado e fica. A tabela do `SETUP.md` §1 cita a
+  documentação do Codex no seu novo endereço, sem outra mudança.
+
 ## 2026.10.16.2
 
 - O kit não nomeia nenhuma ferramenta que o planta. A migração de uma

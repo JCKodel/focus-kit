@@ -5,7 +5,7 @@ Em português: [README.pt.md](README.pt.md).
 A delivery process for repositories worked on with a coding agent. It is
 one file, `SETUP.md`, that any agent reads and turns into four commands in
 your repository. It works with Claude Code, Codex, GitHub Copilot, Cursor,
-Google Antigravity, Gemini CLI, Windsurf and any other host that reads
+Google Antigravity, Gemini CLI, Devin Desktop and any other host that reads
 `AGENTS.md`, in any language.
 
 ```
@@ -14,8 +14,8 @@ Google Antigravity, Gemini CLI, Windsurf and any other host that reads
 /apply <slug>                 build that page, prove it, update the docs, stage; never commit
 ```
 
-The `/` is how Claude Code and most hosts invoke them; Codex and Windsurf
-use another prefix, which the table in `SETUP.md` §1 gives. Every command
+The `/` is how Claude Code and most hosts invoke them; Codex uses
+another prefix, which the table in `SETUP.md` §1 gives. Every command
 writes the next one in the form your host expects.
 
 ## Install
@@ -28,7 +28,7 @@ Read https://raw.githubusercontent.com/JCKodel/focus-kit/main/SETUP.md and do wh
 
 Or download `SETUP.md` next to the repository and point the agent at the
 file. The agent writes the four commands for every host the kit knows
-(`.claude/skills/`, `.agents/skills/`, `.windsurf/skills/` and the pointer
+(`.claude/skills/`, `.agents/skills/` and the pointer
 files of Copilot, Cursor, Gemini CLI and Antigravity) and nothing else, so
 the repository opens ready in any of them. There is nothing to install on
 the machine: no CLI, no runtime, no dependency. To update, say the same
@@ -47,8 +47,8 @@ Their files can go, but every update writes them back, and whoever opens
 the repository in that host later finds no commands and no warning. Never
 remove `AGENTS.md`, `docs/`, `work/` or `.agents/skills/`: despite its
 name, `.agents/` is not one host's folder but the copy of the commands
-that Codex, Copilot, Cursor, Gemini CLI, Antigravity, OpenCode and Zed all
-read. What belongs to a single host:
+that Codex, Copilot, Cursor, Gemini CLI, Antigravity, Devin Desktop,
+OpenCode and Zed all read. What belongs to a single host:
 
 | Host | Its files | Before removing |
 |---|---|---|
@@ -56,7 +56,6 @@ read. What belongs to a single host:
 | Cursor | `.cursor/commands/` | |
 | GitHub Copilot | the four `.github/prompts/<name>.prompt.md` | the rest of `.github/` is not the kit's |
 | Antigravity | `.agents/rules/focus-kit.md` | only this file, not `.agents/` |
-| Windsurf | `.windsurf/skills/` | |
 | Claude Code | `.claude/skills/` and `CLAUDE.md` | `CLAUDE.md` may hold notes besides `@AGENTS.md` |
 | Codex | the four `.agents/skills/<name>/agents/openai.yaml` | they stop Codex from running `apply` because a message contains the word |
 
@@ -75,7 +74,10 @@ read. What belongs to a single host:
    page, naming the source; it asks only what they cannot answer. Read
    the page and ask for every correction in that conversation; then
    open a fresh session and run `/apply <slug>`: it builds the page,
-   runs the verify command, proves the result, updates the documents,
+   runs the verify command, proves the result, has the delivery's own
+   changes reviewed by a context that did not write them, with your
+   host's own review where it has one, fixes what that review confirms,
+   updates the documents,
    moves the page to `work/done/`, ends it with the commit message it
    suggests, stages and shows that message in the conversation too, in
    the same `commit` block. It gives your next
@@ -104,10 +106,13 @@ read. What belongs to a single host:
 4. **Every milestone** is planned with a review as its last line, run like
    any delivery. It takes the milestone's paragraph clause by clause and
    says which delivery answers each one and how you test it. You test,
-   and you launch a deep review of the milestone's whole code, such as
-   Claude Code's `/code-review ultra`, the one look at the whole instead
-   of a delivery. What is missing, fails in your hands or the code review
-   confirms becomes a line in the same milestone, under the review, ready
+   and on your word the agent reads the milestone's whole code, the one
+   look at the whole instead of a delivery, for what no delivery's own
+   review could see: the range since the previous
+   milestone split into areas, one read-only agent each, in any host that
+   runs agents, and a check of every candidate against its file before
+   you see it. What is missing, fails in your hands or you confirm from
+   the code reading becomes a line in the same milestone, under the review, ready
    for `/propose` and `/apply`. Those lines get no second review: your
    commit is the review.
 
