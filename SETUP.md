@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.18
+Version: 2026.10.18.1
 
 ## 1. What to do
 
@@ -36,16 +36,25 @@ Version: 2026.10.18
    the actual path, section and proposed wording in its documentation
    language. Check docs/05 §§2, 3, 4, 6, 7 and 8 (code only inside
    /apply, a change asked elsewhere ending as a line, a draft page and the
-   /propose command, completed proposals, why the Contract is exact,
+   /propose command, in that session or a fresh one, the person using a
+   delivery before committing, the agent committing or merging only when
+   asked, a line no clause of the milestone needs going to the next one,
+   the slow tests the milestone review runs, completed proposals, why the Contract is exact,
    Behaviour scenarios with concrete input and failure cases, resumption,
    when each mark changes, order as priority and `after` on queue lines, two sessions in one
    working tree, shared queue and isolated staging, the gate wording, the
-   four cases a line waits in, the milestone's code review over the range
-   by areas from the previous review's commit, with its checker, what
+   four cases a line waits in, a line whose session ended and a dropped
+   line, a conflict as a line both sessions edited, the commit from an
+   index holding one delivery and never by naming paths, what a revert
+   does not undo in the Git slot, the milestone's code review over the range
+   by areas from the previous review's commit to the commit it started
+   at, with its checker, what
    seen means and the paths read, and §7's exception for its agents), the
-   files a delivery created in a Delivery review slot that reads `git diff`,
-   docs/04's pointer to docs/05 §6, and
-   AGENTS.md's process rules, including the line on a change asked
+   files a delivery created and the base a Delivery review slot reads
+   from (`git diff HEAD` and the branch's commits, not a bare `git diff`),
+   docs/04's pointer to docs/05 §6 and its tests by level, the Verify
+   slot's slow tests, and
+   AGENTS.md's process rules, including the line on committing, the line on a change asked
    outside /apply, the line on where things stand and the line on
    docs/manuals/. Include
    any missing slots of docs/05 §5, such as Context, Manuals, Delivery
@@ -90,7 +99,7 @@ reads two of them does with the same name in both, the kit has not tested.
 
 | Host | Reads the rules from | Reads the commands from | Invoked as |
 |---|---|---|---|
-| Claude Code | `CLAUDE.md`, which imports `AGENTS.md` | `.claude/skills/<name>/SKILL.md` | `/<name> <slug>` |
+| Claude Code | `CLAUDE.md`, which imports `AGENTS.md`; it reads `AGENTS.md` alone only where no `CLAUDE.md` exists, from v2.1.277 | `.claude/skills/<name>/SKILL.md` | `/<name> <slug>` |
 | Codex | `AGENTS.md` | `.agents/skills/<name>/SKILL.md` | `$<name> <slug>` |
 | GitHub Copilot | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.github/prompts/<name>.prompt.md` | `/<name>` |
 | Cursor | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.cursor/commands/<name>.md` | `/<name>`; whether a slug typed after it reaches the command is not documented |
@@ -102,7 +111,8 @@ reads two of them does with the same name in both, the kit has not tested.
 
 Each row was read off the vendor's documentation on 2026-09-21; the Claude
 Code invocation policy, Copilot prompts and Antigravity rules were checked
-again on 2026-10-07, and Codex and Devin Desktop on 2026-10-17. A host
+again on 2026-10-07, Codex and Devin Desktop on 2026-10-17, and Claude
+Code's rules and invocation on 2026-10-18. A host
 enters this table only with its documentation in hand: Claude Code
 https://code.claude.com/docs/en/memory and https://code.claude.com/docs/en/skills;
 Codex https://learn.chatgpt.com/docs/build-skills and
@@ -120,8 +130,9 @@ https://docs.devin.ai/cli/extensibility/rules; OpenCode
 https://opencode.ai/docs/skills/; Zed https://zed.dev/docs/ai/skills; the
 last row https://agents.md. What the documentation does not say, the kit
 does not rely on: a skills folder for Cursor and Amp altogether are left
-out until their pages say so. Claude Code's skills disable model invocation;
-Codex's policy disables implicit invocation. On other hosts, invoke these
+out until their pages say so. Claude Code's skills disable model invocation:
+the agent runs one only when the person names it in a message; Codex's
+policy disables implicit invocation. On other hosts, invoke these
 workflows explicitly; the kit does not claim equivalent host enforcement.
 
 In the skills, `$ARGUMENTS` stands for what the person typed after the
@@ -143,15 +154,16 @@ docs/06 (the queue, one line per delivery)
         ↓
 /apply <slug>                      a fresh session builds the page, proves it, updates
         ↓                          the docs, moves it to work/done/ and stages
-a person reviews and commits
+a person uses it, reviews and commits
 ```
 
 The rules the four commands keep, in every project:
 
 * one delivery is one page. If it does not fit one page, it is two;
 * deciding and doing are separate sessions. `/propose` writes no code;
-  `/apply` widens no scope;
-* the agent stages and suggests the commit message. It never commits;
+  `/apply` widens no scope and starts in a fresh session;
+* the agent stages and suggests the commit message. It never commits or
+  merges on its own; asked, it takes the step the person names;
 * project specifics (verify command, environments, proof, git) are slots
   in the project's own `docs/05`, filled once and read by `/apply`;
 * documents are living: a delivery that changes behaviour updates the
@@ -178,7 +190,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.18"
+  version: "2026.10.18.1"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -201,7 +213,8 @@ order. Move on when you could write the section yourself.
    record the answers.
 4. **The conventions** (docs/04): documentation language, identifier
    language, style, where tests live; commit format lives in docs/05 §6.
-5. **The process slots** (docs/05): verify command, environments, how a
+5. **The process slots** (docs/05): verify command and the slow tests kept
+   out of it, environments, how a
    screen is proven, publish policy, whether `context/` is committed, the
    manuals ("none yet"), the delivery review (the host's own, limited to
    a delivery's paths, else a read-only agent), the milestone review
@@ -229,8 +242,8 @@ documents are fixed; the names after them are in the documentation
 language.
 
 Show the queue and stop. The next step is `/propose <slug>` for its first
-line, in a fresh session; write it as this host invokes commands, which may
-not be `/`. Write no code, no configuration and no dependency
+line; write it as this host invokes commands, which may not be `/`. Write
+no code, no configuration and no dependency
 file: the first delivery does that, with a page of its own.
 ````
 
@@ -245,7 +258,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.18"
+  version: "2026.10.18.1"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -261,8 +274,9 @@ CI, and any Makefile or script a person runs by hand; the last fifty commit subj
 (CLAUDE.md, AGENTS.md, .github/copilot-instructions.md, .cursorrules).
 
 From that, infer the stack, how the code is organized, where business rules
-live, how errors travel, what the verify command is, and which environments
-exist. What the code says, you do not ask.
+live, how errors travel, what the verify command is, which tests are slow
+enough to leave out of it, and which environments exist. What the code
+says, you do not ask.
 
 ## Ask
 
@@ -308,8 +322,8 @@ The numbers of the documents are fixed; the names after them are in the
 documentation language.
 
 Show the queue and stop. The next step is `/propose <slug>` for its first
-line, in a fresh session; write it as this host invokes commands, which may
-not be `/`. Change no code.
+line; write it as this host invokes commands, which may not be `/`. Change
+no code.
 ````
 
 ### 3.3 `propose/SKILL.md`
@@ -323,7 +337,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.18"
+  version: "2026.10.18.1"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -331,8 +345,9 @@ there is none, ask for it.
 Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
 (process) and docs/06 (queue), and the deliveries in flight in `work/`.
 Do not start a blocked line until its recorded reason is resolved, nor a
-line whose `after` is not done. Otherwise your first edit marks the line
-`[~]` (docs/05 §4); then follow docs/05 §§2, 4 and 5 to start or resume
+line whose `after` is not done; a `[~]` line is resumed only on the
+person's word that its session ended (docs/05 §4). Otherwise your first
+edit marks the line `[~]`; then follow docs/05 §§2, 4 and 5 to start or resume
 the definition in the right branch or worktree, a worktree where docs/05's
 Git slot puts it and reused when it exists. Another line changing mark
 meanwhile is another session's work.
@@ -366,10 +381,10 @@ name: apply
 disable-model-invocation: true
 description: >-
   Implement work/<slug>.md end to end: code, tests, verify, proof, docs,
-  then stage and suggest the commit. Never commits.
+  then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.18"
+  version: "2026.10.18.1"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -382,10 +397,11 @@ Work on the branch or worktree /propose created, if any.
 
 If the page contradicts a document, stop and say which: the document changes
 in this delivery or the page is wrong. Do not resolve it silently. Follow
-docs/05 §4 to resume a blocked line; refuse an incomplete proposal and
-point to /propose. Only a fully defined `[>]` line whose `after` is done
-becomes `[*]`, your first edit. Another session's delivery in the same tree is not a
-conflict; docs/05 §§4 and 6 say what is.
+docs/05 §4 to resume a blocked line, or a `[*]` line the person says its
+session left; refuse an incomplete proposal and point to /propose. Otherwise
+only a fully defined `[>]` line whose `after` is done becomes `[*]`, your
+first edit. Another session's delivery in the same tree is not a conflict;
+docs/05 §§4 and 6 say what is.
 
 When work cannot go on, record what was built and what it waits on, leave
 the page in `work/` and block it with `resume: apply` as docs/05 §4 says.
@@ -394,37 +410,38 @@ the partial message, show it in the conversation in the same `commit`
 block, and follow docs/05 §6's blocked-work staging rule; report verify
 and environments, and stop without claiming completion.
 
-Build where docs/01 says, with its error convention. Write docs/04's tests.
-Abstraction on the second concrete occurrence; the page names the first.
-Add no dependency, layer or tool the page did not name. No em dash in any
-text a user reads.
+Build where docs/01 says, with its error convention. Write docs/04's tests;
+one too slow for verify goes with docs/05's slow tests and you say so,
+never into verify silently. Abstraction on the second concrete occurrence;
+the page names the first. Add no dependency, layer or tool the page did
+not name. No em dash in any text a user reads.
 
 Run verify until green. Prove the delivery as docs/05 says; list divergences
-and fix them until only what you can justify remains. Then have this
-delivery's changes, by its paths, reviewed as docs/05 §5's Delivery review
-says, by a context that did not write them; another delivery's file is not
-this review's. Fix what breaks the page, docs/04 or the text this delivery
-wrote and run verify again; anything else becomes a `[ ]` line. Leave environments
-as required. Record divergences, omissions, proof, the review and decisions on the
-page; update their owning documents and ADRs. When the delivery adds or
-changes something a person does by hand, write or update its manual as
-docs/05 §5 says. Tick every Done when item and
-move the page to `work/done/`. Resolve dependent queue lines by docs/05 §4,
-preserving their definition or implementation phase.
+and fix them until only what you can justify remains. Update the documents
+and ADRs the delivery changes, and the manual of anything it adds or changes
+that a person does by hand (docs/05 §5). Then have this delivery's changes,
+by its paths, reviewed as docs/05 §5's Delivery review says, by a context
+that did not write them; another delivery's file is not this review's. Fix
+what breaks the page, docs/04 or the text this delivery wrote and run verify
+again; anything else becomes a `[ ]` line. Nothing verify covers changes
+after its last green run: a later edit runs it once more. Leave environments
+as required. Record divergences, omissions, proof, the review and decisions
+on the page. Tick every Done when item and move the page to `work/done/`.
+Resolve dependent queue lines by docs/05 §4, preserving their definition or
+implementation phase.
 
 End the page with one final `commit` block in docs/05 §6's format, replacing
-any earlier suggestion.
-Stage only this delivery's changes as that section says and suggest the
-same message in the conversation too, in the same `commit` block. Your
-last edit marks the line `[x]` and stages that hunk. Never
-commit or merge. Files and message in the documentation
-language; talk in the person's language. Give the person's next steps,
-each command written out: review the staged diff; commit with the
-suggested message, and on a delivery branch merge it as docs/05 §5 says;
-then the queue's next line and its command, written as this host invokes
-commands, in a fresh session. The last thing you say is which environment
-is at which version and the command that updates the others; never end
-silent about it.
+any earlier suggestion. Stage only this delivery's changes as that section
+says and suggest the same message in the conversation too, in the same
+`commit` block. Your last edit marks the line `[x]` and stages that hunk.
+Never commit or merge unless the person asks. Files and message in the
+documentation language; talk in the person's language. Give the person's next steps,
+each command written out: use what the delivery changed, as its user
+would, and ask here for what is wrong; review the staged diff; commit
+with the suggested message, and on a delivery branch merge it as docs/05
+§5 says; then the queue's next line and its command, written as this
+host invokes commands. The last thing you say is which environment is at
+which version and the command that updates the others; never end silent.
 ````
 
 ### 3.5 `brainstorm/references/documents.md` and `analyze/references/documents.md`
@@ -467,7 +484,10 @@ test uses the terms of this table. A new concept enters here first.
 
 **docs/04, the conventions.** Documentation language and identifier
 language. Naming. Style and formatting, and the tool that enforces them.
-Where tests live and what is tested at each level. A pointer to docs/05 §6
+Where tests live and what is tested at each level: business rules
+tested in process, the fastest tests there are; end-to-end
+tests, and any that need the running application or a network, only
+where they prove what the fast ones cannot. A pointer to docs/05 §6
 for the commit message format; do not copy that format here.
 
 **docs/05, the process.** The template below, with its slots filled.
@@ -484,14 +504,18 @@ its review (docs/05 §8):
 `work/<slug>.md` ready for /apply · `[*]` being built · `[x]` done, page in
 `work/done/` · `[?]` waiting, with `· resume: propose` or `· resume: apply`
 before `· blocked: <reason>` or `· blocked: after <slug>, <slug>` at the
-end of the line (docs/05 §4). A line holds the mark, the slug, one
+end of the line, and `· dropped: <reason>` on an `[x]` line the person
+cancelled (docs/05 §4). A line holds the mark, the slug, one
 sentence and its suffixes; what happened goes on the page. A line never
 leaves; it changes mark, at the moment the work changes (docs/05 §4). The
 order is the priority: a session asked for the next delivery takes the
 first free line, and the person reorders by conversation in any session;
 what is not in the current milestone is not planned yet. A line that
 needs another done first ends with `· after <slug>`, written when the
-line is added; it is an order, not a block. A line is free when every
+line is added; it is an order, not a block. A line no clause of the
+current milestone's paragraph needs goes under the next milestone,
+created when missing with a paragraph that line answers and its review
+last (docs/05 §4). A line is free when every
 `after` it names is `[x]`. Free lines that touch different files may run
 at the same time, in different sessions (docs/05 §4). The
 queue is edited by conversation in any session; no command owns it.
@@ -543,16 +567,14 @@ functions that take data and return a Result, no IO, no framework. The
 Repository fetches and saves, and is the only place an infrastructure
 exception becomes a value. Code is organized by feature (vertical slices),
 not by layer, and a layer exists only when it pays its own way. FOCUS
-is chapter 7 of the book One Page at a Time by J.C. Ködel
-(https://jckodel.github.io/focus-kit-book/07-four-pieces/). Three answers:
+is chapter 4 of the book One Page at a Time by J.C. Ködel
+(https://jckodel.github.io/focus-kit-book/04-focus/). Three answers:
 
-* **FOCUS whole:** the four pieces, errors as values, vertical slices.
+* **FOCUS whole:** the four pieces, exceptions as values, vertical slices.
   docs/01 gets the responsibility table below and names the pieces a slice
-  has in this stack;
-* **the two principles only:** vertical slices and errors as values, with
-  whatever structure the stack favors. Ninjobs, a thin PWA over a backend
-  as a service, chose this: component, one function per feature, client
-  library, `{ data, error }` everywhere, `throw` never as flow;
+  has in this stack. Ninjobs chose this;
+* **the two principles only:** vertical slices and exceptions as values,
+  with whatever structure the stack favors;
 * **neither:** the project's own conventions, written in docs/01.
 
 On a repository with code the default is what the code already does.
@@ -567,7 +589,10 @@ On a repository with code the default is what the code already does.
 **Git.** A strategy, not a silver bullet: pick the one that fits how the
 project is worked. Three answers, and in every one a delivery's page and
 build are one change that reverts in one step, because undoing a whole
-delivery must be one step; the agent never commits and never merges:
+delivery must be one step. That step undoes what git holds; a migration
+run or a message sent is not undone by it, so a page whose delivery acts
+outside git says in Done when how that is undone, naming its manual, or
+that it is not. The agent never commits or merges on its own:
 
 * **trunk:** everything on the main branch. The
   page waits uncommitted in the working tree between `/propose` and
@@ -575,8 +600,8 @@ delivery must be one step; the agent never commits and never merges:
   after reviewing. What Ninjobs did, one session at a time. For one
   person, alone or with several sessions open
   on free lines that touch different files: each session stages only its
-  delivery, and the person commits one delivery at a time, from the paths
-  that session staged. Not for two people: their deliveries share one
+  delivery, and the person commits one delivery at a time, from an index
+  that holds only it (docs/05 §6). Not for two people: their deliveries share one
   branch and one commit carries the other's half-done work;
 * **a branch per delivery:** `/propose` creates a branch named after the
   slug and writes the page there; `/apply` builds on it. The branch may
@@ -623,15 +648,17 @@ decided yet.
 
 docs/06 → /propose <slug> → work/<slug>.md → /apply <slug>, in a fresh
 session → verify green, environments as §5 says → work/done/<slug>.md and
-git add → a person reviews and commits.
+git add → a person uses it, reviews and commits.
 
 /propose talks and writes the page, never code. /apply builds, proves,
-updates the documents, stages and suggests the commit, never commits.
-Code changes only inside /apply: a change asked anywhere else, however
-small, becomes a `[ ]` line in docs/06; what was said that the line
-cannot hold goes into a draft `work/<slug>.md`. The answer stops there
-and names `/propose <slug>` for a fresh session, as this host invokes
-commands.
+updates the documents, stages and suggests the commit, never commits on
+its own. Code changes only inside /apply: a change asked anywhere else,
+however small, becomes a `[ ]` line in docs/06; what was said that the
+line cannot hold goes into a draft `work/<slug>.md`. The answer stops
+there and names `/propose <slug>`, as this host invokes commands; the
+person runs it in this session, whose conversation the draft already
+holds, or in a fresh one. /apply always starts in a fresh session: it
+has only what the page says.
 
 Before /propose changes the queue or the page, use §5's git strategy:
 create the branch or worktree named after the slug, or reuse its existing
@@ -690,7 +717,11 @@ reorders by conversation. A line is the mark, the slug, one sentence and
 its suffixes; what happened goes on the page, because /propose reads the
 whole queue. A line that needs another done first ends with
 `· after <slug>`, written when the line is added; it is free when every
-line it names is `[x]`. Asked what can run at the same time, answer from
+line it names is `[x]`. A line that no clause of the current milestone's
+paragraph needs, whoever adds it, goes under the next milestone, created
+when missing with a paragraph that line answers and its review last; a
+finding of the milestone's own review stays in it (§8).
+Asked what can run at the same time, answer from
 the queue: the free lines, and among them the ones that touch different
 files, judged from their pages and docs/01. The line never
 leaves the queue; it changes mark, at the moment the work changes, so the
@@ -702,7 +733,7 @@ queue shows what is happening while it happens:
 | `[~]` | being defined | /propose, when it starts |
 | `[>]` | completely defined, page ready for /apply | /propose, when §3 is complete |
 | `[*]` | being built | /apply, when it starts |
-| `[x]` | done, page in `work/done/` | /apply, with verify green |
+| `[x]` | done, page in `work/done/`; with `· dropped:`, cancelled | /apply, with verify green; the person, when cancelling |
 | `[?]` | waiting | any session, in the four cases below |
 
 A board may read the queue, and people pull work from it, so a mark
@@ -722,15 +753,25 @@ session that records the answer clears it, or /apply marks `[x]` the last
 line of an `after`), remove both suffixes: `resume: propose` returns to
 `[ ]`, keeping any draft, and `resume: apply` to `[>]`.
 
+A `[~]` or `[*]` line whose session ended without blocking it (the host
+closed, the connection or its limit) keeps its mark; its command resumes
+it on the person's word, inspecting the page, the tree and the index
+before editing. A delivery the person cancels, because it is impossible,
+refused or no longer wanted, ends `[x]` with `· dropped: <reason>` at the
+end of the line, its page in `work/done/` saying what was built and
+undone; a line whose `after` names it is the person's to re-decide.
+
 Two sessions in one working tree, on free lines that touch different
 files, are the normal case of parallel work on trunk. Another line
 changing mark, another delivery's page or files appearing in the tree,
 and another session's index entries are that session's work, not a
 conflict: do not stop for them, do not touch them, change only this
 delivery's line and stage only this delivery's paths and hunks, including
-its own hunk of docs/06. A conflict is the same hunk edited by both, or a
+its own hunk of docs/06. A conflict is a line edited by both, or a
 file this page needs that the other delivery is changing; then stop and
-report. In worktrees, change only this delivery's line; when branches are
+report. Two deliveries' edits in one hunk, each on its own line, as two
+neighbouring queue lines are, conflict in nothing: they are split when
+staged. In worktrees, change only this delivery's line; when branches are
 integrated, reconcile docs/06 by slug, keeping every line at its latest
 state, never one side's whole file.
 
@@ -743,8 +784,10 @@ A slot says what and the command, in a few lines: /apply reads it every
 time. Steps go in a manual, and what a command prints stays in its help.
 
 * **Documentation language:** <language>. Identifiers in <language>.
-* **Verify:** `<command>`, which runs <what>. Green before anything is
-  declared done. <Or: created by the first delivery.>
+* **Verify:** `<command>`, which runs <what>, fast enough to run on every
+  delivery. Green before anything is declared done. <Or: created by the
+  first delivery.> Slow tests: `<command>`, which runs <what>, run by the
+  milestone review (§8); <or: none>.
 * **Environments:** one line each: name, what runs there, what a delivery
   must leave up to date there, and the command that does it, or its
   manual when a person does it by hand.
@@ -758,8 +801,10 @@ time. Steps go in a manual, and what a command prints stays in its help.
   context that did not write them: the host's own review, as a skill the
   agent invokes or a command it runs, and how it is limited to the
   delivery's paths; else a read-only agent on the session's model reading
-  `git diff` of those paths and the files the delivery created, which no
-  diff shows until they are staged; or: none>.
+  the whole delivery against its base: `git diff HEAD` of those paths,
+  staged and unstaged, the commits a blocked delivery already made on its
+  branch or worktree, and the files it created, which no diff shows until
+  they are staged; or: none>.
 * **Manuals:** `docs/manuals/`, one file per action that takes more than
   one command: what a person does by hand outside a delivery (publish,
   roll back, rotate a secret, set up a service) and a proof /apply runs
@@ -775,7 +820,10 @@ time. Steps go in a manual, and what a command prints stays in its help.
   checker run on, or the session's; or: none>.
 * **Git:** trunk | a branch per delivery | a worktree per delivery. A
   delivery's page and build are one change: one commit on trunk, one merge
-  otherwise. The agent stages; it never commits or merges. <With a
+  otherwise. Reverting it undoes what git holds; a delivery that acts
+  outside git (a migration run, a message sent) says in its Done when how
+  that is undone, or that it is not. The agent stages; it never commits or merges on its own, and
+  asked, it takes the step the person names. <With a
   worktree per delivery: the hidden folder of the container, `.focus-kit/`,
   and the branch prefix, `focus-kit/`.>
 
@@ -795,9 +843,13 @@ Inspect the staged diff afterwards and report any unrelated entries that
 were already staged, so the person knows a plain commit would include
 them. Do not unstage those entries yourself. A commit must contain only
 this delivery for the one-change promise to hold: with two sessions on
-trunk, the person commits one delivery at a time, naming its paths.
+trunk, the person commits each delivery as its session ends, from an
+index that holds only it, never by naming paths on `git commit`, which
+takes each named file whole from the working tree and carries the other
+session's hunk of it, staged or not.
 
-The agent suggests the message; the person commits after reviewing.
+The agent suggests the message; the person commits after reviewing, or
+asks the agent to.
 Imperative subject up to 72 characters, scope in parentheses
 when it helps; body up to five one-line bullets, the highlights and not
 the reasoning; last line points to the page's actual path, where the
@@ -826,14 +878,17 @@ A milestone is planned with its review as its last line,
 `<milestone>-review`, a delivery like the others: /propose writes its
 page, /apply runs it. It takes the milestone's paragraph clause by clause
 and writes, for each, which delivery answers it and how a person tests it.
-It fixes nothing. The person tests each clause by hand: a clause no
-delivery answers, or one that fails in the person's hands, is a finding.
+It fixes nothing. It runs §5's slow tests, when the slot names them; a
+failing one is a finding. The person tests each clause by hand: a clause
+no delivery answers, or one that fails in the person's hands, is a finding.
 
 The review also reads the code, the one look at the whole instead of a
 delivery: every page can be right and the whole wrong. Its page names as
 the base the commit of the previous milestone's review, so the range
 holds the fixes of its findings, which get no second review, or the
-first commit for a first milestone, and lists, by §5's areas, the paths `git diff --stat <base>..HEAD`
+first commit for a first milestone, and the commit HEAD was when the
+reading started, so the range stays fixed while readers work, and lists,
+by §5's areas, the paths `git diff --stat <base>..<that commit>`
 shows: always the range, since a bare commit reads that one commit. An
 area too large for one careful reading splits again. It costs, so the
 session says it is time and starts it only on the person's word: one
@@ -882,9 +937,10 @@ is the only place a rule is written.
   to build. Code changes only inside /apply: a change asked outside it,
   however small, becomes a `[ ]` line in docs/06, with a draft page for
   what the line cannot hold, and the answer stops there, naming /propose
-  for a fresh session (docs/05 §2).
+  (docs/05 §2).
 - No em dash in any text a user reads.
-- The agent stages and suggests the commit message. It never commits.
+- The agent stages and suggests the commit message. It never commits or
+  merges on its own; asked, it takes the step the person names.
 - Stage only this delivery's changes as docs/05 §6 says; preserve unrelated
   edits and existing index entries.
 

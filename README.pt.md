@@ -11,7 +11,7 @@ outro host que leia `AGENTS.md`, em qualquer língua.
 ```
 /brainstorm  ou  /analyze     uma vez: os documentos do projeto, por conversa ou lendo o código
 /propose <slug>               define a próxima entrega em uma página, por conversa
-/apply <slug>                 constrói a página, prova, atualiza os docs, faz o stage; nunca commita
+/apply <slug>                 constrói a página, prova, atualiza os docs, faz o stage; commita só se pedirem
 ```
 
 A `/` é como o Claude Code e a maioria dos hosts os invocam; o Codex usa
@@ -81,9 +81,11 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
    essa revisão confirma, atualiza os documentos, move a página para `work/done/`, termina a página com a
    mensagem de commit que sugere, faz o stage e mostra essa mensagem
    também na conversa, no mesmo bloco `commit`.
-   Dá os seus próximos passos, com os comandos por extenso: revisar,
-   commitar e então a próxima linha da fila, e termina dizendo qual
-   ambiente está em qual versão. Você revisa e commita.
+   Dá os seus próximos passos, com os comandos por extenso: usar o que
+   ela mudou, revisar, commitar e então a próxima linha da fila, e termina
+   dizendo qual ambiente está em qual versão. Você usa como o usuário
+   usaria e pede nessa sessão o que estiver errado, depois revisa e
+   commita, ou pede ao agente que commite.
    A fila mostra isso enquanto acontece, então um board que a lê fica em
    dia: a linha fica `[~]` desde a primeira coisa que o `/propose`
    escreve, `[>]` quando a página está completamente definida, `[*]` desde
@@ -95,7 +97,9 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
 3. **Repita** até a fila acabar. Perdido? Pergunte ao agente em que ponto
    está, em qualquer sessão: ele responde a partir do `docs/06` e do
    `work/`, com o próximo comando. Ideias novas viram linhas novas na fila,
-   por conversa, em qualquer sessão. Uma linha que espera uma resposta,
+   por conversa, em qualquer sessão, e o `/propose` de uma pode rodar ali
+   mesmo ou numa sessão nova; uma linha de que o milestone atual não
+   precisa vai para o próximo. Uma linha que espera uma resposta,
    outra linha ou qualquer motivo que você diga vira `[?]`, com o motivo no
    fim, até ele se resolver. Ela também registra se deve retomar o
    `/propose` ou o `/apply`: uma proposta parcial precisa terminar a
@@ -108,7 +112,8 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
 4. **Todo milestone** é planejado com uma revisão como última linha,
    rodada como qualquer entrega. Ela percorre o parágrafo do milestone
    cláusula por cláusula e diz qual entrega responde a cada uma e como
-   você testa. Você testa e, com a sua palavra, o agente lê todo o código
+   você testa, e roda os testes lentos que o verify de cada entrega deixa
+   de fora. Você testa e, com a sua palavra, o agente lê todo o código
    do milestone, o único olhar sobre o conjunto em vez da entrega, pelo
    que a revisão de nenhuma entrega podia ver: o
    intervalo desde o milestone anterior dividido em áreas, um agente
@@ -169,7 +174,8 @@ O que fez funcionar é pequeno, e o kit guarda exatamente isso:
   código; o `/apply` começa limpo, só com a página e os documentos. O
   escopo não cresce durante a implementação porque quem decidiu não está
   na sala.
-* **O agente nunca commita.** Ele faz o stage e sugere a mensagem. Toda
+* **O agente nunca commita por conta própria.** Ele faz o stage e sugere a
+  mensagem, e commita só quando a pessoa pede. Toda
   entrega passa por revisão humana porque o commit é a revisão.
 * **Um freio contra cerimônia.** O documento de processo do Ninjobs termina
   com a lista do que ele não tem (spec formal, pastas de change, tarefas
@@ -190,12 +196,12 @@ em qualquer host que leia `AGENTS.md` e em qualquer língua.
 uma recomendação para a sua stack, e registram o que você escolher:
 
 * **FOCUS**, a arquitetura que dá nome ao kit: quatro peças com fluxo em
-  uma direção só (View, Orchestrator, Use Case, Repository), erros como
+  uma direção só (View, Orchestrator, Use Case, Repository), exceções como
   valores, código organizado por feature. Você pode adotar inteira, adotar
-  só os dois princípios (vertical slices e erros como valores) com a
+  só os dois princípios (vertical slices e exceções como valores) com a
   estrutura que a sua stack favorece, ou manter as suas convenções. O
-  Ninjobs adotou os dois princípios. O FOCUS é o capítulo 7 do livro
-  (https://jckodel.github.io/focus-kit-book/pt/07-four-pieces/).
+  Ninjobs adotou inteira. O FOCUS é o capítulo 4 do livro
+  (https://jckodel.github.io/focus-kit-book/pt/04-focus/).
 * **Git**: tudo na trunk, para uma pessoa, sozinha ou com várias sessões
   em linhas livres que tocam arquivos diferentes, cada uma fazendo o stage
   só da sua entrega, commitadas uma por vez; uma branch por entrega, para
@@ -205,7 +211,10 @@ uma recomendação para a sua stack, e registram o que você escolher:
   oculta da pasta cujo `main/` é o checkout. Em todos os casos a
   página e a construção de
   uma entrega são uma mudança só, revertida em um passo (um commit na
-  trunk, um merge nas outras), e o agente nunca commita nem faz merge.
+  trunk, um merge nas outras); o que uma entrega fez fora do git, uma
+  migration rodada ou uma mensagem enviada, a página diz como desfazer,
+  ou que não se desfaz. O agente nunca commita nem faz merge por
+  conta própria.
   Worktrees em paralelo mostram o estado da sua própria fila; ao integrar
   suas branches, concilie o `docs/06` por slug, preservando cada entrega e
   seu estado mais recente. A fila é um arquivo compartilhado mesmo quando

@@ -8,6 +8,75 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.18.1
+
+- Verify stays fast enough to run on every delivery. docs/05 §5's Verify
+  slot also names the slow tests kept out of it, and the milestone review
+  runs them; a failing one is a finding. `/apply` puts a test too slow for
+  verify with the slow ones and says so, never into verify silently, and
+  docs/04 says what is tested at each level. The author has seen a
+  twenty-minute suite run on every delivery, written by agents that do
+  not mind how long a test takes.
+- A line that no clause of the current milestone's paragraph needs goes
+  under the next milestone, created when missing, whoever adds it; a
+  finding of the milestone's own review stays in it. Agents add lines as
+  they work, and the author has seen a milestone planned with five end
+  with fifty. No new mark: the next milestone already holds them.
+- `/propose` may run in the session where the change was asked, on the
+  person's word, or in a fresh one; `/apply` always starts in a fresh
+  session. In the book's repository Claude Code offered to run `/propose`
+  from the conversation that asked for the change, and the rule sent the
+  person to a fresh session holding only the draft. The skills still
+  disable model invocation: the agent runs one only when the person names
+  it.
+- `/apply`'s next steps start with using what the delivery changed, as
+  its user would, and asking in that session for what is wrong, before
+  reviewing the staged diff. On Ninjobs small faults showed only when the
+  author used a delivery before committing it.
+- The agent never commits or merges on its own; asked, it takes the step
+  the person names. In the book's repository the person asked for a
+  commit per delivery of a batch, which the rule, read as absolute,
+  forbade.
+- FOCUS is chapter 4 of the book, at `04-focus`; the old link answered
+  404. Its second principle is named "exceptions as values", the book's
+  term, and Ninjobs is named under FOCUS whole, which it took, not under
+  the two principles.
+- The Claude Code row says it reads `AGENTS.md` alone only where no
+  `CLAUDE.md` exists, from v2.1.277, as its documentation says on
+  2026-10-18; the kit still writes `CLAUDE.md` with `@AGENTS.md`, which
+  every version reads.
+- On trunk with two sessions, the person commits each delivery from an
+  index that holds only it, never by naming paths on `git commit`. A
+  comparison of the kit with git's documentation on 2026-10-18
+  reproduced the fault the old wording invited: a commit naming
+  docs/06 took the file whole from the working tree, the other session's
+  unstaged hunk included.
+- The Delivery review's read-only agent reads the whole delivery against
+  its base: `git diff HEAD`, staged and unstaged, the commits a blocked
+  delivery already made on its branch, and the files it created. The same
+  comparison reproduced a bare `git diff` showing nothing of an edit that
+  was already staged, so a review could pass what it never read.
+- `/apply` updates documents and manuals before the review, and nothing
+  verify covers changes after its last green run. In the book's
+  repository a link added to a document after verify could reach the
+  commit without the build that made the delivery green.
+- A conflict between two sessions is a line both edited, not a hunk: two
+  neighbouring queue lines share a hunk and conflict in nothing. The old
+  wording stopped the normal case of parallel work, and the book's
+  chapter 19 already said otherwise.
+- A `[~]` or `[*]` line whose session ended without blocking it is
+  resumed by its command on the person's word; a delivery the person
+  cancels ends `[x]` with `· dropped: <reason>`. The six marks had no
+  place for a host that closed mid-delivery, nor for the impossible
+  request the book's chapter 23 closes without building.
+- One step reverts what git holds; a delivery that runs a migration or
+  sends a message says in its Done when how that is undone, or that it
+  is not. The promise read as if a revert undid a database.
+- The milestone review's page names the commit its reading started at,
+  so the range stays fixed while readers work in parallel.
+- A rerun reports these as migrations to docs/05 §§2, 4, 5, 6 and 8,
+  docs/04 and AGENTS.md's commit line.
+
 ## 2026.10.18
 
 - A milestone review's base is the commit of the previous milestone's

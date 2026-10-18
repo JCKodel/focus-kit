@@ -11,7 +11,7 @@ Google Antigravity, Gemini CLI, Devin Desktop and any other host that reads
 ```
 /brainstorm  or  /analyze     once: the project's documents, by conversation or by reading the code
 /propose <slug>               define the next delivery on one page, by conversation
-/apply <slug>                 build that page, prove it, update the docs, stage; never commit
+/apply <slug>                 build that page, prove it, update the docs, stage; commit only when asked
 ```
 
 The `/` is how Claude Code and most hosts invoke them; Codex uses
@@ -81,9 +81,11 @@ OpenCode and Zed all read. What belongs to a single host:
    moves the page to `work/done/`, ends it with the commit message it
    suggests, stages and shows that message in the conversation too, in
    the same `commit` block. It gives your next
-   steps, commands written out: review, commit, then the next line of the
-   queue, and ends saying which environment is at which version. You
-   review and commit. The queue shows it while it happens, so a board
+   steps, commands written out: use what it changed, review, commit, then
+   the next line of the queue, and ends saying which environment is at
+   which version. You use it as its user would and ask in that session
+   for what is wrong, then review and commit, or ask the agent to commit.
+   The queue shows it while it happens, so a board
    that reads it stays current: the line is `[~]` from the first thing
    `/propose` writes, `[>]` when the page is completely defined, `[*]`
    from the first thing `/apply` writes and `[x]` as its last. Only the delivery's changes are staged;
@@ -93,7 +95,9 @@ OpenCode and Zed all read. What belongs to a single host:
 3. **Repeat** until the queue is done. Lost? Ask the agent where things
    stand, in any session: it answers from `docs/06` and `work/`, with the
    next command. New ideas become new lines in the
-   queue, by conversation, in any session. A line that waits on an answer,
+   queue, by conversation, in any session, and `/propose` for one can run
+   right there or in a fresh session; a line the current milestone does
+   not need goes under the next one. A line that waits on an answer,
    on another line, or on anything you name becomes `[?]`, with the reason
    at its end, until the reason is resolved. It also records whether to
    resume `/propose` or `/apply`: a partial proposal must finish definition
@@ -105,7 +109,8 @@ OpenCode and Zed all read. What belongs to a single host:
    same working tree; ask the agent which ones can.
 4. **Every milestone** is planned with a review as its last line, run like
    any delivery. It takes the milestone's paragraph clause by clause and
-   says which delivery answers each one and how you test it. You test,
+   says which delivery answers each one and how you test it, and runs
+   the slow tests that every delivery's verify leaves out. You test,
    and on your word the agent reads the milestone's whole code, the one
    look at the whole instead of a delivery, for what no delivery's own
    review could see: the range since the previous
@@ -164,7 +169,8 @@ What made it work is small, and the kit keeps exactly that:
   `/apply` starts clean, with only the page and the documents. Scope
   cannot grow during implementation because the person who decided is
   not in the room.
-* **The agent never commits.** It stages and suggests the message. Every
+* **The agent never commits on its own.** It stages and suggests the
+  message, and commits only when the person asks. Every
   delivery passes through a human review because the commit is the
   review.
 * **A governor against ceremony.** Ninjobs' process document ends with the
@@ -186,12 +192,12 @@ one addition Ninjobs did not need: it runs on every host that reads
 a recommendation for your stack, and record what you choose:
 
 * **FOCUS**, the architecture the kit is named after: four pieces with flow
-  in one direction (View, Orchestrator, Use Case, Repository), errors as
-  values, code organized by feature. You can take it whole, take only the
-  two principles (vertical slices and errors as values) with the structure
-  your stack favors, or keep your own conventions. Ninjobs took the two
-  principles. FOCUS is chapter 7 of the book
-  (https://jckodel.github.io/focus-kit-book/07-four-pieces/).
+  in one direction (View, Orchestrator, Use Case, Repository), exceptions
+  as values, code organized by feature. You can take it whole, take only
+  the two principles (vertical slices and exceptions as values) with the
+  structure your stack favors, or keep your own conventions. Ninjobs took
+  it whole. FOCUS is chapter 4 of the book
+  (https://jckodel.github.io/focus-kit-book/04-focus/).
 * **Git**: everything on trunk, for one person, alone or with several
   sessions on free lines that touch different files, each staging only
   its delivery and committed one at a time; a branch per delivery, for
@@ -200,8 +206,10 @@ a recommendation for your stack, and record what you choose:
   parallel without touching each other, each worktree inside a hidden
   folder of the folder whose `main/` is the checkout. In every
   case a delivery's page and build are one change that reverts in one step
-  (one commit on trunk, one merge otherwise), and the agent never commits
-  or merges. Parallel worktrees each show their own queue state; when their
+  (one commit on trunk, one merge otherwise); what a delivery did outside
+  git, a migration run or a message sent, its page says how to undo, or
+  that it cannot be. The agent never commits
+  or merges on its own. Parallel worktrees each show their own queue state; when their
   branches are integrated, reconcile `docs/06` by slug, preserving every
   delivery and its latest state. The queue is a shared file even when the
   deliveries change different code.

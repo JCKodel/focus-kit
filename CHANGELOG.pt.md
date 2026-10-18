@@ -8,6 +8,80 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.18.1
+
+- O verify continua rápido o bastante para rodar em toda entrega. O slot
+  Verify do docs/05 §5 também nomeia os testes lentos deixados de fora
+  dele, e a revisão do milestone os roda; um que falha é um achado. O
+  `/apply` põe um teste lento demais para o verify junto dos lentos e diz
+  isso, nunca no verify em silêncio, e o docs/04 diz o que se testa em
+  cada nível. O autor já viu uma suíte de vinte minutos rodar a cada
+  entrega, escrita por agentes que não se importam com quanto um teste
+  demora.
+- Uma linha de que nenhuma cláusula do parágrafo do milestone atual
+  precisa vai para o próximo milestone, criado quando falta, seja quem
+  for que a acrescente; um achado da própria revisão do milestone fica
+  nele. Agentes acrescentam linhas enquanto trabalham, e o autor já viu
+  um milestone planejado com cinco terminar com cinquenta. Nenhuma marca
+  nova: o próximo milestone já as guarda.
+- O `/propose` pode rodar na sessão em que a mudança foi pedida, com a
+  palavra da pessoa, ou numa sessão nova; o `/apply` sempre começa numa
+  sessão nova. No repositório do livro, o Claude Code ofereceu rodar o
+  `/propose` a partir da conversa que pediu a mudança, e a regra mandava
+  a pessoa para uma sessão nova que só tinha o rascunho. As skills
+  continuam desativando a invocação pelo modelo: o agente roda uma só
+  quando a pessoa a nomeia.
+- Os próximos passos do `/apply` começam por usar o que a entrega mudou,
+  como o usuário usaria, e pedir nessa sessão o que estiver errado, antes
+  de revisar o diff no stage. No Ninjobs, falhas pequenas só apareciam
+  quando o autor usava uma entrega antes de commitá-la.
+- O agente nunca commita nem faz merge por conta própria; quando pedem,
+  dá o passo que a pessoa nomeia. No repositório do livro, a pessoa pediu
+  um commit por entrega de um lote, que a regra, lida como absoluta,
+  proibia.
+- O FOCUS é o capítulo 4 do livro, em `04-focus`; o link antigo respondia
+  404. O seu segundo princípio se chama "exceções como valores", o termo
+  do livro, e o Ninjobs aparece em FOCUS inteiro, que ele adotou, e não
+  nos dois princípios.
+- A linha do Claude Code diz que ele lê o `AGENTS.md` sozinho só onde não
+  existe `CLAUDE.md`, a partir da v2.1.277, como a documentação dele diz
+  em 2026-10-18; o kit continua escrevendo o `CLAUDE.md` com
+  `@AGENTS.md`, que toda versão lê.
+- Na trunk com duas sessões, a pessoa commita cada entrega a partir de
+  um índice que só tem ela, nunca nomeando caminhos no `git commit`. Uma
+  comparação do kit com a documentação do git em 2026-10-18 reproduziu a
+  falha que a redação antiga convidava: um commit nomeando o docs/06
+  levou o arquivo inteiro da working tree, com o hunk não staged da
+  outra sessão.
+- O agente somente leitura da revisão de entrega lê a entrega inteira
+  contra a sua base: `git diff HEAD`, staged e não staged, os commits que
+  uma entrega bloqueada já fez na sua branch, e os arquivos que ela
+  criou. A mesma comparação reproduziu um `git diff` puro mostrando nada
+  de uma edição já no stage, de modo que uma revisão aprovaria o que
+  nunca leu.
+- O `/apply` atualiza documentos e manuais antes da revisão, e nada que
+  o verify cobre muda depois da última rodada verde. No repositório do
+  livro, um link acrescentado a um documento depois do verify podia
+  chegar ao commit sem o build que deixou a entrega verde.
+- Um conflito entre duas sessões é uma linha que as duas editaram, não
+  um hunk: duas linhas vizinhas da fila dividem um hunk e não conflitam
+  em nada. A redação antiga parava o caso normal do trabalho em
+  paralelo, e o capítulo 19 do livro já dizia o contrário.
+- Uma linha `[~]` ou `[*]` cuja sessão acabou sem bloqueá-la é retomada
+  pelo seu comando com a palavra da pessoa; uma entrega que a pessoa
+  cancela termina `[x]` com `· dropped: <motivo>`. As seis marcas não
+  tinham lugar para um host que fechou no meio da entrega, nem para o
+  pedido impossível que o capítulo 23 do livro encerra sem construir.
+- Um passo reverte o que o git guarda; uma entrega que roda uma
+  migration ou envia uma mensagem diz no Pronto quando como isso se
+  desfaz, ou que não se desfaz. A promessa lia-se como se um revert
+  desfizesse um banco.
+- A página da revisão do milestone nomeia o commit em que a leitura
+  começou, para que o intervalo fique fixo enquanto os leitores
+  trabalham em paralelo.
+- Rodar de novo relata isso como migrações para o docs/05 §§2, 4, 5, 6 e
+  8, o docs/04 e a linha de commit do AGENTS.md.
+
 ## 2026.10.18
 
 - A base da revisão de um milestone é o commit da revisão do milestone
