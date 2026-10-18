@@ -8,6 +8,28 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.18
+
+- A milestone review's base is the commit of the previous milestone's
+  review, or the first commit for a first milestone. The range then holds
+  the fixes of the previous review's findings, which get no second
+  review. In the book's repository the next milestone's first line
+  started before the previous milestone's findings closed, and its base
+  was neither of the two commits docs/05 §8 named.
+- The checker's three labels are each glossed: seen is true in the file
+  today. docs/05 §8 glossed latent and weak only.
+- A line waits in four cases: the fourth is a milestone review's code
+  reading that missed part of its range, and its reason says what was
+  read. docs/05 §4 counted three cases while §8 added this one.
+- A Delivery review slot that reads `git diff` also reads the files the
+  delivery created, which no diff shows before they are staged. A new
+  script in the book's repository was untracked when its delivery's
+  review ran.
+- `/apply` fixes what breaks the page, docs/04 or the text the delivery
+  wrote: "its own lines" read as queue lines. `/analyze`'s question on the
+  milestone review points to docs/05 §5, where the slot is, not §8.
+- A rerun reports these as migrations to docs/05 §§4, 5 and 8.
+
 ## 2026.10.17
 
 - `/apply` has each delivery's own changes reviewed before it ends, by a

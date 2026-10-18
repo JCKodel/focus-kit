@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.17
+Version: 2026.10.18
 
 ## 1. What to do
 
@@ -40,8 +40,11 @@ Version: 2026.10.17
    Behaviour scenarios with concrete input and failure cases, resumption,
    when each mark changes, order as priority and `after` on queue lines, two sessions in one
    working tree, shared queue and isolated staging, the gate wording, the
-   milestone's code review over the range by areas, with its checker and
-   the paths read, and §7's exception for its agents), docs/04's pointer to docs/05 §6, and
+   four cases a line waits in, the milestone's code review over the range
+   by areas from the previous review's commit, with its checker, what
+   seen means and the paths read, and §7's exception for its agents), the
+   files a delivery created in a Delivery review slot that reads `git diff`,
+   docs/04's pointer to docs/05 §6, and
    AGENTS.md's process rules, including the line on a change asked
    outside /apply, the line on where things stand and the line on
    docs/manuals/. Include
@@ -175,7 +178,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.17"
+  version: "2026.10.18"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -242,7 +245,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.17"
+  version: "2026.10.18"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -279,7 +282,7 @@ host's question form when it has one:
   (docs/05 §5). Default: the host's, when it can be limited to those
   paths;
 * the milestone review: the areas its code reading splits into and the
-  model its agents run on (docs/05 §8). Default: docs/01's modules and
+  model its agents run on (docs/05 §5). Default: docs/01's modules and
   the session's model;
 * the first milestone: three to eight deliveries, or where to read them
   from (issues, a TODO file, a roadmap), then its review.
@@ -320,7 +323,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.17"
+  version: "2026.10.18"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -366,7 +369,7 @@ description: >-
   then stage and suggest the commit. Never commits.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.17"
+  version: "2026.10.18"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -400,8 +403,8 @@ Run verify until green. Prove the delivery as docs/05 says; list divergences
 and fix them until only what you can justify remains. Then have this
 delivery's changes, by its paths, reviewed as docs/05 §5's Delivery review
 says, by a context that did not write them; another delivery's file is not
-this review's. Fix what breaks the page, docs/04 or this delivery's own
-lines and run verify again; anything else becomes a `[ ]` line. Leave environments
+this review's. Fix what breaks the page, docs/04 or the text this delivery
+wrote and run verify again; anything else becomes a `[ ]` line. Leave environments
 as required. Record divergences, omissions, proof, the review and decisions on the
 page; update their owning documents and ADRs. When the delivery adds or
 changes something a person does by hand, write or update its manual as
@@ -700,7 +703,7 @@ queue shows what is happening while it happens:
 | `[>]` | completely defined, page ready for /apply | /propose, when §3 is complete |
 | `[*]` | being built | /apply, when it starts |
 | `[x]` | done, page in `work/done/` | /apply, with verify green |
-| `[?]` | waiting | any session, in the three cases below |
+| `[?]` | waiting | any session, in the four cases below |
 
 A board may read the queue, and people pull work from it, so a mark
 changes at once: `[~]` is /propose's first edit, `[*]` is /apply's first,
@@ -708,7 +711,8 @@ and `[x]` is /apply's last. Without a board the marks cost nothing.
 
 A line waits when the person says it is blocked, when it needs an answer
 that was asked and not given, or when work already started finds it needs
-another line done first, such as a fix found in the middle of an /apply.
+another line done first, such as a fix found in the middle of an /apply,
+or when a milestone review's code reading missed part of its range (§8).
 The line ends with the command that picks it up, `· resume: propose` or
 `· resume: apply`, then the reason, `· blocked: <reason>` or
 `· blocked: after <slug>, <slug>`. A dependency known when the line is
@@ -754,7 +758,8 @@ time. Steps go in a manual, and what a command prints stays in its help.
   context that did not write them: the host's own review, as a skill the
   agent invokes or a command it runs, and how it is limited to the
   delivery's paths; else a read-only agent on the session's model reading
-  `git diff` of those paths; or: none>.
+  `git diff` of those paths and the files the delivery created, which no
+  diff shows until they are staged; or: none>.
 * **Manuals:** `docs/manuals/`, one file per action that takes more than
   one command: what a person does by hand outside a delivery (publish,
   roll back, rotate a secret, set up a service) and a proof /apply runs
@@ -825,9 +830,10 @@ It fixes nothing. The person tests each clause by hand: a clause no
 delivery answers, or one that fails in the person's hands, is a finding.
 
 The review also reads the code, the one look at the whole instead of a
-delivery: every page can be right and the whole wrong. Its page names the
-commit that closed the previous milestone, or the first commit, as the
-base, and lists, by §5's areas, the paths `git diff --stat <base>..HEAD`
+delivery: every page can be right and the whole wrong. Its page names as
+the base the commit of the previous milestone's review, so the range
+holds the fixes of its findings, which get no second review, or the
+first commit for a first milestone, and lists, by §5's areas, the paths `git diff --stat <base>..HEAD`
 shows: always the range, since a bare commit reads that one commit. An
 area too large for one careful reading splits again. It costs, so the
 session says it is time and starts it only on the person's word: one
@@ -838,10 +844,11 @@ what no delivery's own review could see, one delivery's work against
 another's, a document against another, the whole against docs/01, and
 reports candidates by file and line and the paths it read. One checker,
 an agent or the review's session, opens each candidate's file and marks
-it seen, latent (nothing triggers it today) or weak (the claim does not
-hold as stated) before the person sees it. They fix nothing. When the
-paths read miss some of the range's, the page says which and the line
-waits as `[?]` with `· resume: apply` (§4). A candidate the person confirms is a finding like
+it seen (true in the file today), latent (nothing triggers it today) or
+weak (the claim does not hold as stated) before the person sees it. They
+fix nothing. When the paths read miss some of the range's, the page says
+which and the line waits as `[?]` with `· resume: apply` and
+`· blocked: <what was read>` (§4). A candidate the person confirms is a finding like
 the others.
 
 Each finding becomes a `[ ]` line in the same milestone, under the review

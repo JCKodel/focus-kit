@@ -8,6 +8,31 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.18
+
+- A base da revisão de um milestone é o commit da revisão do milestone
+  anterior, ou o primeiro commit num primeiro milestone. O intervalo
+  passa a conter as correções dos achados da revisão anterior, que não
+  têm segunda revisão. No repositório do livro, a primeira linha do
+  milestone seguinte começou antes de fecharem os achados do anterior, e
+  a sua base não era nenhum dos dois commits que o docs/05 §8 nomeava.
+- Os três rótulos do verificador têm cada um a sua explicação: visto é
+  verdadeiro no arquivo hoje. O docs/05 §8 explicava só latente e fraco.
+- Uma linha espera em quatro casos: o quarto é a leitura do código de uma
+  revisão de milestone que deixou de fora parte do intervalo, e o motivo
+  diz o que foi lido. O docs/05 §4 contava três casos enquanto o §8
+  acrescentava este.
+- Um slot Delivery review que lê `git diff` também lê os arquivos que a
+  entrega criou, que nenhum diff mostra antes de irem para o stage. Um
+  script novo no repositório do livro estava fora do controle do git
+  quando a revisão da sua entrega rodou.
+- O `/apply` corrige o que quebra a página, o docs/04 ou o texto que a
+  entrega escreveu: "as suas próprias linhas" se lia como linhas da fila.
+  A pergunta do `/analyze` sobre a revisão de milestone aponta para o
+  docs/05 §5, onde o slot está, e não para o §8.
+- Uma nova execução relata essas mudanças como migrações do docs/05
+  §§4, 5 e 8.
+
 ## 2026.10.17
 
 - O `/apply` faz as mudanças da própria entrega serem revisadas antes de
