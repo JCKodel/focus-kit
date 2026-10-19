@@ -8,6 +8,22 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.19.2
+
+- Running the product from a fresh clone is a manual always owed:
+  docs/05 §5's Manuals slot names it, owed by the first delivery after
+  which a person can run it, from install to the first screen or call,
+  and updated by every delivery that changes a step; `/brainstorm` fills
+  the slot that way instead of "none yet", `/analyze` writes that manual
+  first, and the AGENTS.md template points to it. In one project on
+  2026-10-19 the milestone closed and the person could not run the
+  product: install, PATH, hooks, a tmux session and the serve command had
+  been assembled by four deliveries, none owing a manual, since the host's
+  page had defined its action as one command plus a URL, and the next
+  steps `/apply` writes exist only in the conversation, which an agent
+  orchestrating the session had run on the person's behalf. A rerun
+  reports a Manuals slot that does not name the manual of running it.
+
 ## 2026.10.19.1
 
 - docs/05 §4 says how the queue is read with a branch or a worktree per

@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.19.1
+Version: 2026.10.19.2
 
 ## 1. What to do
 
@@ -64,15 +64,15 @@ Version: 2026.10.19.1
      sessions edited; where a board sees a mark;
    * docs/05 §5, what each slot says: every slot present, Context,
      Manuals, Delivery review and Milestone review included; the Publish
-     policy's last sentence; the Verify slot's slow tests; a Delivery
-     review that reads `git diff HEAD` and the branch's commits, not a
-     bare `git diff`, and the files the delivery created; a Milestone
-     review slot that names the host's command stays, and one missing or
-     naming neither a command nor areas gets docs/01's modules proposed; a
+     policy's last sentence; the Verify slot's slow tests; a Manuals slot
+     naming the manual of running it, owed or written; a Delivery review
+     that reads `git diff HEAD` and the branch's commits, not a bare `git
+     diff`, and the files the delivery created; a Milestone review slot
+     that names the host's command stays, and one missing or naming
+     neither a command nor areas gets docs/01's modules proposed; a
      worktree Git slot that names no folder, in a container whose hidden
      folder already holds `repo.git/`, gets that folder's name and the
-     prefix its delivery branches already use written in, so nothing
-     moves;
+     prefix its delivery branches already use written in, so nothing moves;
    * docs/05 §5, the shape of a slot: a procedure a person runs by hand
      written only inside a slot or another document becomes a manual in
      docs/manuals/, the slot keeping the command and pointing to it; a
@@ -216,7 +216,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.19.1"
+  version: "2026.10.19.2"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -240,14 +240,14 @@ order. Move on when you could write the section yourself.
 4. **The conventions** (docs/04): documentation language, identifier
    language, style, where tests live; commit format lives in docs/05 §6.
 5. **The process slots** (docs/05): verify command and the slow tests kept
-   out of it, environments, how a
-   screen is proven, publish policy, whether `context/` is committed, the
-   manuals ("none yet"), and whether a second pair of eyes reads each
-   delivery before it ends and the whole milestone at its close (the
-   default is yes: the host's own review where it has one, else a
-   read-only agent, and the kit's readers over docs/01's modules, on the
-   session's model). What does not exist yet is written as "created by
-   the first delivery".
+   out of it, environments, how a screen is proven, publish policy,
+   whether `context/` is committed, the manuals (running it is owed by
+   the first delivery after which a person can; the rest "none yet"), and
+   whether a second pair of eyes reads each delivery before it ends and
+   the whole milestone at its close (the default is yes: the host's own
+   review where it has one, else a read-only agent, and the kit's readers
+   over docs/01's modules, on the session's model). What does not exist
+   yet is written as "created by the first delivery".
 6. **The first milestone** (docs/06): three to eight deliveries, one line
    each, in order, then its review. The first ones are the skeleton the
    others stand on.
@@ -286,7 +286,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.19.1"
+  version: "2026.10.19.2"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -336,10 +336,10 @@ is not asked to settle it now.
 
 In the documentation language: docs/00 to 06 describing what exists, not
 what should exist; docs/adr/ with the decisions the code already embodies
-and the ones this round took, one dated paragraph each; docs/manuals/, one
-manual per thing a person already does by hand (a Makefile target, a
-deploy script, steps in a README), as docs/05 §5 says; `AGENTS.md` from the
-template; `CLAUDE.md` holding the line `@AGENTS.md`; and the folder
+and the ones this round took, one dated paragraph each; docs/manuals/,
+running it first, then one per thing a person already does by hand (a
+Makefile target, a deploy script, steps in a README), as docs/05 §5 says;
+`AGENTS.md` from the template; `CLAUDE.md` holding `@AGENTS.md`; and the folder
 `work/done/` with a `.gitkeep`. The rules live in `AGENTS.md`: what an
 existing `CLAUDE.md`, `.github/copilot-instructions.md` or similar file
 already says moves into it, and that file becomes the import line (or,
@@ -364,7 +364,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.19.1"
+  version: "2026.10.19.2"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -413,7 +413,7 @@ description: >-
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.19.1"
+  version: "2026.10.19.2"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -540,10 +540,10 @@ queue is edited by conversation in any session; no command owns it.
 decision, the consequences, the date. An ADR is amended, never rewritten.
 
 **docs/manuals/.** One file per action that takes more than one command,
-so it is found by its name and not inside a slot: what a person does by
-hand outside a delivery (publish, roll back, set up a service), and a
-proof /apply runs on another machine. docs/05 §5 says what each one holds. Created with
-the first one; there is no empty folder.
+so it is found by its name and not inside a slot: running the product from
+a fresh clone, what a person does by hand outside a delivery (publish, roll
+back, set up a service), and a proof /apply runs on another machine.
+docs/05 §5 says what each one holds. Created with the first one; there is no empty folder.
 
 **AGENTS.md.** The template below. Read at the start of every session by
 every host in the table of SETUP.md §1, on its own or through the pointer
@@ -830,15 +830,16 @@ The project may add slots of its own; a slot that names /propose or
   branch or worktree, and the files it created, which no diff shows until
   they are staged; or: none>.
 * **Manuals:** `docs/manuals/`, one file per action that takes more than
-  one command: what a person does by hand outside a delivery (publish,
-  roll back, rotate a secret, set up a service) and a proof /apply runs
-  on another machine, named in the documentation language after what it
-  does. Each stands alone for whoever runs it, having read nothing else: what it does and
-  when, what must be in place, the commands in order, how to tell it
-  worked, how to undo it, what breaks if a step is skipped. A slot that
-  names such a command points to its manual instead of holding the steps;
-  a delivery that changes one updates its manual. <The manuals, one line
-  each, or: none yet.>
+  one command, named after what it does: running the product from a fresh
+  clone, what a person does by hand outside a delivery (publish, roll
+  back, rotate a secret, set up a service) and a proof /apply runs on
+  another machine. Each stands alone for whoever runs it, having read
+  nothing else: what it does and when, what must be in place, the commands
+  in order, how to tell it worked, how to undo it, what breaks if a step
+  is skipped. A slot that names such a command points to its manual
+  instead of holding the steps; a delivery that changes one updates its
+  manual. <One line each; running it is owed by the first delivery after
+  which a person can run it, from install to the first screen or call.>
 * **Milestone review:** <who reads the milestone's code in §8: the
   host's deep review the person launches over the range, named with its
   command, when the host has one that takes the whole range; or the
@@ -849,12 +850,11 @@ The project may add slots of its own; a slot that names /propose or
   delivery's page and build are one change: one commit on trunk, one merge
   otherwise. Reverting it undoes what git holds; a delivery that acts
   outside git (a migration run, a message sent) says in its Done when how
-  that is undone, or that it is not. The agent stages; it never commits or merges on its own, and
-  asked, it takes the step the person names. <Or: the agent commits, and
-  merges, by this slot's word, which is the asking; the person reviews
-  the commit.> <With a
-  worktree per delivery: the hidden folder of the container, `.focus-kit/`,
-  and the branch prefix, `focus-kit/`.>
+  that is undone, or that it is not. The agent stages; it never commits or
+  merges on its own, and asked, it takes the step the person names. <Or:
+  the agent commits, and merges, by this slot's word, which is the asking;
+  the person reviews the commit.> <With a worktree per delivery: the hidden
+  folder of the container, `.focus-kit/`, and the branch prefix, `focus-kit/`.>
 
 ## 6. Commit
 
@@ -962,8 +962,8 @@ is the only place a rule is written.
 - the product: docs/00 · the vocabulary: docs/03
 - how it is built: docs/01 · the server: docs/02
 - style and tests: docs/04 · process: docs/05 · queue: docs/06
-- what a person does by hand (publish, roll back): docs/manuals/, when
-  it exists
+- running it, and what a person does by hand (publish, roll back):
+  docs/manuals/, when it exists
 
 ## Non-negotiables
 - <three to six rules that protect what the product is; from docs/00 and

@@ -126,12 +126,14 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
    da revisão, pronta para `/propose` e `/apply`. Essas linhas não passam
    por segunda revisão: o seu commit é a revisão.
 
-O que você faz à mão fora de uma entrega (publicar o site, voltar uma
-versão, configurar um serviço), e uma prova que o `/apply` roda em outra
-máquina, estão em `docs/manuals/`, um arquivo para
-cada coisa, com o nome do que ele faz e legível sem os outros documentos.
-O `/analyze` escreve os manuais do que o repositório já roda à mão; o
-`/apply` escreve ou atualiza um quando uma entrega cria ou muda isso.
+Como rodar o produto a partir de um clone, o que você faz à mão fora de
+uma entrega (publicar o site, voltar uma versão, configurar um serviço), e
+uma prova que o `/apply` roda em outra máquina, estão em `docs/manuals/`,
+um arquivo para cada coisa, com o nome do que ele faz e legível sem os
+outros documentos. O `/analyze` escreve os manuais do que o repositório já
+roda à mão; o `/apply` escreve ou atualiza um quando uma entrega cria ou
+muda isso, e a primeira entrega depois da qual uma pessoa consegue rodar o
+produto escreve o manual de rodá-lo.
 
 O kit supõe uma pessoa que propõe, usa a entrega, revisa o diff em stage
 e commita. Numa equipe, quem commita é esse revisor; o kit não divide os

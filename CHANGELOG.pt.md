@@ -8,6 +8,23 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.19.2
+
+- Rodar o produto a partir de um clone é um manual sempre devido: o slot
+  de Manuais do docs/05 §5 o nomeia, devido pela primeira entrega depois
+  da qual uma pessoa consegue rodá-lo, da instalação à primeira tela ou
+  chamada, e atualizado por toda entrega que muda um passo; o
+  `/brainstorm` preenche o slot assim em vez de "nenhum ainda", o
+  `/analyze` escreve esse manual primeiro e o modelo de AGENTS.md aponta
+  para ele. Num projeto em 2026-10-19 o marco fechou e a pessoa não
+  conseguia rodar o produto: instalar, PATH, hooks, uma sessão tmux e o
+  comando serve tinham sido montados por quatro entregas, nenhuma devendo
+  um manual, porque a página do hospedeiro definiu sua ação como um
+  comando mais uma URL, e os próximos passos que o `/apply` escreve só
+  existem na conversa, que um agente orquestrando a sessão tinha rodado no
+  lugar da pessoa. Rodar de novo reporta um slot de Manuais que não nomeia
+  o manual de rodar.
+
 ## 2026.10.19.1
 
 - O docs/05 §4 diz como a fila é lida com um branch ou um worktree por
