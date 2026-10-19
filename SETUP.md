@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.19
+Version: 2026.10.19.1
 
 ## 1. What to do
 
@@ -216,7 +216,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.19"
+  version: "2026.10.19.1"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -286,7 +286,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.19"
+  version: "2026.10.19.1"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -364,7 +364,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.19"
+  version: "2026.10.19.1"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -413,7 +413,7 @@ description: >-
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.19"
+  version: "2026.10.19.1"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -754,10 +754,13 @@ queue shows what is happening while it happens:
 
 A board may read the queue, and people pull work from it, so a mark
 changes at once: `[~]` is /propose's first edit, `[*]` is /apply's first,
-and `[x]` is /apply's last. On trunk the board sees it at once; with a
-branch or a worktree per delivery the mark lives on the delivery's
-branch and the board sees it when that branch is merged. Without a board
-the marks cost nothing.
+and `[x]` is /apply's last. On trunk the board sees it at once. With a
+branch or a worktree per delivery the mark lives on the delivery's branch
+and the main branch shows the line as it was until the merge, so whoever
+reads the queue there, a board or a session picking free lines or
+resolving an `after`, takes each slug's line from its worktree's file,
+or from its branch, local or remote, and the lines only a branch has,
+reconciled by slug as below. Without a board the marks cost nothing.
 
 A line waits when the person says it is blocked, when it needs an answer
 that was asked and not given, or when work already started finds it needs

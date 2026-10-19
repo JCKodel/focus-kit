@@ -8,6 +8,20 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.19.1
+
+- docs/05 §4 says how the queue is read with a branch or a worktree per
+  delivery: the main branch shows each line as it was until the merge,
+  so a board, or a session picking free lines or resolving an `after`,
+  takes each slug's line from its worktree's file or its branch, local or
+  remote, and the lines only a branch has, reconciled by slug as at
+  integration. In one project on 2026-10-19, with twelve worktrees, the
+  main branch showed seven of thirteen lines as `[ ]` while their
+  branches held them at `[>]` or `[*]`; `[~]`, `[>]`, `[*]` and `[?]` never
+  reached it, and a new `/propose`, starting from its HEAD, could not see
+  them either. A rerun reports the migration under docs/05 §4, where a
+  board sees a mark.
+
 ## 2026.10.19
 
 - `/propose` creates the branch or worktree first and marks `[~]` there,

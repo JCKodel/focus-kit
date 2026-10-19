@@ -8,6 +8,20 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.19.1
+
+- O docs/05 §4 diz como a fila é lida com um branch ou um worktree por
+  entrega: o branch principal mostra cada linha como estava até o merge,
+  então um quadro, ou uma sessão que escolhe linhas livres ou resolve um
+  `after`, pega a linha de cada slug no arquivo do seu worktree ou no seu
+  branch, local ou remoto, e as linhas que só um branch tem, reconciliadas
+  por slug como na integração. Num projeto em 2026-10-19, com doze
+  worktrees, o branch principal mostrava sete de treze linhas como `[ ]`
+  enquanto os branches delas as tinham em `[>]` ou `[*]`; `[~]`, `[>]`,
+  `[*]` e `[?]` nunca chegavam a ele, e um `/propose` novo, partindo do
+  seu HEAD, também não as via. Rodar de novo reporta a migração em
+  docs/05 §4, onde um quadro vê uma marca.
+
 ## 2026.10.19
 
 - O `/propose` cria o branch ou o worktree primeiro e marca `[~]` lá,
