@@ -8,6 +8,85 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.19
+
+- O `/propose` cria o branch ou o worktree primeiro e marca `[~]` lá,
+  como o docs/05 §2 diz; a skill mandava marcar primeiro e ramificar
+  depois. O docs/05 §4 diz onde um board vê uma marca: na hora, na
+  trunk; no merge, com um branch ou um worktree por entrega. Uma revisão
+  do kit inteiro em 2026-10-19 achou as duas ordens, e que a razão da
+  marca, um board de onde as pessoas puxam trabalho, só vale na trunk.
+- Os comandos seguem todo slot do docs/05 §5, os próprios do projeto
+  inclusive, e um projeto pode acrescentar um slot que nomeie o
+  `/propose` ou o `/apply`. Num projeto as skills listavam os slots que
+  seguem, então um slot Board que o projeto acrescentou não era lido, e
+  a pessoa editou os quatro arquivos de propose e apply para atualizar o
+  seu board a cada troca de marca, refazendo a edição a cada atualização
+  do kit. Uma reexecução mostra uma edição dessas como diff contra o
+  arquivo do kit em que ela foi feita, com a mudança do próprio kit à
+  parte, para a pessoa saber qual é qual; uma versão anterior é
+  verificada pelo histórico do kit ou, sem ele, pela palavra da pessoa.
+  O slot Git também pode dizer que o agente commita e faz merge pela
+  palavra do slot, que vale como o pedido: naquele projeto o slot dizia
+  que o agente commita e a skill dizia nunca sem a pessoa pedir, e nada
+  dizia qual valia.
+- O slot Revisão de marco diz quem lê o código: a revisão profunda do
+  host, que a pessoa lança sobre o intervalo, quando o host tem uma que
+  o cubra inteiro, ou os leitores do kit por área; o conferente roda de
+  um jeito ou de outro. O slot do Ninjobs nomeia o `/code-review ultra`,
+  que achou uma chamada de 620 ms, uma página que podia ser emoldurada,
+  o endereço de um visitante enviado a um terceiro e uma função
+  alcançando a rede interna, e o kit anterior mandava a reexecução
+  trocá-lo por leitores e áreas e perguntar se o comando "ainda roda
+  também". Onde não existe revisão anterior, a página nomeia a base e o
+  porquê: um projeto cujos primeiros marcos fecharam sem linha de
+  revisão não tinha o commit que o texto antigo apontava.
+- O `/apply` lê docs/00 e docs/03 e constrói com os identificadores do
+  docs/03. Não lia nenhum dos dois, enquanto o docs/03 diz que todo
+  identificador usa a sua tabela e o docs/00 diz que nada o contradiz
+  sem mudá-lo na mesma entrega; a página carregava os dois sozinha.
+  Achado pela mesma revisão.
+- O `/brainstorm` e o `/analyze` perguntam se um segundo par de olhos lê
+  cada entrega e cada marco, com o padrão dito, em vez de perguntar qual
+  ferramenta de revisão e qual modelo; a regra do próprio `/brainstorm`
+  proíbe perguntar sobre uma ferramenta pelo nome. Achado pela mesma
+  revisão.
+- O docs/05 §6 diz que uma árvore de trabalho tem um índice só: com
+  duas sessões na trunk, quando a segunda já fez stage antes de a
+  primeira ser commitada, a pessoa põe os caminhos dela de lado com
+  `git restore --staged`, commita a primeira e faz o stage de novo. O
+  texto antigo prometia um índice só com uma entrega e não dizia como,
+  quando as duas sessões o compartilham.
+- As regras da fila estão escritas uma vez, no docs/05 §4; o parágrafo
+  do docs/06 em `documents.md` aponta para lá em vez de repeti-las. Eram
+  duas cópias para manter em dia, o que o kit proíbe para os comandos.
+- O passo 4 do `SETUP.md` §1 é uma lista por documento e seção, cada
+  item reportado e nunca feito. Sua frase única de 45 linhas foi
+  transformada em checklist por cada um dos três agentes que a rodaram
+  em 2026-10-19, em três projetos, com itens que não souberam onde
+  encaixar. O passo 4 também confere a numeração das seções do docs/05,
+  porque os comandos citam a do molde e um projeto que manteve a sua
+  mandava o `/propose` para a seção errada; o passo 5 nomeia o próximo
+  comando num projeto já documentado pela primeira linha livre da fila,
+  o que ele deixava sem dizer; e uma reexecução substitui só o que o
+  passo 1 reconhece, onde "esses arquivos" se lia como incondicional. O
+  `CLAUDE.md` do repositório agora dá ao §1, ao molde do docs/05 e ao
+  `documents.md` um teto, como os comandos têm, para que o que um
+  comando não guarda mais não cresça sem limite em outro lugar.
+- O `AGENTS.md` responde o que uma entrega decidiu a partir da sua
+  página e das ADRs. Os READMEs dizem o que o kit supõe, uma pessoa que
+  propõe, usa, revisa o diff em stage e commita, onde entra quem não lê
+  código, e que as 91 entregas do Ninjobs rodaram nos dois comandos
+  dele antes de o kit ser plantado lá em 2026-09-21, duas páginas atrás.
+  O público do kit inclui equipes e gente que não lê código, e nada
+  dizia o que ele supunha delas, nem que o kit em si chegou ao Ninjobs
+  depois das entregas que cita.
+- A ordem documentada do Copilot para uma skill presente em
+  `.agents/skills/` e em `.claude/skills/` substitui o "não testado" do
+  §1, lida na referência da sua CLI em 2026-10-19, que o §1 agora cita.
+- Uma reexecução reporta estas como migrações do docs/05 §§2, 4, 5, 6
+  e 8 e da linha do AGENTS.md sobre onde as coisas estão.
+
 ## 2026.10.18.1
 
 - O verify continua rápido o bastante para rodar em toda entrega. O slot

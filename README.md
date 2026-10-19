@@ -111,12 +111,13 @@ OpenCode and Zed all read. What belongs to a single host:
    any delivery. It takes the milestone's paragraph clause by clause and
    says which delivery answers each one and how you test it, and runs
    the slow tests that every delivery's verify leaves out. You test,
-   and on your word the agent reads the milestone's whole code, the one
-   look at the whole instead of a delivery, for what no delivery's own
-   review could see: the range since the previous
-   milestone split into areas, one read-only agent each, in any host that
-   runs agents, and a check of every candidate against its file before
-   you see it. What is missing, fails in your hands or you confirm from
+   and on your word the milestone's whole code is read, the one look at
+   the whole instead of a delivery, for what no delivery's own review
+   could see: by your host's deep review when it has one that takes the
+   whole range, or by the kit's readers, the range since the previous
+   review split into areas, one read-only agent each, in any host that
+   runs agents; either way every candidate is checked against its file
+   before you see it. What is missing, fails in your hands or you confirm from
    the code reading becomes a line in the same milestone, under the review, ready
    for `/propose` and `/apply`. Those lines get no second review: your
    commit is the review.
@@ -127,6 +128,13 @@ up a service), and a proof `/apply` runs on another machine, is in
 does and readable without the other documents. `/analyze` writes the
 manuals for what the repository already runs by hand; `/apply` writes or
 updates one when a delivery adds or changes it.
+
+The kit assumes one person who proposes, uses the delivery, reviews the
+staged diff and commits. On a team, whoever commits is that reviewer;
+the kit does not split the roles further. A person who does not read
+code takes part in `/propose`, where the page is written in user
+language, tests the delivery as its user, and asks any session where
+things stand or what a page decided.
 
 The documents carry the weight; the commands only point at them. What each
 document holds, the format of the page, and the queue are in `SETUP.md`
@@ -155,6 +163,12 @@ by one developer with Claude Code from a restart on 2026-08-29 to a public
 beta on 2026-09-10. By mid-September 2026: 91 one-page deliveries, 46
 migrations, about 35k lines of TypeScript, 830 unit tests and 200
 end-to-end tests, all through the queue, `/propose` and `/apply`.
+
+Those deliveries ran on Ninjobs' own two commands, the ones this kit was
+extracted from. The kit itself was planted in Ninjobs on 2026-09-21,
+after the beta. What the kit learned since then came from the
+repositories that run it, the book's own among them, and each change
+names its error in `CHANGELOG.md`.
 
 What made it work is small, and the kit keeps exactly that:
 

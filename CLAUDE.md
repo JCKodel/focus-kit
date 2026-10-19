@@ -44,7 +44,13 @@ book changes its chapters through its own `/apply`.
   Anything project-specific is a
   slot in the project's `docs/05`, filled once by `/brainstorm` or
   `/analyze` and read by `/apply`. A procedure, a report format or a
-  cross-reference chain inside a command is the smell.
+  cross-reference chain inside a command is the smell. The same ceiling
+  watches where the words go when a command is full: `SETUP.md` §1 at
+  most 160 lines, the docs/05 template at most 260 non-blank lines,
+  `documents.md` at most 450. A change that would pass one removes as
+  much as it adds. On 2026-10-19 §1's step 4 was one 45-line sentence
+  that an agent running it could not hold in mind and rewrote as a list
+  for itself.
 - The four commands and their reference live only inside `SETUP.md`, in
   the fenced blocks of §3. There is no second copy to keep in sync.
 - Host facts (where Claude Code, Codex and Copilot read skills and rules)

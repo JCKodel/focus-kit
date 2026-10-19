@@ -5,88 +5,114 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.18.1
+Version: 2026.10.19
 
 ## 1. What to do
 
 1. Before writing anything, inspect every destination in section 3. An
    existing file may be replaced only when it matches a file shipped by
    focus-kit, in this version or a prior version verified from the kit's
-   source history. A familiar name or a `metadata.version` alone does not
-   establish ownership. If a destination contains a custom command or an
-   unrecognized edit, show its diff against the proposed file and stop
-   before writing any file; the person decides how to preserve or replace
-   it. `GEMINI.md` is the exception: preserve its project content as 3.11
-   says. Do not create a manifest to track ownership.
+   source history (`git show <commit>:SETUP.md` in
+   https://github.com/JCKodel/focus-kit) or, without that history at
+   hand, by the person's word that the file was never edited. A familiar
+   name or a `metadata.version` alone does not establish ownership. If a
+   destination contains a custom command or an unrecognized edit, show
+   the edit as a diff against the kit file it was made on, and the kit's
+   own change since that file separately and in short, and stop before
+   writing or removing any file, steps 4 and 5 still reported; the person decides how to
+   preserve or replace it, and a rule the edit added to a command may
+   become a slot of docs/05 §5, which the commands follow. `GEMINI.md` is the exception:
+   preserve its project content as 3.11 says. Do not create a manifest to
+   track ownership.
 2. Write every file of section 3, byte for byte, at every path its
    heading names. Sections 3.1 to 3.5 name paths relative to a skills
-   folder, and each of those files goes to both: `.claude/skills/` and
-   `.agents/skills/` (so `brainstorm/SKILL.md` is written twice). Sections 3.6 to 3.11 name paths relative to
-   the repository root. Do not reformat, summarize, translate or improve
-   any of them; fill only the `<name>` placeholder of 3.6 to 3.9, using
-   the two prompt templates of 3.7 for their respective commands.
+   folder, and each of those files goes to both `.claude/skills/` and
+   `.agents/skills/`; sections 3.6 to 3.11 name paths relative to the
+   repository root. Do not reformat, summarize, translate or improve any
+   of them; fill only the `<name>` placeholder of 3.6 to 3.9, using the
+   two prompt templates of 3.7 for their respective commands.
 3. Touch nothing else, with one exception: versions before 2026.10.17
    also wrote 3.1 to 3.5 under `.windsurf/skills/`, which no host needs
-   now. Remove each file there that matches a file shipped by focus-kit,
-   as step 1 establishes it, and the folders that leaves empty; report
-   any other file there and leave it. Do not run `git init`, do not
-   stage, do not commit.
+   now. Remove each kit file there, as step 1 establishes it, and the
+   folders that leaves empty; report and leave any other file. Do not
+   run `git init`, do not stage, do not commit.
 4. When the project already has docs/ or AGENTS.md, compare its rules with
    the current templates and report every migration still needed, with
    the actual path, section and proposed wording in its documentation
-   language. Check docs/05 §§2, 3, 4, 6, 7 and 8 (code only inside
-   /apply, a change asked elsewhere ending as a line, a draft page and the
-   /propose command, in that session or a fresh one, the person using a
-   delivery before committing, the agent committing or merging only when
-   asked, a line no clause of the milestone needs going to the next one,
-   the slow tests the milestone review runs, completed proposals, why the Contract is exact,
-   Behaviour scenarios with concrete input and failure cases, resumption,
-   when each mark changes, order as priority and `after` on queue lines, two sessions in one
-   working tree, shared queue and isolated staging, the gate wording, the
-   four cases a line waits in, a line whose session ended and a dropped
-   line, a conflict as a line both sessions edited, the commit from an
-   index holding one delivery and never by naming paths, what a revert
-   does not undo in the Git slot, the milestone's code review over the range
-   by areas from the previous review's commit to the commit it started
-   at, with its checker, what
-   seen means and the paths read, and §7's exception for its agents), the
-   files a delivery created and the base a Delivery review slot reads
-   from (`git diff HEAD` and the branch's commits, not a bare `git diff`),
-   docs/04's pointer to docs/05 §6 and its tests by level, the Verify
-   slot's slow tests, and
-   AGENTS.md's process rules, including the line on committing, the line on a change asked
-   outside /apply, the line on where things stand and the line on
-   docs/manuals/. Include
-   any missing slots of docs/05 §5, such as Context, Manuals, Delivery
-   review and Milestone review, and the Publish policy's last sentence. A Milestone review
-   slot that names a command a person launches becomes its areas and
-   model, proposed from docs/01; the person says whether that command
-   still runs too. A Git slot for a
-   worktree per delivery that names no folder, in a container whose
-   hidden folder already holds `repo.git/`, gets that folder's name and
-   the prefix its delivery branches already use written in, so nothing
-   moves; a
-   procedure a person runs by hand that is written only inside a slot or
-   another document becomes a manual in docs/manuals/, its slot keeping
-   the command and pointing to it. A slot that narrates steps or output
-   shrinks to what and the command, and a docs/06 line that carries
-   history keeps the mark, the slug, one sentence and its suffixes, the
-   rest moved to its page, or to a draft `work/<slug>.md` for a `[ ]`
-   line, when the page lacks it. Preserve project
-   choices; do not edit these files during setup. Report installed skill
-   version separately from pending process migrations; an updated skill
-   version does not mean the project's process is updated.
-5. Tell the person which files you wrote and what comes next: on a
-   repository with no code, `/brainstorm`; on a repository with code,
-   `/analyze`. Both run in a fresh session. Write the command as the table
-   below says this host invokes it. On an already documented
-   project, report the pending migrations first, or say there are none;
-   do not ask it to repeat /brainstorm or /analyze to update its process.
+   language. A divergence the project decided and recorded as decided,
+   with a date or an ADR, is a project choice: report it as such, with
+   what the kit says, not as a migration. Each item below is reported, never done, by
+   the actual section of the project's document. Check, one document at
+   a time:
+   * docs/05's section numbers: the commands cite the template's (§4 the
+     queue, §5 the slots, §6 commit, §8 closing a milestone) and read by
+     number, so a docs/05 numbered otherwise migrates to them first,
+     whatever an ADR says, and until then the report says where each
+     cited number lands;
+   * docs/05 §2: code only inside /apply; a change asked elsewhere ending
+     as a line and a draft page; /propose in that session or a fresh one;
+     the person using a delivery before committing; the agent committing
+     or merging only when asked;
+   * docs/05 §3: why the Contract is exact; Behaviour scenarios with
+     concrete input and failure cases; the page complete before `[>]`;
+     the final `commit` block;
+   * docs/05 §4: when each mark changes; resumption; order as priority
+     and `after` on queue lines; a line no clause of the milestone needs
+     going to the next one; two sessions in one working tree, shared
+     queue and isolated staging; the four cases a line waits in; a line
+     whose session ended and a dropped line; a conflict as a line both
+     sessions edited; where a board sees a mark;
+   * docs/05 §5, what each slot says: every slot present, Context,
+     Manuals, Delivery review and Milestone review included; the Publish
+     policy's last sentence; the Verify slot's slow tests; a Delivery
+     review that reads `git diff HEAD` and the branch's commits, not a
+     bare `git diff`, and the files the delivery created; a Milestone
+     review slot that names the host's command stays, and one missing or
+     naming neither a command nor areas gets docs/01's modules proposed; a
+     worktree Git slot that names no folder, in a container whose hidden
+     folder already holds `repo.git/`, gets that folder's name and the
+     prefix its delivery branches already use written in, so nothing
+     moves;
+   * docs/05 §5, the shape of a slot: a procedure a person runs by hand
+     written only inside a slot or another document becomes a manual in
+     docs/manuals/, the slot keeping the command and pointing to it; a
+     slot that narrates steps or output shrinks to what and the command;
+     a rule the project added to a command's file becomes a slot the
+     command follows;
+   * docs/05 §6: the commit from an index holding one delivery, never by
+     naming paths; the one index of a tree; what a revert does not undo,
+     in the Git slot;
+   * docs/05 §7: its exception for the reviews' agents;
+   * docs/05 §8: the slow tests; the range from the previous review's
+     commit, or the one the page names, to the commit the reading started
+     at; who reads, as the slot says; the checker, what seen means and
+     the paths read;
+   * docs/04: the pointer to docs/05 §6 and its tests by level;
+   * docs/06: a line that carries history, what happened beyond the one
+     sentence of what it delivers, keeps the mark, the slug, that
+     sentence and its suffixes, the rest moved to its page, or to a draft
+     `work/<slug>.md` for a `[ ]` line, when the page does not already
+     hold it; the report names those lines and rewrites one as the
+     example;
+   * AGENTS.md: the process rules, including the lines on committing, on
+     a change asked outside /apply, on where things stand and what a page
+     decided, and on docs/manuals/.
+   Preserve project choices; do not edit these files during setup. Report
+   the installed skill version separately from the pending process
+   migrations; an updated skill version does not mean the project's
+   process is updated.
+5. Tell the person which files you wrote and what comes next, written as
+   the table below says this host invokes it: on a repository with no
+   code, `/brainstorm`; with code, `/analyze`; both in a fresh session.
+   On an already documented project, report the pending migrations
+   first, or say there are none, do not ask it to repeat /brainstorm or
+   /analyze, and name the command docs/06's first free line wants,
+   `/propose` for a `[ ]` line or `/apply` for a `[>]` one.
 
-Running this file again replaces those files and nothing else. That is how
-the kit is updated. Everything the four commands write afterwards (`docs/`,
-`work/`, `AGENTS.md`, `CLAUDE.md`) belongs to the project and is never
-touched by this file.
+Running this file again replaces the files step 1 recognizes as the
+kit's and nothing else. That is how the kit is updated. Everything the
+four commands write afterwards (`docs/`, `work/`, `AGENTS.md`,
+`CLAUDE.md`) belongs to the project and is never touched by this file.
 
 Every host gets its files on every run, whichever host runs this file, so
 the repository opens ready in any of them and switching hosts changes
@@ -94,8 +120,9 @@ nothing. The rules live in `AGENTS.md`, which every host below reads on its
 own or through the pointer the table names. Skill folders overlap on
 purpose: `.agents/skills/` is read by Codex, Copilot, Antigravity, Devin
 Desktop, OpenCode and Zed; `.claude/skills/` by Claude Code, Copilot and
-Devin Desktop. What a host that
-reads two of them does with the same name in both, the kit has not tested.
+Devin Desktop. Copilot documents what it does with the same name in
+both: `.agents/skills/` before `.claude/skills/`, first found wins, the
+same file here.
 
 | Host | Reads the rules from | Reads the commands from | Invoked as |
 |---|---|---|---|
@@ -109,15 +136,15 @@ reads two of them does with the same name in both, the kit has not tested.
 | OpenCode, Zed | `AGENTS.md` | `.agents/skills/<name>/SKILL.md` | by asking for the skill |
 | Jules, Junie, Warp, Kiro, Roo Code, Cline | `AGENTS.md` | none; ask in words for `.agents/skills/<name>/SKILL.md` | |
 
-Each row was read off the vendor's documentation on 2026-09-21; the Claude
-Code invocation policy, Copilot prompts and Antigravity rules were checked
-again on 2026-10-07, Codex and Devin Desktop on 2026-10-17, and Claude
-Code's rules and invocation on 2026-10-18. A host
+Each row was read off the vendor's documentation on 2026-09-21 and
+checked again between 2026-10-07 and 2026-10-19, the skill folders of
+Claude Code, Codex and Copilot last. A host
 enters this table only with its documentation in hand: Claude Code
 https://code.claude.com/docs/en/memory and https://code.claude.com/docs/en/skills;
 Codex https://learn.chatgpt.com/docs/build-skills and
 https://learn.chatgpt.com/docs/agent-configuration/agents-md; Copilot
-https://docs.github.com/en/copilot/concepts/agents/about-agent-skills and
+https://docs.github.com/en/copilot/concepts/agents/about-agent-skills,
+https://docs.github.com/en/copilot/reference/cli-command-reference and
 https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/your-first-prompt-file;
 Cursor https://cursor.com/docs/rules and
 https://cursor.com/docs/cli/reference/slash-commands; Antigravity
@@ -129,11 +156,10 @@ https://docs.devin.ai/cli/extensibility/skills/overview and
 https://docs.devin.ai/cli/extensibility/rules; OpenCode
 https://opencode.ai/docs/skills/; Zed https://zed.dev/docs/ai/skills; the
 last row https://agents.md. What the documentation does not say, the kit
-does not rely on: a skills folder for Cursor and Amp altogether are left
-out until their pages say so. Claude Code's skills disable model invocation:
-the agent runs one only when the person names it in a message; Codex's
-policy disables implicit invocation. On other hosts, invoke these
-workflows explicitly; the kit does not claim equivalent host enforcement.
+does not rely on: Cursor's skills folder and Amp are left out until their
+pages say so. Claude Code's skills and Codex's policy disable model
+invocation: the agent runs one only when the person names it. On other
+hosts, invoke them explicitly; the kit claims no enforcement there.
 
 In the skills, `$ARGUMENTS` stands for what the person typed after the
 command. Claude Code substitutes it; the Copilot and Gemini CLI files of
@@ -190,7 +216,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.18.1"
+  version: "2026.10.19"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -216,10 +242,12 @@ order. Move on when you could write the section yourself.
 5. **The process slots** (docs/05): verify command and the slow tests kept
    out of it, environments, how a
    screen is proven, publish policy, whether `context/` is committed, the
-   manuals ("none yet"), the delivery review (the host's own, limited to
-   a delivery's paths, else a read-only agent), the milestone review
-   (docs/01's modules as its areas, the session's model). What does not exist yet is
-   written as "created by the first delivery".
+   manuals ("none yet"), and whether a second pair of eyes reads each
+   delivery before it ends and the whole milestone at its close (the
+   default is yes: the host's own review where it has one, else a
+   read-only agent, and the kit's readers over docs/01's modules, on the
+   session's model). What does not exist yet is written as "created by
+   the first delivery".
 6. **The first milestone** (docs/06): three to eight deliveries, one line
    each, in order, then its review. The first ones are the skeleton the
    others stand on.
@@ -258,7 +286,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.18.1"
+  version: "2026.10.19"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -291,13 +319,12 @@ host's question form when it has one:
   and you say what that is;
 * whether `context/` is committed. Default: committed when the repository
   stays with the team, in `.gitignore` when it is delivered or public;
-* the delivery review: the host's own review that the agent can run on a
-  delivery's paths, as a skill or a command, else a read-only agent
-  (docs/05 §5). Default: the host's, when it can be limited to those
-  paths;
-* the milestone review: the areas its code reading splits into and the
-  model its agents run on (docs/05 §5). Default: docs/01's modules and
-  the session's model;
+* the reviews: whether a second pair of eyes reads each delivery before
+  it ends and the whole milestone at its close (docs/05 §5). Default:
+  yes; the host's own review when it can be limited to a delivery's
+  paths, else a read-only agent; and the kit's readers over docs/01's
+  modules on the session's model, or the host's deep review when the
+  project already launches one;
 * the first milestone: three to eight deliveries, or where to read them
   from (issues, a TODO file, a roadmap), then its review.
 
@@ -337,7 +364,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.18.1"
+  version: "2026.10.19"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -346,11 +373,13 @@ Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
 (process) and docs/06 (queue), and the deliveries in flight in `work/`.
 Do not start a blocked line until its recorded reason is resolved, nor a
 line whose `after` is not done; a `[~]` line is resumed only on the
-person's word that its session ended (docs/05 §4). Otherwise your first
-edit marks the line `[~]`; then follow docs/05 §§2, 4 and 5 to start or resume
-the definition in the right branch or worktree, a worktree where docs/05's
-Git slot puts it and reused when it exists. Another line changing mark
-meanwhile is another session's work.
+person's word that its session ended (docs/05 §4). Otherwise follow
+docs/05 §§2, 4 and 5 first: start or resume the definition in the right
+branch or worktree, a worktree where docs/05's Git slot puts it and
+reused when it exists; then your first edit there marks the line `[~]`.
+Follow every slot of docs/05 §5 that names this command, the project's
+own included. Another line changing mark meanwhile is another session's
+work.
 
 What the documents answer, you do not ask: decide, write it on the page,
 and name the document it came from, so the person corrects it in the
@@ -384,24 +413,23 @@ description: >-
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.18.1"
+  version: "2026.10.19"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
 
-Read the page, `AGENTS.md`, docs/01 (architecture), docs/04 (conventions),
-docs/05 (process) and docs/06 (queue). Follow docs/05's project slots
-literally: verify, environments, proof, publish policy and git strategy.
-Before editing, inspect the working tree and index as docs/05 §6 says.
-Work on the branch or worktree /propose created, if any.
+Read the page, `AGENTS.md`, docs/00 (product), docs/01 (architecture),
+docs/03 (domain), docs/04 (conventions), docs/05 (process) and docs/06
+(queue). Follow every slot of docs/05 §5 literally, the project's own
+slots included. Before editing, inspect the working tree and index as
+docs/05 §6 says. Work on the branch or worktree /propose created, if any.
 
 If the page contradicts a document, stop and say which: the document changes
 in this delivery or the page is wrong. Do not resolve it silently. Follow
 docs/05 §4 to resume a blocked line, or a `[*]` line the person says its
 session left; refuse an incomplete proposal and point to /propose. Otherwise
 only a fully defined `[>]` line whose `after` is done becomes `[*]`, your
-first edit. Another session's delivery in the same tree is not a conflict;
-docs/05 §§4 and 6 say what is.
+first edit. docs/05 §§4 and 6 say what a conflict is.
 
 When work cannot go on, record what was built and what it waits on, leave
 the page in `work/` and block it with `resume: apply` as docs/05 §4 says.
@@ -410,7 +438,8 @@ the partial message, show it in the conversation in the same `commit`
 block, and follow docs/05 §6's blocked-work staging rule; report verify
 and environments, and stop without claiming completion.
 
-Build where docs/01 says, with its error convention. Write docs/04's tests;
+Build where docs/01 says, with its error convention and docs/03's
+identifiers. Write docs/04's tests;
 one too slow for verify goes with docs/05's slow tests and you say so,
 never into verify silently. Abstraction on the second concrete occurrence;
 the page names the first. Add no dependency, layer or tool the page did
@@ -500,24 +529,11 @@ its review (docs/05 §8):
 [ ] <slug>    <what it delivers, one line>
 ```
 
-`[ ]` not yet defined · `[~]` being defined · `[>]` completely defined,
-`work/<slug>.md` ready for /apply · `[*]` being built · `[x]` done, page in
-`work/done/` · `[?]` waiting, with `· resume: propose` or `· resume: apply`
-before `· blocked: <reason>` or `· blocked: after <slug>, <slug>` at the
-end of the line, and `· dropped: <reason>` on an `[x]` line the person
-cancelled (docs/05 §4). A line holds the mark, the slug, one
-sentence and its suffixes; what happened goes on the page. A line never
-leaves; it changes mark, at the moment the work changes (docs/05 §4). The
-order is the priority: a session asked for the next delivery takes the
-first free line, and the person reorders by conversation in any session;
-what is not in the current milestone is not planned yet. A line that
-needs another done first ends with `· after <slug>`, written when the
-line is added; it is an order, not a block. A line no clause of the
-current milestone's paragraph needs goes under the next milestone,
-created when missing with a paragraph that line answers and its review
-last (docs/05 §4). A line is free when every
-`after` it names is `[x]`. Free lines that touch different files may run
-at the same time, in different sessions (docs/05 §4). The
+A line holds the mark, the slug, one sentence and its suffixes; what
+happened goes on the page. The marks, the suffixes (`· after`,
+`· resume:`, `· blocked:`, `· dropped:`), the order as priority, the next
+milestone and what may run at the same time are docs/05 §4, written once
+there. What is not in the current milestone is not planned yet. The
 queue is edited by conversation in any session; no command owns it.
 
 **docs/adr/.** One file per decision, `ADR-NNNN-<slug>.md`: context, the
@@ -738,7 +754,10 @@ queue shows what is happening while it happens:
 
 A board may read the queue, and people pull work from it, so a mark
 changes at once: `[~]` is /propose's first edit, `[*]` is /apply's first,
-and `[x]` is /apply's last. Without a board the marks cost nothing.
+and `[x]` is /apply's last. On trunk the board sees it at once; with a
+branch or a worktree per delivery the mark lives on the delivery's
+branch and the board sees it when that branch is merged. Without a board
+the marks cost nothing.
 
 A line waits when the person says it is blocked, when it needs an answer
 that was asked and not given, or when work already started finds it needs
@@ -782,6 +801,8 @@ conversation in any session.
 
 A slot says what and the command, in a few lines: /apply reads it every
 time. Steps go in a manual, and what a command prints stays in its help.
+The project may add slots of its own; a slot that names /propose or
+/apply is followed by that command, with no edit to the skill.
 
 * **Documentation language:** <language>. Identifiers in <language>.
 * **Verify:** `<command>`, which runs <what>, fast enough to run on every
@@ -815,15 +836,20 @@ time. Steps go in a manual, and what a command prints stays in its help.
   names such a command points to its manual instead of holding the steps;
   a delivery that changes one updates its manual. <The manuals, one line
   each, or: none yet.>
-* **Milestone review:** <the areas a milestone's changes split into for
-  the code reading of §8, one reader each, and the model its readers and
-  checker run on, or the session's; or: none>.
+* **Milestone review:** <who reads the milestone's code in §8: the
+  host's deep review the person launches over the range, named with its
+  command, when the host has one that takes the whole range; or the
+  kit's readers, with the areas a milestone's changes split into, one
+  reader each, and the model its readers and checker run on, or the
+  session's; or: none>.
 * **Git:** trunk | a branch per delivery | a worktree per delivery. A
   delivery's page and build are one change: one commit on trunk, one merge
   otherwise. Reverting it undoes what git holds; a delivery that acts
   outside git (a migration run, a message sent) says in its Done when how
   that is undone, or that it is not. The agent stages; it never commits or merges on its own, and
-  asked, it takes the step the person names. <With a
+  asked, it takes the step the person names. <Or: the agent commits, and
+  merges, by this slot's word, which is the asking; the person reviews
+  the commit.> <With a
   worktree per delivery: the hidden folder of the container, `.focus-kit/`,
   and the branch prefix, `focus-kit/`.>
 
@@ -846,7 +872,10 @@ this delivery for the one-change promise to hold: with two sessions on
 trunk, the person commits each delivery as its session ends, from an
 index that holds only it, never by naming paths on `git commit`, which
 takes each named file whole from the working tree and carries the other
-session's hunk of it, staged or not.
+session's hunk of it, staged or not. One working tree has one index, so
+when the second session has already staged, the person sets its paths
+aside with `git restore --staged <paths>`, commits the first, and stages
+them again.
 
 The agent suggests the message; the person commits after reviewing, or
 asks the agent to.
@@ -886,25 +915,28 @@ The review also reads the code, the one look at the whole instead of a
 delivery: every page can be right and the whole wrong. Its page names as
 the base the commit of the previous milestone's review, so the range
 holds the fixes of its findings, which get no second review, or the
-first commit for a first milestone, and the commit HEAD was when the
-reading started, so the range stays fixed while readers work, and lists,
-by §5's areas, the paths `git diff --stat <base>..<that commit>`
-shows: always the range, since a bare commit reads that one commit. An
-area too large for one careful reading splits again. It costs, so the
-session says it is time and starts it only on the person's word: one
-read-only agent per area, in parallel where the host runs agents, or one
-fresh session per area, opened by the person, where it does not. Each
-reader has the whole repository open and reads its area's changes for
-what no delivery's own review could see, one delivery's work against
-another's, a document against another, the whole against docs/01, and
-reports candidates by file and line and the paths it read. One checker,
-an agent or the review's session, opens each candidate's file and marks
-it seen (true in the file today), latent (nothing triggers it today) or
-weak (the claim does not hold as stated) before the person sees it. They
-fix nothing. When the paths read miss some of the range's, the page says
-which and the line waits as `[?]` with `· resume: apply` and
-`· blocked: <what was read>` (§4). A candidate the person confirms is a finding like
-the others.
+first commit for a first milestone, or, where no earlier review exists,
+the commit the page names and why; and the commit HEAD was when the
+reading started, so the range stays fixed while readers work; and it
+lists the paths `git diff --stat <base>..<that commit>` shows: always
+the range, since a bare commit reads that one commit. It costs, so the
+session says it is time and starts it only on the person's word. §5's
+Milestone review slot says who reads: the host's deep review, which the
+person launches over that range; or the kit's readers, one read-only
+agent per area of the slot, in parallel where the host runs agents, or
+one fresh session per area, opened by the person, where it does not;
+an area too large for one careful reading splits again. Each reader has
+the whole repository open and reads its area's changes for what no
+delivery's own review could see, one delivery's work against another's,
+a document against another, the whole against docs/01, and reports
+candidates by file and line and the paths it read. Either way, one
+checker, an agent or the review's session, opens each candidate's file
+and marks it seen (true in the file today), latent (nothing triggers it
+today) or weak (the claim does not hold as stated) before the person
+sees it. They fix nothing. When the paths read miss some of the range's,
+the page says which and the line waits as `[?]` with `· resume: apply`
+and `· blocked: <what was read>` (§4). A candidate the person confirms
+is a finding like the others.
 
 Each finding becomes a `[ ]` line in the same milestone, under the review
 line, waiting for /propose. The milestone closes when those lines are
@@ -957,6 +989,8 @@ is the only place a rule is written.
   updates the document that owns it, in the same delivery.
 - Asked where things stand, answer from docs/06 and work/: the lines in
   flight, their marks, and the next command, as this host invokes it.
+  Asked what a delivery decided or why, answer from its page and the
+  ADRs it names.
 ```
 ````
 

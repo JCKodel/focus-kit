@@ -113,12 +113,14 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
    rodada como qualquer entrega. Ela percorre o parágrafo do milestone
    cláusula por cláusula e diz qual entrega responde a cada uma e como
    você testa, e roda os testes lentos que o verify de cada entrega deixa
-   de fora. Você testa e, com a sua palavra, o agente lê todo o código
-   do milestone, o único olhar sobre o conjunto em vez da entrega, pelo
-   que a revisão de nenhuma entrega podia ver: o
-   intervalo desde o milestone anterior dividido em áreas, um agente
-   somente leitura em cada uma, em qualquer host que rode agentes, e cada
-   candidato conferido no seu arquivo antes de chegar a você. O que falta,
+   de fora. Você testa e, com a sua palavra, todo o código do milestone
+   é lido, o único olhar sobre o conjunto em vez da entrega, pelo que a
+   revisão de nenhuma entrega podia ver: pela revisão profunda do seu
+   host, quando ele tem uma que cubra o intervalo inteiro, ou pelos
+   leitores do kit, o intervalo desde a revisão anterior dividido em
+   áreas, um agente somente leitura em cada uma, em qualquer host que
+   rode agentes; de um jeito ou de outro, cada candidato é conferido no
+   seu arquivo antes de chegar a você. O que falta,
    falha nas suas mãos ou você confirma da leitura do código vira uma
    linha no mesmo milestone, abaixo
    da revisão, pronta para `/propose` e `/apply`. Essas linhas não passam
@@ -130,6 +132,13 @@ máquina, estão em `docs/manuals/`, um arquivo para
 cada coisa, com o nome do que ele faz e legível sem os outros documentos.
 O `/analyze` escreve os manuais do que o repositório já roda à mão; o
 `/apply` escreve ou atualiza um quando uma entrega cria ou muda isso.
+
+O kit supõe uma pessoa que propõe, usa a entrega, revisa o diff em stage
+e commita. Numa equipe, quem commita é esse revisor; o kit não divide os
+papéis além disso. Quem não lê código participa do `/propose`, onde a
+página é escrita em linguagem de usuário, testa a entrega como seu
+usuário e pergunta a qualquer sessão em que ponto as coisas estão ou o
+que uma página decidiu.
 
 Os documentos carregam o peso; os comandos só apontam para eles. O que
 cada documento guarda, o formato da página e a fila estão no `SETUP.md`
@@ -159,6 +168,12 @@ beta público em 2026-09-10. Em meados de setembro de 2026: 91 entregas de
 uma página, 46 migrations, cerca de 35 mil linhas de TypeScript, 830 testes
 unitários e 200 testes de ponta a ponta, tudo pela fila, `/propose` e
 `/apply`.
+
+Essas entregas rodaram nos dois comandos do próprio Ninjobs, aqueles de
+que este kit foi extraído. O kit em si foi plantado no Ninjobs em
+2026-09-21, depois do beta. O que o kit aprendeu desde então veio dos
+repositórios que o usam, o do livro entre eles, e cada mudança nomeia o
+seu erro no `CHANGELOG.md`.
 
 O que fez funcionar é pequeno, e o kit guarda exatamente isso:
 

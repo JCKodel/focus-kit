@@ -8,6 +8,81 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.19
+
+- `/propose` creates the branch or worktree first and marks `[~]` there,
+  as docs/05 §2 says; the skill said mark first, then branch. docs/05 §4
+  says where a board sees a mark: at once on trunk, at the merge with a
+  branch or a worktree per delivery. A review of the whole kit on
+  2026-10-19 found the two orders, and that the mark's reason, a board
+  people pull work from, holds only on trunk.
+- The commands follow every slot of docs/05 §5, the project's own
+  included, and a project may add a slot that names `/propose` or
+  `/apply`. In one project the skills listed the slots they follow, so a
+  Board slot the project added was not read, and the person edited the
+  four propose and apply files to refresh its board at every mark
+  change, redoing the edit on every kit update. A rerun shows such an
+  edit as a diff against the kit file it was made on, with the kit's own
+  change apart, so the person can tell which is which; a prior version is
+  verified from the kit's history or, without it, by the person's word.
+  The Git slot may also say that the agent commits and merges by the
+  slot's word, which counts as the asking: in that project the slot said
+  the agent commits and the skill said never unless the person asks, and
+  nothing said which held.
+- The Milestone review slot says who reads the code: the host's deep
+  review the person launches over the range, when the host has one that
+  takes it whole, or the kit's readers by area; the checker runs either
+  way. Ninjobs' slot names `/code-review ultra`, which found a 620 ms
+  call, a page that could be framed, a visitor's address sent to a third
+  party and a function reaching the internal network, and the previous
+  kit told a rerun to replace it with readers and areas and ask whether
+  the command "still runs too". Where no earlier review exists, the
+  page names the base and why: a project whose first milestones closed
+  without a review line had no commit the old wording pointed to.
+- `/apply` reads docs/00 and docs/03 and builds with docs/03's
+  identifiers. It read neither, while docs/03 says every identifier uses
+  its table and docs/00 says nothing contradicts it without changing it
+  in the same delivery; the page carried both alone. Found by the same
+  review.
+- `/brainstorm` and `/analyze` ask whether a second pair of eyes reads
+  each delivery and each milestone, with the default stated, instead of
+  asking which review tool and which model; `/brainstorm`'s own rule
+  forbids asking about a tool by name. Found by the same review.
+- docs/05 §6 says one working tree has one index: with two sessions on
+  trunk, when the second has staged before the first is committed, the
+  person sets its paths aside with `git restore --staged`, commits the
+  first and stages them again. The old wording promised an index that
+  holds one delivery and said nothing about how, when both sessions
+  share it.
+- The queue's rules are written once, in docs/05 §4; `documents.md`'s
+  docs/06 paragraph points there instead of repeating them. They were two
+  copies to keep in sync, which the kit forbids for the commands.
+- `SETUP.md` §1's step 4 is a list by document and section, each item
+  reported and never done. Its one 45-line sentence was turned into a
+  checklist by each of the three agents that ran it on 2026-10-19, on
+  three projects, with items they could not place. Step 4 also checks
+  docs/05's section numbers, since the commands cite the template's and
+  a project that kept its own sent `/propose` to the wrong section; step
+  5 names the next command on a documented project from the queue's
+  first free line, which it left unsaid; and a rerun replaces only what
+  step 1 recognizes, where "those files" read as unconditional. The
+  repository's `CLAUDE.md` now gives §1, the docs/05 template and
+  `documents.md` a ceiling, as the commands have, so what a command no
+  longer holds does not grow without limit elsewhere.
+- `AGENTS.md` answers what a delivery decided from its page and ADRs.
+  The READMEs say what the kit assumes, one person who proposes, uses,
+  reviews the staged diff and commits, where a person who does not read
+  code takes part, and that Ninjobs' 91 deliveries ran on its own two
+  commands before the kit was planted there on 2026-09-21, two pages
+  ago. The kit's audience includes teams and people who do not read
+  code, and nothing said what it assumed of them or that the kit itself
+  arrived at Ninjobs after the deliveries it cites.
+- Copilot's documented order for a skill present in both
+  `.agents/skills/` and `.claude/skills/` replaces "not tested" in §1,
+  read from its CLI reference on 2026-10-19, which §1 now cites.
+- A rerun reports these as migrations to docs/05 §§2, 4, 5, 6 and 8 and
+  AGENTS.md's line on where things stand.
+
 ## 2026.10.18.1
 
 - Verify stays fast enough to run on every delivery. docs/05 §5's Verify
