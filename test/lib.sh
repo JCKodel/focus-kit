@@ -63,7 +63,8 @@ docs05_range() {
 # on stdin. A sentence ends at ". ", "? ", "! " or "; ", and a heading,
 # a list item, a table row or a fence starts a new one.
 longest_sentence() {
-  awk '/^(#|\* |- |\||```|[0-9]+\. )/ { print ". " } { print }' \
+  awk '/^#/ { print ". "; print; print ". "; next }
+       /^(\* |- |\||```|[0-9]+\. )/ { print ". " } { print }' \
     | tr '\n' ' ' | sed 's/  */ /g' | awk '
     BEGIN { RS = "[.?!;] " }
     { n = split($0, w, " "); if (n > max) { max = n; s = substr($0, 1, 60) } }

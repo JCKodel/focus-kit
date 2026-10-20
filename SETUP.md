@@ -2,10 +2,12 @@
 
 This file is an instruction to a coding agent: Claude Code, Codex, GitHub
 Copilot, or any other that reads markdown and can write files. Read it
-whole, then do what section 1 says. A person reading it finds what the kit
+whole, then do what section 1 says. Every path below is in the
+repository the session works in, never in the folder this file was read
+from. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.20.4
+Version: 2026.10.20.5
 
 ## 1. What to do
 
@@ -18,10 +20,10 @@ Version: 2026.10.20.4
    name or a `metadata.version` alone does not establish ownership. If a
    destination contains a custom command or an unrecognized edit, show
    the edit as a diff against the kit file it was made on, and the kit's
-   own change since that file separately and in short, and stop before
-   writing or removing any file, steps 4 and 5 still reported; the person decides how to
-   preserve or replace it, and a rule the edit added to a command may
-   become a slot of docs/05 §5, which the commands follow. `GEMINI.md` is the exception:
+   own change since that file separately and in short. Then stop before
+   writing or removing any file, steps 4 and 5 still reported. The person
+   decides how to preserve or replace it, and a rule the edit added to a
+   command may become a slot of docs/05 §5, which the commands follow. `GEMINI.md` is the exception:
    preserve its project content as 3.12 says. Do not create a manifest to
    track ownership.
 2. Write every file of section 3, byte for byte, at every path its
@@ -35,8 +37,10 @@ Version: 2026.10.20.4
 3. Touch nothing else, with one exception: versions before 2026.10.17
    also wrote 3.1 to 3.5 under `.windsurf/skills/`, which no host needs
    now. Remove each kit file there, as step 1 establishes it, and the
-   folders that leaves empty; report and leave any other file. Do not
-   run `git init`, do not stage, do not commit.
+   folders that leaves empty; report and leave any other file. The
+   templates of 3.5 (`AGENTS.md`, docs/05) are what `/brainstorm` and
+   `/analyze` write later: do not write them here. Do not run `git init`,
+   do not stage, do not commit.
 4. When the project already has docs/ or AGENTS.md, compare its rules with
    the current templates and report every migration still needed, with
    the actual path, section and proposed wording in its documentation
@@ -45,11 +49,11 @@ Version: 2026.10.20.4
    what the kit says, not as a migration. Each item below is reported, never done, by
    the actual section of the project's document. Check, one document at
    a time:
-   * docs/05's section numbers: the commands cite the template's (§4 the
-     queue, §5 the slots, §6 commit, §8 closing a milestone) and read by
-     number, so a docs/05 numbered otherwise migrates to them first,
-     whatever an ADR says, and until then the report says where each
-     cited number lands;
+   * docs/05's section numbers: the commands cite the template's and read
+     by number (§4 the queue, §5 the slots, §6 commit, §8 closing a
+     milestone). A docs/05 numbered otherwise migrates to them first,
+     whatever an ADR says; until then the report says where each cited
+     number lands;
    * docs/05 §2: code only inside /apply; a change asked elsewhere ending
      as a line and a draft page; /propose in that session or a fresh one,
      /apply in a fresh one, a subagent being one; the person using a
@@ -92,10 +96,10 @@ Version: 2026.10.20.4
      the paths read;
    * docs/04: the pointer to docs/05 §6 and its tests by level;
    * docs/06: a line that carries history, what happened beyond the one
-     sentence of what it delivers, keeps the mark, the slug, that
-     sentence and its suffixes, the rest moved to its page, or to a draft
+     sentence of what it delivers. It keeps the mark, the slug, that
+     sentence and its suffixes. The rest moves to its page, or to a draft
      `work/<slug>.md` for a `[ ]` line, when the page does not already
-     hold it; the report names those lines and rewrites one as the
+     hold it. The report names those lines and rewrites one as the
      example;
    * AGENTS.md: the process rules, including the lines on committing, on
      a change asked outside /apply, on where things stand and what a page
@@ -219,7 +223,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.20.4"
+  version: "2026.10.20.5"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -244,12 +248,12 @@ order. Move on when you could write the section yourself.
    language, style, where tests live; commit format lives in docs/05 §6.
 5. **The process slots** (docs/05): verify command and the slow tests kept
    out of it, environments, how a screen is proven, publish policy,
-   whether `context/` is committed, the manuals (running it is owed by
-   the first delivery after which a person can; the rest "none yet"), and
+   whether `context/` is committed, and the manuals: running it is owed by
+   the first delivery after which a person can, the rest "none yet". Then
    whether a second pair of eyes reads each delivery before it ends and
-   the whole milestone at its close (the default is yes: the host's own
+   the whole milestone at its close. The default is yes: the host's own
    review where it has one, else a read-only agent, and the kit's readers
-   over docs/01's modules, on the session's model). What does not exist
+   over docs/01's modules, on the session's model. What does not exist
    yet is written as "created by the first delivery".
 6. **The first milestone** (docs/06): three to eight deliveries, one line
    each, in order, with the `(PA)` token of docs/05 §4 when lines will
@@ -290,7 +294,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.20.4"
+  version: "2026.10.20.5"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -369,7 +373,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.20.4"
+  version: "2026.10.20.5"
 ---
 You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`:
 none, ask for one; several, one subagent per slug, opened at once where
@@ -406,8 +410,8 @@ docs/05 §4 says, with `resume: propose`.
 Files in docs/05's documentation language; talk in the person's language.
 Write no code, migration, test or configuration. End by showing the
 page's queue line and asking the person to read and question the page as
-docs/05 §3 says, request corrections in this conversation, then run
-`/apply <slug>` in a fresh session, written as this host invokes commands,
+docs/05 §3 says, with corrections in this conversation. Then give
+`/apply <slug>` for a fresh session, written as this host invokes commands,
 opened in the delivery's worktree, if any, its path written out.
 ````
 
@@ -422,7 +426,7 @@ description: >-
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>...
 metadata:
-  version: "2026.10.20.4"
+  version: "2026.10.20.5"
 ---
 The slugs are `$ARGUMENTS`: none, ask for one; several, one subagent per
 slug, opened at once where docs/05 §4 allows, each taking its slug from
@@ -754,8 +758,9 @@ finding of the milestone's own review stays in it (§8). A line may carry
 the lines above it are in flight. `P`: the definition takes nothing from
 their pages; `A`: the build touches none of their files; `-` waits, for
 every line above to be `[>]` or beyond before /propose, `[x]` before
-/apply; `after` holds for both commands, with or without a token.
-Whoever changes the queue re-judges the tokens it affects; /propose
+/apply. `after` holds for both commands, with or without a token: neither
+/propose nor /apply starts until every line it names is `[x]`, whatever
+the token says. Whoever changes the queue re-judges the tokens it affects; /propose
 corrects a token from the page. Asked what can run at the same time,
 answer from the queue: the free lines, by their tokens where they have
 one, else the ones that touch different files, judged from their pages
@@ -782,10 +787,14 @@ picking free lines or resolving an `after`, takes each slug's line from
 that branch, local or remote, and the lines only a branch has, reconciled
 by slug as below.
 
-A line waits when the person says it is blocked, when it needs an answer
-that was asked and not given, or when work already started finds it needs
-another line done first, such as a fix found in the middle of an /apply,
-or when a milestone review's code reading missed part of its range (§8).
+A line waits in four cases:
+
+* the person says it is blocked;
+* it needs an answer that was asked and not given;
+* work already started finds it needs another line done first, such as a
+  fix found in the middle of an /apply;
+* a milestone review's code reading missed part of its range (§8).
+
 The line ends with the command that picks it up, `· resume: propose` or
 `· resume: apply`, then the reason, `· blocked: <reason>` or
 `· blocked: after <slug>, <slug>`. A dependency known when the line is
@@ -826,7 +835,8 @@ with the context to answer it and stops; the session asks and sends the
 answer back, resuming it where the host can, else opening it again on the
 slug, whose `[~]` or `[*]` it resumes on the command's word. A command that
 says to decide alone has each question answered by its recommendation,
-written on the page as the agent's answer, so the review finds it; one
+written on the page as the agent's answer, saying the agent chose it, so
+the review finds it; one
 that says to build as well has a new subagent run /apply when a page
 reaches `[>]`, the page saying it was built before the person read it,
 who reads the pages and the diffs at the end.
@@ -860,10 +870,10 @@ The project may add slots of its own; a slot that names /propose or
   staged and unstaged, the commits a blocked delivery already made on its
   branch or worktree, and the files it created; or: none>.
 * **Manuals:** `docs/manuals/`, one file per action that takes more than
-  one command, named after what it does: running the product from a fresh
-  clone, what a person does by hand outside a delivery (publish, roll
-  back, rotate a secret, set up a service) and a proof /apply runs on
-  another machine. Each stands alone for whoever runs it, having read
+  one command, named after what it does. That is running the product from
+  a fresh clone, what a person does by hand outside a delivery (publish,
+  roll back, rotate a secret, set up a service) and a proof /apply runs
+  on another machine. Each stands alone for whoever runs it, having read
   nothing else: what it does and when, what must be in place, the commands
   in order, how to tell it worked, how to undo it, what breaks if a step
   is skipped. A slot that names such a command points to its manual
@@ -903,9 +913,9 @@ and selective staging for mixed files; never `git add -A` or `git add .`.
 Inspect the staged diff afterwards and report any unrelated entries
 already staged, which a plain commit would include; do not unstage them.
 A commit must contain only this delivery for the one-change promise to
-hold: with two sessions on trunk, the person commits each delivery as its
-session ends, from an index that holds only it, never by naming paths on
-`git commit`, which takes each named file whole from the working tree and
+hold. With two sessions on trunk, the person commits each delivery as its
+session ends, from an index that holds only it. Never by naming paths on
+`git commit`: that takes each named file whole from the working tree and
 carries the other session's hunk of it, staged or not. One working tree
 has one index, so when the second session has already staged, the person
 sets its paths aside with `git restore --staged <paths>`, commits the
@@ -1225,7 +1235,8 @@ Read `AGENTS.md` at the repository root before acting: it holds this project's r
 
 Before reporting, confirm: fourteen files across `.claude/skills/` and
 `.agents/skills/` (four `SKILL.md`, two `references/documents.md` and
-`propose/scripts/claim.sh` in each, the script with LF line endings); no
+`propose/scripts/claim.sh` in each, the script with LF line endings and
+ending in one); no
 kit file left under `.windsurf/skills/`; four `agents/openai.yaml` under
 `.agents/skills/`; four prompt files, four Cursor commands and four Gemini
 commands; `.agents/rules/focus-kit.md` and `GEMINI.md`; no other file

@@ -8,6 +8,41 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.20.5
+
+- `SETUP.md` says, in its opening lines, that every path it names is in
+  the repository the session works in, never in the folder the file was
+  read from. On 2026-10-20 the GitHub Copilot CLI, opened in a test
+  project and pointed at `SETUP.md` in another folder, planted the kit
+  in that other folder, the kit's own repository, and reported success.
+  The README offers that same setup, a `SETUP.md` downloaded next to the
+  repository.
+- Setup's step 3 says the templates of §3.5, `AGENTS.md` and docs/05,
+  are what `/brainstorm` and `/analyze` write later, and are not written
+  during setup. The rule was already in the paragraph after the steps;
+  it moves into the step an agent reads while it writes. On 2026-10-20
+  the GitHub Copilot CLI, planting the kit in the test harness, wrote an
+  `AGENTS.md` from the template in one of two runs.
+- docs/05 §4 says what `after` requires where it says the line obeys it
+  for both commands: neither `/propose` nor `/apply` starts until every
+  line it names is `[x]`, whatever the `(PA)` token says. On 2026-10-20
+  the Copilot CLI, given `shout (-A) · after farewell` in the test
+  harness, read the `-` and the `after` as one rule and defined `shout`
+  once `farewell` reached `[>]`. Claude Code and Codex waited. The rule
+  is unchanged, so a rerun reports no migration.
+- Two smaller misses of the same run. A page decided alone says the
+  agent chose each answer, not only what was chosen: the Copilot CLI
+  wrote a "Decisions" section that did not say who decided, which the
+  person reviewing could take for their own. And setup's check confirms
+  `claim.sh` ends with a newline: the CLI dropped the last one, so the
+  file was no longer byte for byte, though `sh` ran it.
+- Seven sentences over fifty words, the limit `CLAUDE.md` sets, are
+  split, with no rule changed: `/brainstorm`'s process slots,
+  `/propose`'s last paragraph, docs/05 §5's Manuals slot and §6's commit
+  paragraph, and three of setup's step 1 and step 4. docs/05 §4 gives
+  the four cases a line waits in as a list. A rerun reports no
+  migration: wording only.
+
 ## 2026.10.20.4
 
 - `/propose` claims the queue line with a script instead of a procedure.

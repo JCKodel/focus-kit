@@ -8,6 +8,43 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.20.5
+
+- O `SETUP.md` diz, nas linhas de abertura, que todo caminho que ele
+  nomeia fica no repositório em que a sessão trabalha, nunca na pasta de
+  onde o arquivo foi lido. Em 2026-10-20 o GitHub Copilot CLI, aberto
+  num projeto de teste e apontado para um `SETUP.md` em outra pasta,
+  plantou o kit nessa outra pasta, o próprio repositório do kit, e
+  relatou sucesso. O README oferece esse mesmo arranjo, um `SETUP.md`
+  baixado ao lado do repositório.
+- O passo 3 do setup diz que os modelos do §3.5, `AGENTS.md` e docs/05,
+  são o que o `/brainstorm` e o `/analyze` escrevem depois, e não são
+  escritos no setup. A regra já estava no parágrafo depois dos passos;
+  ela vai para o passo que o agente lê enquanto escreve. Em 2026-10-20 o
+  GitHub Copilot CLI, plantando o kit no harness de teste, escreveu um
+  `AGENTS.md` a partir do modelo em uma de duas execuções.
+- O docs/05 §4 diz o que o `after` exige onde diz que a linha o obedece
+  nos dois comandos: nem o `/propose` nem o `/apply` começam antes de
+  toda linha que ele nomeia estar `[x]`, diga o token `(PA)` o que
+  disser. Em 2026-10-20 o Copilot CLI, diante de
+  `shout (-A) · after farewell` no harness de teste, leu o `-` e o
+  `after` como uma regra só e definiu `shout` assim que `farewell`
+  chegou a `[>]`. Claude Code e Codex esperaram. A regra não muda, então
+  um novo run não relata migração.
+- Duas falhas menores da mesma execução. Uma página decidida sozinha diz
+  que o agente escolheu cada resposta, não só o que foi escolhido: o
+  Copilot CLI escreveu uma seção "Decisions" sem dizer quem decidiu, que
+  a pessoa revisando poderia tomar como sua. E a conferência do setup
+  verifica que o `claim.sh` termina com uma quebra de linha: o CLI
+  deixou cair a última, e o arquivo deixou de ser byte a byte, embora o
+  `sh` o rodasse.
+- Sete frases acima de cinquenta palavras, o limite que o `CLAUDE.md`
+  fixa, foram divididas, sem nenhuma regra mudar: os slots de processo
+  do `/brainstorm`, o último parágrafo do `/propose`, o slot Manuals do
+  docs/05 §5 e o parágrafo de commit do §6, e três dos passos 1 e 4 do
+  setup. O docs/05 §4 dá como lista os quatro casos em que uma linha
+  espera. Um novo run não relata migração: só redação.
+
 ## 2026.10.20.4
 
 - O `/propose` toma a linha da fila com um script em vez de um

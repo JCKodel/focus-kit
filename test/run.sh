@@ -92,9 +92,17 @@ KIT_PATHS='^(\.claude/skills/|\.agents/skills/|\.agents/rules/focus-kit\.md|\.gi
 stage_plant() { # stage_plant <host> <container>
   local host=$1 c=$2 main=$2/main
   say "plant ($host): $main"
-  local prompt="Read $SETUP and do what it says. This is a fresh project with no custom files: ask nothing, write the files, run the check of its section 4 and report the list."
+  # The host reads a copy downloaded next to the repository, as the README
+  # offers, so a host that writes beside SETUP.md writes into a folder
+  # the harness watches, never into the kit's own checkout (2026-10-20).
+  local dl="$c/download"; mkdir -p "$dl"; cp "$SETUP" "$dl/SETUP.md"
+  local prompt="Read $dl/SETUP.md and do what it says. This is a fresh project with no custom files: ask nothing, write the files, run the check of its section 4 and report the list."
   if [ "$DRY" -eq 1 ]; then echo "  would run: $host <<< '$prompt'"; return; fi
+  local kit_before; kit_before=$(git -C "$KIT_ROOT" status --porcelain --untracked-files=all)
   run_host "$host" "$main" "$c" "$prompt" > "$c/plant-$host.log" 2>&1 || true
+  assert_true "nothing written beside the downloaded SETUP.md" bash -c "[ \$(ls -A '$dl' | wc -l) -eq 1 ]"
+  [ "$(git -C "$KIT_ROOT" status --porcelain --untracked-files=all)" = "$kit_before" ] \
+    && ok "the kit's own checkout untouched" || fail "the host wrote into the kit's checkout: $(git -C "$KIT_ROOT" status --porcelain --untracked-files=all | tr '\n' ' ')"
 
   local f
   for n in brainstorm analyze propose apply; do
