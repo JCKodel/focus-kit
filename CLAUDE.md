@@ -36,21 +36,23 @@ book changes its chapters through its own `/apply`.
   caught.** The answer names an error that happened in a real project. This
   is the rule Ninjobs kept in its process document and the one an earlier
   version of this kit broke; `README.md` §Why this shape says how.
-- Commands stay short enough to read whole: their bodies target at most
-  thirty prose lines for `/propose` and fifty for `/apply`, excluding
-  frontmatter and blank lines. Ninjobs' eleven and forty-eight lines are
-  the historical starting point, not the current templates' line counts.
-  A command says which documents to read, what to do and what never to do.
-  Anything project-specific is a
-  slot in the project's `docs/05`, filled once by `/brainstorm` or
-  `/analyze` and read by `/apply`. A procedure, a report format or a
-  cross-reference chain inside a command is the smell. The same ceiling
-  watches where the words go when a command is full: `SETUP.md` §1 at
-  most 160 lines, the docs/05 template at most 260 non-blank lines,
-  `documents.md` at most 450. A change that would pass one removes as
-  much as it adds. On 2026-10-19 §1's step 4 was one 45-line sentence
-  that an agent running it could not hold in mind and rewrote as a list
-  for itself.
+- Commands stay readable whole, and what is measured is the sentence,
+  not the file. No sentence over fifty words; one rule per sentence; no
+  rule inside a parenthesis or in a chain of semicolons longer than two
+  clauses. `test/run.sh check` reports the longest sentence of each
+  command, of the docs/05 template and of `SETUP.md` §1. On 2026-10-19
+  §1's step 4 was one 45-line sentence that an agent running it could not
+  hold in mind and rewrote as a list for itself; on 2026-10-20 line
+  ceilings produced the opposite error, prose compressed until a sentence
+  of docs/05 §2 lost its verb. A command says which documents to read,
+  what to do and what never to do. Anything project-specific is a slot in
+  the project's `docs/05`, filled once by `/brainstorm` or `/analyze` and
+  read by `/apply`. A procedure, a report format or a cross-reference
+  chain inside a command is the smell. A change that adds a rule names
+  the rule it displaces, or says why none does. Line counts are alarms,
+  not gates: `/propose` body over 40 lines, `/apply` over 60, `SETUP.md`
+  §1 over 200, the docs/05 template over 320 non-blank, `documents.md`
+  over 600; crossing one is said in the CHANGELOG entry, with why.
 - The four commands and their reference live only inside `SETUP.md`, in
   the fenced blocks of §3. There is no second copy to keep in sync.
 - Host facts (where Claude Code, Codex and Copilot read skills and rules)
@@ -60,9 +62,12 @@ book changes its chapters through its own `/apply`.
 ## Verify
 
 Before declaring anything done: read `SETUP.md` §1 as an agent would and
-confirm the paths and tokens still hold; a grep for the em dash character
-(U+2014) over every `.md` file returns nothing; every fenced block in §3
-opens and closes.
+confirm the paths and tokens still hold; run `test/run.sh check` (em dash,
+fences, versions, twins, book line, sentence lengths, line alarms) and
+answer every warning or say why it stays. Before a release, `test/run.sh
+parallel` plants the kit in a throwaway project on each installed host and
+runs `/propose` with three slugs; `test/README.md` says what it proves and
+what it costs.
 
 ## Git
 
