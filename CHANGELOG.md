@@ -29,7 +29,8 @@ Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
   the Copilot CLI, given `shout (-A) · after farewell` in the test
   harness, read the `-` and the `after` as one rule and defined `shout`
   once `farewell` reached `[>]`. Claude Code and Codex waited. The rule
-  is unchanged, so a rerun reports no migration.
+  is unchanged; a rerun reports the sentence as a migration to docs/05
+  §4, as it did on a real project's docs/05 on 2026-10-20.
 - Two smaller misses of the same run. A page decided alone says the
   agent chose each answer, not only what was chosen: the Copilot CLI
   wrote a "Decisions" section that did not say who decided, which the

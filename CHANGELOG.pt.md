@@ -29,8 +29,9 @@ In English: [CHANGELOG.md](CHANGELOG.md).
   disser. Em 2026-10-20 o Copilot CLI, diante de
   `shout (-A) · after farewell` no harness de teste, leu o `-` e o
   `after` como uma regra só e definiu `shout` assim que `farewell`
-  chegou a `[>]`. Claude Code e Codex esperaram. A regra não muda, então
-  um novo run não relata migração.
+  chegou a `[>]`. Claude Code e Codex esperaram. A regra não muda; um
+  novo run relata a frase como migração do docs/05 §4, como fez no
+  docs/05 de um projeto real em 2026-10-20.
 - Duas falhas menores da mesma execução. Uma página decidida sozinha diz
   que o agente escolheu cada resposta, não só o que foi escolhido: o
   Copilot CLI escreveu uma seção "Decisions" sem dizer quem decidiu, que
