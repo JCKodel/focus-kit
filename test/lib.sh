@@ -89,11 +89,25 @@ run_host() {
         --output-format text)
       ;;
     codex)
+      # workspace-write keeps .agents/ read-only, so the kit cannot be
+      # planted under it; the sandbox is bypassed in the throwaway folder.
       (cd "$dir" && codex exec \
-        --sandbox workspace-write \
+        --dangerously-bypass-approvals-and-sandbox \
         --add-dir "$extra" \
         -C "$dir" \
         "$prompt")
+      ;;
+    copilot)
+      # One -p prompt is one premium request on any Copilot plan, Free
+      # included; the CLI loads skills from .agents/skills/ and
+      # .claude/skills/. It invokes one as /<name>, with the words after
+      # it reaching the skill, in -p mode too (tested 2026-10-20 with a
+      # skill carrying disable-model-invocation); the harness asks by
+      # name, which the agent also follows, so one prompt serves all hosts.
+      (cd "$dir" && copilot -p "$prompt" -s \
+        --allow-all-tools \
+        --allow-all-paths \
+        --add-dir "$extra")
       ;;
     *) echo "unknown host: $host" >&2; return 2 ;;
   esac
@@ -102,8 +116,9 @@ run_host() {
 # command_for <host> <name> <args> prints how that host invokes a kit command.
 command_for() {
   case $1 in
-    claude) printf '/%s %s' "$2" "$3" ;;
-    codex)  printf '$%s %s' "$2" "$3" ;;
+    claude)  printf '/%s %s' "$2" "$3" ;;
+    codex)   printf '$%s %s' "$2" "$3" ;;
+    copilot) printf 'Run the %s skill (.agents/skills/%s/SKILL.md), which I am invoking, for these slugs: %s' "$2" "$2" "$3" ;;
   esac
 }
 

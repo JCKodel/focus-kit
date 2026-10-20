@@ -34,6 +34,13 @@ the repository opens ready in any of them. There is nothing to install on
 the machine: no CLI, no runtime, no dependency. To update, say the same
 sentence again.
 
+On Windows, keep the shell that Git for Windows installs with git, the
+installer's default: the commands' scripts run through it, from
+PowerShell or cmd, without WSL. Developing inside WSL is still strongly
+recommended, and the kit works the same there. Codex, planting the kit
+inside its default sandbox, asks before writing under `.agents/`:
+approve it, the folder is the kit's.
+
 Setup checks existing destinations before writing: a custom command or
 unrecognized edit is reported with a diff for you to resolve. Updates
 replace recognized kit files and keep one pointer in `GEMINI.md`, preserving
@@ -54,7 +61,7 @@ OpenCode and Zed all read. What belongs to a single host:
 |---|---|---|
 | Gemini CLI | `.gemini/commands/` and `GEMINI.md` | `GEMINI.md` may hold project content; remove only the pointer line |
 | Cursor | `.cursor/commands/` | |
-| GitHub Copilot | the four `.github/prompts/<name>.prompt.md` | the rest of `.github/` is not the kit's |
+| GitHub Copilot in VS Code | the four `.github/prompts/<name>.prompt.md` | the rest of `.github/` is not the kit's; the Copilot CLI needs no file of its own |
 | Antigravity | `.agents/rules/focus-kit.md` | only this file, not `.agents/` |
 | Claude Code | `.claude/skills/` and `CLAUDE.md` | `CLAUDE.md` may hold notes besides `@AGENTS.md` |
 | Codex | the four `.agents/skills/<name>/agents/openai.yaml` | they stop Codex from running `apply` because a message contains the word |

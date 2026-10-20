@@ -8,6 +8,43 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.20.4
+
+- `/propose` claims the queue line with a script instead of a procedure.
+  `propose/scripts/claim.sh`, a POSIX sh file inside the skill, runs
+  through git's own shell on every host and shell:
+  `git -c "alias.fk=!sh .agents/skills/propose/scripts/claim.sh" fk
+  <slug> <strategy>`, the strategy being what docs/05 §5's Git slot
+  says, `trunk`, `branch` or `worktree <hidden> <prefix>`. The script
+  checks the remote for the branch, creates or reuses the worktree or
+  the branch, pushes it, prints the path the `/apply` session opens in
+  and whether a draft page waits in `main/`, refuses to run from a
+  worktree or from any branch but the default one, and edits no
+  document: the mark `[~]` stays the agent's first edit. The rule stays
+  in docs/05 §2; the steps leave `documents.md` §Choices and `/propose`,
+  which now say to run it, and `propose` gets `allowed-tools:
+  Bash(git:*)` so Claude Code asks nothing. It runs wherever git runs:
+  on Windows through the `sh.exe` Git for Windows installs, proven on
+  2026-10-20 on a laptop with git and nothing else on the PATH, from
+  PowerShell and cmd, under `core.autocrlf=true`; the README says to
+  keep that shell and recommends WSL. On 2026-10-20, in one project, a
+  delivery was `[*]` in its worktree and `[ ]` on main, its branch never
+  pushed, and a `/propose` run in `main/` asked for confirmation at
+  every file it wrote in the worktree: steps the prose said and the
+  agent dropped, which a script cannot drop. A rerun reports no new
+  migration; the skills change, docs/05 does not.
+- The host table of `SETUP.md` §1 gives the GitHub Copilot CLI a row of
+  its own: it reads `AGENTS.md` directly, merged with `CLAUDE.md` and
+  `GEMINI.md`, takes the commands from `.agents/skills/` with no pointer
+  file, invokes one as `/<name>` and honours `disable-model-invocation`,
+  read off https://docs.github.com/en/copilot/reference/cli-command-reference
+  on 2026-10-20. The row that was there describes Copilot in VS Code,
+  with its prompt files, and now says so. On 2026-10-20 the kit's own
+  test harness, written from that row, told the CLI to ask for the
+  skill by name because the row's `/<name>` read as VS Code's; the CLI
+  is how the kit reaches a terminal without VS Code, on the Free plan
+  included.
+
 ## 2026.10.20.3
 
 - `/propose` and `/apply` take several slugs. The session that received

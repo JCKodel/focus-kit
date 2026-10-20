@@ -8,6 +8,44 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.20.4
+
+- O `/propose` toma a linha da fila com um script em vez de um
+  procedimento. `propose/scripts/claim.sh`, um arquivo sh POSIX dentro
+  da skill, roda pelo shell do próprio git em todo host e todo shell:
+  `git -c "alias.fk=!sh .agents/skills/propose/scripts/claim.sh" fk
+  <slug> <estratégia>`, a estratégia sendo o que o slot Git do docs/05
+  §5 diz, `trunk`, `branch` ou `worktree <oculta> <prefixo>`. O script
+  confere o branch no remoto, cria ou reusa o worktree ou o branch, faz
+  o push, imprime o caminho em que a sessão do `/apply` abre e se um
+  rascunho de página espera em `main/`, recusa rodar de dentro de um
+  worktree ou de qualquer branch que não o padrão, e não edita
+  documento algum: a marca `[~]` continua sendo a primeira edição do
+  agente. A regra fica no docs/05 §2; os passos saem do `documents.md`
+  §Choices e do `/propose`, que agora mandam rodá-lo, e o `propose`
+  ganha `allowed-tools: Bash(git:*)` para o Claude Code não perguntar
+  nada. Roda onde o git roda: no Windows pelo `sh.exe` que o Git for
+  Windows instala, provado em 2026-10-20 num laptop com git e nada mais
+  no PATH, do PowerShell e do cmd, com `core.autocrlf=true`; o README
+  diz para manter esse shell e recomenda o WSL. Em 2026-10-20, num
+  projeto, uma entrega estava `[*]` no seu worktree e `[ ]` na main, o
+  branch nunca pushado, e um `/propose` rodado em `main/` pediu
+  confirmação a cada arquivo que escreveu no worktree: passos que a
+  prosa dizia e o agente deixou cair, o que um script não deixa. Um
+  novo run não relata migração nova; as skills mudam, o docs/05 não.
+- A tabela de hosts do `SETUP.md` §1 dá ao GitHub Copilot CLI uma linha
+  própria: ele lê o `AGENTS.md` diretamente, junto com `CLAUDE.md` e
+  `GEMINI.md`, toma os comandos de `.agents/skills/` sem arquivo
+  ponteiro, invoca um como `/<nome>` e respeita
+  `disable-model-invocation`, lido em
+  https://docs.github.com/en/copilot/reference/cli-command-reference em
+  2026-10-20. A linha que existia descreve o Copilot no VS Code, com
+  seus prompt files, e agora diz isso. Em 2026-10-20 o próprio harness
+  de teste do kit, escrito a partir daquela linha, mandou o CLI pedir a
+  skill pelo nome porque o `/<nome>` da linha foi lido como o do VS
+  Code; o CLI é como o kit chega a um terminal sem VS Code, no plano
+  Free inclusive.
+
 ## 2026.10.20.3
 
 - O `/propose` e o `/apply` aceitam vários slugs. A sessão que recebeu o

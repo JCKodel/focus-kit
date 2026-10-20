@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.20.3
+Version: 2026.10.20.4
 
 ## 1. What to do
 
@@ -22,15 +22,16 @@ Version: 2026.10.20.3
    writing or removing any file, steps 4 and 5 still reported; the person decides how to
    preserve or replace it, and a rule the edit added to a command may
    become a slot of docs/05 §5, which the commands follow. `GEMINI.md` is the exception:
-   preserve its project content as 3.11 says. Do not create a manifest to
+   preserve its project content as 3.12 says. Do not create a manifest to
    track ownership.
 2. Write every file of section 3, byte for byte, at every path its
-   heading names. Sections 3.1 to 3.5 name paths relative to a skills
+   heading names. Sections 3.1 to 3.6 name paths relative to a skills
    folder, and each of those files goes to both `.claude/skills/` and
-   `.agents/skills/`; sections 3.6 to 3.11 name paths relative to the
+   `.agents/skills/`; sections 3.7 to 3.12 name paths relative to the
    repository root. Do not reformat, summarize, translate or improve any
-   of them; fill only the `<name>` placeholder of 3.6 to 3.9, using the
-   two prompt templates of 3.7 for their respective commands.
+   of them; fill only the `<name>` placeholder of 3.7 to 3.10, using the
+   two prompt templates of 3.8 for their respective commands. Write 3.6
+   with LF line endings, whatever the machine's default.
 3. Touch nothing else, with one exception: versions before 2026.10.17
    also wrote 3.1 to 3.5 under `.windsurf/skills/`, which no host needs
    now. Remove each kit file there, as step 1 establishes it, and the
@@ -129,7 +130,8 @@ same file here.
 |---|---|---|---|
 | Claude Code | `CLAUDE.md`, which imports `AGENTS.md`; it reads `AGENTS.md` alone only where no `CLAUDE.md` exists, from v2.1.277 | `.claude/skills/<name>/SKILL.md` | `/<name> <slug>` |
 | Codex | `AGENTS.md` | `.agents/skills/<name>/SKILL.md` | `$<name> <slug>` |
-| GitHub Copilot | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.github/prompts/<name>.prompt.md` | `/<name>` |
+| GitHub Copilot in VS Code | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.github/prompts/<name>.prompt.md` | `/<name>` |
+| GitHub Copilot CLI | `AGENTS.md`, merged with `CLAUDE.md` and `GEMINI.md` | `.agents/skills/<name>/SKILL.md` | `/<name>`; whether a slug typed after it reaches the command is not documented |
 | Cursor | `AGENTS.md` | `.agents/skills/<name>/SKILL.md`, through `.cursor/commands/<name>.md` | `/<name>`; whether a slug typed after it reaches the command is not documented |
 | Google Antigravity | `AGENTS.md` directly; `.agents/rules/focus-kit.md` is an always-on pointer | `.agents/skills/<name>/SKILL.md` | `/<name> <slug>` |
 | Gemini CLI | `AGENTS.md`, through `GEMINI.md` | `.agents/skills/<name>/SKILL.md`, through `.gemini/commands/<name>.toml` | `/<name> <slug>` |
@@ -138,8 +140,7 @@ same file here.
 | Jules, Junie, Warp, Kiro, Roo Code, Cline | `AGENTS.md` | none; ask in words for `.agents/skills/<name>/SKILL.md` | |
 
 Each row was read off the vendor's documentation on 2026-09-21 and
-checked again between 2026-10-07 and 2026-10-19, the skill folders of
-Claude Code, Codex and Copilot last. A host
+checked again between 2026-10-07 and 2026-10-20, the Copilot CLI last. A host
 enters this table only with its documentation in hand: Claude Code
 https://code.claude.com/docs/en/memory and https://code.claude.com/docs/en/skills;
 Codex https://learn.chatgpt.com/docs/build-skills and
@@ -158,13 +159,14 @@ https://docs.devin.ai/cli/extensibility/rules; OpenCode
 https://opencode.ai/docs/skills/; Zed https://zed.dev/docs/ai/skills; the
 last row https://agents.md. What the documentation does not say, the kit
 does not rely on: Cursor's skills folder and Amp are left out until their
-pages say so. Claude Code's skills and Codex's policy disable model
-invocation: the agent runs one only when the person names it. On other
-hosts, invoke them explicitly; the kit claims no enforcement there.
+pages say so. Claude Code's and the Copilot CLI's skills and Codex's
+policy disable model invocation: the agent runs one only when the person
+names it. On other hosts, invoke them explicitly; the kit claims no
+enforcement there.
 
 In the skills, `$ARGUMENTS` stands for what the person typed after the
 command. Claude Code substitutes it; the Copilot and Gemini CLI files of
-3.7 and 3.9 hand it over themselves; on any other host, read it as "the
+3.8 and 3.10 hand it over themselves; on any other host, read it as "the
 words after the command" and leave the token as it is.
 
 ## 2. What the kit is
@@ -217,7 +219,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.20.3"
+  version: "2026.10.20.4"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -288,7 +290,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.20.3"
+  version: "2026.10.20.4"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -365,8 +367,9 @@ description: >-
   Define the next delivery in work/<slug>.md, one page, by conversation.
   Writes no code, migration or test.
 argument-hint: <slug>...
+allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.20.3"
+  version: "2026.10.20.4"
 ---
 You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`:
 none, ask for one; several, one subagent per slug, opened at once where
@@ -377,10 +380,13 @@ Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
 (process) and docs/06 (queue), and the deliveries in flight in `work/`. Do
 not start a blocked line until its recorded reason is resolved, nor a line
 docs/05 §4 says waits, by its token or its `after`; a `[~]` line is
-resumed only on the person's word that its session ended. Otherwise follow
-docs/05 §§2, 4 and 5 first: start or resume the definition in the right
-branch or worktree, a worktree where docs/05's Git slot puts it, reused
-when it exists, its branch pushed; your first edit there marks it `[~]`.
+resumed only on the person's word that its session ended. Otherwise claim
+the line as docs/05 §2 says: run
+`git -c "alias.fk=!sh .agents/skills/propose/scripts/claim.sh" fk <slug> <strategy>`,
+the strategy being what docs/05 §5's Git slot says, `trunk`, `branch` or
+`worktree <hidden> <prefix>`. Continue at the path it prints; your first
+edit there marks it `[~]`. If git cannot find `sh`, Git for Windows was
+installed without its shell: say so and stop.
 Follow every slot of docs/05 §5 that names this command, the project's own
 included. Another line changing mark meanwhile is another session's work.
 
@@ -416,7 +422,7 @@ description: >-
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>...
 metadata:
-  version: "2026.10.20.3"
+  version: "2026.10.20.4"
 ---
 The slugs are `$ARGUMENTS`: none, ask for one; several, one subagent per
 slug, opened at once where docs/05 §4 allows, each taking its slug from
@@ -634,12 +640,12 @@ that it is not. The agent never commits or merges on its own:
   (`<hidden>/repo.git/`) and each delivery's worktree in
   `<hidden>/worktrees/<slug>/`, on the branch `<prefix>/<slug>`; docs/05's
   Git slot names the hidden folder and the prefix, and a slot that names
-  neither means `.focus-kit/` and `focus-kit/`. `/propose` checks the
-  remote for the branch (`git ls-remote --exit-code --heads origin
-  <prefix>/<slug>`), creates the slug's worktree there, from the main
-  branch's HEAD, and pushes its branch at once, so the line is taken in
-  every clone, or reuses the one that exists, and writes the page in it; a
-  branch `<slug>` without the prefix is not the delivery's. `/apply` runs
+  neither means `.focus-kit/` and `focus-kit/`. `/propose` claims the
+  line with its `claim.sh`, which checks the remote for the branch,
+  creates the slug's worktree there from the main branch's HEAD and
+  pushes its branch at once, so the line is taken in every clone, or
+  reuses the one that exists, and prints the path; the page is written
+  in it. A branch `<slug>` without the prefix is not the delivery's. `/apply` runs
   in a session opened in it, or a subagent sent to its path, never in
   `main/`; the container's manual lets a session in `main/` edit
   `<hidden>/worktrees/`. The branch reaches the
@@ -1021,7 +1027,120 @@ is the only place a rule is written.
 ```
 ````
 
-### 3.6 `.agents/skills/<name>/agents/openai.yaml`
+### 3.6 `propose/scripts/claim.sh`
+
+The script `/propose` runs to claim a line, in both skills folders like
+3.1 to 3.5, with LF line endings. It runs through git's own shell, which
+Git for Windows installs with git, so the skill's one line works from
+any shell on any host. It reads no document: the agent passes what
+docs/05 §5's Git slot says.
+
+````sh
+#!/bin/sh
+# focus-kit: claim a queue line as docs/05 says. Run it through git, so it
+# starts at the repository's top level on every host and shell:
+#   git -c "alias.fk=!sh .agents/skills/propose/scripts/claim.sh" fk <slug> <strategy>
+# <strategy> is the Git slot of docs/05: trunk | branch | worktree <hidden> <prefix>
+# Prints key: value lines; exit 0 claimed, 2 refused. Edits no document.
+set -eu
+
+die() { printf 'error: %s\n' "$1"; exit 2; }
+
+slug=${1:-}; strategy=${2:-}
+[ -n "$slug" ] && [ -n "$strategy" ] || die "usage: claim.sh <slug> trunk | branch | worktree <hidden> <prefix>"
+case $slug in -*|*[!a-zA-Z0-9._-]*) die "slug '$slug' holds a character a branch name cannot" ;; esac
+
+top=$(git rev-parse --show-toplevel 2>/dev/null) || die "not inside a repository"
+head=$(git symbolic-ref --quiet --short HEAD) || die "HEAD is detached; claim from the default branch"
+
+draft() {
+  if [ -f "$top/work/$slug.md" ]; then
+    printf 'draft: work/%s.md at %s; bring it into the delivery\n' "$slug" "$top"
+  else
+    printf 'draft: none\n'
+  fi
+}
+
+if [ "$strategy" = trunk ]; then
+  printf 'claim: none, trunk\nbranch: %s\npath: %s\n' "$head" "$top"
+  draft
+  exit 0
+fi
+
+case $strategy in
+  worktree)
+    hidden=${3:-}; prefix=${4:-}
+    [ -n "$hidden" ] && [ -n "$prefix" ] || die "worktree needs the hidden folder and the branch prefix: worktree .focus-kit focus-kit/"
+    hidden=${hidden%/}
+    case $top in */"$hidden"/worktrees/*) die "run from main/, not from a worktree: $top" ;; esac
+    case $head in "$prefix"*) die "run from main/; HEAD is $head, a delivery branch" ;; esac
+    branch="$prefix$slug"
+    ;;
+  branch) branch=$slug ;;
+  *) die "unknown strategy '$strategy': trunk, branch or worktree <hidden> <prefix>" ;;
+esac
+
+git remote get-url origin >/dev/null 2>&1 || die "no remote origin; the claim needs one, or the Git slot says trunk"
+git fetch -q origin || die "git fetch origin failed"
+
+default=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||') || true
+[ -n "$default" ] || for b in main master; do
+  if git show-ref --quiet "refs/remotes/origin/$b"; then default=$b; break; fi
+done
+[ -n "$default" ] || die "cannot tell the default branch; run git remote set-head origin -a"
+[ "$head" = "$default" ] || die "on branch $head; claim from $default"
+
+behind=$(git rev-list --count "$head..origin/$default" 2>/dev/null || echo 0)
+[ "$behind" -eq 0 ] || printf 'note: %s is behind origin by %s; the delivery starts from the local HEAD\n' "$head" "$behind"
+
+# ls-remote matches a pattern against the tail of a ref, so the full name is given.
+if [ "$strategy" = worktree ] && git ls-remote --exit-code --heads origin "refs/heads/$slug" >/dev/null 2>&1; then
+  printf "note: a branch %s without the prefix exists on origin; it is not the delivery's\\n" "$slug"
+fi
+
+if git ls-remote --exit-code --heads origin "refs/heads/$branch" >/dev/null 2>&1; then remote=1; else remote=0; fi
+local=0; git show-ref --quiet "refs/heads/$branch" && local=1
+
+if [ "$strategy" = worktree ]; then
+  path="$(dirname "$top")/$hidden/worktrees/$slug"
+  if [ -d "$path" ]; then
+    if [ "$remote" -eq 1 ]; then claim="existing"
+    else
+      git -C "$path" push -q -u origin "$branch" || die "push of $branch failed; the line is not claimed"
+      claim="existing, branch pushed now"
+    fi
+  elif [ "$remote" -eq 1 ]; then
+    if [ "$local" -eq 1 ]; then git worktree add -q "$path" "$branch"
+    else git worktree add -q --track -b "$branch" "$path" "origin/$branch"; fi
+    claim="existing"
+  else
+    git worktree add -q -b "$branch" "$path" "$head"
+    git -C "$path" push -q -u origin "$branch" || die "push of $branch failed; the line is not claimed"
+    claim="new"
+  fi
+  path=$(git -C "$path" rev-parse --show-toplevel)
+else
+  if [ "$remote" -eq 1 ]; then
+    if [ "$local" -eq 1 ]; then git switch -q "$branch"
+    else git switch -q --track -c "$branch" "origin/$branch"; fi
+    claim="existing"
+  elif [ "$local" -eq 1 ]; then
+    git switch -q "$branch"
+    git push -q -u origin "$branch" || die "push of $branch failed; the line is not claimed"
+    claim="existing, branch pushed now"
+  else
+    git switch -q -c "$branch"
+    git push -q -u origin "$branch" || die "push of $branch failed; the line is not claimed"
+    claim="new"
+  fi
+  path=$top
+fi
+
+printf 'claim: %s\nbranch: %s, on origin\npath: %s\n' "$claim" "$branch" "$path"
+draft
+````
+
+### 3.7 `.agents/skills/<name>/agents/openai.yaml`
 
 For Codex. Four files, one per skill, `<name>` replaced by `brainstorm`,
 `analyze`, `propose` and `apply`, next to the `SKILL.md` of `.agents/skills/`
@@ -1037,7 +1156,7 @@ policy:
   allow_implicit_invocation: false
 ````
 
-### 3.7 `.github/prompts/<name>.prompt.md`
+### 3.8 `.github/prompts/<name>.prompt.md`
 
 For GitHub Copilot. Four files, `<name>` replaced by `brainstorm`,
 `analyze`, `propose` and `apply`, so the commands exist as slash commands
@@ -1059,18 +1178,18 @@ agent: 'agent'
 Read `.agents/skills/<name>/SKILL.md` and follow it. `$ARGUMENTS` is `${input:slug}`.
 ````
 
-### 3.8 `.cursor/commands/<name>.md`
+### 3.9 `.cursor/commands/<name>.md`
 
-For Cursor. Four files, `<name>` replaced as in 3.7, so the commands exist
+For Cursor. Four files, `<name>` replaced as in 3.8, so the commands exist
 as slash commands in the agent chat. Each one is one line:
 
 ````markdown
 Read `.agents/skills/<name>/SKILL.md` and follow it. `$ARGUMENTS` is the words typed after the command.
 ````
 
-### 3.9 `.gemini/commands/<name>.toml`
+### 3.10 `.gemini/commands/<name>.toml`
 
-For the Gemini CLI. Four files, `<name>` replaced as in 3.7, so the
+For the Gemini CLI. Four files, `<name>` replaced as in 3.8, so the
 commands exist as slash commands. Each one is two lines:
 
 ````toml
@@ -1078,7 +1197,7 @@ description = "focus-kit: the <name> command. Reads .agents/skills/<name>/SKILL.
 prompt = "Read .agents/skills/<name>/SKILL.md and follow it. $ARGUMENTS is {{args}}."
 ````
 
-### 3.10 `.agents/rules/focus-kit.md`
+### 3.11 `.agents/rules/focus-kit.md`
 
 For Google Antigravity. One always-on pointer, holding no project rule
 of its own; its required frontmatter keeps the pointer active:
@@ -1090,10 +1209,10 @@ trigger: always_on
 Read `AGENTS.md` at the repository root before acting: it holds this project's rules. The four commands of the process are the skills in `.agents/skills/`.
 ````
 
-### 3.11 `GEMINI.md`
+### 3.12 `GEMINI.md`
 
 For the Gemini CLI, which reads `GEMINI.md` unless told otherwise. Use the
-line below without the rule frontmatter of 3.10. If the file exists, remove
+line below without the rule frontmatter of 3.11. If the file exists, remove
 only exact occurrences of this pointer line and put one at the top;
 preserve every other line in its original order. This also removes copies
 left by older updates. A second run produces no further change.
@@ -1104,9 +1223,10 @@ Read `AGENTS.md` at the repository root before acting: it holds this project's r
 
 ## 4. Check
 
-Before reporting, confirm: twelve files across `.claude/skills/` and
-`.agents/skills/` (four `SKILL.md` and two `references/documents.md` in
-each); no kit file left under `.windsurf/skills/`; four `agents/openai.yaml` under
+Before reporting, confirm: fourteen files across `.claude/skills/` and
+`.agents/skills/` (four `SKILL.md`, two `references/documents.md` and
+`propose/scripts/claim.sh` in each, the script with LF line endings); no
+kit file left under `.windsurf/skills/`; four `agents/openai.yaml` under
 `.agents/skills/`; four prompt files, four Cursor commands and four Gemini
 commands; `.agents/rules/focus-kit.md` and `GEMINI.md`; no other file
 changed; the string `$ARGUMENTS` still present in every `propose` and

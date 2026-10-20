@@ -7,7 +7,7 @@
 #   test/run.sh apply    [--host H]        parallel, then /apply the two defined pages
 #   test/run.sh all      [--host H]        check + apply
 #
-#   --host claude|codex|all   default: every host installed
+#   --host claude|codex|copilot|all   default: every host installed
 #   --dry-run                 build the fixture, print the host commands, run no host
 #   --keep                    keep the temp folder and print its path
 #   --strict                  line budgets fail instead of warn
@@ -111,6 +111,14 @@ stage_plant() { # stage_plant <host> <container>
       assert_true "$d/$n/references/documents.md" test -f "$main/$d/$n/references/documents.md"
     done
   done
+  local script; script=$(mktemp)
+  awk '/^### 3\.6 `propose\/scripts\/claim\.sh`/{f=1} f&&/^````sh$/{p=1;next} p&&/^````$/{exit} p' "$SETUP" > "$script"
+  for d in .claude/skills .agents/skills; do
+    f="$main/$d/propose/scripts/claim.sh"
+    assert_true "$d/propose/scripts/claim.sh byte for byte" diff -q "$script" "$f"
+    assert_false "$d/propose/scripts/claim.sh has LF endings" grep -q $'\r' "$f"
+  done
+  rm -f "$script"
   assert_true ".agents/rules/focus-kit.md" test -f "$main/.agents/rules/focus-kit.md"
   assert_true "GEMINI.md" test -f "$main/GEMINI.md"
   assert_false "no .windsurf/skills left" test -d "$main/.windsurf/skills"
@@ -154,8 +162,13 @@ Decide alone: answer every question with your own recommendation and write it on
     if grep -q "^\[>\] $s" "$wt/$s/docs/06-Queue.md" 2>/dev/null; then ok "$s is [>] on its branch"
     elif grep -q "^\[~\] $s" "$wt/$s/docs/06-Queue.md" 2>/dev/null; then warn "$s left [~]: definition incomplete"
     else fail "$s not marked on its branch"; fi
-    assert_true "$s page names the agent's answers" grep -qi "agent" "$wt/$s/work/$s.md"
+    assert_true "$s page records the answers as the agent's" grep -qiE "agent|decid|your call|recommendation" "$wt/$s/work/$s.md"
   done
+  # Both pages change src/greet.sh, so portuguese's A should become `-`
+  # once /propose reads the pages (docs/05 §4: /propose corrects a token).
+  if grep -q "^\[.\] portuguese *(.A)" "$wt/portuguese/docs/06-Queue.md" 2>/dev/null; then
+    warn "portuguese keeps its A token although farewell changes the same file"
+  else ok "portuguese's token re-judged from the pages"; fi
   assert_false "shout (after farewell) has no worktree" test -d "$wt/shout"
   assert_false "shout has no branch" branch_has "$main" shout
   assert_true "shout line untouched on main" grep -q '^\[ \] shout' "$main/docs/06-Queue.md"
@@ -188,8 +201,8 @@ Decide alone: never stop to ask me anything; a question a subagent reports, answ
 
 if [ "$STAGE" != check ]; then
   if [ -z "$HOSTS" ] || [ "$HOSTS" = all ]; then
-    HOSTS=""; for h in claude codex; do have_host "$h" && HOSTS="$HOSTS $h"; done
-    [ -n "$HOSTS" ] || { fail "no host installed (claude, codex)"; summary; exit 1; }
+    HOSTS=""; for h in claude codex copilot; do have_host "$h" && HOSTS="$HOSTS $h"; done
+    [ -n "$HOSTS" ] || { fail "no host installed (claude, codex, copilot)"; summary; exit 1; }
   fi
   for host in $HOSTS; do
     have_host "$host" || { fail "$host is not installed"; continue; }

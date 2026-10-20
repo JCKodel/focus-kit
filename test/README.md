@@ -10,10 +10,11 @@ test/run.sh plant    [--host H]     plant the kit in a throwaway project; §4 Ch
 test/run.sh parallel [--host H]     plant, seed documents, /propose three slugs
 test/run.sh apply    [--host H]     parallel, then /apply the two defined pages
 test/run.sh all      [--host H]     check + apply
+test/windows.ps1     [-Claim F]     on a Windows machine: the git alias and claim.sh, no WSL
 ```
 
-`--host claude|codex|all` (default: every host installed; a missing one
-is reported, not failed), `--dry-run` (build the fixture and print the
+`--host claude|codex|copilot|all` (default: every host installed; a
+missing one is reported, not failed), `--dry-run` (build the fixture and print the
 host commands without running them), `--keep` (keep the temp folder; it
 is kept anyway when something fails), `--strict` (line budgets fail
 instead of warning).
@@ -61,12 +62,41 @@ page in `work/done/`, `make verify` green, the line `[x]` in the staged
 queue, changes staged and nothing committed, the `commit` block on the
 page; main's tree still clean.
 
+**windows.ps1** runs on a Windows machine with git and nothing else,
+without WSL, and proves what the kit's script relies on: that
+`git -c "alias.fk=!sh <script>" fk` runs a POSIX sh file through the
+`sh.exe` Git for Windows installs, from PowerShell and from cmd, with
+`core.autocrlf` on, inside a worktree, and that the `claim.sh` of
+`SETUP.md` §3.6 claims a line there against a local bare remote. It
+also records why the kit ships no `.ps1`: Windows PowerShell 5.1 blocks
+one under its default policy. Run it over ssh, the target in your own
+hands, never in this folder; `claim.sh` is extracted from `SETUP.md`
+so there is no second copy:
+
+```
+awk '/^### 3\.6 `propose\/scripts\/claim\.sh`/{f=1} f&&/^````sh$/{p=1;next} p&&/^````$/{exit} p' SETUP.md > /tmp/claim.sh
+scp test/windows.ps1 /tmp/claim.sh "$WIN:C:/Users/$WINUSER/"
+ssh "$WIN" "pwsh -NoProfile -File C:\Users\$WINUSER\windows.ps1 -Claim C:\Users\$WINUSER\claim.sh"
+```
+
+It builds everything under `%TEMP%`, prints `ok`/`FAIL` lines, removes
+what it made and exits with the number of failures. Remove the two files
+from the machine afterwards.
+
 ## Cost and trust
 
 Every stage but `check` runs the host non-interactively with permission
 prompts bypassed (`claude -p --dangerously-skip-permissions`, `codex exec
---sandbox workspace-write`), inside a temp folder that holds only the
-fixture. It spends tokens on your account and is not deterministic: a
+--dangerously-bypass-approvals-and-sandbox`, since Codex's sandbox keeps
+`.agents/` read-only, and `copilot -p --allow-all-tools
+--allow-all-paths`), inside a temp folder that holds only the fixture.
+Copilot's CLI runs on every Copilot plan, the Free one included, whose
+allowance is GitHub AI Credits and whose model is chosen automatically;
+each stage is one prompt. The CLI loads the kit's skills from
+`.agents/skills/` and `.claude/skills/` and invokes one as `/<name>`,
+in `-p` mode too, the words after it reaching the skill; the harness
+asks for them by name, which the agent also follows. Every host spends
+tokens or requests on your account and is not deterministic: a
 failing assertion is a reason to open the kept folder and its logs, not
 a verdict. The deterministic part is `check`. The other test of a change
 is still the dry run of `SETUP.md` on the real repositories that run the
