@@ -8,6 +8,37 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.20.3
+
+- O `/propose` e o `/apply` aceitam vários slugs. A sessão que recebeu o
+  comando abre um sub-agente por slug, cada um seguindo o arquivo do
+  comando com um slug, no worktree do slug quando o projeto tem um,
+  abertos de uma vez, não um depois do outro, onde as marcas `(PA)` e o
+  `after` permitem; uma linha ainda esperando quando as outras terminam
+  é relatada, não esperada; a sessão não edita nada. Os skills mantêm o
+  `disable-model-invocation`: o comando que a pessoa digitou nomeia todos
+  os slugs, e o sub-agente roda por essa palavra, o que os dois skills
+  agora dizem nas primeiras linhas, cada sub-agente tomando o seu slug da
+  mensagem que o abre. Um sub-agente não pode perguntar à pessoa: relata
+  a pergunta com o contexto e para, e a sessão pergunta e devolve a
+  resposta. Duas coisas que o comando pode dizer: decidir sozinho, cada
+  pergunta respondida pela recomendação e escrita na página como resposta
+  do agente, para a revisão achar; e construir também, um sub-agente novo
+  rodando o `/apply` quando uma página chega a `[>]`, a página dizendo
+  que foi construída antes de a pessoa a ler, que lê as páginas e os
+  diffs no fim. O `/apply` num worktree roda numa sessão aberta nele ou
+  num sub-agente mandado ao seu caminho, todo arquivo e todo comando
+  nesse caminho. Em 2026-10-20, num projeto, uma pessoa pediu a uma
+  sessão que rodasse três `/propose` por sub-agentes de uma vez; os
+  sub-agentes pararam três vezes na flag, lendo uma autorização repassada
+  por outro agente como nenhuma, e a sessão propôs apagar a flag dos
+  skills instalados com `git update-index --skip-worktree`. A flag fica
+  porque os seus dois erros ficam: o Codex construindo a partir de uma
+  mensagem que continha a palavra "apply", e o `/propose` oferecido na
+  sessão que pediu a mudança. O docs/05 §2 diz que um sub-agente é uma
+  sessão nova e o §4 guarda a regra; uma reexecução relata os dois como
+  migrações.
+
 ## 2026.10.20.2
 
 - Com um worktree por entrega, cada sessão abre onde trabalha: o

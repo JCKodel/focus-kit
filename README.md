@@ -109,7 +109,13 @@ OpenCode and Zed all read. What belongs to a single host:
    same working tree; ask the agent which ones can. A line can say so in
    advance with `(PA)` after the slug: whether its `/propose` and its
    `/apply` may run while the lines above it are still in flight; whoever
-   changes the queue re-judges the tokens.
+   changes the queue re-judges the tokens. Several at once: type
+   `/propose` or `/apply` with several slugs, and the session opens one
+   subagent per slug, each in its worktree when there is one, together
+   where the tokens allow; their questions come to you through that
+   session, with the context to answer them. Say in the command to decide
+   alone, or to build each page as soon as it is defined, and read the
+   pages and the diffs at the end.
 4. **Every milestone** is planned with a review as its last line, run like
    any delivery. It takes the milestone's paragraph clause by clause and
    says which delivery answers each one and how you test it, and runs

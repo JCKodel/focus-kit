@@ -111,7 +111,13 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
    cada, na mesma pasta de trabalho; pergunte ao agente quais podem. Uma
    linha pode dizer isso de antemão com `(PA)` depois do slug: se o seu
    `/propose` e o seu `/apply` podem rodar enquanto as linhas acima ainda
-   estão em andamento; quem muda a fila revê as marcas.
+   estão em andamento; quem muda a fila revê as marcas. Várias de uma
+   vez: digite `/propose` ou `/apply` com vários slugs, e a sessão abre um
+   sub-agente por slug, cada um no seu worktree quando há um, juntos onde
+   as marcas permitem; as perguntas deles chegam a você por essa sessão,
+   com o contexto para responder. Diga no comando para decidir sozinho,
+   ou para construir cada página assim que estiver definida, e leia as
+   páginas e os diffs no fim.
 4. **Todo milestone** é planejado com uma revisão como última linha,
    rodada como qualquer entrega. Ela percorre o parágrafo do milestone
    cláusula por cláusula e diz qual entrega responde a cada uma e como

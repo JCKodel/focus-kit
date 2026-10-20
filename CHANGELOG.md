@@ -8,6 +8,36 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.20.3
+
+- `/propose` and `/apply` take several slugs. The session that received
+  the command opens one subagent per slug, each following the command's
+  file with one slug, in the slug's worktree when the project has one,
+  opened at once, not one after another, where the `(PA)` tokens and
+  `after` allow; a line still waiting when the others end is reported,
+  not waited for; the session edits nothing itself. The skills keep
+  `disable-model-invocation`: the command the person typed names every
+  slug, and the subagent runs on that word, which both skills now say in
+  their first lines, each subagent taking its slug from the message that
+  opens it. A subagent cannot ask the person: it reports the question
+  with its context and stops, and the session asks and sends the answer
+  back. Two things the command may say: to decide alone, each question
+  answered by its recommendation and written on the page as the agent's
+  answer, so the review finds it; and to build as well, a new subagent
+  running `/apply` when a page reaches `[>]`, the page saying it was
+  built before the person read it, who reads the pages and the diffs at
+  the end. `/apply` in a worktree runs in a session opened there or in a
+  subagent sent to its path, every file and command at that path. On
+  2026-10-20, in one project, a person asked a session to run three
+  `/propose` through subagents at once; the subagents stopped three times
+  at the flag, reading an authorization relayed by another agent as
+  none, and the session proposed deleting the flag from the installed
+  skills with `git update-index --skip-worktree`. The flag stays because
+  its two errors stay: Codex building on a message that contained the
+  word "apply", and `/propose` offered in the session that asked for the
+  change. docs/05 §2 says a subagent is a fresh session and §4 holds the
+  rule; a rerun reports both as migrations.
+
 ## 2026.10.20.2
 
 - With a worktree per delivery, each session opens where it works:
