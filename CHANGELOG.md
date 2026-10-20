@@ -8,6 +8,28 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.20.2
+
+- With a worktree per delivery, each session opens where it works:
+  `/propose` ends by giving the delivery's worktree path for the fresh
+  `/apply` session, and `/apply` opened anywhere else stops before any
+  edit and gives that path. The Choices of `documents.md` say `/apply`
+  never runs in `main/`, and that the container's manual lets a session
+  in `main/`, where `/propose` runs, edit the worktrees; in Claude Code
+  that is `"permissions": {"additionalDirectories":
+  ["../<hidden>/worktrees"]}` in `.claude/settings.json`, which grants
+  file access without loading a second copy of the skills
+  (https://code.claude.com/docs/en/permissions). On 2026-10-20, in one
+  project, a person could not tell whether to open the session in the
+  container or in `main/`, and a `/propose` run in `main/` asked for
+  confirmation at every file it wrote in the worktree, the permission it
+  was given covering one folder at a time; an `/apply` opened in `main/`
+  would read the main branch's queue, where the line is not yet `[>]`,
+  and the instructions as they were before the delivery's branch. To
+  make room, `/apply` drops its rules on abstraction and the em dash,
+  which `AGENTS.md` holds and `/apply` reads. A rerun reports a worktree
+  project with no manual letting a session in `main/` edit the worktrees.
+
 ## 2026.10.20.1
 
 - A queue line may carry `(PA)` after the slug: whether its /propose and

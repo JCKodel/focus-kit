@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.20.1
+Version: 2026.10.20.2
 
 ## 1. What to do
 
@@ -69,11 +69,12 @@ Version: 2026.10.20.1
      that reads `git diff HEAD` and the branch's commits, not a bare `git
      diff`, and the files the delivery created; a Milestone review slot
      that names the host's command stays, and one missing or naming
-     neither a command nor areas gets docs/01's modules proposed; a
-     branch or worktree Git slot silent on /propose pushing the branch
-     it creates; a worktree Git slot that names no folder, in a container
+     neither a command nor areas gets docs/01's modules proposed; a branch
+     or worktree Git slot silent on /propose pushing the branch it
+     creates; a worktree Git slot that names no folder, in a container
      whose hidden folder already holds `repo.git/`, gets that folder's
-     name and the prefix its branches use written in, so nothing moves;
+     name and its branches' prefix written in, so nothing moves, and one
+     with no manual letting a session in `main/` edit the worktrees;
    * docs/05 §5, the shape of a slot: a procedure a person runs by hand
      written only inside a slot or another document becomes a manual in
      docs/manuals/, the slot keeping the command and pointing to it; a
@@ -99,9 +100,8 @@ Version: 2026.10.20.1
      a change asked outside /apply, on where things stand and what a page
      decided, and on docs/manuals/.
    Preserve project choices; do not edit these files during setup. Report
-   the installed skill version separately from the pending process
-   migrations; an updated skill version does not mean the project's
-   process is updated.
+   the installed skill version apart from the pending process migrations;
+   an updated skill does not mean an updated process.
 5. Tell the person which files you wrote and what comes next, written as
    the table below says this host invokes it: on a repository with no
    code, `/brainstorm`; with code, `/analyze`; both in a fresh session.
@@ -217,7 +217,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.20.1"
+  version: "2026.10.20.2"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -288,7 +288,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.20.1"
+  version: "2026.10.20.2"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -366,22 +366,21 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.20.1"
+  version: "2026.10.20.2"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
 
 Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
-(process) and docs/06 (queue), and the deliveries in flight in `work/`.
-Do not start a blocked line until its recorded reason is resolved, nor a
-line docs/05 §4 says waits, by its token or its `after`; a `[~]` line is
+(process) and docs/06 (queue), and the deliveries in flight in `work/`. Do
+not start a blocked line until its recorded reason is resolved, nor a line
+docs/05 §4 says waits, by its token or its `after`; a `[~]` line is
 resumed only on the person's word that its session ended. Otherwise follow
 docs/05 §§2, 4 and 5 first: start or resume the definition in the right
 branch or worktree, a worktree where docs/05's Git slot puts it, reused
 when it exists, its branch pushed; your first edit there marks it `[~]`.
-Follow every slot of docs/05 §5 that names this command, the project's
-own included. Another line changing mark meanwhile is another session's
-work.
+Follow every slot of docs/05 §5 that names this command, the project's own
+included. Another line changing mark meanwhile is another session's work.
 
 What the documents answer, you do not ask: decide, write it on the page,
 and name the document it came from, so the person corrects it in the
@@ -401,7 +400,8 @@ Files in docs/05's documentation language; talk in the person's language.
 Write no code, migration, test or configuration. End by showing the
 page's queue line and asking the person to read and question the page as
 docs/05 §3 says, request corrections in this conversation, then run
-`/apply <slug>` in a fresh session, written as this host invokes commands.
+`/apply <slug>` in a fresh session, written as this host invokes commands,
+opened in the delivery's worktree, if any, its path written out.
 ````
 
 ### 3.4 `apply/SKILL.md`
@@ -415,7 +415,7 @@ description: >-
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.20.1"
+  version: "2026.10.20.2"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -424,7 +424,9 @@ Read the page, `AGENTS.md`, docs/00 (product), docs/01 (architecture),
 docs/03 (domain), docs/04 (conventions), docs/05 (process) and docs/06
 (queue). Follow every slot of docs/05 §5 literally, the project's own
 slots included. Before editing, inspect the working tree and index as
-docs/05 §6 says. Work on the branch or worktree /propose created, if any.
+docs/05 §6 says. Work on the branch /propose created, if any; with a
+worktree, only in a session opened in it: elsewhere, stop before any edit
+and give its path.
 
 If the page contradicts a document, stop and say which: the document changes
 in this delivery or the page is wrong. Do not resolve it silently. Follow
@@ -441,11 +443,9 @@ block, and follow docs/05 §6's blocked-work staging rule; report verify
 and environments, and stop without claiming completion.
 
 Build where docs/01 says, with its error convention and docs/03's
-identifiers. Write docs/04's tests;
-one too slow for verify goes with docs/05's slow tests and you say so,
-never into verify silently. Abstraction on the second concrete occurrence;
-the page names the first. Add no dependency, layer or tool the page did
-not name. No em dash in any text a user reads.
+identifiers. Write docs/04's tests; one too slow for verify goes with
+docs/05's slow tests and you say so, never into verify silently. Add no
+dependency, layer or tool the page did not name.
 
 Run verify until green. Prove the delivery as docs/05 says; list divergences
 and fix them until only what you can justify remains. Update the documents
@@ -627,25 +627,25 @@ that it is not. The agent never commits or merges on its own:
   the person merges it through a pull request in one merge, so reverting
   the delivery is one revert of that merge. For sequential work reviewed
   by pull request;
-* **a worktree per delivery:** the checkout is the `main/` of a
-  container folder, which keeps the bare repository in a hidden folder
-  of it (`<hidden>/repo.git/`) and each delivery's worktree in
+* **a worktree per delivery:** the checkout is the `main/` of a container
+  folder, which keeps the bare repository in a hidden folder of it
+  (`<hidden>/repo.git/`) and each delivery's worktree in
   `<hidden>/worktrees/<slug>/`, on the branch `<prefix>/<slug>`; docs/05's
   Git slot names the hidden folder and the prefix, and a slot that names
   neither means `.focus-kit/` and `focus-kit/`. `/propose` checks the
   remote for the branch (`git ls-remote --exit-code --heads origin
   <prefix>/<slug>`), creates the slug's worktree there, from the main
   branch's HEAD, and pushes its branch at once, so the line is taken in
-  every clone, or reuses the one that exists, and writes the page in it;
-  a branch `<slug>` without the prefix is someone else's, not the
-  delivery's. `/apply` runs in it; the branch reaches the main branch in
-  one merge, as above. For parallel work by several people, or by one
-  person whose deliveries touch the same files: one branch does not touch
-  another, so several agents build different deliveries at the same
-  time. Before running two at once, pick free lines (docs/06's `after`)
-  and decide which touch the same files, including docs/06 and other
-  shared documents. Reconcile the queue by docs/05 §4 when their branches
-  are integrated. Costs a directory per delivery.
+  every clone, or reuses the one that exists, and writes the page in it; a
+  branch `<slug>` without the prefix is not the delivery's. `/apply` runs
+  in a session opened in it, never in `main/`; the container's manual lets
+  a session in `main/` edit `<hidden>/worktrees/`. The branch reaches the
+  main branch in one merge, as above. For parallel work by several people,
+  or by one person whose deliveries touch the same files: one branch does
+  not touch another. Before running two at once, pick free lines
+  (docs/06's `after`) and decide which touch the same files, including
+  docs/06 and other shared documents. Reconcile the queue by docs/05 §4
+  when their branches are integrated. Costs a directory per delivery.
 
 ## The process document (docs/05)
 

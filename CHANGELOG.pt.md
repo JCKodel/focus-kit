@@ -8,6 +8,29 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.20.2
+
+- Com um worktree por entrega, cada sessão abre onde trabalha: o
+  `/propose` termina dando o caminho do worktree da entrega para a sessão
+  nova do `/apply`, e o `/apply` aberto em qualquer outro lugar para
+  antes de qualquer edição e dá esse caminho. As Choices do
+  `documents.md` dizem que o `/apply` nunca roda no `main/`, e que o
+  manual do contêiner deixa uma sessão no `main/`, onde o `/propose`
+  roda, editar os worktrees; no Claude Code isso é `"permissions":
+  {"additionalDirectories": ["../<hidden>/worktrees"]}` no
+  `.claude/settings.json`, que dá acesso aos arquivos sem carregar uma
+  segunda cópia das skills (https://code.claude.com/docs/en/permissions).
+  Em 2026-10-20, num projeto, uma pessoa não sabia se abria a sessão no
+  contêiner ou no `main/`, e um `/propose` rodando no `main/` pediu
+  confirmação a cada arquivo que escreveu no worktree, porque a
+  permissão dada cobria uma pasta de cada vez; um `/apply` aberto no
+  `main/` leria a fila do branch principal, onde a linha ainda não está
+  `[>]`, e as instruções como eram antes do branch da entrega. Para abrir
+  espaço, o `/apply` solta as regras de abstração e do travessão, que o
+  `AGENTS.md` traz e o `/apply` lê. Uma nova execução reporta um projeto
+  com worktrees sem manual que deixe uma sessão no `main/` editar os
+  worktrees.
+
 ## 2026.10.20.1
 
 - Uma linha da fila pode trazer `(PA)` depois do slug: se o seu /propose
