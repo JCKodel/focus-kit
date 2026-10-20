@@ -8,6 +8,30 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.20.1
+
+- Uma linha da fila pode trazer `(PA)` depois do slug: se o seu /propose
+  e o seu /apply podem rodar enquanto as linhas acima dela estão em
+  andamento. `P` diz que a definição não tira nada das páginas delas,
+  `A` que a construção não toca nenhum arquivo delas, e `-` em qualquer
+  posição espera, cada linha acima estar `[>]` antes do /propose e `[x]`
+  antes do /apply; o `after` vale para os dois comandos, com ou sem
+  marca. Quem muda a fila revê as marcas que a mudança
+  afeta, o /propose corrige uma pela página, e uma linha sem marca é
+  julgada pelas páginas como antes. O `/brainstorm` escreve as marcas de
+  um marco que vai rodar em paralelo; `/propose` e `/apply` esperam como
+  a marca diz. Em 2026-10-19, num projeto cujo marco rodou em várias
+  sessões ao mesmo tempo, sessões de /propose começaram linhas cuja
+  definição tirava de páginas ainda não escritas, e sessões de /apply
+  construíram linhas que mudavam os mesmos arquivos, cujos merges
+  conflitaram: a fila tinha `after` para a construção e nada para a
+  definição nem para os arquivos, e a pessoa que sabia os dois não tinha
+  onde escrever. Para abrir espaço, o docs/05 solta o que dizia duas
+  vezes: que um escopo de cinco páginas não está decidido, a abertura do
+  §6 para o formato da mensagem, o último parágrafo do §4, dobrado no
+  primeiro e no §8, e o motivo do slot Delivery review para listar os
+  arquivos criados. Uma nova execução reporta um docs/05 §4 sem a marca.
+
 ## 2026.10.20
 
 - Com branch ou worktree por entrega, a branch da entrega é a

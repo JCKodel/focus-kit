@@ -108,7 +108,10 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
    conversa. Uma linha que precisa de outra pronta antes diz isso no fim,
    `· after <slug>`, e fica livre quando aquela está `[x]`. Linhas livres
    que tocam arquivos diferentes podem rodar ao mesmo tempo, uma sessão
-   cada, na mesma pasta de trabalho; pergunte ao agente quais podem.
+   cada, na mesma pasta de trabalho; pergunte ao agente quais podem. Uma
+   linha pode dizer isso de antemão com `(PA)` depois do slug: se o seu
+   `/propose` e o seu `/apply` podem rodar enquanto as linhas acima ainda
+   estão em andamento; quem muda a fila revê as marcas.
 4. **Todo milestone** é planejado com uma revisão como última linha,
    rodada como qualquer entrega. Ela percorre o parágrafo do milestone
    cláusula por cláusula e diz qual entrega responde a cada uma e como

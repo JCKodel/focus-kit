@@ -106,7 +106,10 @@ OpenCode and Zed all read. What belongs to a single host:
    A line that needs another done first says so at its end, `· after
    <slug>`, and is free once that one is `[x]`. Free lines that touch
    different files can run at the same time, one session each, in the
-   same working tree; ask the agent which ones can.
+   same working tree; ask the agent which ones can. A line can say so in
+   advance with `(PA)` after the slug: whether its `/propose` and its
+   `/apply` may run while the lines above it are still in flight; whoever
+   changes the queue re-judges the tokens.
 4. **Every milestone** is planned with a review as its last line, run like
    any delivery. It takes the milestone's paragraph clause by clause and
    says which delivery answers each one and how you test it, and runs

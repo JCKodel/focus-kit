@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.20
+Version: 2026.10.20.1
 
 ## 1. What to do
 
@@ -56,12 +56,12 @@ Version: 2026.10.20
    * docs/05 §3: why the Contract is exact; Behaviour scenarios with
      concrete input and failure cases; the page complete before `[>]`;
      the final `commit` block;
-   * docs/05 §4: when each mark changes; resumption; order as priority
-     and `after` on queue lines; a line no clause of the milestone needs
-     going to the next one; two sessions in one working tree, shared
-     queue and isolated staging; the four cases a line waits in; a line
-     whose session ended and a dropped line; a conflict as a line both
-     sessions edited; where a board sees a mark and the branch as claim;
+   * docs/05 §4: when each mark changes; resumption; order as priority,
+     `after` and the `(PA)` token on queue lines; a line no clause of the
+     milestone needs going to the next one; two sessions in one working
+     tree, shared queue and isolated staging; the four cases a line waits
+     in; a line whose session ended and a dropped line; a conflict as a
+     line both sessions edited; a board's mark and the branch as claim;
    * docs/05 §5, what each slot says: every slot present, Context,
      Manuals, Delivery review and Milestone review included; the Publish
      policy's last sentence; the Verify slot's slow tests; a Manuals slot
@@ -217,7 +217,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.20"
+  version: "2026.10.20.1"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -250,8 +250,9 @@ order. Move on when you could write the section yourself.
    over docs/01's modules, on the session's model). What does not exist
    yet is written as "created by the first delivery".
 6. **The first milestone** (docs/06): three to eight deliveries, one line
-   each, in order, then its review. The first ones are the skeleton the
-   others stand on.
+   each, in order, with the `(PA)` token of docs/05 §4 when lines will
+   run at the same time, then its review. The first ones are the
+   skeleton the others stand on.
 
 Ask only what you cannot decide with a sensible default. State the default
 and ask whether it holds: a person who cannot answer must be able to say
@@ -287,7 +288,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.20"
+  version: "2026.10.20.1"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -365,7 +366,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.20"
+  version: "2026.10.20.1"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -373,8 +374,8 @@ there is none, ask for it.
 Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
 (process) and docs/06 (queue), and the deliveries in flight in `work/`.
 Do not start a blocked line until its recorded reason is resolved, nor a
-line whose `after` is not done; a `[~]` line is resumed only on the
-person's word that its session ended (docs/05 §4). Otherwise follow
+line docs/05 §4 says waits, by its token or its `after`; a `[~]` line is
+resumed only on the person's word that its session ended. Otherwise follow
 docs/05 §§2, 4 and 5 first: start or resume the definition in the right
 branch or worktree, a worktree where docs/05's Git slot puts it, reused
 when it exists, its branch pushed; your first edit there marks it `[~]`.
@@ -414,7 +415,7 @@ description: >-
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.20"
+  version: "2026.10.20.1"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -429,8 +430,8 @@ If the page contradicts a document, stop and say which: the document changes
 in this delivery or the page is wrong. Do not resolve it silently. Follow
 docs/05 §4 to resume a blocked line, or a `[*]` line the person says its
 session left; refuse an incomplete proposal and point to /propose. Otherwise
-only a fully defined `[>]` line whose `after` is done becomes `[*]`, your
-first edit. docs/05 §§4 and 6 say what a conflict is.
+only a fully defined `[>]` line that §4's token and `after` let build
+becomes `[*]`, your first edit. docs/05 §§4 and 6 say what a conflict is.
 
 When work cannot go on, record what was built and what it waits on, leave
 the page in `work/` and block it with `resume: apply` as docs/05 §4 says.
@@ -530,12 +531,12 @@ its review (docs/05 §8):
 [ ] <slug>    <what it delivers, one line>
 ```
 
-A line holds the mark, the slug, one sentence and its suffixes; what
-happened goes on the page. The marks, the suffixes (`· after`,
-`· resume:`, `· blocked:`, `· dropped:`), the order as priority, the next
-milestone and what may run at the same time are docs/05 §4, written once
-there. What is not in the current milestone is not planned yet. The
-queue is edited by conversation in any session; no command owns it.
+A line holds the mark, the slug, a token, one sentence and its suffixes;
+what happened goes on the page. The marks, the token, the suffixes
+(`· after`, `· resume:`, `· blocked:`, `· dropped:`), the order as
+priority, the next milestone and what may run at the same time are
+docs/05 §4, written once there. What is not in the current milestone is
+not planned yet.
 
 **docs/adr/.** One file per decision, `ADR-NNNN-<slug>.md`: context, the
 decision, the consequences, the date. An ADR is amended, never rewritten.
@@ -660,8 +661,7 @@ How an idea becomes code in <project>.
 
 One delivery is one page, `work/<slug>.md`. If it does not fit one page,
 it is two deliveries. The page is not a concision goal: it is the test that
-the scope was understood. A scope that needs five pages has not been
-decided yet.
+the scope was understood.
 
 ## 2. The flow
 
@@ -730,21 +730,28 @@ behalf are explicit. Corrections happen in the /propose conversation;
 
 ## 4. The queue
 
-docs/06: one line per delivery, in order, under milestones. The order is
-the priority: the next delivery is the first free line, and the person
-reorders by conversation. A line is the mark, the slug, one sentence and
-its suffixes; what happened goes on the page, because /propose reads the
+docs/06: one line per delivery, in order, under milestones, edited by
+conversation in any session. The order is the priority: the next
+delivery is the first free line, and the person reorders by
+conversation. A line is the mark, the slug, one sentence and its
+suffixes; what happened goes on the page, because /propose reads the
 whole queue. A line that needs another done first ends with
 `· after <slug>`, written when the line is added; it is free when every
 line it names is `[x]`. A line that no clause of the current milestone's
 paragraph needs, whoever adds it, goes under the next milestone, created
 when missing with a paragraph that line answers and its review last; a
-finding of the milestone's own review stays in it (§8).
-Asked what can run at the same time, answer from
-the queue: the free lines, and among them the ones that touch different
-files, judged from their pages and docs/01. The line never
-leaves the queue; it changes mark, at the moment the work changes, so the
-queue shows what is happening while it happens:
+finding of the milestone's own review stays in it (§8). A line may carry
+`(PA)` after the slug: whether its /propose and its /apply may run while
+the lines above it are in flight. `P`: the definition takes nothing from
+their pages; `A`: the build touches none of their files; `-` waits, for
+every line above to be `[>]` or beyond before /propose, `[x]` before
+/apply; `after` holds for both commands, with or without a token.
+Whoever changes the queue re-judges the tokens it affects; /propose
+corrects a token from the page. Asked what can run at the same time,
+answer from the queue: the free lines, by their tokens where they have
+one, else the ones that touch different files, judged from their pages
+and docs/01. The line never leaves the queue; it changes mark as the
+work changes, so the queue shows what is happening while it happens:
 
 | Mark | Means | Set by |
 |---|---|---|
@@ -801,9 +808,6 @@ staged. In worktrees, change only this delivery's line; when branches are
 integrated, reconcile docs/06 by slug, keeping every line at its latest
 state, never one side's whole file.
 
-Each milestone is planned with its review as the last line (§8). Edited by
-conversation in any session.
-
 ## 5. This project
 
 A slot says what and the command, in a few lines: /apply reads it every
@@ -831,8 +835,7 @@ The project may add slots of its own; a slot that names /propose or
   delivery's paths; else a read-only agent on the session's model reading
   the whole delivery against its base: `git diff HEAD` of those paths,
   staged and unstaged, the commits a blocked delivery already made on its
-  branch or worktree, and the files it created, which no diff shows until
-  they are staged; or: none>.
+  branch or worktree, and the files it created; or: none>.
 * **Manuals:** `docs/manuals/`, one file per action that takes more than
   one command, named after what it does: running the product from a fresh
   clone, what a person does by hand outside a delivery (publish, roll
@@ -874,21 +877,18 @@ the paths; do not reset or stash them.
 Stage only this delivery's files or hunks, including the page move and its
 documentation changes. Use explicit paths for files wholly owned by it,
 and selective staging for mixed files; never `git add -A` or `git add .`.
-Inspect the staged diff afterwards and report any unrelated entries that
-were already staged, so the person knows a plain commit would include
-them. Do not unstage those entries yourself. A commit must contain only
-this delivery for the one-change promise to hold: with two sessions on
-trunk, the person commits each delivery as its session ends, from an
-index that holds only it, never by naming paths on `git commit`, which
-takes each named file whole from the working tree and carries the other
-session's hunk of it, staged or not. One working tree has one index, so
-when the second session has already staged, the person sets its paths
-aside with `git restore --staged <paths>`, commits the first, and stages
-them again.
+Inspect the staged diff afterwards and report any unrelated entries
+already staged, which a plain commit would include; do not unstage them.
+A commit must contain only this delivery for the one-change promise to
+hold: with two sessions on trunk, the person commits each delivery as its
+session ends, from an index that holds only it, never by naming paths on
+`git commit`, which takes each named file whole from the working tree and
+carries the other session's hunk of it, staged or not. One working tree
+has one index, so when the second session has already staged, the person
+sets its paths aside with `git restore --staged <paths>`, commits the
+first, and stages them again.
 
-The agent suggests the message; the person commits after reviewing, or
-asks the agent to.
-Imperative subject up to 72 characters, scope in parentheses
+The message: imperative subject up to 72 characters, scope in parentheses
 when it helps; body up to five one-line bullets, the highlights and not
 the reasoning; last line points to the page's actual path, where the
 reasoning lives: `work/done/<slug>.md` when done, `work/<slug>.md` when

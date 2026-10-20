@@ -8,6 +8,29 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.20.1
+
+- A queue line may carry `(PA)` after the slug: whether its /propose and
+  its /apply may run while the lines above it are in flight. `P` says the
+  definition takes nothing from their pages, `A` that the build touches
+  none of their files, and `-` in either place waits, for every line
+  above to be `[>]` before /propose and `[x]` before /apply; `after`
+  holds for both commands, token or not. Whoever changes the queue
+  re-judges the tokens the change affects, /propose corrects one from
+  the page, and a line without a token is judged from the pages as
+  before. `/brainstorm` writes the tokens of a milestone that will run
+  in parallel; `/propose` and `/apply` wait as the token says. On
+  2026-10-19, in one project whose milestone ran as several sessions at
+  once, /propose sessions started on lines whose definition took from
+  pages not yet written, and /apply sessions built lines that changed
+  the same files, whose merges conflicted: the queue had `after` for the
+  build and nothing for the definition or the files, and the person who
+  knew both had nowhere to write it. To make room, docs/05 drops what it
+  said twice: that a five-page scope is undecided, §6's lead-in to the
+  message format, §4's last paragraph, folded into its first and §8, and
+  the Delivery review slot's reason for listing created files. A rerun
+  reports a docs/05 §4 without the token.
+
 ## 2026.10.20
 
 - With a branch or a worktree per delivery, the delivery's branch is the
