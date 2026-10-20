@@ -8,6 +8,26 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.20
+
+- With a branch or a worktree per delivery, the delivery's branch is the
+  claim of its queue line: `/propose` checks the remote for it and pushes
+  it the moment it creates it, before the page exists, and after
+  `git fetch` a line whose branch exists is taken, whatever the main
+  branch's docs/06 shows. docs/05 §§2 and 4 and the Git slot of §5 say
+  so, documents.md §Choices names the check, the AGENTS.md template
+  reads the delivery branches when asked where things stand, and
+  `/propose` pushes as the slot says. The main branch's docs/06 changes
+  only through merges, so no claim lands there and no conflict comes
+  from claiming; §4's sentence that marks cost nothing without a board
+  went to make room. On 2026-10-20 in one project a delivery was `[*]`
+  in its worktree and `[ ]` on main, its branch never pushed: §4 said to
+  read the line from its branch, local or remote, but nothing had made
+  the branch reach the remote, and a second person reading main's queue
+  would have started it again. A near miss, not a caught error; it
+  enters because the rule as written could not be followed. A rerun
+  reports a branch or worktree Git slot silent on the push.
+
 ## 2026.10.19.2
 
 - Running the product from a fresh clone is a manual always owed:

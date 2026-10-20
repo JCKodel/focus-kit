@@ -225,7 +225,10 @@ a recommendation for your stack, and record what you choose:
   (one commit on trunk, one merge otherwise); what a delivery did outside
   git, a migration run or a message sent, its page says how to undo, or
   that it cannot be. The agent never commits
-  or merges on its own. Parallel worktrees each show their own queue state; when their
+  or merges on its own. With a branch or a worktree per delivery,
+  `/propose` pushes the branch it creates, and that branch is the claim:
+  a line whose branch exists on the remote is taken, whatever main's
+  queue shows. Parallel worktrees each show their own queue state; when their
   branches are integrated, reconcile `docs/06` by slug, preserving every
   delivery and its latest state. The queue is a shared file even when the
   deliveries change different code.

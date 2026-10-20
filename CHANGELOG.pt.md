@@ -8,6 +8,27 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.20
+
+- Com branch ou worktree por entrega, a branch da entrega é a
+  reivindicação da sua linha na fila: o `/propose` confere se ela existe
+  no remoto e faz push dela no momento em que a cria, antes de a página
+  existir, e depois de um `git fetch` uma linha cuja branch existe está
+  tomada, seja o que for que o docs/06 da main mostre. O docs/05 §§2 e 4
+  e o slot Git do §5 dizem isso, o documents.md §Choices nomeia a
+  checagem, o template do AGENTS.md lê as branches de entrega quando
+  perguntado em que ponto as coisas estão, e o `/propose` faz push como
+  o slot diz. O docs/06 da main muda só por merge, então nenhuma
+  reivindicação cai nele e nenhum conflito vem de reivindicar; a frase do
+  §4 de que as marcas não custam nada sem um board saiu para abrir
+  espaço. Em 2026-10-20, num projeto, uma entrega estava `[*]` na sua
+  worktree e `[ ]` na main, a branch nunca empurrada: o §4 mandava ler a
+  linha da sua branch, local ou remota, mas nada tinha feito a branch
+  chegar ao remoto, e uma segunda pessoa lendo a fila da main teria
+  começado a entrega de novo. Um quase-erro, não um erro pego; entra
+  porque a regra como escrita não podia ser seguida. Uma nova execução
+  reporta um slot Git de branch ou worktree que não fala do push.
+
 ## 2026.10.19.2
 
 - Rodar o produto a partir de um clone é um manual sempre devido: o slot

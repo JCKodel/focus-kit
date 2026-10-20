@@ -5,7 +5,7 @@ Copilot, or any other that reads markdown and can write files. Read it
 whole, then do what section 1 says. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.19.2
+Version: 2026.10.20
 
 ## 1. What to do
 
@@ -61,7 +61,7 @@ Version: 2026.10.19.2
      going to the next one; two sessions in one working tree, shared
      queue and isolated staging; the four cases a line waits in; a line
      whose session ended and a dropped line; a conflict as a line both
-     sessions edited; where a board sees a mark;
+     sessions edited; where a board sees a mark and the branch as claim;
    * docs/05 §5, what each slot says: every slot present, Context,
      Manuals, Delivery review and Milestone review included; the Publish
      policy's last sentence; the Verify slot's slow tests; a Manuals slot
@@ -70,9 +70,10 @@ Version: 2026.10.19.2
      diff`, and the files the delivery created; a Milestone review slot
      that names the host's command stays, and one missing or naming
      neither a command nor areas gets docs/01's modules proposed; a
-     worktree Git slot that names no folder, in a container whose hidden
-     folder already holds `repo.git/`, gets that folder's name and the
-     prefix its delivery branches already use written in, so nothing moves;
+     branch or worktree Git slot silent on /propose pushing the branch
+     it creates; a worktree Git slot that names no folder, in a container
+     whose hidden folder already holds `repo.git/`, gets that folder's
+     name and the prefix its branches use written in, so nothing moves;
    * docs/05 §5, the shape of a slot: a procedure a person runs by hand
      written only inside a slot or another document becomes a manual in
      docs/manuals/, the slot keeping the command and pointing to it; a
@@ -216,7 +217,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.19.2"
+  version: "2026.10.20"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -286,7 +287,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.19.2"
+  version: "2026.10.20"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -364,7 +365,7 @@ description: >-
   Writes no code, migration or test.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.19.2"
+  version: "2026.10.20"
 ---
 You are the stakeholder's thinking partner. The slug is `$ARGUMENTS`; when
 there is none, ask for it.
@@ -375,8 +376,8 @@ Do not start a blocked line until its recorded reason is resolved, nor a
 line whose `after` is not done; a `[~]` line is resumed only on the
 person's word that its session ended (docs/05 §4). Otherwise follow
 docs/05 §§2, 4 and 5 first: start or resume the definition in the right
-branch or worktree, a worktree where docs/05's Git slot puts it and
-reused when it exists; then your first edit there marks the line `[~]`.
+branch or worktree, a worktree where docs/05's Git slot puts it, reused
+when it exists, its branch pushed; your first edit there marks it `[~]`.
 Follow every slot of docs/05 §5 that names this command, the project's
 own included. Another line changing mark meanwhile is another session's
 work.
@@ -413,7 +414,7 @@ description: >-
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>
 metadata:
-  version: "2026.10.19.2"
+  version: "2026.10.20"
 ---
 Implement `work/$ARGUMENTS.md` in this session, completely. When the slug
 is missing, ask for it. The page is the scope; do not widen it.
@@ -620,28 +621,30 @@ that it is not. The agent never commits or merges on its own:
   that holds only it (docs/05 §6). Not for two people: their deliveries share one
   branch and one commit carries the other's half-done work;
 * **a branch per delivery:** `/propose` creates a branch named after the
-  slug and writes the page there; `/apply` builds on it. The branch may
-  carry several commits, the page first and the build after; the person
-  merges it through a pull request in one merge, so reverting the delivery
-  is one revert of that merge. For sequential work reviewed by pull
-  request;
+  slug, pushes it, and writes the page there; `/apply` builds on it. The
+  branch may carry several commits, the page first and the build after;
+  the person merges it through a pull request in one merge, so reverting
+  the delivery is one revert of that merge. For sequential work reviewed
+  by pull request;
 * **a worktree per delivery:** the checkout is the `main/` of a
   container folder, which keeps the bare repository in a hidden folder
   of it (`<hidden>/repo.git/`) and each delivery's worktree in
   `<hidden>/worktrees/<slug>/`, on the branch `<prefix>/<slug>`; docs/05's
   Git slot names the hidden folder and the prefix, and a slot that names
-  neither means `.focus-kit/` and `focus-kit/`. `/propose` creates the slug's
-  worktree there, from the main branch's HEAD, or reuses the one that
-  exists, and writes the page in it; a branch `<slug>` without the prefix
-  is someone else's, not the delivery's. `/apply` runs in it; the branch
-  reaches the main branch in one merge, as above. For
-  parallel work by several people, or by one person whose deliveries
-  touch the same files: one branch does not touch
-  another, so several agents build different deliveries at the same time.
-  Before running two at once, pick free lines (docs/06's `after`) and
-  decide which touch the same files, including docs/06 and other shared
-  documents. Reconcile the queue by docs/05 §4 when their branches are
-  integrated. Costs a directory per delivery.
+  neither means `.focus-kit/` and `focus-kit/`. `/propose` checks the
+  remote for the branch (`git ls-remote --exit-code --heads origin
+  <prefix>/<slug>`), creates the slug's worktree there, from the main
+  branch's HEAD, and pushes its branch at once, so the line is taken in
+  every clone, or reuses the one that exists, and writes the page in it;
+  a branch `<slug>` without the prefix is someone else's, not the
+  delivery's. `/apply` runs in it; the branch reaches the main branch in
+  one merge, as above. For parallel work by several people, or by one
+  person whose deliveries touch the same files: one branch does not touch
+  another, so several agents build different deliveries at the same
+  time. Before running two at once, pick free lines (docs/06's `after`)
+  and decide which touch the same files, including docs/06 and other
+  shared documents. Reconcile the queue by docs/05 §4 when their branches
+  are integrated. Costs a directory per delivery.
 
 ## The process document (docs/05)
 
@@ -677,9 +680,9 @@ holds, or in a fresh one. /apply always starts in a fresh session: it
 has only what the page says.
 
 Before /propose changes the queue or the page, use §5's git strategy:
-create the branch or worktree named after the slug, or reuse its existing
-one on resumption, bringing into it any draft left for the slug. Add a
-missing queue line where it belongs and say so.
+create the branch or worktree named after the slug, push its branch, or
+reuse its existing one on resumption, bringing into it any draft left
+for the slug. Add a missing queue line where it belongs and say so.
 Start defining with `[~]`; start building only a completely defined `[>]`
 page, with `[*]`. Follow §4 for blocked lines and §6 before changing code
 or staging. Keep project slots and rules current before using them; report
@@ -755,12 +758,13 @@ queue shows what is happening while it happens:
 A board may read the queue, and people pull work from it, so a mark
 changes at once: `[~]` is /propose's first edit, `[*]` is /apply's first,
 and `[x]` is /apply's last. On trunk the board sees it at once. With a
-branch or a worktree per delivery the mark lives on the delivery's branch
-and the main branch shows the line as it was until the merge, so whoever
-reads the queue there, a board or a session picking free lines or
-resolving an `after`, takes each slug's line from its worktree's file,
-or from its branch, local or remote, and the lines only a branch has,
-reconciled by slug as below. Without a board the marks cost nothing.
+branch or a worktree per delivery the mark lives on the delivery's
+branch, pushed when /propose creates it, and the main branch shows the
+line as it was until the merge: after `git fetch`, a line whose branch
+exists is taken, whatever main shows, and whoever reads the queue there,
+a board or a session picking free lines or resolving an `after`, takes
+each slug's line from that branch, local or remote, and the lines only a
+branch has, reconciled by slug as below.
 
 A line waits when the person says it is blocked, when it needs an answer
 that was asked and not given, or when work already started finds it needs
@@ -853,8 +857,10 @@ The project may add slots of its own; a slot that names /propose or
   that is undone, or that it is not. The agent stages; it never commits or
   merges on its own, and asked, it takes the step the person names. <Or:
   the agent commits, and merges, by this slot's word, which is the asking;
-  the person reviews the commit.> <With a worktree per delivery: the hidden
-  folder of the container, `.focus-kit/`, and the branch prefix, `focus-kit/`.>
+  the person reviews the commit.> <A branch or worktree per delivery:
+  /propose pushes the branch it creates, the remote checked for one
+  first, so the line is taken in every clone; a worktree: the hidden
+  folder of the container, `.focus-kit/`, the branch prefix, `focus-kit/`.>
 
 ## 6. Commit
 
@@ -990,8 +996,10 @@ is the only place a rule is written.
   which was the first.
 - Ambiguity → ask. Documents are living: a delivery that changes behaviour
   updates the document that owns it, in the same delivery.
-- Asked where things stand, answer from docs/06 and work/: the lines in
-  flight, their marks, and the next command, as this host invokes it.
+- Asked where things stand, answer from docs/06 and work/, and with a
+  branch or worktree per delivery from the delivery branches after
+  `git fetch`: the lines in flight, their marks, and the next command,
+  as this host invokes it.
   Asked what a delivery decided or why, answer from its page and the
   ADRs it names.
 ```

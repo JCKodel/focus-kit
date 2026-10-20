@@ -231,7 +231,10 @@ uma recomendação para a sua stack, e registram o que você escolher:
   trunk, um merge nas outras); o que uma entrega fez fora do git, uma
   migration rodada ou uma mensagem enviada, a página diz como desfazer,
   ou que não se desfaz. O agente nunca commita nem faz merge por
-  conta própria.
+  conta própria. Com branch ou worktree por entrega, o `/propose` faz
+  push da branch que cria, e essa branch é a reivindicação: uma linha
+  cuja branch existe no remoto está tomada, seja o que for que a fila da
+  main mostre.
   Worktrees em paralelo mostram o estado da sua própria fila; ao integrar
   suas branches, concilie o `docs/06` por slug, preservando cada entrega e
   seu estado mais recente. A fila é um arquivo compartilhado mesmo quando
