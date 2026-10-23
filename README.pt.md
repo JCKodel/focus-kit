@@ -2,8 +2,36 @@
 
 In English: [README.md](README.md).
 
-Um processo de entrega para repositórios trabalhados com um agente de
-código. É um arquivo só, `SETUP.md`, que qualquer agente lê e transforma
+**Nada vive só na conversa.** Tudo o que se decide sobre um projeto fica
+escrito, e o agente de código trabalha a partir do que está escrito, não
+do que foi dito.
+
+Pense num restaurante. O garçom conversa com você e anota a comanda. A
+cozinha nunca ouve essa conversa: cozinha o que a comanda diz, pelo
+livro de receitas da casa. É por isso que o prato sai certo, e quando
+não sai, a comanda mostra onde foi o erro.
+
+No focus-kit, o livro de receitas são os documentos do projeto, escritos
+uma vez. A comanda é uma página por entrega, escrita pelo `/propose`. A
+cozinha é o `/apply`, que começa numa sessão nova só com essa página e
+os documentos. E você prova antes de sair: o agente nunca faz commit
+por conta própria.
+
+O que isso deu a dois projetos reais:
+
+* **[Ninjobs](https://www.ninjobs.app)**, uma plataforma de vagas construída por um desenvolvedor,
+  foi de um recomeço a um beta público em doze dias. Em meados de
+  setembro já tinha 91 entregas de uma página.
+* **Um projeto de cliente** voltou do teste de aceite do cliente com
+  dezenas de casos reprovados. Lida contra os documentos e a
+  especificação contratada, cada falha se revelou um bug, um pedido fora
+  do escopo ou um erro na execução do teste. Os bugs viraram uma fila de
+  correções. Os erros viraram um guia para os testadores do cliente,
+  pessoas que não são engenheiras, para que o reteste só falhe onde o
+  sistema está errado.
+
+O focus-kit é um processo de entrega para repositórios trabalhados com
+um agente de código. É um arquivo só, `SETUP.md`, que qualquer agente lê e transforma
 em quatro comandos no seu repositório. Funciona com Claude Code, Codex,
 GitHub Copilot, Cursor, Google Antigravity, Gemini CLI, Devin Desktop e qualquer
 outro host que leia `AGENTS.md`, em qualquer língua.

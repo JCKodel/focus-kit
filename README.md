@@ -2,7 +2,35 @@
 
 Em português: [README.pt.md](README.pt.md).
 
-A delivery process for repositories worked on with a coding agent. It is
+**Nothing lives only in the chat.** Everything decided about a project
+is written down, and the coding agent works from what is written, not
+from what was said.
+
+Think of a restaurant. The waiter talks with you and writes the order
+ticket. The kitchen never hears that conversation: it cooks what the
+ticket says, by the house's recipe book. That is why the dish comes out
+right, and when it does not, the ticket shows where the mistake was.
+
+In focus-kit the recipe book is the project's documents, written once.
+The ticket is one page per delivery, written by `/propose`. The kitchen
+is `/apply`, which starts in a new session with only that page and the
+documents. And you taste before it leaves: the agent never commits on
+its own.
+
+What that gave two real projects:
+
+* **[Ninjobs](https://www.ninjobs.app)**, a job platform built by one developer, went from a
+  restart to a public beta in twelve days. By mid-September it had 91
+  one-page deliveries behind it.
+* **A client project** came back from the client's acceptance test with
+  dozens of failed cases. Read against the documents and the contracted
+  specification, each failure turned out to be a bug, a request outside
+  the scope, or a mistake in running the test. The bugs became a queue
+  of fixes. The mistakes became a guide for the client's testers, people
+  who are not engineers, so the retest fails only where the system is
+  wrong.
+
+focus-kit is a delivery process for repositories worked on with a coding agent. It is
 one file, `SETUP.md`, that any agent reads and turns into four commands in
 your repository. It works with Claude Code, Codex, GitHub Copilot, Cursor,
 Google Antigravity, Gemini CLI, Devin Desktop and any other host that reads
