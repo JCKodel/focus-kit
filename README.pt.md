@@ -46,6 +46,19 @@ A `/` é como o Claude Code e a maioria dos hosts os invocam; o Codex usa
 outro prefixo, que a tabela do `SETUP.md` §1 traz. Todo
 comando escreve o próximo na forma que o seu host espera.
 
+## Veja funcionando
+
+Dois vídeos gravados em projetos reais, entre eles o projeto de cliente
+acima, anonimizado. Clique numa capa para assistir no YouTube.
+
+| Para times de engenharia | Para times de negócio |
+|---|---|
+| [![focus-kit na prática: engenharia](https://img.youtube.com/vi/r0fk_yVHgO4/maxresdefault.jpg)](https://youtu.be/r0fk_yVHgO4) | [![focus-kit na prática: negócio](https://img.youtube.com/vi/gnLcNYOI2MU/maxresdefault.jpg)](https://youtu.be/gnLcNYOI2MU) |
+| Instalação, `/brainstorm`, `/analyze` num sistema legado, `/propose`, `/apply`, e o Codex e o Copilot lendo a mesma fila. | Status do projeto, dois relatórios comparados, um arquivo do cliente no git sem saber git, a resposta a um e-mail, uma planilha e slides, pelo app desktop. |
+
+Os dois vídeos estão na [playlist em português](https://youtube.com/playlist?list=PLd13b_CIAdxo).
+As gravações em inglês estão na [playlist em inglês](https://youtube.com/playlist?list=PLCoT-CR09np8).
+
 ## Instalar
 
 Abra o seu agente no repositório e diga:

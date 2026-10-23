@@ -46,6 +46,19 @@ The `/` is how Claude Code and most hosts invoke them; Codex uses
 another prefix, which the table in `SETUP.md` §1 gives. Every command
 writes the next one in the form your host expects.
 
+## See it working
+
+Two films recorded on real projects, the client project above among them,
+anonymized. Click a cover to watch it on YouTube.
+
+| For engineering teams | For business teams |
+|---|---|
+| [![focus-kit in practice: engineering](https://img.youtube.com/vi/Ywp1iUtEVyY/maxresdefault.jpg)](https://youtu.be/Ywp1iUtEVyY) | [![focus-kit in practice: business](https://img.youtube.com/vi/4cqpi5CfnVc/maxresdefault.jpg)](https://youtu.be/4cqpi5CfnVc) |
+| Install, `/brainstorm`, `/analyze` on a legacy system, `/propose`, `/apply`, and Codex and Copilot reading the same queue. | Project status, two reports compared, a client file committed without knowing git, an email reply, a spreadsheet and a deck, from the desktop app. |
+
+Both films are in [the English playlist](https://youtube.com/playlist?list=PLCoT-CR09np8).
+The Portuguese recordings are in [the Portuguese playlist](https://youtube.com/playlist?list=PLd13b_CIAdxo).
+
 ## Install
 
 Open your agent in the repository and say:
