@@ -58,7 +58,11 @@ In English: [CHANGELOG.md](CHANGELOG.md).
   sem tokens da Ninjobs respondida com dez linhas a julgar e nenhuma
   livre; uma correção escrita num branch listada e não executável; uma
   dependência de si mesma oferecida. A ordem das marcas, que escolhia a
-  marca mais adiantada, cede lugar à regra da cópia.
+  marca mais adiantada, cede lugar à regra da cópia. Ela também desloca a
+  frase do docs/05 §4 que lia a linha de cada slug no branch dele, "local
+  ou remoto": o script lia só o origin desde 2026.10.19.1, e em
+  2026-10-25 a entrega do capítulo 19 do livro encontrou os dois em
+  desacordo; o §4 agora diz origin, como faz o script.
 - O `claim.sh` cria o branch no origin só quando nenhum clone o tem,
   com o push que o git só faz se não existir, e remove o que criou
   quando outro clone venceu a corrida; um branch no origin sem nada

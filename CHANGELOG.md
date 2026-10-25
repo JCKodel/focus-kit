@@ -54,7 +54,11 @@ Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
   empty reason, because it wraps at 80 columns; Ninjobs' tokenless queue
   answered with ten lines to judge and nothing free; a fix written on a
   branch listed and not runnable; a self-dependency offered. The rank of
-  marks, which chose the further mark, gives way to the copy rule.
+  marks, which chose the further mark, gives way to the copy rule. It
+  also displaces docs/05 §4's sentence that read each slug's line from
+  its branch "local or remote": the script read origin only since
+  2026.10.19.1, and on 2026-10-25 the book's chapter 19 delivery found
+  the two disagreeing; §4 now says origin, as the script does.
 - `claim.sh` creates the branch on origin only when no clone has it,
   with git's create-only push, and removes what it made when another
   clone won the race; a branch on origin with nothing of it here is
