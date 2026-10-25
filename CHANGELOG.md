@@ -8,6 +8,46 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.24
+
+- What may run now comes from a script, `propose/scripts/queue.sh`,
+  run through git like `claim.sh`, with the strategy of docs/05 §5's
+  Git slot. It draws docs/06's current milestone as a tree: each line
+  under the last line it waits on, its other pending `after` beside it,
+  and its state. The state is free for /propose or /apply now, in
+  flight, blocked, or waiting and on what, the `-` of the `(PA)` token
+  included. It ends with the lines free for /apply and for /propose
+  together, and the lines without a token, judged first by the files
+  they touch. With a branch or worktree per delivery, it reads every line
+  from the default branch on origin and each delivery's line from its
+  branch, keeping the further mark, so a worktree's older copy does not
+  show a merged line as free, and lists the lines only a branch has. A
+  line whose `after` names a dropped line waits for the person to
+  re-decide it, as docs/05 §4 says. CRLF endings read the same.
+- `/propose` and `/apply` typed with no slug show that tree and ask,
+  `/apply` ends with it, and docs/05 §4 says to run it whenever a person
+  asks what may run now. The session offers the free lines as one
+  command with several slugs, saying each slug is one more agent and
+  costs as much as one session. The sentence of §4 that said to answer
+  from the queue by hand gives way to it; a rerun reports the new
+  sentence as a migration to docs/05 §4.
+- On 2026-10-24, in two projects, the person could not tell from the
+  queue which lines were free for /propose and which for /apply, and had
+  to read every `(PA)` and the end of every line for its `after`. Run on
+  one of them, the script showed nine pages `[>]` held by one undefined
+  line above them, all nine `(P-)`. Run on the other, it found the
+  milestone review with no `after`, free before the lines it reviews.
+- docs/06 does not change. A tree written into the queue was weighed and
+  left out: in one project 21 lines name two or more lines in `after`
+  and 28 name a line of another milestone, so a tree written by hand
+  would hide part of what each line waits on. The order would stop
+  being the priority, and two boards read the lines as they are. A block
+  of free lines written into docs/06 was also left out, because it goes
+  stale at every mark and conflicts between worktrees. A fifth command
+  was left out too: the commands with no slug answer it.
+- Setup writes sixteen files into the skills folders. The script is
+  §3.7, and the sections after it are renumbered §3.8 to §3.13.
+
 ## 2026.10.20.5
 
 - `SETUP.md` says, in its opening lines, that every path it names is in

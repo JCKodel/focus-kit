@@ -27,7 +27,11 @@ four skills with `disable-model-invocation`; the Codex policy and the
 Antigravity trigger; `CHANGELOG.md` and `CHANGELOG.pt.md` leading with
 the version, with the same number of entries; `README.md` and
 `README.pt.md` with the same sections; the book's queue holding a
-milestone for the version. Then the line budgets of `CLAUDE.md` as
+milestone for the version. It runs the `queue.sh` of `SETUP.md` §3.7 on
+`test/fixture/queue/06-Queue.md`, which holds every case the script
+decides, and compares its output with `expected-trunk.txt`; then it
+pushes the branch of one delivery to a local bare remote and compares
+with `expected-worktree.txt`. Then the line budgets of `CLAUDE.md` as
 warnings, and the longest sentence of each command, docs/05 and §1: the
 error of 2026-10-19 was a 45-line sentence, so a sentence over sixty
 words is reported wherever it is.
@@ -36,7 +40,7 @@ words is reported wherever it is.
 verify`) in a temp container, `<tmp>/main` as the checkout and
 `<tmp>/origin.git` as a bare local remote, and gives the host one
 sentence: read `SETUP.md` at its working-tree path and do what it says.
-Then it asserts §4 Check by file: the twelve skill files, the four
+Then it asserts §4 Check by file: the sixteen skill files, the four
 `openai.yaml`, the host command files, the pointer files, the installed
 version, `$ARGUMENTS` kept, no slug input in the brainstorm and analyze
 prompts, one line in `GEMINI.md`, nothing else changed, nothing staged or

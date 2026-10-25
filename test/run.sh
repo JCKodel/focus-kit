@@ -66,6 +66,8 @@ stage_check() {
     grep -q "focus-kit $v\$" "$book" && ok "book queue has a milestone for $v" || fail "book queue has no milestone for $v"
   else warn "book repository not found next to the kit; milestone line not checked"; fi
 
+  check_queue_script
+
   say "check: line alarms (CLAUDE.md)"
   budget "/propose body" "$(skill_body propose | grep -c .)" 40
   budget "/apply body" "$(skill_body apply | grep -c .)" 60
@@ -83,6 +85,44 @@ stage_check() {
   [ "$w" -le "$MAXW" ] && ok "docs/05: longest sentence $w words" || warn "docs/05: longest sentence $w words: ${r#* }..."
   r=$(awk '/^## 1\. What to do/{p=1} /^## 2\. What the kit is/{p=0} p' "$SETUP" | longest_sentence); w=${r%% *}
   [ "$w" -le "$MAXW" ] && ok "§1: longest sentence $w words" || warn "§1: longest sentence $w words: ${r#* }..."
+}
+
+# queue.sh on test/fixture/queue: trunk, then with the branch of card on a
+# local bare remote, each against its expected output.
+check_queue_script() {
+  say "check: queue.sh on test/fixture/queue"
+  local t script; t=$(mktemp -d); script="$t/queue.sh"
+  kit_script queue > "$script"
+  git init -q --bare "$t/remote.git"
+  git clone -q "$t/remote.git" "$t/main" 2>/dev/null
+  (
+    cd "$t/main" && git switch -q -c main && mkdir docs
+    cp "$FIXTURE/queue/06-Queue.md" docs/
+    git add docs && git -c user.name=test -c user.email=test@test commit -q -m queue && git push -q -u origin main
+  )
+  (cd "$t/main" && sh "$script" trunk) > "$t/trunk.txt" 2>&1 || true
+  assert_true "trunk output matches expected-trunk.txt" diff -u "$FIXTURE/queue/expected-trunk.txt" "$t/trunk.txt"
+  (
+    cd "$t/main" && git switch -q -c focus-kit/card
+    awk '{ if ($0 ~ /^\[ \] card  /) sub(/^\[ \]/, "[*]"); print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    printf '[ ] card-fix  (PA) a fix found while building card\n' >> docs/06-Queue.md
+    git -c user.name=test -c user.email=test@test commit -q -am card && git push -q origin focus-kit/card && git switch -q main
+  )
+  (cd "$t/main" && sh "$script" worktree .focus-kit focus-kit/) > "$t/worktree.txt" 2>&1 || true
+  assert_true "worktree output matches expected-worktree.txt" diff -u "$FIXTURE/queue/expected-worktree.txt" "$t/worktree.txt"
+  (
+    cd "$t/main"
+    awk '{ if ($0 ~ /^\[>\] board  /) sub(/^\[>\]/, "[x]"); print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    git -c user.name=test -c user.email=test@test commit -q -am board && git push -q origin main
+    git worktree add -q "$t/card" focus-kit/card
+  )
+  (cd "$t/card" && sh "$script" worktree .focus-kit focus-kit/) > "$t/stale.txt" 2>&1 || true
+  assert_true "a stale worktree copy matches expected-stale.txt" diff -u "$FIXTURE/queue/expected-stale.txt" "$t/stale.txt"
+  mkdir -p "$t/crlf/docs" && (cd "$t/crlf" && git init -q)
+  awk '{ printf "%s\r\n", $0 }' "$FIXTURE/queue/06-Queue.md" > "$t/crlf/docs/06-Queue.md"
+  (cd "$t/crlf" && sh "$script" trunk) > "$t/crlf.txt" 2>&1 || true
+  assert_true "CRLF endings match expected-trunk.txt" diff -u "$FIXTURE/queue/expected-trunk.txt" "$t/crlf.txt"
+  rm -rf "$t"
 }
 
 # ---------- fixture stages ----------
@@ -119,14 +159,16 @@ stage_plant() { # stage_plant <host> <container>
       assert_true "$d/$n/references/documents.md" test -f "$main/$d/$n/references/documents.md"
     done
   done
-  local script; script=$(mktemp)
-  awk '/^### 3\.6 `propose\/scripts\/claim\.sh`/{f=1} f&&/^````sh$/{p=1;next} p&&/^````$/{exit} p' "$SETUP" > "$script"
-  for d in .claude/skills .agents/skills; do
-    f="$main/$d/propose/scripts/claim.sh"
-    assert_true "$d/propose/scripts/claim.sh byte for byte" diff -q "$script" "$f"
-    assert_false "$d/propose/scripts/claim.sh has LF endings" grep -q $'\r' "$f"
+  local script name
+  for name in claim queue; do
+    script=$(mktemp); kit_script "$name" > "$script"
+    for d in .claude/skills .agents/skills; do
+      f="$main/$d/propose/scripts/$name.sh"
+      assert_true "$d/propose/scripts/$name.sh byte for byte" diff -q "$script" "$f"
+      assert_false "$d/propose/scripts/$name.sh has LF endings" grep -q $'\r' "$f"
+    done
+    rm -f "$script"
   done
-  rm -f "$script"
   assert_true ".agents/rules/focus-kit.md" test -f "$main/.agents/rules/focus-kit.md"
   assert_true "GEMINI.md" test -f "$main/GEMINI.md"
   assert_false "no .windsurf/skills left" test -d "$main/.windsurf/skills"

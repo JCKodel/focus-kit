@@ -7,7 +7,7 @@ repository the session works in, never in the folder this file was read
 from. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.20.5
+Version: 2026.10.24
 
 ## 1. What to do
 
@@ -24,16 +24,16 @@ Version: 2026.10.20.5
    writing or removing any file, steps 4 and 5 still reported. The person
    decides how to preserve or replace it, and a rule the edit added to a
    command may become a slot of docs/05 §5, which the commands follow. `GEMINI.md` is the exception:
-   preserve its project content as 3.12 says. Do not create a manifest to
+   preserve its project content as 3.13 says. Do not create a manifest to
    track ownership.
 2. Write every file of section 3, byte for byte, at every path its
-   heading names. Sections 3.1 to 3.6 name paths relative to a skills
+   heading names. Sections 3.1 to 3.7 name paths relative to a skills
    folder, and each of those files goes to both `.claude/skills/` and
-   `.agents/skills/`; sections 3.7 to 3.12 name paths relative to the
+   `.agents/skills/`; sections 3.8 to 3.13 name paths relative to the
    repository root. Do not reformat, summarize, translate or improve any
-   of them; fill only the `<name>` placeholder of 3.7 to 3.10, using the
-   two prompt templates of 3.8 for their respective commands. Write 3.6
-   with LF line endings, whatever the machine's default.
+   of them; fill only the `<name>` placeholder of 3.8 to 3.11, using the
+   two prompt templates of 3.9 for their respective commands. Write 3.6
+   and 3.7 with LF line endings, whatever the machine's default.
 3. Touch nothing else, with one exception: versions before 2026.10.17
    also wrote 3.1 to 3.5 under `.windsurf/skills/`, which no host needs
    now. Remove each kit file there, as step 1 establishes it, and the
@@ -62,8 +62,9 @@ Version: 2026.10.20.5
      concrete input and failure cases; the page complete before `[>]`;
      the final `commit` block;
    * docs/05 §4: when each mark changes; resumption; order as priority,
-     `after`, the `(PA)` token and a command typed with several slugs; a
-     line no clause of the milestone needs going to the next one; two
+     `after`, the `(PA)` token and a command typed with several slugs;
+     what may run now answered by `queue.sh` and offered as one command,
+     with its cost; a line no clause of the milestone needs going to the next one; two
      sessions in one working tree, shared queue and isolated staging; the
      four cases a line waits in; a line whose session ended and a dropped
      line; a conflict as a line both edited; a board's mark and the claim;
@@ -170,7 +171,7 @@ enforcement there.
 
 In the skills, `$ARGUMENTS` stands for what the person typed after the
 command. Claude Code substitutes it; the Copilot and Gemini CLI files of
-3.8 and 3.10 hand it over themselves; on any other host, read it as "the
+3.9 and 3.11 hand it over themselves; on any other host, read it as "the
 words after the command" and leave the token as it is.
 
 ## 2. What the kit is
@@ -223,7 +224,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.20.5"
+  version: "2026.10.24"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -294,7 +295,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.20.5"
+  version: "2026.10.24"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -373,10 +374,10 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.20.5"
+  version: "2026.10.24"
 ---
 You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`:
-none, ask for one; several, one subagent per slug, opened at once where
+none, show what may run now as docs/05 §4 says and ask; several, one subagent per slug, opened at once where
 docs/05 §4 allows, each taking its slug from the message that opens it and
 running on the word of the person who typed the command, which names them all.
 
@@ -426,9 +427,10 @@ description: >-
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>...
 metadata:
-  version: "2026.10.20.5"
+  version: "2026.10.24"
 ---
-The slugs are `$ARGUMENTS`: none, ask for one; several, one subagent per
+The slugs are `$ARGUMENTS`: none, show what may run now as docs/05 §4
+says and ask; several, one subagent per
 slug, opened at once where docs/05 §4 allows, each taking its slug from
 the message that opens it and running on the word of the person who typed
 the command, which names them all. Implement `work/<slug>.md` in this
@@ -483,7 +485,7 @@ the person's language. Give the person's next steps, each command written
 as this host invokes commands: use what the delivery changed, as its user
 would, and ask here for what is wrong; review the staged diff; commit with
 the suggested message, merging a delivery branch as docs/05 §5 says; then
-the queue's next line and its command. End saying which environment is at
+what may run next, as docs/05 §4 says. End saying which environment is at
 which version and the command that updates the others; never end silent.
 ````
 
@@ -656,7 +658,7 @@ that it is not. The agent never commits or merges on its own:
   main branch in one merge, as above. For parallel work by several people,
   or by one person whose deliveries touch the same files: one branch does
   not touch another. Before running two at once, pick free lines
-  (docs/06's `after`) and decide which touch the same files, including
+  (docs/05 §4's `queue.sh`) and decide which touch the same files, including
   docs/06 and other shared documents. Reconcile the queue by docs/05 §4
   when their branches are integrated. Costs a directory per delivery.
 
@@ -761,10 +763,13 @@ every line above to be `[>]` or beyond before /propose, `[x]` before
 /apply. `after` holds for both commands, with or without a token: neither
 /propose nor /apply starts until every line it names is `[x]`, whatever
 the token says. Whoever changes the queue re-judges the tokens it affects; /propose
-corrects a token from the page. Asked what can run at the same time,
-answer from the queue: the free lines, by their tokens where they have
-one, else the ones that touch different files, judged from their pages
-and docs/01. The line never leaves the queue; it changes mark as the
+corrects a token from the page. Asked what may run now, run
+`git -c "alias.fq=!sh .agents/skills/propose/scripts/queue.sh" fq <strategy>`,
+the strategy as for the claim, and show its tree. It names the lines
+that may run together; a line it lists without a token is judged first,
+from its page and docs/01, by the files it touches. Offer them as one
+command with several slugs, saying each slug is one more agent and costs
+as much as one session. The line never leaves the queue; it changes mark as the
 work changes, so the queue shows what is happening while it happens:
 
 | Mark | Means | Set by |
@@ -1150,7 +1155,172 @@ printf 'claim: %s\nbranch: %s, on origin\npath: %s\n' "$claim" "$branch" "$path"
 draft
 ````
 
-### 3.7 `.agents/skills/<name>/agents/openai.yaml`
+### 3.7 `propose/scripts/queue.sh`
+
+The script that answers what may run now, as docs/05 §4 says, in both
+skills folders like 3.6, with LF line endings, run through git the same
+way. It reads docs/06 and, with a branch or worktree per delivery, each
+delivery's line from its branch on origin. It edits nothing.
+
+````sh
+#!/bin/sh
+# focus-kit: draw docs/06's current milestone as a tree of what waits on
+# what, and say what may run now, as docs/05 §4 says. Run it through git:
+#   git -c "alias.fq=!sh .agents/skills/propose/scripts/queue.sh" fq <strategy>
+# <strategy> is the Git slot of docs/05: trunk | branch | worktree <hidden> <prefix>
+# With a branch or worktree per delivery, each delivery's line is read from
+# its branch on origin, and lines only a branch has are listed. A line goes
+# under the last line it waits on; "+ after" names the others. Edits nothing.
+set -eu
+
+die() { printf 'error: %s\n' "$1"; exit 2; }
+
+strategy=${1:-}
+case $strategy in
+  trunk) prefix= ;;
+  branch) prefix= ;;
+  worktree) prefix=${3:-}; [ -n "$prefix" ] || die "worktree needs the hidden folder and the branch prefix: worktree .focus-kit focus-kit/" ;;
+  *) die "usage: queue.sh trunk | branch | worktree <hidden> <prefix>" ;;
+esac
+
+top=$(git rev-parse --show-toplevel 2>/dev/null) || die "not inside a repository"
+queue=
+for f in "$top"/docs/06-*.md; do
+  [ -f "$f" ] || continue
+  [ -z "$queue" ] || die "more than one docs/06-*.md in $top/docs"
+  queue=$f
+done
+[ -n "$queue" ] || die "no docs/06-*.md in $top/docs"
+rel="docs/${queue##*/}"
+
+overlay=$(mktemp)
+trap 'rm -f "$overlay"' EXIT
+if [ "$strategy" != trunk ] && git remote get-url origin >/dev/null 2>&1; then
+  git fetch -q origin 2>/dev/null || printf 'note: git fetch origin failed; branches as last fetched\n'
+  default=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||') || true
+  [ -n "$default" ] || for b in main master; do
+    if git show-ref --quiet "refs/remotes/origin/$b"; then default=$b; break; fi
+  done
+  git for-each-ref --format='%(refname)' refs/remotes/origin | while read -r ref; do
+    name=${ref#refs/remotes/origin/}
+    # The default branch gives every line; a delivery branch, its own.
+    if [ "$name" = "$default" ]; then slug='*'
+    else
+      case $name in HEAD) continue ;; "$prefix"*) ;; *) continue ;; esac
+      slug=${name#"$prefix"}
+      case $slug in ''|*[!a-zA-Z0-9._-]*) continue ;; esac
+    fi
+    git show "$ref:$rel" 2>/dev/null | awk -v s="$slug" '{ print s "\t" $0 }' >> "$overlay" || true
+  done
+fi
+
+awk -F '\t' '
+function parse(line, k,   rest, n, parts, i, p, deps, j, m) {
+  mark[k] = substr(line, 2, 1)
+  rest = substr(line, 4); sub(/^[ \t]+/, "", rest)
+  slug[k] = rest; sub(/[ \t].*/, "", slug[k])
+  rest = substr(rest, length(slug[k]) + 1); sub(/^[ \t]+/, "", rest)
+  tokp[k] = ""; toka[k] = ""
+  if (rest ~ /^\([P-][A-]\)/) { tokp[k] = substr(rest, 2, 1); toka[k] = substr(rest, 3, 1) }
+  nafter[k] = 0; resume[k] = ""; blocked[k] = ""; dropped[k] = 0
+  n = split(rest, parts, " \302\267 ")
+  for (i = 2; i <= n; i++) {
+    p = parts[i]
+    if (p ~ /^after /) {
+      sub(/^after /, "", p); m = split(p, deps, /, */)
+      for (j = 1; j <= m; j++) if (deps[j] != "") after[k, ++nafter[k]] = deps[j]
+    } else if (p ~ /^resume: /) { sub(/^resume: /, "", p); resume[k] = p }
+    else if (p ~ /^blocked: /) { sub(/^blocked: /, "", p); blocked[k] = p }
+    else if (p ~ /^dropped: /) dropped[k] = 1
+  }
+}
+function rank(m) { return index(" ~?>*x", m) }
+function isline(s) { return s ~ /^\[[ ~>*x?]\][ \t]+[^ \t]/ }
+function defined(k) { return mark[k] ~ /[>*x]/ || (mark[k] == "?" && resume[k] == "apply") }
+function pending(s) { return !(s in at) || mark[at[s]] != "x" }
+function state(k,   i, s, why, sep) {
+  if (mark[k] == "~") return "in flight: propose"
+  if (mark[k] == "*") return "in flight: apply"
+  if (mark[k] == "?") return "blocked: " blocked[k] (resume[k] != "" ? ", then " resume[k] : "")
+  cmd[k] = (mark[k] == ">") ? "apply" : "propose"
+  why = ""; sep = ""
+  for (i = 1; i <= nafter[k]; i++) {
+    s = after[k, i]
+    if (!(s in at)) { why = why sep s " is not in the queue"; sep = "; " }
+    else if (dropped[at[s]]) { why = why sep "after " s ", dropped: re-decide"; sep = "; " }
+  }
+  if (lastdep[k] != "") { why = why sep "after " lastdep[k]; sep = "; " }
+  if (cmd[k] == "propose" && tokp[k] == "-") for (i = 1; i < k; i++) if (!defined(i)) { why = why sep "the lines above are defined"; sep = "; "; break }
+  if (cmd[k] == "apply" && toka[k] == "-") for (i = 1; i < k; i++) if (mark[i] != "x") { why = why sep "the lines above are done"; sep = "; "; break }
+  if (why != "") { cmd[k] = ""; return "waits: " why }
+  if (tokp[k] == "") { judge[++nj] = slug[k]; return cmd[k] " now, no token: judge" }
+  return cmd[k] " now"
+}
+function show(k, depth,   pad, i, c, extra, sep, line, n) {
+  seen[k] = 1
+  pad = ""; for (i = 1; i < 2 * depth; i++) pad = pad " "
+  if (depth > 0) pad = pad "\342\224\224"
+  extra = ""; sep = ""
+  for (i = 1; i <= nafter[k]; i++) {
+    c = after[k, i]
+    if (c != lastdep[k] && c in at && pending(c)) { n++; if (n <= 3) { extra = extra sep c; sep = ", " } }
+  }
+  if (n > 3) extra = extra " and " (n - 3) " more"
+  line = pad "[" mark[k] "] " slug[k] (tokp[k] != "" ? " (" tokp[k] toka[k] ")" : "")
+  if (extra != "") line = line " + after " extra
+  print line " \302\267 " st[k]
+  for (i = 1; i <= nkid[k]; i++) { c = kid[k, i]; if (!(c in seen)) show(c, depth + 1) }
+}
+{ sub(/\r$/, "") }
+FILENAME == ARGV[1] {
+  b = $1; l = substr($0, length($1) + 2)
+  if (!isline(l)) next
+  s = l; sub(/^\[.\][ \t]+/, "", s); sub(/[ \t].*/, "", s)
+  if (b == "*") base[s] = l
+  else if (s == b) own[b] = l
+  if (!(s in other)) { other[s] = l; from[s] = (b == "*") ? "the default branch" : b }
+  next
+}
+/^## / { ms = substr($0, 4); next }
+isline($0) {
+  k = ++nq; parse($0, k); at[slug[k]] = k; mstone[k] = ms
+  if (slug[k] in base && rank(substr(base[slug[k]], 2, 1)) > rank(mark[k])) parse(base[slug[k]], k)
+  if (slug[k] in own && rank(substr(own[slug[k]], 2, 1)) > rank(mark[k])) parse(own[slug[k]], k)
+}
+END {
+  for (s in other) if (!(s in at)) { k = ++nq; parse(other[s], k); at[s] = k; mstone[k] = "only on a branch: " from[s] }
+  cur = ""
+  for (k = 1; k <= nq; k++) if (mark[k] != "x") { cur = mstone[k]; break }
+  if (cur == "" && nq > 0 && mark[nq] == "x") { print "milestone: none open; every line is [x]"; exit }
+  for (k = 1; k <= nq; k++) {
+    if (mark[k] == "x") continue
+    lastdep[k] = ""; best = 0
+    for (i = 1; i <= nafter[k]; i++) {
+      s = after[k, i]
+      if ((s in at) && pending(s) && at[s] > best && at[s] != k) { best = at[s]; lastdep[k] = s }
+    }
+    if (best > 0 && mstone[best] == mstone[k] && best < k) kid[best, ++nkid[best]] = k
+    else root[k] = 1
+  }
+  print "milestone: " cur
+  for (k = 1; k <= nq; k++) if (mark[k] != "x" && mstone[k] == cur) st[k] = state(k)
+  for (k = 1; k <= nq; k++) if (mark[k] != "x" && mstone[k] == cur && root[k] && !(k in seen)) show(k, 0)
+  for (k = 1; k <= nq; k++) if (mark[k] != "x" && mstone[k] == cur && !(k in seen)) show(k, 0)
+  np = ""; na = ""
+  for (k = 1; k <= nq; k++) {
+    if (mstone[k] != cur || mark[k] == "x" || tokp[k] == "" || st[k] !~ / now$/) continue
+    if (cmd[k] == "propose") np = np " " slug[k]; else na = na " " slug[k]
+  }
+  print ""
+  print "free for /apply, together:" (na == "" ? " none" : na)
+  print "free for /propose, together:" (np == "" ? " none" : np)
+  if (nj > 0) { printf "judge first, no token:"; for (i = 1; i <= nj; i++) printf " %s", judge[i]; print "" }
+  for (k = 1; k <= nq; k++) if (mstone[k] ~ /^only on a branch/) { if (!h++) print "only on a branch:"; print "  " slug[k] " (" substr(mstone[k], 19) ")" }
+}
+' "$overlay" "$queue"
+````
+
+### 3.8 `.agents/skills/<name>/agents/openai.yaml`
 
 For Codex. Four files, one per skill, `<name>` replaced by `brainstorm`,
 `analyze`, `propose` and `apply`, next to the `SKILL.md` of `.agents/skills/`
@@ -1166,7 +1336,7 @@ policy:
   allow_implicit_invocation: false
 ````
 
-### 3.8 `.github/prompts/<name>.prompt.md`
+### 3.9 `.github/prompts/<name>.prompt.md`
 
 For GitHub Copilot. Four files, `<name>` replaced by `brainstorm`,
 `analyze`, `propose` and `apply`, so the commands exist as slash commands
@@ -1188,18 +1358,18 @@ agent: 'agent'
 Read `.agents/skills/<name>/SKILL.md` and follow it. `$ARGUMENTS` is `${input:slug}`.
 ````
 
-### 3.9 `.cursor/commands/<name>.md`
+### 3.10 `.cursor/commands/<name>.md`
 
-For Cursor. Four files, `<name>` replaced as in 3.8, so the commands exist
+For Cursor. Four files, `<name>` replaced as in 3.9, so the commands exist
 as slash commands in the agent chat. Each one is one line:
 
 ````markdown
 Read `.agents/skills/<name>/SKILL.md` and follow it. `$ARGUMENTS` is the words typed after the command.
 ````
 
-### 3.10 `.gemini/commands/<name>.toml`
+### 3.11 `.gemini/commands/<name>.toml`
 
-For the Gemini CLI. Four files, `<name>` replaced as in 3.8, so the
+For the Gemini CLI. Four files, `<name>` replaced as in 3.9, so the
 commands exist as slash commands. Each one is two lines:
 
 ````toml
@@ -1207,7 +1377,7 @@ description = "focus-kit: the <name> command. Reads .agents/skills/<name>/SKILL.
 prompt = "Read .agents/skills/<name>/SKILL.md and follow it. $ARGUMENTS is {{args}}."
 ````
 
-### 3.11 `.agents/rules/focus-kit.md`
+### 3.12 `.agents/rules/focus-kit.md`
 
 For Google Antigravity. One always-on pointer, holding no project rule
 of its own; its required frontmatter keeps the pointer active:
@@ -1219,10 +1389,10 @@ trigger: always_on
 Read `AGENTS.md` at the repository root before acting: it holds this project's rules. The four commands of the process are the skills in `.agents/skills/`.
 ````
 
-### 3.12 `GEMINI.md`
+### 3.13 `GEMINI.md`
 
 For the Gemini CLI, which reads `GEMINI.md` unless told otherwise. Use the
-line below without the rule frontmatter of 3.11. If the file exists, remove
+line below without the rule frontmatter of 3.12. If the file exists, remove
 only exact occurrences of this pointer line and put one at the top;
 preserve every other line in its original order. This also removes copies
 left by older updates. A second run produces no further change.
@@ -1233,10 +1403,10 @@ Read `AGENTS.md` at the repository root before acting: it holds this project's r
 
 ## 4. Check
 
-Before reporting, confirm: fourteen files across `.claude/skills/` and
-`.agents/skills/` (four `SKILL.md`, two `references/documents.md` and
-`propose/scripts/claim.sh` in each, the script with LF line endings and
-ending in one); no
+Before reporting, confirm: sixteen files across `.claude/skills/` and
+`.agents/skills/` (four `SKILL.md`, two `references/documents.md`,
+`propose/scripts/claim.sh` and `propose/scripts/queue.sh` in each, each
+script with LF line endings and ending in one); no
 kit file left under `.windsurf/skills/`; four `agents/openai.yaml` under
 `.agents/skills/`; four prompt files, four Cursor commands and four Gemini
 commands; `.agents/rules/focus-kit.md` and `GEMINI.md`; no other file

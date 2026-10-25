@@ -8,6 +8,47 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.24
+
+- O que pode rodar agora vem de um script, `propose/scripts/queue.sh`,
+  rodado pelo git como o `claim.sh`, com a estratégia do slot Git da
+  docs/05 §5. Ele desenha o marco atual da docs/06 como uma árvore: cada
+  linha embaixo da última linha que ela espera, os outros `after`
+  pendentes ao lado, e o estado dela. O estado é livre para /propose ou
+  /apply agora, em andamento, bloqueada, ou esperando, e pelo quê, o `-`
+  do token `(PA)` incluído. Ele termina com as linhas livres para /apply
+  e para /propose juntas, e as linhas sem token, julgadas antes pelos
+  arquivos que tocam. Com um branch ou worktree por entrega, ele lê
+  todas as linhas do branch padrão no origin e a linha de cada entrega
+  do branch dela, ficando com a marca mais adiantada, para que a cópia
+  antiga de um worktree não mostre como livre uma linha já integrada, e
+  lista as linhas que só um branch tem. Uma linha cujo `after` cita uma
+  linha descartada espera a pessoa decidir de novo, como diz a docs/05
+  §4. Finais de linha CRLF são lidos do mesmo jeito.
+- `/propose` e `/apply` digitados sem slug mostram essa árvore e
+  perguntam, o `/apply` termina com ela, e a docs/05 §4 manda rodá-la
+  sempre que uma pessoa pergunta o que pode rodar agora. A sessão
+  oferece as linhas livres como um comando com vários slugs, dizendo que
+  cada slug é mais um agente e custa tanto quanto uma sessão. A frase do
+  §4 que mandava responder pela fila à mão cede lugar a ela; rodar de
+  novo reporta a frase nova como migração da docs/05 §4.
+- Em 2026-10-24, em dois projetos, a pessoa não conseguia ver pela fila
+  quais linhas estavam livres para /propose e quais para /apply, e tinha
+  de ler cada `(PA)` e o fim de cada linha atrás do `after`. Rodado num
+  deles, o script mostrou nove páginas `[>]` presas por uma linha não
+  definida acima delas, as nove `(P-)`. Rodado no outro, achou a revisão
+  do marco sem `after`, livre antes das linhas que revisa.
+- A docs/06 não muda. Uma árvore escrita na fila foi pesada e deixada de
+  fora: num projeto 21 linhas citam duas ou mais linhas no `after` e 28
+  citam uma linha de outro marco, então uma árvore escrita à mão
+  esconderia parte do que cada linha espera. A ordem deixaria de ser a
+  prioridade, e dois quadros leem as linhas como estão. Um bloco de
+  linhas livres escrito na docs/06 também ficou de fora, porque envelhece
+  a cada marca e conflita entre worktrees. Um quinto comando também: os
+  comandos sem slug respondem a ele.
+- O setup escreve dezesseis arquivos nas pastas de skills. O script é a
+  §3.7, e as seções depois dele passam a ser §3.8 a §3.13.
+
 ## 2026.10.20.5
 
 - O `SETUP.md` diz, nas linhas de abertura, que todo caminho que ele

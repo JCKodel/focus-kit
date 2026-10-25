@@ -1,0 +1,17 @@
+milestone: M2. Board
+[*] card (PA) · in flight: apply
+ └[ ] filter (P-) · waits: after card
+ └[ ] search (PA) · waits: missing-slug is not in the queue; after card
+[>] colors (-A) · apply now
+[~] login (PA) · in flight: propose
+[?] export (PA) · blocked: which format, asked, then propose
+[ ] notes · propose now, no token: judge
+ └[ ] m2-review (--) + after card, filter, colors and 3 more · waits: after notes; the lines above are defined
+[*] sound (PA) · in flight: apply
+[ ] ping (PA) · waits: after pong
+ └[ ] pong (PA) · waits: after ping
+[ ] revive (PA) · waits: after old-idea, dropped: re-decide
+
+free for /apply, together: colors
+free for /propose, together: none
+judge first, no token: notes
