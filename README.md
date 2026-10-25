@@ -151,16 +151,17 @@ OpenCode and Zed all read. What belongs to a single host:
    resume `/propose` or `/apply`: a partial proposal must finish definition
    before it can be built. The order of the queue is the priority: the
    next delivery is the first free line, and you reorder by conversation.
-   A line that needs another done first says so at its end, `· after
-   <slug>`, and is free once that one is `[x]`. Free lines that touch
-   different files can run at the same time, one session each, in the
-   same working tree; ask the agent which ones can. A line can say so in
-   advance with `(PA)` after the slug: whether its `/propose` and its
-   `/apply` may run while the lines above it are still in flight; whoever
-   changes the queue re-judges the tokens. Several at once: type
+   A line that needs another first says so at its end, `· after
+   <slug>`: its `/propose` may start once that one has its page, its
+   `/apply` once that one is integrated. The review of a milestone says
+   `· after all`. Type `/propose` or `/apply` with no slug and the agent
+   draws the queue as a tree, with the lines free for each command and
+   the next one. Free lines can run at the same time, one session each;
+   before its first edit, `/apply` checks that no build in flight
+   touches its files. Several at once: type
    `/propose` or `/apply` with several slugs, and the session opens one
    subagent per slug, each in its worktree when there is one, together
-   where the tokens allow; their questions come to you through that
+   where `after` allows; their questions come to you through that
    session, with the context to answer them. Say in the command to decide
    alone, or to build each page as soon as it is defined, and read the
    pages and the diffs at the end.
@@ -255,9 +256,14 @@ What made it work is small, and the kit keeps exactly that:
 An earlier version of this kit forgot the last rule. It grew an installer,
 a knowledge graph, a doctor, a self-test, manifests, and commands ten times
 longer than the ones that had worked, asking questions their own author
-could not answer. This version is the return to the size that worked, with
-one addition Ninjobs did not need: it runs on every host that reads
-`AGENTS.md` and in any language.
+could not answer. This version is the return to the size that worked.
+What it added since, each change naming its error in `CHANGELOG.md`:
+every host that reads `AGENTS.md` and any language, which Ninjobs did
+not need; a review of each delivery and of each milestone; manuals for
+what a person does by hand; a queue that several sessions and several
+people can pull from, with two small shell scripts that claim a line and
+say what may run now. The size of what the commands point to is the
+cost, and the changelog says when it crosses an alarm.
 
 ## FOCUS and git, offered and not imposed
 

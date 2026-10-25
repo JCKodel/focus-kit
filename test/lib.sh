@@ -65,13 +65,16 @@ docs05_range() {
 }
 
 # longest_sentence prints "<words> <first 60 chars>" of the longest sentence
-# on stdin. A sentence ends at ". ", "? ", "! " or "; ", and a heading,
-# a list item, a table row or a fence starts a new one.
+# on stdin. A sentence ends at ". ", "? " or "! ", and a heading, a list
+# item, a table row or a fence starts a new one. A semicolon does not end
+# it: CLAUDE.md forbids a rule in a chain of semicolons, so the chain is
+# measured whole (on 2026-10-25 an 85-word sentence of docs/05 §8 passed
+# as pieces of fifty).
 longest_sentence() {
   awk '/^#/ { print ". "; print; print ". "; next }
-       /^(\* |- |\||```|[0-9]+\. )/ { print ". " } { print }' \
+       /^[ \t]*(\* |- |\||```|[0-9]+\. )/ { print ". " } { print }' \
     | tr '\n' ' ' | sed 's/  */ /g' | awk '
-    BEGIN { RS = "[.?!;] " }
+    BEGIN { RS = "[.?!] " }
     { n = split($0, w, " "); if (n > max) { max = n; s = substr($0, 1, 60) } }
     END { printf "%d %s\n", max, s }'
 }

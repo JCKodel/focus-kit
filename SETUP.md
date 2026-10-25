@@ -7,7 +7,7 @@ repository the session works in, never in the folder this file was read
 from. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.24
+Version: 2026.10.25
 
 ## 1. What to do
 
@@ -51,41 +51,51 @@ Version: 2026.10.24
    a time:
    * docs/05's section numbers: the commands cite the template's and read
      by number (§4 the queue, §5 the slots, §6 commit, §8 closing a
-     milestone). A docs/05 numbered otherwise migrates to them first,
-     whatever an ADR says; until then the report says where each cited
-     number lands;
-   * docs/05 §2: code only inside /apply; a change asked elsewhere ending
-     as a line and a draft page; /propose in that session or a fresh one,
-     /apply in a fresh one, a subagent being one; the person using a
-     delivery before committing; the agent committing or merging only when asked;
+     milestone). A docs/05 numbered otherwise migrates to them, unless
+     an ADR keeps its numbers: then the migration is one line under its
+     title mapping the kit's numbers to its own, `§4 is §6 here`, which
+     the commands read first. Until one of the two is done, the next
+     step is that migration, not a command;
+   * docs/05 §2. Code only inside /apply. A change asked elsewhere ending
+     as a line and a draft page. /propose in that session or a fresh one,
+     /apply in a fresh one, a subagent being one. The person using a
+     delivery before committing. The agent committing or merging only
+     when asked. The claim by `claim.sh`, another clone's line opened
+     only with `resume`;
    * docs/05 §3: why the Contract is exact; Behaviour scenarios with
-     concrete input and failure cases; the page complete before `[>]`;
-     the final `commit` block;
-   * docs/05 §4: when each mark changes; resumption; order as priority,
-     `after`, the `(PA)` token and a command typed with several slugs;
-     what may run now answered by `queue.sh` and offered as one command,
-     with its cost; a line no clause of the milestone needs going to the next one; two
-     sessions in one working tree, shared queue and isolated staging; the
-     four cases a line waits in; a line whose session ended and a dropped
-     line; a conflict as a line both edited; a board's mark and the claim;
-   * docs/05 §5, what each slot says: every slot present, Context,
-     Manuals, Delivery review and Milestone review included; the Publish
-     policy's last sentence; the Verify slot's slow tests; a Manuals slot
-     naming the manual of running it, owed or written; a Delivery review
-     that reads `git diff HEAD` and the branch's commits, not a bare `git
-     diff`, and the files the delivery created; a Milestone review slot
-     that names the host's command stays, and one missing or naming
-     neither a command nor areas gets docs/01's modules proposed; a branch
-     or worktree Git slot silent on /propose pushing the branch it
-     creates; a worktree Git slot that names no folder, in a container
-     whose hidden folder already holds `repo.git/`, gets that folder's
-     name and its branches' prefix written in, so nothing moves, and one
-     with no manual letting a session in `main/` edit the worktrees;
-   * docs/05 §5, the shape of a slot: a procedure a person runs by hand
+     concrete input and failure cases; a screen's reference before `[>]`,
+     as the Design slot says; the page complete before `[>]`; the
+     `## Outcome` heading before what /apply appends; the final `commit`
+     block;
+   * docs/05 §4. When each mark changes, and resumption. Order as
+     priority and `after`, read per command, `after all` on the review
+     line, no `(PA)` token. Integrated as what frees a build. A line on
+     one line. What may run now answered by `queue.sh` and offered as
+     one command, with its cost. The file check before /apply's first
+     edit. A line no clause of the milestone needs going to the next
+     one. The four cases a line waits in. A line whose session ended,
+     and a dropped line. The claim, the current copy of a line and a
+     `[?]` on any copy. The parallel paragraphs present only where
+     sessions overlap;
+   * docs/05 §5, what each slot says. Every slot present, Context,
+     Manuals, Design, Delivery review and Milestone review included. The
+     Publish policy's last sentence. The Verify slot's slow tests. A
+     Manuals slot naming the manual of running it, owed or written. A
+     Delivery review that reads `git diff HEAD` and the branch's
+     commits, not a bare `git diff`, and the files the delivery created.
+     A Milestone review slot that names the host's command stays; one
+     missing or naming neither a command nor areas gets docs/01's
+     modules proposed. A branch or worktree Git slot silent on the
+     claim, `claim.sh` creating the branch on origin. A worktree Git
+     slot that names no folder, in a container whose hidden folder
+     already holds `repo.git/`, gets that folder's name and its
+     branches' prefix written in, so nothing moves. One with no manual
+     letting a session in `main/` edit the worktrees;
+   * docs/05 §5, the shape of a slot. A procedure a person runs by hand
      written only inside a slot or another document becomes a manual in
-     docs/manuals/, the slot keeping the command and pointing to it; a
-     slot that narrates steps or output shrinks to what and the command;
-     a rule the project added to a command's file becomes a slot the
+     docs/manuals/, the slot keeping the command and pointing to it. A
+     slot that narrates steps or output shrinks to what and the command.
+     A rule the project added to a command's file becomes a slot the
      command follows;
    * docs/05 §6: the commit from an index holding one delivery, never by
      naming paths; the one index of a tree; what a revert does not undo,
@@ -100,11 +110,14 @@ Version: 2026.10.24
      sentence of what it delivers. It keeps the mark, the slug, that
      sentence and its suffixes. The rest moves to its page, or to a draft
      `work/<slug>.md` for a `[ ]` line, when the page does not already
-     hold it. The report names those lines and rewrites one as the
-     example;
+     hold it. A `(PA)` token leaves the line; a `-` becomes an `after`
+     only where the page says so. A review line ends `· after all`. A
+     line wrapped over several lines is joined. The report names those
+     lines and rewrites one as the example;
    * AGENTS.md: the process rules, including the lines on committing, on
      a change asked outside /apply, on where things stand and what a page
-     decided, and on docs/manuals/.
+     decided, and on docs/manuals/; its em dash and abstraction lines
+     pointing at docs/04 and docs/01.
    Preserve project choices; do not edit these files during setup. Report
    the installed skill version apart from the pending process migrations;
    an updated skill does not mean an updated process.
@@ -146,23 +159,23 @@ same file here.
 
 Each row was read off the vendor's documentation on 2026-09-21 and
 checked again between 2026-10-07 and 2026-10-20, the Copilot CLI last. A host
-enters this table only with its documentation in hand: Claude Code
-https://code.claude.com/docs/en/memory and https://code.claude.com/docs/en/skills;
-Codex https://learn.chatgpt.com/docs/build-skills and
-https://learn.chatgpt.com/docs/agent-configuration/agents-md; Copilot
+enters this table only with its documentation in hand. Claude Code:
+https://code.claude.com/docs/en/memory and https://code.claude.com/docs/en/skills.
+Codex: https://learn.chatgpt.com/docs/build-skills and
+https://learn.chatgpt.com/docs/agent-configuration/agents-md. Copilot:
 https://docs.github.com/en/copilot/concepts/agents/about-agent-skills,
 https://docs.github.com/en/copilot/reference/cli-command-reference and
-https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/your-first-prompt-file;
-Cursor https://cursor.com/docs/rules and
-https://cursor.com/docs/cli/reference/slash-commands; Antigravity
+https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/your-first-prompt-file.
+Cursor: https://cursor.com/docs/rules and
+https://cursor.com/docs/cli/reference/slash-commands. Antigravity:
 https://antigravity.google/docs/rules and
-https://antigravity.google/docs/skills/; Gemini CLI
+https://antigravity.google/docs/skills/. Gemini CLI:
 https://geminicli.com/docs/cli/gemini-md/ and
-https://geminicli.com/docs/cli/custom-commands/; Devin Desktop
+https://geminicli.com/docs/cli/custom-commands/. Devin Desktop:
 https://docs.devin.ai/cli/extensibility/skills/overview and
-https://docs.devin.ai/cli/extensibility/rules; OpenCode
-https://opencode.ai/docs/skills/; Zed https://zed.dev/docs/ai/skills; the
-last row https://agents.md. What the documentation does not say, the kit
+https://docs.devin.ai/cli/extensibility/rules. OpenCode:
+https://opencode.ai/docs/skills/. Zed: https://zed.dev/docs/ai/skills. The
+last row: https://agents.md. What the documentation does not say, the kit
 does not rely on: Cursor's skills folder and Amp are left out until their
 pages say so. Claude Code's and the Copilot CLI's skills and Codex's
 policy disable model invocation: the agent runs one only when the person
@@ -224,7 +237,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.24"
+  version: "2026.10.25"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -248,18 +261,22 @@ order. Move on when you could write the section yourself.
 4. **The conventions** (docs/04): documentation language, identifier
    language, style, where tests live; commit format lives in docs/05 §6.
 5. **The process slots** (docs/05): verify command and the slow tests kept
-   out of it, environments, how a screen is proven, publish policy,
-   whether `context/` is committed, and the manuals: running it is owed by
-   the first delivery after which a person can, the rest "none yet". Then
-   whether a second pair of eyes reads each delivery before it ends and
-   the whole milestone at its close. The default is yes: the host's own
-   review where it has one, else a read-only agent, and the kit's readers
-   over docs/01's modules, on the session's model. What does not exist
-   yet is written as "created by the first delivery".
+   out of it, environments, publish policy, whether `context/` is
+   committed, and the manuals: running it is owed by the first delivery
+   after which a person can, the rest "none yet". How a screen is proven
+   and where its reference comes from: the person's design tool, a
+   design delivery before the first screen, or a prototype by choice;
+   the default is a design delivery for a product, prototype for a tool.
+   Then whether a second pair of eyes reads each delivery before it ends
+   and the whole milestone at its close. The default is yes: the host's
+   own review where it has one, else a read-only agent, and the kit's
+   readers over docs/01's modules, on the session's model. What does not
+   exist yet is written as "created by the first delivery".
 6. **The first milestone** (docs/06): three to eight deliveries, one line
-   each, in order, with the `(PA)` token of docs/05 §4 when lines will
-   run at the same time, then its review. The first ones are the
-   skeleton the others stand on.
+   each, in order, `· after` on a line that needs another first, then
+   its review, `· after all`. The first ones are the skeleton the others
+   stand on. When sessions will run at the same time, docs/05 §4 gets
+   its parallel paragraphs.
 
 Ask only what you cannot decide with a sensible default. State the default
 and ask whether it holds: a person who cannot answer must be able to say
@@ -269,14 +286,14 @@ it has one, recommendation first, at most four questions per round.
 
 ## Write
 
-When the six subjects are covered, write, in the documentation language:
-docs/00 to 06 as `references/documents.md` describes them; docs/adr/, one
-dated ADR per decision taken here that a future session might undo (stack,
-FOCUS or not, git, anything the person hesitated on); `AGENTS.md` from the
-template; `CLAUDE.md` holding the line `@AGENTS.md` and nothing else yet;
-and the folder `work/done/` with a `.gitkeep`, so it survives a clone. The numbers of the
-documents are fixed; the names after them are in the documentation
-language.
+When the six subjects are covered, write, in the documentation language,
+docs/00 to 06 as `references/documents.md` describes them. Write
+docs/adr/: one dated ADR per decision taken here that a future session
+might undo, such as the stack, FOCUS or not, git, anything the person
+hesitated on. Write `AGENTS.md` from the template, `CLAUDE.md` holding
+the line `@AGENTS.md` and nothing else yet, and the folder `work/done/`
+with a `.gitkeep`, so it survives a clone. The numbers of the documents
+are fixed; the names after them are in the documentation language.
 
 Show the queue and stop. The next step is `/propose <slug>` for its first
 line; write it as this host invokes commands, which may not be `/`. Write
@@ -295,7 +312,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.24"
+  version: "2026.10.25"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -304,11 +321,12 @@ what each document holds.
 ## Read
 
 `context/`, whole, when it exists: what people said that the code cannot.
-The README and any existing docs; the manifests (package.json, pyproject,
-go.mod, *.csproj, pubspec.yaml, Cargo.toml, Gemfile, and the like); the
-folder tree two levels deep; the entry points; the tests and how they run;
-CI, and any Makefile or script a person runs by hand; the last fifty commit subjects; any agent rules file already there
-(CLAUDE.md, AGENTS.md, .github/copilot-instructions.md, .cursorrules).
+The README and any existing docs. The manifests: package.json, pyproject,
+go.mod, *.csproj, pubspec.yaml, Cargo.toml, Gemfile, and the like. The
+folder tree two levels deep, the entry points, the tests and how they
+run. CI, and any Makefile or script a person runs by hand. The last fifty
+commit subjects. Any agent rules file already there: CLAUDE.md,
+AGENTS.md, .github/copilot-instructions.md, .cursorrules.
 
 From that, infer the stack, how the code is organized, where business rules
 live, how errors travel, what the verify command is, which tests are slow
@@ -334,8 +352,13 @@ host's question form when it has one:
   paths, else a read-only agent; and the kit's readers over docs/01's
   modules on the session's model, or the host's deep review when the
   project already launches one;
+* where a screen's reference comes from, when there are screens: the
+  design files the repository or `context/` holds, a design delivery
+  before the next screen, or a prototype by choice. Default: what
+  exists, named;
 * the first milestone: three to eight deliveries, or where to read them
-  from (issues, a TODO file, a roadmap), then its review.
+  from (issues, a TODO file, a roadmap), `· after` where one needs
+  another first, then its review, `· after all`.
 
 Everything else you decide from the code and mark as observed. Where the
 code contradicts itself, the document records an open question; the person
@@ -343,13 +366,14 @@ is not asked to settle it now.
 
 ## Write
 
-In the documentation language: docs/00 to 06 describing what exists, not
-what should exist; docs/adr/ with the decisions the code already embodies
-and the ones this round took, one dated paragraph each; docs/manuals/,
-running it first, then one per thing a person already does by hand (a
-Makefile target, a deploy script, steps in a README), as docs/05 §5 says;
-`AGENTS.md` from the template; `CLAUDE.md` holding `@AGENTS.md`; and the folder
-`work/done/` with a `.gitkeep`. The rules live in `AGENTS.md`: what an
+In the documentation language, write docs/00 to 06 describing what
+exists, not what should exist. Write docs/adr/ with the decisions the
+code already embodies and the ones this round took, one dated paragraph
+each. Write docs/manuals/, running it first, then one per thing a person
+already does by hand, such as a Makefile target, a deploy script or
+steps in a README, as docs/05 §5 says. Write `AGENTS.md` from the
+template, `CLAUDE.md` holding `@AGENTS.md`, and the folder `work/done/`
+with a `.gitkeep`. The rules live in `AGENTS.md`: what an
 existing `CLAUDE.md`, `.github/copilot-instructions.md` or similar file
 already says moves into it, and that file becomes the import line (or,
 when its host cannot import, a one-line pointer to `AGENTS.md`), keeping
@@ -374,24 +398,28 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.24"
+  version: "2026.10.25"
 ---
-You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`:
-none, show what may run now as docs/05 §4 says and ask; several, one subagent per slug, opened at once where
-docs/05 §4 allows, each taking its slug from the message that opens it and
-running on the word of the person who typed the command, which names them all.
+You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`.
+None: show what may run now as docs/05 §4 says and ask. Several: one
+subagent per slug, opened at once where docs/05 §4 allows, each taking
+its slug from the message that opens it. They run on the word of the
+person who typed the command, which names them all.
 
 Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
-(process) and docs/06 (queue), and the deliveries in flight in `work/`. Do
-not start a blocked line until its recorded reason is resolved, nor a line
-docs/05 §4 says waits, by its token or its `after`; a `[~]` line is
-resumed only on the person's word that its session ended. Otherwise claim
-the line as docs/05 §2 says: run
+(process) and docs/06 (queue), and the deliveries in flight in `work/`.
+docs/05 may open with a line mapping the kit's section numbers to its
+own; read by it. Do not start a blocked line until its recorded reason
+is resolved, nor a line whose `after` docs/05 §4 says is not yet
+defined; a `[~]` line is resumed only on the person's word that its
+session ended. Otherwise claim the line as docs/05 §2 says: run
 `git -c "alias.fk=!sh .agents/skills/propose/scripts/claim.sh" fk <slug> <strategy>`,
 the strategy being what docs/05 §5's Git slot says, `trunk`, `branch` or
-`worktree <hidden> <prefix>`. Continue at the path it prints; your first
-edit there marks it `[~]`. If git cannot find `sh`, Git for Windows was
-installed without its shell: say so and stop.
+`worktree <hidden> <prefix>`. `claim: taken` is another clone's line:
+stop, unless the person says to resume it, then add `resume` at the end.
+Continue at the path it prints; your first edit there marks it `[~]`. If
+git cannot find `sh`, Git for Windows was installed without its shell:
+say so and stop.
 Follow every slot of docs/05 §5 that names this command, the project's own
 included. Another line changing mark meanwhile is another session's work.
 
@@ -426,21 +454,23 @@ description: >-
   Implement work/<slug>.md end to end: code, tests, verify, proof, docs,
   then stage and suggest the commit. Never commits on its own.
 argument-hint: <slug>...
+allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.24"
+  version: "2026.10.25"
 ---
-The slugs are `$ARGUMENTS`: none, show what may run now as docs/05 §4
-says and ask; several, one subagent per
-slug, opened at once where docs/05 §4 allows, each taking its slug from
-the message that opens it and running on the word of the person who typed
-the command, which names them all. Implement `work/<slug>.md` in this
-session, completely; the page is the scope: do not widen it.
+The slugs are `$ARGUMENTS`. None: show what may run now as docs/05 §4
+says and ask. Several: one subagent per slug, opened at once where
+docs/05 §4 allows, each taking its slug from the message that opens it.
+They run on the word of the person who typed the command, which names
+them all. Implement `work/<slug>.md` in this session, completely; the
+page is the scope: do not widen it.
 
 Read the page, `AGENTS.md`, docs/00 (product), docs/01 (architecture),
 docs/03 (domain), docs/04 (conventions), docs/05 (process) and docs/06
-(queue). Follow every slot of docs/05 §5 literally, the project's own
-slots included. Before editing, inspect the working tree and index as
-docs/05 §6 says. Work on the branch /propose created, if any; with a
+(queue). docs/05 may open with a line mapping the kit's section numbers
+to its own; read by it. Follow every slot of docs/05 §5 literally, the
+project's own slots included. Before editing, inspect the working tree
+and index as docs/05 §6 says. Work on the branch /propose created, if any; with a
 worktree, only in a session opened in it or a subagent sent to its path,
 every file and command at that path: elsewhere, stop before any edit and
 give the path.
@@ -449,8 +479,9 @@ If the page contradicts a document, stop and say which: the document changes
 in this delivery or the page is wrong. Do not resolve it silently. Follow
 docs/05 §4 to resume a blocked line, or a `[*]` line the person says its
 session left; refuse an incomplete proposal and point to /propose. Otherwise
-only a fully defined `[>]` line that §4's token and `after` let build
-becomes `[*]`, your first edit. docs/05 §§4 and 6 say what a conflict is.
+only a fully defined `[>]` line whose `after` is integrated, as §4 says,
+and whose files no in-flight build touches, becomes `[*]`, your first
+edit. docs/05 §§4 and 6 say what a conflict is.
 
 When work cannot go on, record what was built and what it waits on, leave
 the page in `work/` and block it with `resume: apply` as docs/05 §4 says.
@@ -482,11 +513,12 @@ show the same message in the conversation in a `commit` block. Your last
 edit marks the line `[x]` and stages that hunk. Never commit or merge unless
 the person asks. Files and message in the documentation language; talk in
 the person's language. Give the person's next steps, each command written
-as this host invokes commands: use what the delivery changed, as its user
-would, and ask here for what is wrong; review the staged diff; commit with
-the suggested message, merging a delivery branch as docs/05 §5 says; then
-what may run next, as docs/05 §4 says. End saying which environment is at
-which version and the command that updates the others; never end silent.
+as this host invokes commands. Use what the delivery changed, as its user
+would, and ask here for what is wrong. Review the staged diff. Commit
+with the suggested message, merging a delivery branch as docs/05 §5
+says. Then what may run next, as docs/05 §4 says. End saying which
+environment is at which version and the command that updates the
+others; never end silent.
 ````
 
 ### 3.5 `brainstorm/references/documents.md` and `analyze/references/documents.md`
@@ -515,7 +547,9 @@ same delivery.
 
 **docs/01, the architecture.** The design in one sentence. The stack, with
 the reason for each choice that had an alternative. How the code is
-organized (§Choices, FOCUS). How data is accessed. How errors travel. The
+organized (§Choices, FOCUS). How data is accessed. How errors travel. When
+an abstraction is introduced; the kit's default is on the second concrete
+occurrence, the delivery naming the first. The
 environments (local, staging, production, or whatever exists) and what runs
 where. What was tried and removed on purpose, so it is not rebuilt.
 
@@ -528,7 +562,9 @@ entities and invariants. Every page in `work/`, every identifier and every
 test uses the terms of this table. A new concept enters here first.
 
 **docs/04, the conventions.** Documentation language and identifier
-language. Naming. Style and formatting, and the tool that enforces them.
+language. Naming. Style and formatting, and the tool that enforces them;
+whether the em dash is allowed in text a user reads, the kit's default
+being no.
 Where tests live and what is tested at each level: business rules
 tested in process, the fastest tests there are; end-to-end
 tests, and any that need the running application or a network, only
@@ -545,12 +581,12 @@ its review (docs/05 §8):
 [ ] <slug>    <what it delivers, one line>
 ```
 
-A line holds the mark, the slug, a token, one sentence and its suffixes;
-what happened goes on the page. The marks, the token, the suffixes
-(`· after`, `· resume:`, `· blocked:`, `· dropped:`), the order as
-priority, the next milestone and what may run at the same time are
-docs/05 §4, written once there. What is not in the current milestone is
-not planned yet.
+A line holds the mark, the slug, one sentence and its suffixes, on one
+line; what happened goes on the page. The marks, the suffixes
+(`· after`, `· after all`, `· resume:`, `· blocked:`, `· dropped:`), the
+order as priority, the next milestone and what may run at the same time
+are docs/05 §4, written once there. What is not in the current milestone
+is not planned yet.
 
 **docs/adr/.** One file per decision, `ADR-NNNN-<slug>.md`: context, the
 decision, the consequences, the date. An ADR is amended, never rewritten.
@@ -635,8 +671,9 @@ that it is not. The agent never commits or merges on its own:
   delivery, and the person commits one delivery at a time, from an index
   that holds only it (docs/05 §6). Not for two people: their deliveries share one
   branch and one commit carries the other's half-done work;
-* **a branch per delivery:** `/propose` creates a branch named after the
-  slug, pushes it, and writes the page there; `/apply` builds on it. The
+* **a branch per delivery:** `/propose` claims the line with `claim.sh`,
+  below, on a branch named after the slug, and writes the page there;
+  `/apply` builds on it. The
   branch may carry several commits, the page first and the build after;
   the person merges it through a pull request in one merge, so reverting
   the delivery is one revert of that merge. For sequential work reviewed
@@ -647,20 +684,23 @@ that it is not. The agent never commits or merges on its own:
   `<hidden>/worktrees/<slug>/`, on the branch `<prefix>/<slug>`; docs/05's
   Git slot names the hidden folder and the prefix, and a slot that names
   neither means `.focus-kit/` and `focus-kit/`. `/propose` claims the
-  line with its `claim.sh`, which checks the remote for the branch,
-  creates the slug's worktree there from the main branch's HEAD and
-  pushes its branch at once, so the line is taken in every clone, or
-  reuses the one that exists, and prints the path; the page is written
-  in it. A branch `<slug>` without the prefix is not the delivery's. `/apply` runs
+  line with its `claim.sh`, which creates the slug's worktree from
+  origin's main branch and its branch on origin, only when no clone has
+  it yet, so the line is taken in every clone. It reopens this clone's
+  own worktree, opens another clone's only with `resume`, and prints the
+  path; the page is written in it. A branch `<slug>` without the prefix
+  is not the delivery's. `/apply` runs
   in a session opened in it, or a subagent sent to its path, never in
   `main/`; the container's manual lets a session in `main/` edit
   `<hidden>/worktrees/`. The branch reaches the
-  main branch in one merge, as above. For parallel work by several people,
-  or by one person whose deliveries touch the same files: one branch does
-  not touch another. Before running two at once, pick free lines
-  (docs/05 §4's `queue.sh`) and decide which touch the same files, including
-  docs/06 and other shared documents. Reconcile the queue by docs/05 §4
-  when their branches are integrated. Costs a directory per delivery.
+  main branch in one merge, as above, and only then is the delivery
+  integrated for the lines that wait on it. For parallel work by several
+  people, or by one person whose deliveries touch the same files: one
+  branch does not touch another. `queue.sh` says which lines are free,
+  and `/apply` checks before its first edit that no in-flight build
+  touches its files, docs/06 and other shared documents included.
+  Reconcile the queue by docs/05 §4 when their branches are integrated.
+  Costs a directory per delivery.
 
 ## The process document (docs/05)
 
@@ -694,9 +734,10 @@ person runs it in this session, whose conversation the draft already
 holds, or in a fresh one. /apply always starts in a fresh session, a
 subagent being one: it has only what the page says.
 
-Before /propose changes the queue or the page, use §5's git strategy:
-create the branch or worktree named after the slug, push its branch, or
-reuse its existing one on resumption, bringing into it any draft left
+Before /propose changes the queue or the page, claim the line as §5's
+Git slot says: `claim.sh` creates the branch or worktree on origin, or
+reopens the one this clone already has; one another clone created opens
+only on the person's word, with `resume`. Bring into it any draft left
 for the slug. Add a missing queue line where it belongs and say so.
 Start defining with `[~]`; start building only a completely defined `[>]`
 page, with `[*]`. Follow §4 for blocked lines and §6 before changing code
@@ -723,17 +764,20 @@ a missing process rule rather than falling back to a retired instruction.
     defaults". Only when there is a screen.
 
     **Visual reference.** Where the design is, and the viewports. Only when
-    there is a screen.
+    there is a screen. A screen whose reference does not exist yet gets
+    one as §5's Design slot says, before this page is `[>]`.
 
     **Out of scope.** What does not enter, half a line of reason each.
 
     **Done when.** A mechanical checklist: tests X pass; verify green;
     screenshot matches Y.
 
-After /apply the page also records what happened: what diverged, what was
-dropped, what the proof found, the decisions taken. It ends with the commit
-message /apply suggested, in a fenced block whose info string is `commit`.
-There is one final block: a resumed /apply replaces the earlier suggestion.
+After /apply the page also records what happened, under a heading
+`## Outcome` below Done when, so the definition above stays as it was
+read: what diverged, what was dropped, what the proof found, the
+decisions taken. It ends with the commit message /apply suggested, in a
+fenced block whose info string is `commit`. There is one final block: a
+resumed /apply replaces the earlier suggestion.
 
 A draft with open scope questions is not ready for /apply, even when its
 file exists: before `[>]`, every section above is filled or explicitly
@@ -749,27 +793,29 @@ docs/06: one line per delivery, in order, under milestones, edited by
 conversation in any session. The order is the priority: the next
 delivery is the first free line, and the person reorders by
 conversation. A line is the mark, the slug, one sentence and its
-suffixes; what happened goes on the page, because /propose reads the
-whole queue. A line that needs another done first ends with
-`· after <slug>`, written when the line is added; it is free when every
-line it names is `[x]`. A line that no clause of the current milestone's
-paragraph needs, whoever adds it, goes under the next milestone, created
-when missing with a paragraph that line answers and its review last; a
-finding of the milestone's own review stays in it (§8). A line may carry
-`(PA)` after the slug: whether its /propose and its /apply may run while
-the lines above it are in flight. `P`: the definition takes nothing from
-their pages; `A`: the build touches none of their files; `-` waits, for
-every line above to be `[>]` or beyond before /propose, `[x]` before
-/apply. `after` holds for both commands, with or without a token: neither
-/propose nor /apply starts until every line it names is `[x]`, whatever
-the token says. Whoever changes the queue re-judges the tokens it affects; /propose
-corrects a token from the page. Asked what may run now, run
+suffixes, on one line; what happened goes on the page, because /propose
+reads the whole queue. A line that needs another first ends with
+`· after <slug>`, written when the line is added, or `· after all`,
+every line above it in its milestone, which is how the review is
+written. `after` is read per command: /propose starts when every line
+it names is `[>]` or beyond, because the definition needs their pages;
+/apply starts when every line it names is integrated, because the build
+needs their code. Integrated is `[x]` on trunk; with a branch or a
+worktree per delivery it is the delivery merged into the main branch,
+and a `[x]` on its branch is built, awaiting integration. A line that
+no clause of the current milestone's paragraph needs, whoever adds it,
+goes under the next milestone, created when missing with a paragraph
+that line answers and its review last; a finding of the milestone's own
+review stays in it (§8). Asked what may run now, run
 `git -c "alias.fq=!sh .agents/skills/propose/scripts/queue.sh" fq <strategy>`,
-the strategy as for the claim, and show its tree. It names the lines
-that may run together; a line it lists without a token is judged first,
-from its page and docs/01, by the files it touches. Offer them as one
-command with several slugs, saying each slug is one more agent and costs
-as much as one session. The line never leaves the queue; it changes mark as the
+the strategy as for the claim, and show its tree: each line under the
+last line it waits on, with its state, then the lines free for /apply
+and for /propose, in order, and the next one. Offer the free lines as
+one command with several slugs, saying each slug is one more agent and
+costs as much as one session. Two builds must not touch the same files:
+before its first edit, /apply compares the files its page touches with
+the in-flight and unintegrated builds (§6), and an overlap is a
+conflict, below. The line never leaves the queue; it changes mark as the
 work changes, so the queue shows what is happening while it happens:
 
 | Mark | Means | Set by |
@@ -778,19 +824,20 @@ work changes, so the queue shows what is happening while it happens:
 | `[~]` | being defined | /propose, when it starts |
 | `[>]` | completely defined, page ready for /apply | /propose, when §3 is complete |
 | `[*]` | being built | /apply, when it starts |
-| `[x]` | done, page in `work/done/`; with `· dropped:`, cancelled | /apply, with verify green; the person, when cancelling |
+| `[x]` | done, page in `work/done/`; on a branch, built until merged; with `· dropped:`, cancelled | /apply, with verify green; the person, when cancelling |
 | `[?]` | waiting | any session, in the four cases below |
 
 A board may read the queue, and people pull work from it, so a mark
 changes at once: `[~]` is /propose's first edit, `[*]` is /apply's first,
 `[x]` is /apply's last. On trunk the board sees it at once. With a branch
-or a worktree per delivery the mark lives on the delivery's branch, pushed
-when /propose creates it, and the main branch shows the line as it was
-until the merge. After `git fetch`, a line whose branch exists is taken,
-whatever main shows. Whoever reads the queue there, a board or a session
-picking free lines or resolving an `after`, takes each slug's line from
-that branch, local or remote, and the lines only a branch has, reconciled
-by slug as below.
+or a worktree per delivery the mark lives on the delivery's branch, which
+/propose creates on origin as the claim, and the main branch shows the
+line as it was until the merge. A line whose branch exists on origin is
+taken, whatever its copies say. The branch's copy of the line is the
+current one for its slug until the merge, main's after it; a `[?]` on
+any copy blocks; a line only a branch has belongs to its milestone.
+`queue.sh` reads them so; whoever reads by hand, a board or a session,
+reads the same way after `git fetch`.
 
 A line waits in four cases:
 
@@ -805,9 +852,9 @@ The line ends with the command that picks it up, `· resume: propose` or
 `· blocked: after <slug>, <slug>`. A dependency known when the line is
 added is `· after <slug>` alone, without `[?]`: an order, not an
 interruption. When the reason is resolved (the person says so, the
-session that records the answer clears it, or /apply marks `[x]` the last
-line of an `after`), remove both suffixes: `resume: propose` returns to
-`[ ]`, keeping any draft, and `resume: apply` to `[>]`.
+session that records the answer clears it, or the last line of an
+`after` is integrated), remove both suffixes: `resume: propose` returns
+to `[ ]`, keeping any draft, and `resume: apply` to `[>]`.
 
 A `[~]` or `[*]` line whose session ended without blocking it (the host
 closed, the connection or its limit) keeps its mark; its command resumes
@@ -816,6 +863,11 @@ before editing. A delivery the person cancels, because it is impossible,
 refused or no longer wanted, ends `[x]` with `· dropped: <reason>` at the
 end of the line, its page in `work/done/` saying what was built and
 undone; a line whose `after` names it is the person's to re-decide.
+
+<Written when §5's Git slot is a branch or a worktree per delivery, or
+when the person says sessions will run at the same time: the two
+paragraphs below. Otherwise they are left out, and a later decision
+adds them>.
 
 Two sessions in one working tree, on free lines that touch different
 files, are the normal case of parallel work on trunk. Another line
@@ -832,19 +884,17 @@ its latest state, never one side's whole file.
 
 A command typed with several slugs opens one subagent per slug, each
 following the command's file with one slug, sent to the slug's worktree
-where §5's Git slot has one (/propose creates it). The subagents the
-tokens and `after` let run at once are opened at once, not one after
-another; a line still waiting when the others end is reported, not waited
-for. The session edits nothing itself. A subagent cannot ask the person: it reports the question
+where §5's Git slot has one (/propose creates it). The subagents `after`
+lets run at once are opened at once, not one after another; a line
+still waiting when the others end is reported, not waited for. The session edits nothing itself. A subagent cannot ask the person: it reports the question
 with the context to answer it and stops; the session asks and sends the
 answer back, resuming it where the host can, else opening it again on the
 slug, whose `[~]` or `[*]` it resumes on the command's word. A command that
 says to decide alone has each question answered by its recommendation,
 written on the page as the agent's answer, saying the agent chose it, so
-the review finds it; one
-that says to build as well has a new subagent run /apply when a page
-reaches `[>]`, the page saying it was built before the person read it,
-who reads the pages and the diffs at the end.
+the review finds it. One that says to build as well has a new subagent
+run /apply when a page reaches `[>]`, the page saying it was built
+before the person read it, who reads the pages and the diffs at the end.
 
 ## 5. This project
 
@@ -861,19 +911,27 @@ The project may add slots of its own; a slot that names /propose or
 * **Environments:** one line each: name, what runs there, what a delivery
   must leave up to date there, and the command that does it, or its
   manual when a person does it by hand.
+* **Design:** where a screen's reference comes from and where it is
+  kept, `docs/ui/` unless said otherwise. <The person's design tool and
+  its export. Or a design delivery: a queue line before the screen's
+  line, whose deliverable is a static HTML or SVG mock the person opens
+  and approves. Or: prototype, no reference, by choice.> A page with a
+  screen and no reference is not `[>]` unless this slot says prototype;
+  /apply compares, corrects or justifies each divergence from it. Or:
+  "no screens".
 * **Proof of a screen:** <tool, viewports, reference>, or "no screens".
 * **Publish policy:** when an environment beyond the local one is updated,
   and whether the agent asks first. Whatever it is, /apply's last words
   say which environment is at which version.
 * **Context:** `context/` is committed | listed in `.gitignore`, and why
   (who reads the repository).
-* **Delivery review:** <how /apply has a delivery's changes reviewed by a
-  context that did not write them: the host's own review, as a skill the
-  agent invokes or a command it runs, and how it is limited to the
-  delivery's paths; else a read-only agent on the session's model reading
-  the whole delivery against its base: `git diff HEAD` of those paths,
-  staged and unstaged, the commits a blocked delivery already made on its
-  branch or worktree, and the files it created; or: none>.
+* **Delivery review:** how /apply has a delivery's changes reviewed by a
+  context that did not write them. <The host's own review, as a skill
+  the agent invokes or a command it runs, limited to the delivery's
+  paths. Or a read-only agent on the session's model reading the whole
+  delivery against its base: `git diff HEAD` of those paths, staged and
+  unstaged, the commits a blocked delivery already made on its branch or
+  worktree, and the files it created. Or: none.>
 * **Manuals:** `docs/manuals/`, one file per action that takes more than
   one command, named after what it does. That is running the product from
   a fresh clone, what a person does by hand outside a delivery (publish,
@@ -885,12 +943,12 @@ The project may add slots of its own; a slot that names /propose or
   instead of holding the steps; a delivery that changes one updates its
   manual. <One line each; running it is owed by the first delivery after
   which a person can run it, from install to the first screen or call.>
-* **Milestone review:** <who reads the milestone's code in §8: the
+* **Milestone review:** who reads the milestone's code in §8. <The
   host's deep review the person launches over the range, named with its
-  command, when the host has one that takes the whole range; or the
+  command, when the host has one that takes the whole range. Or the
   kit's readers, with the areas a milestone's changes split into, one
   reader each, and the model its readers and checker run on, or the
-  session's; or: none>.
+  session's. Or: none.>
 * **Git:** trunk | a branch per delivery | a worktree per delivery. A
   delivery's page and build are one change: one commit on trunk, one merge
   otherwise. Reverting it undoes what git holds; a delivery that acts
@@ -898,10 +956,11 @@ The project may add slots of its own; a slot that names /propose or
   that is undone, or that it is not. The agent stages; it never commits or
   merges on its own, and asked, it takes the step the person names. <Or:
   the agent commits, and merges, by this slot's word, which is the asking;
-  the person reviews the commit.> <A branch or worktree per delivery:
-  /propose pushes the branch it creates, the remote checked for one
-  first, so the line is taken in every clone; a worktree: the hidden
-  folder of the container, `.focus-kit/`, the branch prefix, `focus-kit/`.>
+  the person reviews the commit>. <A branch or worktree per delivery:
+  /propose claims the line with `claim.sh`, which creates the branch on
+  origin only when no clone has, from origin's main branch, so the line
+  is taken in every clone. A worktree: the hidden folder of the
+  container, `.focus-kit/`, the branch prefix, `focus-kit/`.>
 
 ## 6. Commit
 
@@ -951,28 +1010,30 @@ answer names an error that happened.
 ## 8. Closing a milestone
 
 A milestone is planned with its review as its last line,
-`<milestone>-review`, a delivery like the others: /propose writes its
-page, /apply runs it. It takes the milestone's paragraph clause by clause
+`<milestone>-review · after all`, a delivery like the others: /propose
+writes its page when every line above is defined, /apply runs it when
+every line above is integrated. It takes the milestone's paragraph clause by clause
 and writes, for each, which delivery answers it and how a person tests it.
 It fixes nothing. It runs §5's slow tests, when the slot names them; a
 failing one is a finding. The person tests each clause by hand: a clause
 no delivery answers, or one that fails in the person's hands, is a finding.
 
 The review also reads the code, the one look at the whole instead of a
-delivery: every page can be right and the whole wrong. Its page names as
-the base the commit of the previous milestone's review, so the range
-holds the fixes of its findings, which get no second review, or the
-first commit for a first milestone, or, where no earlier review exists,
-the commit the page names and why; and the commit HEAD was when the
-reading started, so the range stays fixed while readers work; and the
-paths `git diff --stat <base>..<that commit>` shows: always the range,
-since a bare commit reads that one commit. It costs, so the session says
+delivery: every page can be right and the whole wrong. Its page names
+the base and the end of the range. The base is the commit of the
+previous milestone's review, so the range holds the fixes of its
+findings, which get no second review; for a first milestone, the first
+commit; where no earlier review exists, a commit the page names and
+says why. The end is the commit HEAD was when the reading started, so
+the range stays fixed while readers work. The paths are what
+`git diff --stat <base>..<end>` shows: always the range, since a bare
+commit reads that one commit. It costs, so the session says
 it is time and starts it only on the person's word. §5's Milestone review
 slot says who reads: the host's deep review, which the person launches
 over that range, or the kit's readers, one read-only agent per area of
 the slot, in parallel where the host runs agents, else one fresh session
-per area, opened by the person; an area too large for one careful reading
-splits again. Each reader has the whole repository open and reads its
+per area, opened by the person. An area too large for one careful
+reading splits again. Each reader has the whole repository open and reads its
 area's changes for what no delivery's own review could see, one
 delivery's work against another's, a document against another, the whole
 against docs/01, and reports candidates by file and line and the paths it
@@ -1016,7 +1077,7 @@ is the only place a rule is written.
   however small, becomes a `[ ]` line in docs/06, with a draft page for
   what the line cannot hold, and the answer stops there, naming /propose
   (docs/05 §2).
-- No em dash in any text a user reads.
+- No em dash in any text a user reads (docs/04).
 - The agent stages and suggests the commit message. It never commits or
   merges on its own; asked, it takes the step the person names.
 - Stage only this delivery's changes as docs/05 §6 says; preserve unrelated
@@ -1030,7 +1091,7 @@ is the only place a rule is written.
 - <how errors travel, in one line>
 - `<verify>` before declaring anything done.
 - Abstraction on the second concrete occurrence, and the delivery says
-  which was the first.
+  which was the first (docs/01).
 - Ambiguity → ask. Documents are living: a delivery that changes behaviour
   updates the document that owns it, in the same delivery.
 - Asked where things stand, answer from docs/06 and work/, and with a
@@ -1054,15 +1115,20 @@ docs/05 §5's Git slot says.
 #!/bin/sh
 # focus-kit: claim a queue line as docs/05 says. Run it through git, so it
 # starts at the repository's top level on every host and shell:
-#   git -c "alias.fk=!sh .agents/skills/propose/scripts/claim.sh" fk <slug> <strategy>
+#   git -c "alias.fk=!sh .agents/skills/propose/scripts/claim.sh" fk <slug> <strategy> [resume]
 # <strategy> is the Git slot of docs/05: trunk | branch | worktree <hidden> <prefix>
+# The branch is created on origin only if no one else has: a branch that
+# is there and not here is another clone's, opened only with "resume".
 # Prints key: value lines; exit 0 claimed, 2 refused. Edits no document.
 set -eu
 
 die() { printf 'error: %s\n' "$1"; exit 2; }
 
+resume=0; last=
+for a in "$@"; do last=$a; done
+[ $# -gt 2 ] && [ "$last" = resume ] && resume=1
 slug=${1:-}; strategy=${2:-}
-[ -n "$slug" ] && [ -n "$strategy" ] || die "usage: claim.sh <slug> trunk | branch | worktree <hidden> <prefix>"
+[ -n "$slug" ] && [ -n "$strategy" ] || die "usage: claim.sh <slug> trunk | branch | worktree <hidden> <prefix> [resume]"
 case $slug in -*|*[!a-zA-Z0-9._-]*) die "slug '$slug' holds a character a branch name cannot" ;; esac
 
 top=$(git rev-parse --show-toplevel 2>/dev/null) || die "not inside a repository"
@@ -1087,11 +1153,18 @@ case $strategy in
     hidden=${3:-}; prefix=${4:-}
     [ -n "$hidden" ] && [ -n "$prefix" ] || die "worktree needs the hidden folder and the branch prefix: worktree .focus-kit focus-kit/"
     hidden=${hidden%/}
-    case $top in */"$hidden"/worktrees/*) die "run from main/, not from a worktree: $top" ;; esac
-    case $head in "$prefix"*) die "run from main/; HEAD is $head, a delivery branch" ;; esac
     branch="$prefix$slug"
+    case $top in
+      */"$hidden"/worktrees/"$slug")
+        printf 'claim: here\nbranch: %s\npath: %s\n' "$branch" "$top"; draft; exit 0 ;;
+      */"$hidden"/worktrees/*) die "run from main/, not from a worktree: $top" ;;
+    esac
+    case $head in "$prefix"*) die "run from main/; HEAD is $head, a delivery branch" ;; esac
     ;;
-  branch) branch=$slug ;;
+  branch)
+    branch=$slug
+    if [ "$head" = "$branch" ]; then printf 'claim: here\nbranch: %s\npath: %s\n' "$branch" "$top"; draft; exit 0; fi
+    ;;
   *) die "unknown strategy '$strategy': trunk, branch or worktree <hidden> <prefix>" ;;
 esac
 
@@ -1105,8 +1178,13 @@ done
 [ -n "$default" ] || die "cannot tell the default branch; run git remote set-head origin -a"
 [ "$head" = "$default" ] || die "on branch $head; claim from $default"
 
-behind=$(git rev-list --count "$head..origin/$default" 2>/dev/null || echo 0)
-[ "$behind" -eq 0 ] || printf 'note: %s is behind origin by %s; the delivery starts from the local HEAD\n' "$head" "$behind"
+# The delivery starts from origin's default branch, which the fetch just
+# read, so a clone that did not pull still starts from what is integrated.
+base="refs/remotes/origin/$default"
+behind=$(git rev-list --count "$head..$base" 2>/dev/null || echo 0)
+ahead=$(git rev-list --count "$base..$head" 2>/dev/null || echo 0)
+[ "$behind" -eq 0 ] || printf 'note: %s is behind origin by %s; the delivery starts from origin/%s\n' "$head" "$behind" "$default"
+[ "$ahead" -eq 0 ] || printf 'note: %s is ahead of origin by %s; those commits are not in the delivery\n' "$head" "$ahead" "$default"
 
 # ls-remote matches a pattern against the tail of a ref, so the full name is given.
 if [ "$strategy" = worktree ] && git ls-remote --exit-code --heads origin "refs/heads/$slug" >/dev/null 2>&1; then
@@ -1116,36 +1194,46 @@ fi
 if git ls-remote --exit-code --heads origin "refs/heads/$branch" >/dev/null 2>&1; then remote=1; else remote=0; fi
 local=0; git show-ref --quiet "refs/heads/$branch" && local=1
 
+# push_new <dir>: creates the branch on origin only if it is not there yet.
+push_new() { git -C "$1" push -q -u origin "$branch" --force-with-lease="refs/heads/$branch:" 2>/dev/null; }
+
 if [ "$strategy" = worktree ]; then
   path="$(dirname "$top")/$hidden/worktrees/$slug"
   if [ -d "$path" ]; then
     if [ "$remote" -eq 1 ]; then claim="existing"
     else
-      git -C "$path" push -q -u origin "$branch" || die "push of $branch failed; the line is not claimed"
+      push_new "$path" || die "push of $branch failed; the line is not claimed"
       claim="existing, branch pushed now"
     fi
   elif [ "$remote" -eq 1 ]; then
+    [ "$local" -eq 1 ] || [ "$resume" -eq 1 ] || { printf 'claim: taken\nbranch: %s, on origin and not here: another clone'"'"'s; to open it here, add resume\n' "$branch"; exit 2; }
     if [ "$local" -eq 1 ]; then git worktree add -q "$path" "$branch"
     else git worktree add -q --track -b "$branch" "$path" "origin/$branch"; fi
-    claim="existing"
+    claim=$([ "$local" -eq 1 ] && echo existing || echo resumed)
   else
-    git worktree add -q -b "$branch" "$path" "$head"
-    git -C "$path" push -q -u origin "$branch" || die "push of $branch failed; the line is not claimed"
+    git worktree add -q --no-track -b "$branch" "$path" "$base"
+    if ! push_new "$path"; then
+      git worktree remove --force "$path" >/dev/null 2>&1; git branch -q -D "$branch"
+      printf 'claim: taken\nbranch: %s appeared on origin meanwhile: another clone claimed it first\n' "$branch"; exit 2
+    fi
     claim="new"
   fi
   path=$(git -C "$path" rev-parse --show-toplevel)
 else
   if [ "$remote" -eq 1 ]; then
-    if [ "$local" -eq 1 ]; then git switch -q "$branch"
-    else git switch -q --track -c "$branch" "origin/$branch"; fi
-    claim="existing"
+    [ "$local" -eq 1 ] || [ "$resume" -eq 1 ] || { printf 'claim: taken\nbranch: %s, on origin and not here: another clone'"'"'s; to open it here, add resume\n' "$branch"; exit 2; }
+    if [ "$local" -eq 1 ]; then git switch -q "$branch"; claim="existing"
+    else git switch -q --track -c "$branch" "origin/$branch"; claim="resumed"; fi
   elif [ "$local" -eq 1 ]; then
     git switch -q "$branch"
-    git push -q -u origin "$branch" || die "push of $branch failed; the line is not claimed"
+    push_new "$top" || die "push of $branch failed; the line is not claimed"
     claim="existing, branch pushed now"
   else
-    git switch -q -c "$branch"
-    git push -q -u origin "$branch" || die "push of $branch failed; the line is not claimed"
+    git switch -q --no-track -c "$branch" "$base"
+    if ! push_new "$top"; then
+      git switch -q "$default"; git branch -q -D "$branch"
+      printf 'claim: taken\nbranch: %s appeared on origin meanwhile: another clone claimed it first\n' "$branch"; exit 2
+    fi
     claim="new"
   fi
   path=$top
@@ -1160,7 +1248,8 @@ draft
 The script that answers what may run now, as docs/05 §4 says, in both
 skills folders like 3.6, with LF line endings, run through git the same
 way. It reads docs/06 and, with a branch or worktree per delivery, each
-delivery's line from its branch on origin. It edits nothing.
+delivery's line from its branch on origin, a branch being the claim and
+a merge the integration. It edits nothing.
 
 ````sh
 #!/bin/sh
@@ -1169,17 +1258,19 @@ delivery's line from its branch on origin. It edits nothing.
 #   git -c "alias.fq=!sh .agents/skills/propose/scripts/queue.sh" fq <strategy>
 # <strategy> is the Git slot of docs/05: trunk | branch | worktree <hidden> <prefix>
 # With a branch or worktree per delivery, each delivery's line is read from
-# its branch on origin, and lines only a branch has are listed. A line goes
-# under the last line it waits on; "+ after" names the others. Edits nothing.
+# its branch on origin, which is its own copy until the delivery is
+# integrated; a branch on origin is a claim; a [?] on any copy blocks. A
+# line goes under the last line it waits on; "+ after" names the others.
+# A wrapped line is read whole. Edits nothing.
 set -eu
 
 die() { printf 'error: %s\n' "$1"; exit 2; }
 
 strategy=${1:-}
 case $strategy in
-  trunk) prefix= ;;
-  branch) prefix= ;;
-  worktree) prefix=${3:-}; [ -n "$prefix" ] || die "worktree needs the hidden folder and the branch prefix: worktree .focus-kit focus-kit/" ;;
+  trunk) prefix= ; hidden= ;;
+  branch) prefix= ; hidden= ;;
+  worktree) hidden=${2:-}; prefix=${3:-}; [ -n "$hidden" ] && [ -n "$prefix" ] || die "worktree needs the hidden folder and the branch prefix: worktree .focus-kit focus-kit/"; hidden=${hidden%/} ;;
   *) die "usage: queue.sh trunk | branch | worktree <hidden> <prefix>" ;;
 esac
 
@@ -1193,131 +1284,235 @@ done
 [ -n "$queue" ] || die "no docs/06-*.md in $top/docs"
 rel="docs/${queue##*/}"
 
+# join: a physical line that starts with whitespace, after a queue line, is
+# the rest of that line. Everything else passes through, CR removed.
+join='{ sub(/\r$/, "") }
+  /^[ \t]+[^ \t]/ && held != "" { sub(/^[ \t]+/, " "); held = held $0; next }
+  { if (held != "") print held; held = "" }
+  /^\[[ ~>*x?]\][ \t]+[^ \t]/ { held = $0; next }
+  { print }
+  END { if (held != "") print held }'
+
+# tag: records "src \t milestone \t line" for the awk below.
+tag='/^## / { ms = substr($0, 4); next } { print s "\t" ms "\t" $0 }'
+
 overlay=$(mktemp)
 trap 'rm -f "$overlay"' EXIT
+# here: the slug whose own copy the local file is, when run in its worktree
+# or on its branch; empty in main/ and on trunk.
+here=
 if [ "$strategy" != trunk ] && git remote get-url origin >/dev/null 2>&1; then
   git fetch -q origin 2>/dev/null || printf 'note: git fetch origin failed; branches as last fetched\n'
   default=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||') || true
   [ -n "$default" ] || for b in main master; do
     if git show-ref --quiet "refs/remotes/origin/$b"; then default=$b; break; fi
   done
+  head=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
+  case $strategy in
+    worktree) case $top in */"$hidden"/worktrees/*) here=${top##*/} ;; esac ;;
+    branch) [ "$head" = "$default" ] || here=$head ;;
+  esac
+  case $here in ''|*[!a-zA-Z0-9._-]*) here= ;; esac
   git for-each-ref --format='%(refname)' refs/remotes/origin | while read -r ref; do
     name=${ref#refs/remotes/origin/}
-    # The default branch gives every line; a delivery branch, its own.
     if [ "$name" = "$default" ]; then slug='*'
     else
       case $name in HEAD) continue ;; "$prefix"*) ;; *) continue ;; esac
       slug=${name#"$prefix"}
       case $slug in ''|*[!a-zA-Z0-9._-]*) continue ;; esac
+      printf '%s\t@claimed\t\n' "$slug" >> "$overlay"
+      if [ -n "$default" ] && git merge-base --is-ancestor "$ref" "refs/remotes/origin/$default" 2>/dev/null; then
+        printf '%s\t@integrated\t\n' "$slug" >> "$overlay"
+      fi
     fi
-    git show "$ref:$rel" 2>/dev/null | awk -v s="$slug" '{ print s "\t" $0 }' >> "$overlay" || true
+    git show "$ref:$rel" 2>/dev/null | awk "$join" | awk -v s="$slug" "$tag" >> "$overlay" || true
   done
 fi
 
-awk -F '\t' '
+awk "$join" "$queue" | awk -F '\t' -v strategy="$strategy" -v here="$here" '
+# Copies of a line, by slug: the base is origin'"'"'s default branch (in a
+# worktree or on a branch) or the local file (in main/, on trunk); a
+# delivery branch on origin holds its own slug'"'"'s copy, and the local file
+# is the own copy of the slug whose worktree or branch this is. The own copy
+# wins for its slug until the delivery is integrated, then the base wins.
+# Any copy at [?] shows the line blocked unless the winner is [x]. A branch
+# on origin whose winning copy is still [ ] is claimed, progress unknown.
+function sl(line,   s) { s = line; sub(/^\[.\][ \t]+/, "", s); sub(/[ \t].*/, "", s); return s }
+function isline(s) { return s ~ /^\[[ ~>*x?]\][ \t]+[^ \t]/ }
 function parse(line, k,   rest, n, parts, i, p, deps, j, m) {
   mark[k] = substr(line, 2, 1)
   rest = substr(line, 4); sub(/^[ \t]+/, "", rest)
   slug[k] = rest; sub(/[ \t].*/, "", slug[k])
   rest = substr(rest, length(slug[k]) + 1); sub(/^[ \t]+/, "", rest)
-  tokp[k] = ""; toka[k] = ""
-  if (rest ~ /^\([P-][A-]\)/) { tokp[k] = substr(rest, 2, 1); toka[k] = substr(rest, 3, 1) }
-  nafter[k] = 0; resume[k] = ""; blocked[k] = ""; dropped[k] = 0
+  nafter[k] = 0; resume[k] = ""; blocked[k] = ""; dropped[k] = 0; all[k] = 0
   n = split(rest, parts, " \302\267 ")
   for (i = 2; i <= n; i++) {
     p = parts[i]
     if (p ~ /^after /) {
-      sub(/^after /, "", p); m = split(p, deps, /, */)
+      sub(/^after /, "", p)
+      if (p == "all") { all[k] = 1; continue }
+      m = split(p, deps, /, */)
       for (j = 1; j <= m; j++) if (deps[j] != "") after[k, ++nafter[k]] = deps[j]
     } else if (p ~ /^resume: /) { sub(/^resume: /, "", p); resume[k] = p }
     else if (p ~ /^blocked: /) { sub(/^blocked: /, "", p); blocked[k] = p }
     else if (p ~ /^dropped: /) dropped[k] = 1
   }
 }
-function rank(m) { return index(" ~?>*x", m) }
-function isline(s) { return s ~ /^\[[ ~>*x?]\][ \t]+[^ \t]/ }
+function add(s, line, ms, src,   k) {
+  k = ++nq; parse(line, k); at[s] = k; mstone[k] = ms; from[k] = src
+  if (s in blockedcopy && mark[k] != "x") { parse(blockedcopy[s], k); mstone[k] = ms }
+  if (strategy == "trunk") integrated[k] = (mark[k] == "x")
+  else integrated[k] = ((s in basemark) && basemark[s] == "x") || (s in integ)
+  if (mark[k] == "x" && !integrated[k]) built[k] = 1
+  if (mark[k] == " " && (s in claimed)) claimedk[k] = 1
+}
 function defined(k) { return mark[k] ~ /[>*x]/ || (mark[k] == "?" && resume[k] == "apply") }
-function pending(s) { return !(s in at) || mark[at[s]] != "x" }
-function state(k,   i, s, why, sep) {
+function done(k) { return mark[k] == "x" && integrated[k] }
+function deps(k, i,   j, n) {
+  n = 0
+  for (j = 1; j <= nafter[k]; j++) dep[k, ++n] = after[k, j]
+  if (all[k]) for (j = 1; j < k; j++) if (mstone[j] == mstone[k]) dep[k, ++n] = slug[j]
+  ndep[k] = n
+}
+function few(list, n, what) { return ((n <= 3) ? list : list " and " (n - 3) " more") (what == "" ? "" : " " what) }
+function state(k,   i, s, d, why, sep, ok, nd, dl, ds, nb, bl, bs, nw, wl, ws) {
   if (mark[k] == "~") return "in flight: propose"
   if (mark[k] == "*") return "in flight: apply"
   if (mark[k] == "?") return "blocked: " blocked[k] (resume[k] != "" ? ", then " resume[k] : "")
+  if (built[k]) return "built, awaiting integration"
+  if (claimedk[k]) return "claimed, progress unknown: propose in flight"
   cmd[k] = (mark[k] == ">") ? "apply" : "propose"
-  why = ""; sep = ""
-  for (i = 1; i <= nafter[k]; i++) {
-    s = after[k, i]
-    if (!(s in at)) { why = why sep s " is not in the queue"; sep = "; " }
-    else if (dropped[at[s]]) { why = why sep "after " s ", dropped: re-decide"; sep = "; " }
+  why = ""; sep = ""; nd = 0; dl = ""; ds = ""; nb = 0; bl = ""; bs = ""; nw = 0; wl = ""; ws = ""
+  for (i = 1; i <= ndep[k]; i++) {
+    s = dep[k, i]
+    if (s == slug[k]) { why = why sep "after itself"; sep = "; "; continue }
+    if (!(s in at)) { why = why sep s " is not in the queue"; sep = "; "; continue }
+    d = at[s]
+    if (dropped[d]) { why = why sep "after " s ", dropped: re-decide"; sep = "; "; continue }
+    if (cmd[k] == "propose") ok = defined(d); else ok = done(d)
+    if (ok) continue
+    if (cmd[k] == "apply" && mark[d] == "x") { nb++; if (nb <= 3) { bl = bl bs s; bs = ", " } }
+    else if (cmd[k] == "apply") { nw++; if (nw <= 3) { wl = wl ws s; ws = ", " } }
+    else { nd++; if (nd <= 3) { dl = dl ds s; ds = ", " } }
   }
-  if (lastdep[k] != "") { why = why sep "after " lastdep[k]; sep = "; " }
-  if (cmd[k] == "propose" && tokp[k] == "-") for (i = 1; i < k; i++) if (!defined(i)) { why = why sep "the lines above are defined"; sep = "; "; break }
-  if (cmd[k] == "apply" && toka[k] == "-") for (i = 1; i < k; i++) if (mark[i] != "x") { why = why sep "the lines above are done"; sep = "; "; break }
+  if (nw > 0) { why = why sep "after " few(wl, nw, "") ; sep = "; " }
+  if (nb > 0) { why = why sep few(bl, nb, "built, not integrated"); sep = "; " }
+  if (nd > 0) { why = why sep few(dl, nd, "not defined"); sep = "; " }
   if (why != "") { cmd[k] = ""; return "waits: " why }
-  if (tokp[k] == "") { judge[++nj] = slug[k]; return cmd[k] " now, no token: judge" }
   return cmd[k] " now"
 }
 function show(k, depth,   pad, i, c, extra, sep, line, n) {
   seen[k] = 1
   pad = ""; for (i = 1; i < 2 * depth; i++) pad = pad " "
   if (depth > 0) pad = pad "\342\224\224"
-  extra = ""; sep = ""
-  for (i = 1; i <= nafter[k]; i++) {
-    c = after[k, i]
-    if (c != lastdep[k] && c in at && pending(c)) { n++; if (n <= 3) { extra = extra sep c; sep = ", " } }
+  extra = ""; sep = ""; n = 0
+  for (i = 1; i <= ndep[k]; i++) {
+    c = dep[k, i]
+    if (c != lastdep[k] && c in at && !done(at[c])) { n++; if (n <= 3) { extra = extra sep c; sep = ", " } }
   }
   if (n > 3) extra = extra " and " (n - 3) " more"
-  line = pad "[" mark[k] "] " slug[k] (tokp[k] != "" ? " (" tokp[k] toka[k] ")" : "")
+  line = pad "[" mark[k] "] " slug[k]
   if (extra != "") line = line " + after " extra
+  if (from[k] != "") line = line " (only on branch " from[k] ")"
   print line " \302\267 " st[k]
   for (i = 1; i <= nkid[k]; i++) { c = kid[k, i]; if (!(c in seen)) show(c, depth + 1) }
 }
-{ sub(/\r$/, "") }
+function cycle(k, start,   i, s, d) {
+  if (visiting[k]) return (k == start)
+  visiting[k] = 1
+  for (i = 1; i <= ndep[k]; i++) { s = dep[k, i]; if (s in at) { d = at[s]; if (d != k && cycle(d, start)) { visiting[k] = 0; return 1 } } }
+  visiting[k] = 0
+  return 0
+}
 FILENAME == ARGV[1] {
-  b = $1; l = substr($0, length($1) + 2)
+  b = $1; ms = $2; l = $3
+  if (ms == "@claimed") { claimed[b] = 1; next }
+  if (ms == "@integrated") { integ[b] = 1; next }
   if (!isline(l)) next
-  s = l; sub(/^\[.\][ \t]+/, "", s); sub(/[ \t].*/, "", s)
-  if (b == "*") base[s] = l
-  else if (s == b) own[b] = l
-  if (!(s in other)) { other[s] = l; from[s] = (b == "*") ? "the default branch" : b }
+  s = sl(l)
+  if (b == "*") { obase[s] = l; obasems[s] = ms }
+  else if (s == b) { own[s] = l; ownms[s] = ms }
+  else if (!(s in other)) { other[s] = l; otherms[s] = ms; otherfrom[s] = b }
+  if (substr(l, 2, 1) == "?" && !(s in blockedcopy)) blockedcopy[s] = l
   next
 }
-/^## / { ms = substr($0, 4); next }
+/^## / { lms = substr($0, 4); next }
 isline($0) {
-  k = ++nq; parse($0, k); at[slug[k]] = k; mstone[k] = ms
-  if (slug[k] in base && rank(substr(base[slug[k]], 2, 1)) > rank(mark[k])) parse(base[slug[k]], k)
-  if (slug[k] in own && rank(substr(own[slug[k]], 2, 1)) > rank(mark[k])) parse(own[slug[k]], k)
+  s = sl($0)
+  if (s in local) { nerr++; err[nerr] = s " appears twice; the second line is ignored"; next }
+  local[s] = $0; localms[s] = lms; lorder[++nl] = s
+  if (substr($0, 2, 1) == "?" && !(s in blockedcopy)) blockedcopy[s] = $0
 }
 END {
-  for (s in other) if (!(s in at)) { k = ++nq; parse(other[s], k); at[s] = k; mstone[k] = "only on a branch: " from[s] }
+  # The base copy of every slug, then the order of the lines.
+  if (here != "") { for (s in obase) { basemark[s] = substr(obase[s], 2, 1); base[s] = obase[s]; basems[s] = obasems[s] } }
+  else { for (s in local) { basemark[s] = substr(local[s], 2, 1); base[s] = local[s]; basems[s] = localms[s] } }
+  if (here != "" && (here in local)) { own[here] = local[here]; ownms[here] = localms[here] }
+  for (i = 1; i <= nl; i++) order[++no] = lorder[i]
+  if (here != "") for (s in obase) if (!(s in local)) order[++no] = s
+  for (i = 1; i <= no; i++) {
+    s = order[i]
+    if ((s in own) && !(s in integ)) { line = own[s]; ms = ownms[s] }
+    else if (s in base) { line = base[s]; ms = basems[s] }
+    else { line = own[s]; ms = ownms[s] }
+    if (ms == "" && (s in base)) ms = basems[s]
+    add(s, line, ms, "")
+  }
+  for (s in other) if (!(s in at)) { add(s, other[s], otherms[s], otherfrom[s]); xtra[nq] = 1 }
+  # A line only a branch has goes at the end of its milestone.
+  n = 0
+  for (k = 1; k <= nq; k++) if (!(k in xtra)) ord[++n] = k
+  for (k = 1; k <= nq; k++) if (k in xtra) {
+    pos = n
+    for (i = n; i >= 1; i--) if (mstone[ord[i]] == mstone[k]) { pos = i; break }
+    for (i = n; i > pos; i--) ord[i + 1] = ord[i]
+    ord[pos + 1] = k; n++
+  }
+  for (i = 1; i <= n; i++) { k = ord[i]; nm[k] = i }
+  for (k = 1; k <= nq; k++) at[slug[k]] = k
   cur = ""
-  for (k = 1; k <= nq; k++) if (mark[k] != "x") { cur = mstone[k]; break }
-  if (cur == "" && nq > 0 && mark[nq] == "x") { print "milestone: none open; every line is [x]"; exit }
-  for (k = 1; k <= nq; k++) {
-    if (mark[k] == "x") continue
+  for (i = 1; i <= n; i++) { k = ord[i]; if (!done(k)) { cur = mstone[k]; break } }
+  if (cur == "" && nq > 0) { print "milestone: none open; every line is [x]"; exit }
+  for (i = 1; i <= n; i++) {
+    k = ord[i]
+    if (done(k)) continue
+    deps(k, i)
     lastdep[k] = ""; best = 0
-    for (i = 1; i <= nafter[k]; i++) {
-      s = after[k, i]
-      if ((s in at) && pending(s) && at[s] > best && at[s] != k) { best = at[s]; lastdep[k] = s }
+    for (j = 1; j <= ndep[k]; j++) {
+      s = dep[k, j]
+      if ((s in at) && !done(at[s]) && nm[at[s]] > best && at[s] != k) { best = nm[at[s]]; lastdep[k] = s }
     }
-    if (best > 0 && mstone[best] == mstone[k] && best < k) kid[best, ++nkid[best]] = k
+    if (best > 0 && best < i && mstone[ord[best]] == mstone[k]) kid[ord[best], ++nkid[ord[best]]] = k
     else root[k] = 1
   }
   print "milestone: " cur
-  for (k = 1; k <= nq; k++) if (mark[k] != "x" && mstone[k] == cur) st[k] = state(k)
-  for (k = 1; k <= nq; k++) if (mark[k] != "x" && mstone[k] == cur && root[k] && !(k in seen)) show(k, 0)
-  for (k = 1; k <= nq; k++) if (mark[k] != "x" && mstone[k] == cur && !(k in seen)) show(k, 0)
-  np = ""; na = ""
-  for (k = 1; k <= nq; k++) {
-    if (mstone[k] != cur || mark[k] == "x" || tokp[k] == "" || st[k] !~ / now$/) continue
+  for (i = 1; i <= n; i++) { k = ord[i]; if (!done(k) && mstone[k] == cur) st[k] = state(k) }
+  for (i = 1; i <= n; i++) { k = ord[i]; if (!done(k) && mstone[k] == cur && root[k] && !(k in seen)) show(k, 0) }
+  for (i = 1; i <= n; i++) { k = ord[i]; if (!done(k) && mstone[k] == cur && !(k in seen)) show(k, 0) }
+  np = ""; na = ""; next_slug = ""
+  for (i = 1; i <= n; i++) {
+    k = ord[i]
+    if (mstone[k] != cur || done(k) || st[k] !~ / now$/) continue
     if (cmd[k] == "propose") np = np " " slug[k]; else na = na " " slug[k]
+    if (next_slug == "") next_slug = "/" cmd[k] " " slug[k]
   }
   print ""
-  print "free for /apply, together:" (na == "" ? " none" : na)
-  print "free for /propose, together:" (np == "" ? " none" : np)
-  if (nj > 0) { printf "judge first, no token:"; for (i = 1; i <= nj; i++) printf " %s", judge[i]; print "" }
-  for (k = 1; k <= nq; k++) if (mstone[k] ~ /^only on a branch/) { if (!h++) print "only on a branch:"; print "  " slug[k] " (" substr(mstone[k], 19) ")" }
+  print "free for /apply, in order:" (na == "" ? " none" : na)
+  print "free for /propose, in order:" (np == "" ? " none" : np)
+  print "next: " (next_slug == "" ? "none" : next_slug)
+  for (i = 1; i <= n; i++) {
+    k = ord[i]
+    if (done(k) || mstone[k] != cur) continue
+    for (j = 1; j <= ndep[k]; j++) {
+      s = dep[k, j]
+      if (s == slug[k]) { nerr++; err[nerr] = slug[k] " waits on itself" }
+      else if (!(s in at)) { nerr++; err[nerr] = slug[k] " waits on " s ", which is not in the queue" }
+    }
+    if (cycle(k, k)) { nerr++; err[nerr] = slug[k] " is in a cycle of after" }
+  }
+  if (nerr > 0) { print "errors:"; for (i = 1; i <= nerr; i++) print "  " err[i] }
 }
-' "$overlay" "$queue"
+' "$overlay" -
 ````
 
 ### 3.8 `.agents/skills/<name>/agents/openai.yaml`

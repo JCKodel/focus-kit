@@ -8,6 +8,126 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.25
+
+- The `(PA)` token leaves the queue. `· after` is the only relation, and
+  it is read per command: `/propose` of a line starts when every line
+  its `after` names is `[>]` or beyond, because the definition needs
+  their pages; `/apply` starts when they are integrated, because the
+  build needs their code. Integrated is `[x]` on trunk and, with a
+  branch or a worktree per delivery, the branch merged into main; a
+  `[x]` on an unmerged branch is built, awaiting integration. On
+  2026-10-25, in one project, twelve pages stood `[>]` with one
+  buildable, all marked `(P-)`: the token asked the proposer to predict
+  file overlap before the page existed, and `-` was the only safe
+  answer, so it serialized everything. In the same audit, `queue.sh`
+  offered a line whose `after` was `[x]` on an unmerged branch, and the
+  worktree it opened had none of that delivery's code; one project had
+  already written into its own docs/05 that `[x]` counts only after
+  integration. The file check moves to where the files are known:
+  before its first edit, `/apply` compares the files its page touches
+  with the in-flight and unintegrated builds, and an overlap is §4's
+  conflict. This displaces the token's `A`, its `P`, which `after` on
+  both commands already covered, and the sentence that said `after`
+  means `[x]` for both. A rerun reports docs/05 §4 and every token in
+  docs/06 as migrations; a `-` becomes an `after` only where the page
+  says so.
+- The review line of a milestone is written `· after all`, every line
+  above it in its milestone, and `queue.sh` reads it so. On 2026-10-25,
+  in one project, the review line had no token and no `after` and was
+  offered for `/propose` with four lines above it undefined; the kit's
+  own fixture gave its review `(--)` and an explicit list, which the
+  generator never wrote.
+- `queue.sh` reads a branch on origin as a claim: a line whose branch
+  exists is in flight, "claimed, progress unknown" while its copy still
+  says `[ ]`, since the `[~]` edit need never be committed. The branch's
+  copy of a line is the current one for its slug until the merge, main's
+  after it, and a `[?]` on any copy blocks. A line only a branch has
+  keeps its milestone and is offered there. A wrapped line is read
+  whole. With no free line the script says so; with free lines it ends
+  `next:` with the first in queue order. It reports a line that waits on
+  itself, a cycle, a slug that is nowhere and a slug written twice as
+  errors. Nine reproductions of 2026-10-25 against local repositories,
+  by three audits: a claimed line offered to a second clone; a blocked
+  copy on the branch losing to main's older `[>]`; a new `after` at the
+  same mark ignored; the client project's five blocked lines printing an
+  empty reason, because it wraps at 80 columns; Ninjobs' tokenless queue
+  answered with ten lines to judge and nothing free; a fix written on a
+  branch listed and not runnable; a self-dependency offered. The rank of
+  marks, which chose the further mark, gives way to the copy rule.
+- `claim.sh` creates the branch on origin only when no clone has it,
+  with git's create-only push, and removes what it made when another
+  clone won the race; a branch on origin with nothing of it here is
+  another clone's, `claim: taken`, opened only with `resume` at the end
+  of the command, on the person's word; run in the slug's own worktree
+  or on its branch it answers `claim: here` instead of refusing; the
+  worktree starts from origin's main branch, which the script just
+  fetched, and says when local main is behind or ahead. On 2026-10-25
+  the repro showed a second clone joining a taken line with `claim:
+  existing`, the documented resume route refused by the script, and a
+  worktree cut from a stale local main. The Windows probe's assertions
+  still hold; it was not rerun for this version.
+- A **Design** slot in docs/05 §5: where a screen's reference comes
+  from and where it is kept, the person's tool, a design delivery before
+  the screen's line whose deliverable is a static HTML or SVG mock the
+  person approves, or prototype by choice. A page with a screen and no
+  reference is not `[>]` unless the slot says prototype; `/apply`
+  compares, corrects or justifies each divergence. `/brainstorm` and
+  `/analyze` ask it inside the proof question. Ninjobs' docs/05 §4 had
+  the rule from its first day, "a screen without an artboard is born in
+  /design", and the delivery `chassi-desktop` shows it catching mobile
+  layouts stretched onto desktop; the kit dropped it when it dropped
+  the tool, which was Claude's own, and no host-neutral form replaced
+  it. It displaces nothing: the rule had never entered the kit.
+- The page keeps its definition apart from what `/apply` appends: the
+  outcome goes under a heading `## Outcome` below Done when. On
+  2026-10-25 a done page of 538 lines held a contradiction between its
+  Behaviour and States that `/apply` had to decide, and a reader could
+  not tell where the definition ended.
+- docs/05 §4's two paragraphs on parallel work, two sessions in one
+  tree and a command with several slugs, are written only when the Git
+  slot is a branch or a worktree per delivery or the person says
+  sessions will overlap. On 2026-10-25 two trunk projects, one with 18
+  queue lines, carried a §4 whose length was mostly worktrees, claims,
+  boards and subagents, read by every `/apply`. The template is 3,199
+  words before a slot is filled; Ninjobs' process was 537 at first
+  writing and 1,462 at the beta.
+- Setup's step 4: a docs/05 that keeps its own section numbers by an ADR
+  migrates by one line under its title mapping the kit's numbers to its
+  own, `§4 is §6 here`, which `/propose` and `/apply` read first; until
+  one of the two migrations is done, the next step is the migration,
+  not a command. Step 4 said in one bullet that an ADR makes a
+  divergence a project choice and in the next that numbering migrates
+  "whatever an ADR says"; the project the kit was born in keeps its
+  numbers by ADR-0026 §3 and could not be rerun without overriding it.
+- `apply` gets `allowed-tools: Bash(git:*)`, which `propose` had: typed
+  with no slug it runs `queue.sh` through git and Claude Code asked.
+- The AGENTS.md template's em dash line points at docs/04 and its
+  abstraction line at docs/01, which now own those rules; docs/06's
+  definition of a line is the same in `documents.md` and docs/05 §4; the
+  README's "one addition" sentence says what the kit added since the
+  reset. Each was a rule written in one place only, or two places
+  differently.
+- The harness: `check` measures a sentence to its full stop, a
+  semicolon no longer ending it, so a chain of semicolons is measured
+  whole; on 2026-10-25 an 85-word sentence of docs/05 §8 passed as
+  pieces of fifty, and the sentences the new rule found are split, one
+  of them that §8 sentence. The queue fixture holds the nine
+  reproductions with expected outputs, and `claim.sh` gets a
+  deterministic test on two clones. The parallel fixture's two pages
+  touch different files, and a new `overlap` stage runs a page that
+  shares a file with a built, unmerged one and asserts `/apply` stops;
+  the fixture had two pages sharing a file and required both built,
+  rewarding the behaviour §4 forbids. `test/README.md` said sixty words
+  where the script said fifty.
+- The kit's `work/` is `notes/`: it holds the design notes of the
+  scripts and is not a queue, as `CLAUDE.md` says; `research/`, where
+  audits and their reproductions live, is ignored by git.
+- Line alarms, read from `check`: `/propose` body 39 lines (ceiling
+  40), `/apply` 56 (ceiling 60), `SETUP.md` §1 178 (ceiling 200),
+  docs/05 template 297 non-blank (ceiling 320), `documents.md` 582
+  (ceiling 600). None crossed; `/propose` is one line from its ceiling.
+
 ## 2026.10.24
 
 - What may run now comes from a script, `propose/scripts/queue.sh`,

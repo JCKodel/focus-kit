@@ -10,6 +10,9 @@ Portuguese twins `README.pt.md` and `CHANGELOG.pt.md` (for people), and
 `LICENSE`. There is no CLI, no installer,
 no version file, no manifest. Updating the installed commands is running
 `SETUP.md` again; its report lists pending migrations to project documents.
+`notes/` holds the design notes of the kit's scripts; it is not a queue,
+and the kit runs no process on itself. `research/` is ignored by git:
+audits and their reproductions stay out of the public repository.
 
 The version is the `Version: YYYY.MM.DD` line near the top of `SETUP.md`
 (a fourth `.N` part for a second release on one day), and the same value in

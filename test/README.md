@@ -9,7 +9,8 @@ test/run.sh check                   static checks, no host, no tokens, seconds
 test/run.sh plant    [--host H]     plant the kit in a throwaway project; §4 Check
 test/run.sh parallel [--host H]     plant, seed documents, /propose three slugs
 test/run.sh apply    [--host H]     parallel, then /apply the two defined pages
-test/run.sh all      [--host H]     check + apply
+test/run.sh overlap  [--host H]     apply, then a page that shares a file with a built, unmerged one
+test/run.sh all      [--host H]     check + overlap
 test/windows.ps1     [-Claim F]     on a Windows machine: the git alias and claim.sh, no WSL
 ```
 
@@ -30,11 +31,19 @@ the version, with the same number of entries; `README.md` and
 milestone for the version. It runs the `queue.sh` of `SETUP.md` §3.7 on
 `test/fixture/queue/06-Queue.md`, which holds every case the script
 decides, and compares its output with `expected-trunk.txt`; then it
-pushes the branch of one delivery to a local bare remote and compares
-with `expected-worktree.txt`. Then the line budgets of `CLAUDE.md` as
-warnings, and the longest sentence of each command, docs/05 and §1: the
-error of 2026-10-19 was a 45-line sentence, so a sentence over sixty
-words is reported wherever it is.
+pushes delivery branches to a local bare remote (a line in flight with
+a line only its branch has, a claimed line with no mark yet, a blocked
+copy, a built and unmerged one, a new `after` at the same mark) and
+compares with `expected-worktree.txt`; then merges one and runs from a
+stale worktree against `expected-stale.txt`; then runs the file with
+CRLF endings. It runs the `claim.sh` of §3.6 on two clones of a local
+bare remote: new, taken, resumed, existing, here, refused from another
+slug's worktree, the create-only push losing a race, and a worktree cut
+from origin's main when local main is behind. Then the line budgets of
+`CLAUDE.md` as warnings, and the longest sentence of each command,
+docs/05 and §1: the error of 2026-10-19 was a 45-line sentence, so a
+sentence over fifty words is reported wherever it is, a semicolon not
+ending one.
 
 **plant** builds `test/fixture/project` (a shell script with `make
 verify`) in a temp container, `<tmp>/main` as the checkout and
@@ -50,21 +59,31 @@ committed.
 container's manual and `.claude/settings.json`, with docs/05 generated
 from the kit's own template (§§1 to 4 and 6 to 8 verbatim, §5 from
 `test/fixture/05-slots.md`: English, `make verify`, a worktree per
-delivery). The queue has one `[x]` line and four free ones with tokens:
-`farewell (PA)`, `portuguese (PA)`, `shout (-A) · after farewell`, and
-the review. It runs `/propose farewell portuguese shout`, told to decide
-alone, and asserts: a worktree and a pushed `focus-kit/<slug>` branch
-for `farewell` and `portuguese`, each page in its worktree, each line
-`[>]` on its branch (`[~]` is a warning), the page recording the agent's
-answers; nothing for `shout`, whose `after` holds; main's queue and tree
-untouched. That is the error of 2026-10-20: three subagents stopping at
-the flag, and a session proposing to edit the installed skill.
+delivery). The queue has one `[x]` line and five free ones: `farewell`
+and `banner`, which touch different files, `portuguese`, which changes
+the file `farewell` changes, `shout · after farewell, portuguese`, and
+the review, `· after all`. It runs `/propose farewell banner shout`,
+told to decide alone, and asserts: a worktree and a pushed
+`focus-kit/<slug>` branch for `farewell` and `banner`, each page in its
+worktree, each line `[>]` on its branch (`[~]` is a warning), the page
+recording the agent's answers; nothing for `shout`, whose `after`
+holds; main's queue and tree untouched. That is the error of
+2026-10-20: three subagents stopping at the flag, and a session
+proposing to edit the installed skill.
 
-**apply** runs `/apply farewell portuguese` from `main/`, so the session
+**apply** runs `/apply farewell banner` from `main/`, so the session
 must send a subagent to each worktree, and asserts per worktree: the
 page in `work/done/`, `make verify` green, the line `[x]` in the staged
 queue, changes staged and nothing committed, the `commit` block on the
 page; main's tree still clean.
+
+**overlap** runs `/propose portuguese`, then `/apply portuguese`, while
+`farewell` is built in its worktree and not merged; both change
+`src/greet.sh`. It asserts that `/apply` stopped before its first edit:
+the line is `[>]`, not `[*]`, on its branch, and `src/greet.sh` is
+unchanged in its worktree. That is the harness error of 2026-10-25: the
+parallel fixture made two pages share a file and the apply stage
+required both built.
 
 **windows.ps1** runs on a Windows machine with git and nothing else,
 without WSL, and proves what the kit's script relies on: that

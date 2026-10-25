@@ -8,6 +8,136 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.25
+
+- O token `(PA)` sai da fila. `· after` é a única relação, e é lida por
+  comando: o `/propose` de uma linha começa quando toda linha que o seu
+  `after` nomeia está `[>]` ou além, porque a definição precisa das
+  páginas delas; o `/apply` começa quando elas estão integradas, porque
+  a construção precisa do código delas. Integrada é `[x]` no trunk e,
+  com um branch ou um worktree por entrega, o branch com merge feito na
+  main; um `[x]` num branch sem merge está construído, aguardando
+  integração. Em 2026-10-25, num projeto, doze páginas estavam `[>]`
+  com uma construível, todas marcadas `(P-)`: o token pedia ao
+  proponente que previsse sobreposição de arquivos antes de a página
+  existir, e `-` era a única resposta segura, então serializou tudo. Na
+  mesma auditoria, o `queue.sh` ofereceu uma linha cujo `after` estava
+  `[x]` num branch sem merge, e o worktree que ele abriu não tinha nada
+  do código dessa entrega; um projeto já tinha escrito na própria
+  docs/05 que `[x]` só conta depois da integração. A conferência de
+  arquivos vai para onde os arquivos são conhecidos: antes da sua
+  primeira edição, o `/apply` compara os arquivos que a sua página toca
+  com as construções em andamento e não integradas, e uma sobreposição
+  é o conflito do §4. Isso desloca o `A` do token, o seu `P`, que o
+  `after` nos dois comandos já cobria, e a frase que dizia que `after`
+  significa `[x]` para os dois. Rodar de novo reporta a docs/05 §4 e
+  todo token da docs/06 como migrações; um `-` vira um `after` só onde
+  a página disser.
+- A linha de revisão de um marco é escrita `· after all`, toda linha
+  acima dela no seu marco, e o `queue.sh` a lê assim. Em 2026-10-25,
+  num projeto, a linha de revisão não tinha token nem `after` e foi
+  oferecida para o `/propose` com quatro linhas acima dela sem
+  definição; a própria fixture do kit dava à sua revisão `(--)` e uma
+  lista explícita, que o gerador nunca escreveu.
+- O `queue.sh` lê um branch no origin como uma reivindicação: uma linha
+  cujo branch existe está em andamento, "claimed, progress unknown"
+  enquanto a cópia dela ainda diz `[ ]`, já que a edição `[~]` nunca
+  precisa ser commitada. A cópia de uma linha no branch é a atual para
+  o seu slug até o merge, a da main depois dele, e um `[?]` em qualquer
+  cópia bloqueia. Uma linha que só um branch tem mantém o seu marco e é
+  oferecida nele. Uma linha quebrada em várias é lida inteira. Sem linha
+  livre o script diz isso; com linhas livres ele termina com `next:` e
+  a primeira na ordem da fila. Ele reporta como erros uma linha que
+  espera por si mesma, um ciclo, um slug que não está em lugar nenhum e
+  um slug escrito duas vezes. Nove reproduções de 2026-10-25 contra
+  repositórios locais, por três auditorias: uma linha reivindicada
+  oferecida a um segundo clone; uma cópia bloqueada no branch perdendo
+  para o `[>]` mais antigo da main; um `after` novo na mesma marca
+  ignorado; as cinco linhas bloqueadas do projeto do cliente imprimindo
+  um motivo vazio, porque ele quebra as linhas em 80 colunas; a fila
+  sem tokens da Ninjobs respondida com dez linhas a julgar e nenhuma
+  livre; uma correção escrita num branch listada e não executável; uma
+  dependência de si mesma oferecida. A ordem das marcas, que escolhia a
+  marca mais adiantada, cede lugar à regra da cópia.
+- O `claim.sh` cria o branch no origin só quando nenhum clone o tem,
+  com o push que o git só faz se não existir, e remove o que criou
+  quando outro clone venceu a corrida; um branch no origin sem nada
+  dele aqui é de outro clone, `claim: taken`, aberto só com `resume` no
+  fim do comando, por palavra da pessoa; rodado no próprio worktree do
+  slug ou no seu branch ele responde `claim: here` em vez de recusar; o
+  worktree parte do branch main do origin, que o script acabou de
+  buscar, e diz quando a main local está atrás ou à frente. Em
+  2026-10-25 a reprodução mostrou um segundo clone entrando numa linha
+  tomada com `claim: existing`, a rota de retomada documentada recusada
+  pelo script, e um worktree cortado de uma main local desatualizada.
+  As asserções da sonda do Windows continuam valendo; ela não foi
+  rodada de novo para esta versão.
+- Um slot **Design** na docs/05 §5: de onde vem a referência de uma tela
+  e onde ela fica guardada, a ferramenta da pessoa, uma entrega de
+  design antes da linha da tela cujo entregável é um mock estático em
+  HTML ou SVG que a pessoa aprova, ou protótipo por escolha. Uma página
+  com uma tela e sem referência não é `[>]` a menos que o slot diga
+  protótipo; o `/apply` compara, corrige ou justifica cada divergência.
+  O `/brainstorm` e o `/analyze` perguntam isso dentro da pergunta de
+  prova. A docs/05 §4 da Ninjobs tinha a regra desde o primeiro dia,
+  "uma tela sem artboard nasce no /design", e a entrega `chassi-desktop`
+  mostra a regra pegando layouts de celular esticados para o desktop; o
+  kit a deixou cair quando deixou cair a ferramenta, que era do próprio
+  Claude, e nenhuma forma neutra de host a substituiu. Não desloca
+  nada: a regra nunca tinha entrado no kit.
+- A página mantém a sua definição separada do que o `/apply` acrescenta:
+  o resultado vai sob um título `## Outcome` abaixo de Done when. Em
+  2026-10-25 uma página concluída de 538 linhas guardava uma contradição
+  entre o seu Behaviour e os seus States que o `/apply` teve de decidir,
+  e um leitor não conseguia dizer onde a definição terminava.
+- Os dois parágrafos da docs/05 §4 sobre trabalho em paralelo, duas
+  sessões numa árvore só e um comando com vários slugs, são escritos só
+  quando o slot Git é um branch ou um worktree por entrega ou a pessoa
+  diz que as sessões vão se sobrepor. Em 2026-10-25 dois projetos trunk,
+  um com 18 linhas na fila, carregavam um §4 cujo tamanho era na maior
+  parte worktrees, reivindicações, quadros e subagentes, lido por todo
+  `/apply`. O modelo tem 3.199 palavras antes de um slot ser preenchido;
+  o processo da Ninjobs tinha 537 na primeira escrita e 1.462 no beta.
+- O passo 4 do setup: uma docs/05 que mantém a sua própria numeração de
+  seções por um ADR migra com uma linha sob o título mapeando os
+  números do kit para os seus, `§4 is §6 here`, que o `/propose` e o
+  `/apply` leem primeiro; até que uma das duas migrações seja feita, o
+  próximo passo é a migração, não um comando. O passo 4 dizia num
+  bullet que um ADR faz de uma divergência uma escolha do projeto e no
+  seguinte que a numeração migra "diga o ADR o que disser"; o projeto em
+  que o kit nasceu mantém os seus números pelo ADR-0026 §3 e não podia
+  ser rodado de novo sem passar por cima dele.
+- O `apply` ganha `allowed-tools: Bash(git:*)`, que o `propose` tinha:
+  digitado sem slug ele roda o `queue.sh` pelo git e o Claude Code
+  perguntava.
+- A linha do travessão no modelo do AGENTS.md aponta para a docs/04 e a
+  linha de abstração para a docs/01, que agora são donas dessas regras;
+  a definição de uma linha da docs/06 é a mesma no `documents.md` e na
+  docs/05 §4; a frase "uma adição" do README diz o que o kit acrescentou
+  desde o reset. Cada uma era uma regra escrita num lugar só, ou em dois
+  lugares de modo diferente.
+- O harness: o `check` mede uma frase até o seu ponto final, um ponto e
+  vírgula não a encerrando mais, então uma cadeia de pontos e vírgulas
+  é medida inteira; em 2026-10-25 uma frase de 85 palavras da docs/05
+  §8 passou como pedaços de cinquenta, e as frases que a regra nova
+  achou foram divididas, uma delas aquela frase do §8. A fixture da fila
+  guarda as nove reproduções com as saídas esperadas, e o `claim.sh`
+  ganha um teste determinístico em dois clones. As duas páginas da
+  fixture de paralelo tocam arquivos diferentes, e um estágio novo,
+  `overlap`, roda uma página que divide um arquivo com uma já
+  construída e sem merge e verifica que o `/apply` para; a fixture tinha
+  duas páginas dividindo um arquivo e exigia as duas construídas,
+  premiando o comportamento que o §4 proíbe. O `test/README.md` dizia
+  sessenta palavras onde o script dizia cinquenta.
+- O `work/` do kit é `notes/`: guarda as notas de design dos scripts e
+  não é uma fila, como o `CLAUDE.md` diz; `research/`, onde vivem as
+  auditorias e as suas reproduções, é ignorada pelo git.
+- Alarmes de linhas, lidos do `check`: corpo do `/propose` com 39
+  linhas (teto 40), `/apply` com 56 (teto 60), §1 do `SETUP.md` com 178
+  (teto 200), modelo da docs/05 com 297 não vazias (teto 320),
+  `documents.md` com 582 (teto 600). Nenhum cruzado; o `/propose` está a
+  uma linha do seu teto.
+
 ## 2026.10.24
 
 - O que pode rodar agora vem de um script, `propose/scripts/queue.sh`,

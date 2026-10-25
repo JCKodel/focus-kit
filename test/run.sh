@@ -5,7 +5,8 @@
 #   test/run.sh plant    [--host H]        plant the kit in a throwaway project, check §4
 #   test/run.sh parallel [--host H]        plant, seed docs, run /propose with three slugs
 #   test/run.sh apply    [--host H]        parallel, then /apply the two defined pages
-#   test/run.sh all      [--host H]        check + apply
+#   test/run.sh overlap  [--host H]        apply, then a page sharing a file with a built, unmerged one
+#   test/run.sh all      [--host H]        check + overlap
 #
 #   --host claude|codex|copilot|all   default: every host installed
 #   --dry-run                 build the fixture, print the host commands, run no host
@@ -67,6 +68,7 @@ stage_check() {
   else warn "book repository not found next to the kit; milestone line not checked"; fi
 
   check_queue_script
+  check_claim_script
 
   say "check: line alarms (CLAUDE.md)"
   budget "/propose body" "$(skill_body propose | grep -c .)" 40
@@ -87,8 +89,12 @@ stage_check() {
   [ "$w" -le "$MAXW" ] && ok "§1: longest sentence $w words" || warn "§1: longest sentence $w words: ${r#* }..."
 }
 
-# queue.sh on test/fixture/queue: trunk, then with the branch of card on a
-# local bare remote, each against its expected output.
+tgit() { git -c user.name=test -c user.email=test@test "$@"; }
+
+# queue.sh on test/fixture/queue: trunk; then with delivery branches on a
+# local bare remote (card at [*] with a card-fix line, login unchanged,
+# export blocked, colors built and unmerged, search with a new after);
+# then from a stale worktree after colors is merged; then with CRLF.
 check_queue_script() {
   say "check: queue.sh on test/fixture/queue"
   local t script; t=$(mktemp -d); script="$t/queue.sh"
@@ -98,30 +104,69 @@ check_queue_script() {
   (
     cd "$t/main" && git switch -q -c main && mkdir docs
     cp "$FIXTURE/queue/06-Queue.md" docs/
-    git add docs && git -c user.name=test -c user.email=test@test commit -q -m queue && git push -q -u origin main
+    tgit add docs && tgit commit -q -m queue && git push -q -u origin main && git remote set-head origin -a >/dev/null 2>&1
   )
   (cd "$t/main" && sh "$script" trunk) > "$t/trunk.txt" 2>&1 || true
   assert_true "trunk output matches expected-trunk.txt" diff -u "$FIXTURE/queue/expected-trunk.txt" "$t/trunk.txt"
-  (
-    cd "$t/main" && git switch -q -c focus-kit/card
-    awk '{ if ($0 ~ /^\[ \] card  /) sub(/^\[ \]/, "[*]"); print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
-    printf '[ ] card-fix  (PA) a fix found while building card\n' >> docs/06-Queue.md
-    git -c user.name=test -c user.email=test@test commit -q -am card && git push -q origin focus-kit/card && git switch -q main
-  )
+  edit_branch() { # edit_branch <slug> <awk program>: the slug's branch from main, its queue edited, pushed
+    (
+      cd "$t/main" && git switch -q -c "focus-kit/$1" main
+      awk "$2" docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+      tgit commit -q --allow-empty -am "$1" && git push -q origin "focus-kit/$1" 2>/dev/null && git switch -q main
+    )
+  }
+  edit_branch card '{ if ($0 ~ /^\[ \] card  /) { sub(/^\[ \]/, "[*]"); print; print "[ ] card-fix    a fix found while building card"; next } print }'
+  edit_branch login '{ print }'
+  edit_branch export '{ if ($0 ~ /^\[>\] export/) $0 = "[?] export      export the board · resume: apply · blocked: which format, asked"; print }'
+  edit_branch colors '{ if ($0 ~ /^\[>\] colors/) sub(/^\[>\]/, "[x]"); print }'
+  edit_branch search '{ if ($0 ~ /^\[ \] search/) $0 = $0 ", login"; print }'
   (cd "$t/main" && sh "$script" worktree .focus-kit focus-kit/) > "$t/worktree.txt" 2>&1 || true
   assert_true "worktree output matches expected-worktree.txt" diff -u "$FIXTURE/queue/expected-worktree.txt" "$t/worktree.txt"
   (
-    cd "$t/main"
-    awk '{ if ($0 ~ /^\[>\] board  /) sub(/^\[>\]/, "[x]"); print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
-    git -c user.name=test -c user.email=test@test commit -q -am board && git push -q origin main
-    git worktree add -q "$t/card" focus-kit/card
+    cd "$t/main" && tgit merge -q --no-ff -m "merge colors" focus-kit/colors && git push -q origin main
+    mkdir -p "$t/.focus-kit/worktrees" && git worktree add -q "$t/.focus-kit/worktrees/card" focus-kit/card
   )
-  (cd "$t/card" && sh "$script" worktree .focus-kit focus-kit/) > "$t/stale.txt" 2>&1 || true
+  (cd "$t/.focus-kit/worktrees/card" && sh "$script" worktree .focus-kit focus-kit/) > "$t/stale.txt" 2>&1 || true
   assert_true "a stale worktree copy matches expected-stale.txt" diff -u "$FIXTURE/queue/expected-stale.txt" "$t/stale.txt"
   mkdir -p "$t/crlf/docs" && (cd "$t/crlf" && git init -q)
   awk '{ printf "%s\r\n", $0 }' "$FIXTURE/queue/06-Queue.md" > "$t/crlf/docs/06-Queue.md"
   (cd "$t/crlf" && sh "$script" trunk) > "$t/crlf.txt" 2>&1 || true
   assert_true "CRLF endings match expected-trunk.txt" diff -u "$FIXTURE/queue/expected-trunk.txt" "$t/crlf.txt"
+  rm -rf "$t"
+}
+
+# claim.sh against a local bare remote, two clones: new, taken, resumed,
+# existing, here, refused from another slug's worktree, the create-only
+# push losing a race, and a worktree cut from origin's main when local
+# main is behind.
+check_claim_script() {
+  say "check: claim.sh on two clones of a local bare remote"
+  local t script out; t=$(mktemp -d); script="$t/claim.sh"
+  kit_script claim > "$script"
+  git init -q --bare "$t/origin.git"
+  git clone -q "$t/origin.git" "$t/a/main" 2>/dev/null
+  (
+    cd "$t/a/main" && git switch -q -c main && mkdir docs && printf '# Queue\n\n## M1\n\n[ ] alpha one\n[ ] beta two · after alpha\n' > docs/06-Queue.md
+    tgit add . && tgit commit -q -m base && git push -q -u origin main && git remote set-head origin -a >/dev/null 2>&1
+  )
+  git clone -q "$t/origin.git" "$t/b/main" 2>/dev/null && (cd "$t/b/main" && git remote set-head origin -a >/dev/null 2>&1)
+  claim() { (cd "$1" && sh "$script" "${@:2}" 2>&1); }
+  out=$(claim "$t/a/main" alpha worktree .focus-kit focus-kit/) && grep -q '^claim: new$' <<< "$out" && ok "clone a claims alpha: new" || fail "clone a claiming alpha: $out"
+  assert_true "alpha's branch on origin" git -C "$t/a/main" ls-remote --exit-code --heads origin refs/heads/focus-kit/alpha
+  out=$(claim "$t/b/main" alpha worktree .focus-kit focus-kit/) && fail "clone b claimed alpha: $out" || { grep -q '^claim: taken$' <<< "$out" && ok "clone b is refused alpha: taken" || fail "clone b refused with: $out"; }
+  out=$(claim "$t/b/main" alpha worktree .focus-kit focus-kit/ resume) && grep -q '^claim: resumed$' <<< "$out" && ok "clone b resumes alpha on its word" || fail "clone b resuming alpha: $out"
+  out=$(claim "$t/a/main" alpha worktree .focus-kit focus-kit/) && grep -q '^claim: existing$' <<< "$out" && ok "clone a reruns alpha: existing" || fail "clone a rerunning alpha: $out"
+  out=$(claim "$t/a/.focus-kit/worktrees/alpha" alpha worktree .focus-kit focus-kit/) && grep -q '^claim: here$' <<< "$out" && ok "alpha from its worktree: here" || fail "alpha from its worktree: $out"
+  out=$(claim "$t/a/.focus-kit/worktrees/alpha" beta worktree .focus-kit focus-kit/) && fail "beta claimed from alpha's worktree" || { grep -q '^error: run from main/' <<< "$out" && ok "beta from alpha's worktree: refused" || fail "beta from alpha's worktree: $out"; }
+  (cd "$t/b/main" && git switch -q -c focus-kit/beta && tgit commit -q --allow-empty -m beta && git push -q -u origin focus-kit/beta 2>/dev/null && git switch -q main)
+  out=$(cd "$t/a/main" && git worktree add -q --no-track -b focus-kit/beta ../.focus-kit/worktrees/beta refs/remotes/origin/main \
+        && git -C ../.focus-kit/worktrees/beta push -q -u origin focus-kit/beta --force-with-lease=refs/heads/focus-kit/beta: 2>&1) \
+    && fail "the create-only push overwrote a branch another clone pushed" || ok "the create-only push refuses a branch that appeared meanwhile"
+  (cd "$t/b/main" && git fetch -q && git reset -q --hard origin/main && printf 'x\n' > new.txt && tgit add new.txt && tgit commit -q -m new && git push -q origin main)
+  out=$(claim "$t/a/main" gamma worktree .focus-kit focus-kit/) && grep -q 'behind origin by 1' <<< "$out" && ok "a stale main is reported" || fail "stale main: $out"
+  assert_true "gamma's worktree starts from origin's main" test -f "$t/a/.focus-kit/worktrees/gamma/new.txt"
+  out=$(claim "$t/b/main" delta branch) && grep -q '^claim: new$' <<< "$out" && ok "branch per delivery: new" || fail "branch per delivery: $out"
+  out=$(claim "$t/b/main" delta branch) && grep -q '^claim: here$' <<< "$out" && ok "branch per delivery, on the branch: here" || fail "on the branch: $out"
   rm -rf "$t"
 }
 
@@ -196,16 +241,16 @@ branch_has() { git -C "$1" ls-remote --exit-code --heads origin "focus-kit/$2" >
 
 stage_parallel() { # stage_parallel <host> <container>
   local host=$1 c=$2 main=$2/main wt=$2/.focus-kit/worktrees
-  say "parallel ($host): /propose farewell portuguese shout"
+  say "parallel ($host): /propose farewell banner shout"
   seed_docs "$main"
   assert_true "docs/05 generated with its eight sections" bash -c "[ \$(grep -c '^## [1-8]\. ' '$main/docs/05-Process.md') -eq 8 ]"
-  local cmd; cmd=$(command_for "$host" propose "farewell portuguese shout")
+  local cmd; cmd=$(command_for "$host" propose "farewell banner shout")
   local prompt="$cmd
 Decide alone: answer every question with your own recommendation and write it on the page as your answer. Never stop to ask me anything; a question a subagent reports, answer the same way and resume it. Build nothing."
   if [ "$DRY" -eq 1 ]; then echo "  would run in $main: $host <<< '$prompt'"; return; fi
   run_host "$host" "$main" "$c" "$prompt" > "$c/parallel-$host.log" 2>&1 || true
 
-  for s in farewell portuguese; do
+  for s in farewell banner; do
     assert_true "worktree for $s" test -d "$wt/$s"
     assert_true "branch focus-kit/$s pushed" branch_has "$main" "$s"
     assert_true "page work/$s.md in its worktree" test -f "$wt/$s/work/$s.md"
@@ -214,11 +259,6 @@ Decide alone: answer every question with your own recommendation and write it on
     else fail "$s not marked on its branch"; fi
     assert_true "$s page records the answers as the agent's" grep -qiE "agent|decid|your call|recommendation" "$wt/$s/work/$s.md"
   done
-  # Both pages change src/greet.sh, so portuguese's A should become `-`
-  # once /propose reads the pages (docs/05 §4: /propose corrects a token).
-  if grep -q "^\[.\] portuguese *(.A)" "$wt/portuguese/docs/06-Queue.md" 2>/dev/null; then
-    warn "portuguese keeps its A token although farewell changes the same file"
-  else ok "portuguese's token re-judged from the pages"; fi
   assert_false "shout (after farewell) has no worktree" test -d "$wt/shout"
   assert_false "shout has no branch" branch_has "$main" shout
   assert_true "shout line untouched on main" grep -q '^\[ \] shout' "$main/docs/06-Queue.md"
@@ -228,14 +268,14 @@ Decide alone: answer every question with your own recommendation and write it on
 
 stage_apply() { # stage_apply <host> <container>
   local host=$1 c=$2 main=$2/main wt=$2/.focus-kit/worktrees
-  say "apply ($host): /apply farewell portuguese from main/, subagents sent to the worktrees"
-  local cmd; cmd=$(command_for "$host" apply "farewell portuguese")
+  say "apply ($host): /apply farewell banner from main/, subagents sent to the worktrees"
+  local cmd; cmd=$(command_for "$host" apply "farewell banner")
   local prompt="$cmd
 Decide alone: never stop to ask me anything; a question a subagent reports, answer with your recommendation and resume it. Do not commit."
   if [ "$DRY" -eq 1 ]; then echo "  would run in $main: $host <<< '$prompt'"; return; fi
   run_host "$host" "$main" "$c" "$prompt" > "$c/apply-$host.log" 2>&1 || true
 
-  for s in farewell portuguese; do
+  for s in farewell banner; do
     assert_true "$s: page moved to work/done/" test -f "$wt/$s/work/done/$s.md"
     assert_true "$s: verify green in its worktree" make -C "$wt/$s" verify
     assert_true "$s: line [x] in the staged queue" bash -c "cd '$wt/$s' && git diff --cached -- docs/06-Queue.md | grep -q '^+\[x\] $s'"
@@ -243,6 +283,28 @@ Decide alone: never stop to ask me anything; a question a subagent reports, answ
     assert_true "$s: commit block on the page" grep -q '^```commit' "$wt/$s/work/done/$s.md"
   done
   assert_true "main's tree clean" bash -c "cd '$main' && [ -z \"\$(git status --porcelain)\" ]"
+}
+
+# portuguese changes src/greet.sh, which farewell changed in a worktree that
+# is built and not merged: /apply must stop before its first edit (docs/05
+# §4). The harness error of 2026-10-25: two pages sharing a file in the
+# parallel fixture, and the apply stage requiring both built.
+stage_overlap() { # stage_overlap <host> <container>
+  local host=$1 c=$2 main=$2/main wt=$2/.focus-kit/worktrees
+  say "overlap ($host): /propose portuguese, then /apply portuguese against farewell's unmerged build"
+  local cmd; cmd=$(command_for "$host" propose "portuguese")
+  local prompt="$cmd
+Decide alone: answer every question with your own recommendation and write it on the page as your answer. Never stop to ask me anything. Build nothing."
+  if [ "$DRY" -eq 1 ]; then echo "  would run in $main: $host <<< '$prompt'"; return; fi
+  run_host "$host" "$main" "$c" "$prompt" > "$c/overlap-propose-$host.log" 2>&1 || true
+  assert_true "portuguese is [>] on its branch" grep -q '^\[>\] portuguese' "$wt/portuguese/docs/06-Queue.md"
+  cmd=$(command_for "$host" apply "portuguese")
+  prompt="$cmd
+Decide alone: never stop to ask me anything. Do not commit."
+  run_host "$host" "$main" "$c" "$prompt" > "$c/overlap-apply-$host.log" 2>&1 || true
+  assert_false "portuguese not taken to [*]: farewell's unmerged build touches its file" grep -q '^\[\*\] portuguese' "$wt/portuguese/docs/06-Queue.md"
+  assert_true "src/greet.sh unchanged in portuguese's worktree" git -C "$wt/portuguese" diff --quiet HEAD -- src/greet.sh
+  assert_true "no page in work/done/ for portuguese" test ! -f "$wt/portuguese/work/done/portuguese.md"
 }
 
 # ---------- main ----------
@@ -261,10 +323,13 @@ if [ "$STAGE" != check ]; then
     assert_true "fixture verify green" make -C "$C/main" verify
     stage_plant "$host" "$C"
     case $STAGE in
-      parallel|apply|all) stage_parallel "$host" "$C" ;;
+      parallel|apply|overlap|all) stage_parallel "$host" "$C" ;;
     esac
     case $STAGE in
-      apply|all) stage_apply "$host" "$C" ;;
+      apply|overlap|all) stage_apply "$host" "$C" ;;
+    esac
+    case $STAGE in
+      overlap|all) stage_overlap "$host" "$C" ;;
     esac
     if [ "$KEEP" -eq 1 ] || [ "$FAIL" -gt 0 ]; then echo "  kept: $C (logs: $C/*.log)"; else rm -rf "$C"; fi
   done

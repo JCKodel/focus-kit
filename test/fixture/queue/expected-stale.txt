@@ -1,17 +1,23 @@
 milestone: M2. Board
-[*] card (PA) · in flight: apply
- └[ ] filter (P-) · waits: after card
- └[ ] search (PA) · waits: missing-slug is not in the queue; after card
-[>] colors (-A) · apply now
-[~] login (PA) · in flight: propose
-[?] export (PA) · blocked: which format, asked, then propose
-[ ] notes · propose now, no token: judge
- └[ ] m2-review (--) + after card, filter, colors and 3 more · waits: after notes; the lines above are defined
-[*] sound (PA) · in flight: apply
-[ ] ping (PA) · waits: after pong
- └[ ] pong (PA) · waits: after ping
-[ ] revive (PA) · waits: after old-idea, dropped: re-decide
+[>] board · apply now
+ └[*] card · in flight: apply
+   └[ ] filter + after board · propose now
+[ ] search + after board, card · claimed, progress unknown: propose in flight
+[ ] login · claimed, progress unknown: propose in flight
+[?] export · blocked: which format, asked, then apply
+[ ] notes · propose now
+[*] sound · in flight: apply
+[ ] ping · waits: pong not defined
+ └[ ] pong · waits: ping not defined
+[ ] revive · waits: after old-idea, dropped: re-decide
+[ ] selfish + after selfish · waits: after itself
+ └[ ] m2-review + after board, card, filter and 8 more · waits: filter, search, login and 5 more not defined
 
-free for /apply, together: colors
-free for /propose, together: none
-judge first, no token: notes
+free for /apply, in order: board
+free for /propose, in order: filter notes
+next: /apply board
+errors:
+  search waits on missing-slug, which is not in the queue
+  ping is in a cycle of after
+  pong is in a cycle of after
+  selfish waits on itself

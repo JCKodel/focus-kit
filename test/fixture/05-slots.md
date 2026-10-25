@@ -4,6 +4,7 @@
   tests: none.
 * **Environments:** local only: the checkout, kept current by `make
   verify`; nothing runs anywhere else.
+* **Design:** no screens.
 * **Proof of a screen:** no screens.
 * **Publish policy:** no environment beyond the local one. /apply's last
   words say the local checkout holds the delivery, verify green.
