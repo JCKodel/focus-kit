@@ -35,7 +35,7 @@ kit_version() {
   sed -n 's/^Version: //p' "$SETUP" | head -1
 }
 
-# kit_script <claim|queue> prints the script of §3.6 or §3.7.
+# kit_script <claim|queue|mark> prints the script of §3.6, §3.7 or §3.8.
 kit_script() {
   awk -v h="propose/scripts/$1.sh" 'index($0, "### 3.") == 1 && index($0, h) {f=1} f&&/^````sh$/{p=1;next} p&&/^````$/{exit} p' "$SETUP"
 }

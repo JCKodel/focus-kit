@@ -8,6 +8,30 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.26
+
+- Uma marca muda por um script novo, `mark.sh`, em `propose/scripts/`
+  ao lado do `claim.sh` e do `queue.sh`. Ele muda a marca da linha de
+  um slug, um byte, escreve o arquivo ao lado de si e o renomeia por
+  cima, e recusa se o resultado não mantiver o tamanho. Com `stage`, ele
+  muda a mesma linha no index e nada mais ali, então as linhas que outra
+  sessão já preparou ficam. Toda outra edição do docs/06 é a edição de
+  arquivo do host nas linhas que muda, nunca um programa que escreve o
+  arquivo inteiro. Em 2026-10-18 num projeto e em 2026-10-26 em outro,
+  um subagente marcando a sua linha escreveu uma linha Python da forma
+  `open(p,'w').write(apply(open(p).read(),'*'))`: a escrita esvaziou o
+  docs/06 antes da leitura, e a fila ficou com zero bytes.
+  Os dois preparavam o próprio hunk de uma fila que outras sessões
+  também editam, o que os agentes faziam com scripts improvisados sobre
+  o arquivo e o index. Isso desloca o "stages that hunk" do `/apply`
+  para o seu `[x]`, agora o `stage` do script. Rodar de novo escreve o
+  script e reporta as duas frases do docs/05 §4 como migração. O script
+  foi provado no macOS e no `test/run.sh check`, ainda não no Windows;
+  ele para quando falta o `cmp`.
+- O §3 do `SETUP.md` ganha o 3.8 para o script; os arquivos de host
+  depois dele passam a 3.9 a 3.14, e a checagem do §4 conta dezoito
+  arquivos.
+
 ## 2026.10.25
 
 - O token `(PA)` sai da fila. `· after` é a única relação, e é lida por

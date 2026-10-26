@@ -39,7 +39,11 @@ stale worktree against `expected-stale.txt`; then runs the file with
 CRLF endings. It runs the `claim.sh` of §3.6 on two clones of a local
 bare remote: new, taken, resumed, existing, here, refused from another
 slug's worktree, the create-only push losing a race, and a worktree cut
-from origin's main when local main is behind. Then the line budgets of
+from origin's main when local main is behind. It runs the `mark.sh` of
+§3.8 on a trunk queue with another session's line staged: that line
+kept in the index, the marked line alone staged, a slug that prefixes
+another's, a missing or doubled slug refused with the file untouched,
+CRLF kept, no temporary file left. Then the line budgets of
 `CLAUDE.md` as warnings, and the longest sentence of each command,
 docs/05 and §1: the error of 2026-10-19 was a 45-line sentence, so a
 sentence over fifty words is reported wherever it is, a semicolon not

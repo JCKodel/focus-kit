@@ -7,7 +7,7 @@ repository the session works in, never in the folder this file was read
 from. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.25
+Version: 2026.10.26
 
 ## 1. What to do
 
@@ -24,16 +24,16 @@ Version: 2026.10.25
    writing or removing any file, steps 4 and 5 still reported. The person
    decides how to preserve or replace it, and a rule the edit added to a
    command may become a slot of docs/05 §5, which the commands follow. `GEMINI.md` is the exception:
-   preserve its project content as 3.13 says. Do not create a manifest to
+   preserve its project content as 3.14 says. Do not create a manifest to
    track ownership.
 2. Write every file of section 3, byte for byte, at every path its
-   heading names. Sections 3.1 to 3.7 name paths relative to a skills
+   heading names. Sections 3.1 to 3.8 name paths relative to a skills
    folder, and each of those files goes to both `.claude/skills/` and
-   `.agents/skills/`; sections 3.8 to 3.13 name paths relative to the
+   `.agents/skills/`; sections 3.9 to 3.14 name paths relative to the
    repository root. Do not reformat, summarize, translate or improve any
-   of them; fill only the `<name>` placeholder of 3.8 to 3.11, using the
-   two prompt templates of 3.9 for their respective commands. Write 3.6
-   and 3.7 with LF line endings, whatever the machine's default.
+   of them; fill only the `<name>` placeholder of 3.9 to 3.12, using the
+   two prompt templates of 3.10 for their respective commands. Write 3.6
+   to 3.8 with LF line endings, whatever the machine's default.
 3. Touch nothing else, with one exception: versions before 2026.10.17
    also wrote 3.1 to 3.5 under `.windsurf/skills/`, which no host needs
    now. Remove each kit file there, as step 1 establishes it, and the
@@ -71,7 +71,8 @@ Version: 2026.10.25
      priority and `after`, read per command, `after all` on the review
      line, no `(PA)` token. Integrated as what frees a build. A line on
      one line. What may run now answered by `queue.sh` and offered as
-     one command, with its cost. The file check before /apply's first
+     one command, with its cost. A mark changed by `mark.sh`, and docs/06
+     never written whole by a program. The file check before /apply's first
      edit. A line no clause of the milestone needs going to the next
      one. The four cases a line waits in. A line whose session ended,
      and a dropped line. The claim, the current copy of a line and a
@@ -184,7 +185,7 @@ enforcement there.
 
 In the skills, `$ARGUMENTS` stands for what the person typed after the
 command. Claude Code substitutes it; the Copilot and Gemini CLI files of
-3.9 and 3.11 hand it over themselves; on any other host, read it as "the
+3.10 and 3.12 hand it over themselves; on any other host, read it as "the
 words after the command" and leave the token as it is.
 
 ## 2. What the kit is
@@ -237,7 +238,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.25"
+  version: "2026.10.26"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -312,7 +313,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.25"
+  version: "2026.10.26"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -398,7 +399,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.25"
+  version: "2026.10.26"
 ---
 You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`.
 None: show what may run now as docs/05 §4 says and ask. Several: one
@@ -417,9 +418,9 @@ session ended. Otherwise claim the line as docs/05 §2 says: run
 the strategy being what docs/05 §5's Git slot says, `trunk`, `branch` or
 `worktree <hidden> <prefix>`. `claim: taken` is another clone's line:
 stop, unless the person says to resume it, then add `resume` at the end.
-Continue at the path it prints; your first edit there marks it `[~]`. If
-git cannot find `sh`, Git for Windows was installed without its shell:
-say so and stop.
+Continue at the path it prints; your first edit there marks it `[~]` as
+docs/05 §4 says. If git cannot find `sh`, Git for Windows was installed
+without its shell: say so and stop.
 Follow every slot of docs/05 §5 that names this command, the project's own
 included. Another line changing mark meanwhile is another session's work.
 
@@ -456,7 +457,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.25"
+  version: "2026.10.26"
 ---
 The slugs are `$ARGUMENTS`. None: show what may run now as docs/05 §4
 says and ask. Several: one subagent per slug, opened at once where
@@ -510,10 +511,10 @@ page to `work/done/` and resolve dependent lines as docs/05 §4 says.
 End the page with one final `commit` block in docs/05 §6's format, replacing
 any earlier one; stage only this delivery's changes as that section says;
 show the same message in the conversation in a `commit` block. Your last
-edit marks the line `[x]` and stages that hunk. Never commit or merge unless
-the person asks. Files and message in the documentation language; talk in
-the person's language. Give the person's next steps, each command written
-as this host invokes commands. Use what the delivery changed, as its user
+edit marks the line `[x]`, staged, as docs/05 §4 says. Never commit or
+merge unless the person asks. Files and message in the documentation
+language; talk in the person's language. Give the person's next steps,
+each command written as this host invokes commands. Use what the delivery changed, as its user
 would, and ask here for what is wrong. Review the staged diff. Commit
 with the suggested message, merging a delivery branch as docs/05 §5
 says. Then what may run next, as docs/05 §4 says. End saying which
@@ -829,8 +830,12 @@ work changes, so the queue shows what is happening while it happens:
 
 A board may read the queue, and people pull work from it, so a mark
 changes at once: `[~]` is /propose's first edit, `[*]` is /apply's first,
-`[x]` is /apply's last. On trunk the board sees it at once. With a branch
-or a worktree per delivery the mark lives on the delivery's branch, which
+`[x]` is /apply's last. A mark is changed by running
+`git -c "alias.fm=!sh .agents/skills/propose/scripts/mark.sh" fm <slug> "<mark>"`,
+adding `stage` at the end when the line goes into the index, as /apply's
+`[x]` does. Any other edit to docs/06 is the host's file edit on the lines
+it changes, never a program that writes the whole file. On trunk the
+board sees a new mark at once. With a branch or a worktree per delivery the mark lives on the delivery's branch, which
 /propose creates on origin as the claim, and the main branch shows the
 line as it was until the merge. A line whose branch exists on origin is
 taken, whatever its copies say. The branch's copy of the line is the
@@ -874,7 +879,7 @@ files, are the normal case of parallel work on trunk. Another line
 changing mark, another delivery's page or files in the tree and another
 session's index entries are that session's work, not a conflict: do not
 stop for them or touch them; change only this delivery's line and stage
-only its paths and hunks, its own hunk of docs/06 included. A conflict is
+only its paths and hunks, its own lines of docs/06 included. A conflict is
 a line edited by both, or a file this page needs that the other delivery
 is changing; then stop and report. Two deliveries' edits in one hunk, each
 on its own line, as neighbouring queue lines are, conflict in nothing: they
@@ -1515,7 +1520,92 @@ END {
 ' "$overlay" -
 ````
 
-### 3.8 `.agents/skills/<name>/agents/openai.yaml`
+### 3.8 `propose/scripts/mark.sh`
+
+The script `/propose` and `/apply` run to change a line's mark, as docs/05
+§4 says, in both skills folders like 3.6, with LF line endings, run
+through git the same way. It edits docs/06 and, with `stage`, the index,
+one line in each.
+
+````sh
+#!/bin/sh
+# focus-kit: change the mark of one docs/06 line, as docs/05 §4 says. Run it
+# through git, so it starts at the repository's top level on every host:
+#   git -c "alias.fm=!sh .agents/skills/propose/scripts/mark.sh" fm <slug> "<mark>" [stage]
+# <mark> is one of "[ ]" "[~]" "[>]" "[*]" "[x]" "[?]". A program that
+# rewrites docs/06 whole can leave it empty; this one changes one byte. The
+# file is written beside itself and renamed over it, only when the result
+# keeps its size and differs in at most that byte. With "stage", the same
+# line changes in the index and nothing else there does, so another
+# session's staged lines stay as they are. Exit 0 marked, 2 refused.
+set -eu
+
+die() { printf 'error: %s\n' "$1"; exit 2; }
+
+slug=${1:-}; mark=${2:-}; stage=${3:-}
+[ -n "$slug" ] && [ -n "$mark" ] || die 'usage: mark.sh <slug> "[ ]" | "[~]" | "[>]" | "[*]" | "[x]" | "[?]" [stage]'
+case $mark in '[ ]'|'[~]'|'[>]'|'[*]'|'[x]'|'[?]') ;; *) die "unknown mark '$mark'" ;; esac
+case $stage in ''|stage) ;; *) die "unknown word '$stage'; the third is stage or nothing" ;; esac
+case $slug in -*|*[!a-zA-Z0-9._-]*) die "slug '$slug' holds a character a slug cannot" ;; esac
+command -v cmp >/dev/null 2>&1 || die "cmp is missing; it proves only the mark changed"
+
+top=$(git rev-parse --show-toplevel 2>/dev/null) || die "not inside a repository"
+queue=
+for f in "$top"/docs/06-*.md; do
+  [ -f "$f" ] || continue
+  [ -z "$queue" ] || die "more than one docs/06-*.md in $top/docs"
+  queue=$f
+done
+[ -n "$queue" ] || die "no docs/06-*.md in $top/docs"
+rel="docs/${queue##*/}"
+
+# The slug's line: a mark, whitespace, then the slug as a whole word.
+# count prints how many lines are the slug's; put prints the input with
+# the mark of that line replaced.
+find='function mine(l,  r) {
+    if (l !~ /^\[[ ~>*x?]\][ \t]/) return 0
+    r = substr(l, 4); sub(/^[ \t]+/, "", r); sub(/\r$/, "", r)
+    return r == slug || index(r, slug " ") == 1 || index(r, slug "\t") == 1
+  }'
+count="$find"' mine($0) { n++ } END { print n + 0 }'
+put="$find"' mine($0) { $0 = mark substr($0, 4) } { print }'
+
+tmp=$(mktemp "$queue.XXXXXX")
+blob=; new=
+trap 'rm -f "$tmp" ${blob:+"$blob"} ${new:+"$new"}' EXIT
+
+# replace <source> <name> <target>: writes the source with the mark changed
+# into the target, refusing unless the target keeps the source's size and
+# differs from it in at most one byte.
+replace() {
+  n=$(awk -v slug="$slug" "$count" "$1")
+  [ "$n" -eq 1 ] || die "$n lines of $2 are $slug's; expected 1"
+  awk -v slug="$slug" -v mark="$mark" "$put" "$1" > "$3"
+  [ "$(wc -c < "$1")" -eq "$(wc -c < "$3")" ] || die "the result of $2 would not keep its size (does it end without a newline?); nothing written"
+  d=$(cmp -l "$1" "$3" 2>/dev/null | wc -l)
+  [ "$d" -le 1 ] || die "the result of $2 would differ in $d bytes; nothing written"
+}
+
+cp -p "$queue" "$tmp"
+replace "$queue" "$rel" "$tmp"
+mv "$tmp" "$queue"
+printf 'marked: %s %s in %s\n' "$mark" "$slug" "$rel"
+
+[ "$stage" = stage ] || exit 0
+entry=$(git -C "$top" ls-files -s -- "$rel")
+[ -n "$entry" ] || die "$rel is not in the index; stage it as docs/05 §6 says"
+[ "$(printf '%s\n' "$entry" | wc -l)" -eq 1 ] || die "$rel has a merge conflict in the index"
+mode=${entry%% *}
+blob=$(mktemp); new=$(mktemp)
+git cat-file blob ":$rel" > "$blob"
+[ "$(awk -v slug="$slug" "$count" "$blob")" -ne 0 ] || die "$slug's line is not in the index yet; stage the line as docs/05 §6 says"
+replace "$blob" "the index's $rel" "$new"
+sha=$(git hash-object -w --no-filters "$new")
+git -C "$top" update-index --cacheinfo "$mode,$sha,$rel"
+printf 'staged: that line alone\n'
+````
+
+### 3.9 `.agents/skills/<name>/agents/openai.yaml`
 
 For Codex. Four files, one per skill, `<name>` replaced by `brainstorm`,
 `analyze`, `propose` and `apply`, next to the `SKILL.md` of `.agents/skills/`
@@ -1531,7 +1621,7 @@ policy:
   allow_implicit_invocation: false
 ````
 
-### 3.9 `.github/prompts/<name>.prompt.md`
+### 3.10 `.github/prompts/<name>.prompt.md`
 
 For GitHub Copilot. Four files, `<name>` replaced by `brainstorm`,
 `analyze`, `propose` and `apply`, so the commands exist as slash commands
@@ -1553,18 +1643,18 @@ agent: 'agent'
 Read `.agents/skills/<name>/SKILL.md` and follow it. `$ARGUMENTS` is `${input:slug}`.
 ````
 
-### 3.10 `.cursor/commands/<name>.md`
+### 3.11 `.cursor/commands/<name>.md`
 
-For Cursor. Four files, `<name>` replaced as in 3.9, so the commands exist
+For Cursor. Four files, `<name>` replaced as in 3.10, so the commands exist
 as slash commands in the agent chat. Each one is one line:
 
 ````markdown
 Read `.agents/skills/<name>/SKILL.md` and follow it. `$ARGUMENTS` is the words typed after the command.
 ````
 
-### 3.11 `.gemini/commands/<name>.toml`
+### 3.12 `.gemini/commands/<name>.toml`
 
-For the Gemini CLI. Four files, `<name>` replaced as in 3.9, so the
+For the Gemini CLI. Four files, `<name>` replaced as in 3.10, so the
 commands exist as slash commands. Each one is two lines:
 
 ````toml
@@ -1572,7 +1662,7 @@ description = "focus-kit: the <name> command. Reads .agents/skills/<name>/SKILL.
 prompt = "Read .agents/skills/<name>/SKILL.md and follow it. $ARGUMENTS is {{args}}."
 ````
 
-### 3.12 `.agents/rules/focus-kit.md`
+### 3.13 `.agents/rules/focus-kit.md`
 
 For Google Antigravity. One always-on pointer, holding no project rule
 of its own; its required frontmatter keeps the pointer active:
@@ -1584,10 +1674,10 @@ trigger: always_on
 Read `AGENTS.md` at the repository root before acting: it holds this project's rules. The four commands of the process are the skills in `.agents/skills/`.
 ````
 
-### 3.13 `GEMINI.md`
+### 3.14 `GEMINI.md`
 
 For the Gemini CLI, which reads `GEMINI.md` unless told otherwise. Use the
-line below without the rule frontmatter of 3.12. If the file exists, remove
+line below without the rule frontmatter of 3.13. If the file exists, remove
 only exact occurrences of this pointer line and put one at the top;
 preserve every other line in its original order. This also removes copies
 left by older updates. A second run produces no further change.
@@ -1598,9 +1688,9 @@ Read `AGENTS.md` at the repository root before acting: it holds this project's r
 
 ## 4. Check
 
-Before reporting, confirm: sixteen files across `.claude/skills/` and
+Before reporting, confirm: eighteen files across `.claude/skills/` and
 `.agents/skills/` (four `SKILL.md`, two `references/documents.md`,
-`propose/scripts/claim.sh` and `propose/scripts/queue.sh` in each, each
+`propose/scripts/claim.sh`, `queue.sh` and `mark.sh` in each, each
 script with LF line endings and ending in one); no
 kit file left under `.windsurf/skills/`; four `agents/openai.yaml` under
 `.agents/skills/`; four prompt files, four Cursor commands and four Gemini

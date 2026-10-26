@@ -8,6 +8,29 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.26
+
+- A mark changes through a new script, `mark.sh`, in `propose/scripts/`
+  beside `claim.sh` and `queue.sh`. It changes the mark of one slug's
+  line, one byte, writes the file beside itself and renames it over,
+  and refuses unless the result keeps its size. With `stage`, it changes
+  the same line in the index and nothing else there, so another
+  session's staged lines stay. Every other edit to docs/06 is the host's
+  file edit on the lines it changes, never a program that writes the
+  whole file. On 2026-10-18 in one project and on 2026-10-26 in another,
+  a subagent marking its line wrote a Python line of the shape
+  `open(p,'w').write(apply(open(p).read(),'*'))`: the write emptied
+  docs/06 before the read, and the queue was left at zero bytes.
+  Both were staging their own hunk of a queue other sessions also edit,
+  which agents did with improvised scripts over the file and the index.
+  This displaces `/apply`'s "stages that hunk" for its `[x]`, now the
+  script's `stage`. A rerun writes the script and reports docs/05 §4's
+  two sentences as a migration. The script was proven on macOS and in
+  `test/run.sh check`, not yet on Windows; it stops when `cmp` is
+  missing.
+- `SETUP.md` §3 gains 3.8 for the script; the host files after it are
+  renumbered 3.9 to 3.14, and §4's check counts eighteen files.
+
 ## 2026.10.25
 
 - The `(PA)` token leaves the queue. `· after` is the only relation, and

@@ -69,6 +69,7 @@ stage_check() {
 
   check_queue_script
   check_claim_script
+  check_mark_script
 
   say "check: line alarms (CLAUDE.md)"
   budget "/propose body" "$(skill_body propose | grep -c .)" 40
@@ -170,6 +171,41 @@ check_claim_script() {
   rm -rf "$t"
 }
 
+# mark.sh on trunk with two sessions: another session's staged line kept,
+# a slug that prefixes another's, a missing and a doubled slug refused with
+# the file untouched, a line not yet in the index, CRLF endings. The error
+# of 2026-10-18 and 2026-10-26: a script that wrote docs/06 whole left it empty.
+check_mark_script() {
+  say "check: mark.sh on a trunk queue with two sessions"
+  local t script out; t=$(mktemp -d); script="$t/mark.sh"
+  kit_script mark > "$script"
+  mkdir -p "$t/r/docs" && cd "$t/r" && git init -q
+  printf '# Queue\n\n## M1\n\n[>] card  the card\n[ ] card-fix  a fix\n[>] login  log in, a line\n  that wraps · after card\n' > docs/06-Queue.md
+  tgit add . && tgit commit -q -m queue
+  m() { (cd "$t/r/${2:-.}" && sh "$script" "${@:3}" 2>&1); }
+  sed 's/^\[>\] login/[*] login/' docs/06-Queue.md > q && cat q > docs/06-Queue.md && rm q && git add docs/06-Queue.md
+  out=$(m x . card '[*]') && grep -q '^marked: \[\*\] card' <<< "$out" && ok "card [*] in the tree" || fail "card [*]: $out"
+  assert_true "the index still has card [>]" bash -c "git show :docs/06-Queue.md | grep -q '^\[>\] card '"
+  mkdir -p sub
+  out=$(m x sub card '[x]' stage) && grep -q '^staged:' <<< "$out" && ok "card [x] staged, from a subfolder" || fail "card [x] stage: $out"
+  out=$(git diff --cached | grep '^[-+]\[' | tr '\n' '|')
+  [ "$out" = '-[>] card  the card|+[x] card  the card|-[>] login  log in, a line|+[*] login  log in, a line|' ] \
+    && ok "staged: card [x] and the other session's login [*], nothing else" || fail "staged: $out"
+  assert_true "nothing unstaged" git diff --quiet
+  assert_true "card-fix untouched" grep -q '^\[ \] card-fix' docs/06-Queue.md
+  cp docs/06-Queue.md "$t/before"
+  out=$(m x . nope '[x]') && fail "a missing slug was marked" || ok "a missing slug is refused"
+  printf '[ ] card  twice\n' >> docs/06-Queue.md; cp docs/06-Queue.md "$t/before"
+  out=$(m x . card '[*]') && fail "a doubled slug was marked" || assert_true "a doubled slug is refused, the file untouched" cmp -s "$t/before" docs/06-Queue.md
+  out=$(m x . card x) && fail "mark x accepted" || ok "an unknown mark is refused"
+  printf '[ ] extra  new\n' >> docs/06-Queue.md
+  out=$(m x . extra '[~]' stage) && fail "a line not in the index was staged" || { grep -q 'not in the index yet' <<< "$out" && ok "a line not in the index: marked, then refused to stage" || fail "extra: $out"; }
+  awk '{ printf "%s\r\n", $0 }' docs/06-Queue.md > q && cat q > docs/06-Queue.md && rm q
+  out=$(m x . login '[?]') && [ "$(grep -c $'\r$' docs/06-Queue.md)" -eq "$(wc -l < docs/06-Queue.md)" ] && ok "CRLF kept" || fail "CRLF: $out"
+  assert_true "no temporary file left" bash -c "[ \$(ls docs | wc -l) -eq 1 ]"
+  cd "$KIT_ROOT"; rm -rf "$t"
+}
+
 # ---------- fixture stages ----------
 
 KIT_PATHS='^(\.claude/skills/|\.agents/skills/|\.agents/rules/focus-kit\.md|\.github/prompts/|\.cursor/commands/|\.gemini/commands/|GEMINI\.md)'
@@ -205,7 +241,7 @@ stage_plant() { # stage_plant <host> <container>
     done
   done
   local script name
-  for name in claim queue; do
+  for name in claim queue mark; do
     script=$(mktemp); kit_script "$name" > "$script"
     for d in .claude/skills .agents/skills; do
       f="$main/$d/propose/scripts/$name.sh"
