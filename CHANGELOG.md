@@ -8,6 +8,21 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.27
+
+- `mark.sh` puts a `[~]` only on a `[ ]` line and a `[*]` only on a
+  `[>]` one. Any other line is refused with exit 2, nothing written, and
+  the message says a `[~]` or `[*]` is another session's, resumed only
+  on the person's word. On 2026-10-26 one project's `/apply` of one slug
+  was typed in two sessions six seconds apart, on trunk in one working
+  tree; the second read the line `[>]`, marked it `[*]` and built it.
+  Under 2026.10.25 the mark was the host's edit from `[>]`, which fails
+  on a line already `[*]`. The `mark.sh` of 2026.10.26 changed the byte
+  whatever it held, so two sessions could both mark the line and build.
+  No rule is added: the refusal enforces docs/05 §4's resumption on the
+  person's word, and no project document changes. A rerun rewrites the
+  script.
+
 ## 2026.10.26
 
 - A mark changes through a new script, `mark.sh`, in `propose/scripts/`

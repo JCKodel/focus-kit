@@ -8,6 +8,21 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.27
+
+- O `mark.sh` põe um `[~]` só numa linha `[ ]` e um `[*]` só numa
+  `[>]`. Qualquer outra linha é recusada com saída 2, nada escrito, e a
+  mensagem diz que um `[~]` ou `[*]` é de outra sessão, retomado só com
+  a palavra da pessoa. Em 2026-10-26 o `/apply` de um mesmo slug foi
+  digitado num projeto em duas sessões com seis segundos de diferença,
+  em trunk numa árvore só; a segunda leu a linha `[>]`, marcou `[*]` e
+  construiu. Na 2026.10.25 a marca era a edição do host a partir de
+  `[>]`, que falha numa linha já `[*]`. O `mark.sh` da 2026.10.26
+  trocava o byte fosse qual fosse, então duas sessões podiam marcar a
+  linha e construir. Nenhuma regra entra: a recusa faz
+  valer a retomada com a palavra da pessoa do docs/05 §4, e nenhum
+  documento do projeto muda. Rodar de novo reescreve o script.
+
 ## 2026.10.26
 
 - Uma marca muda por um script novo, `mark.sh`, em `propose/scripts/`

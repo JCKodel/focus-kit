@@ -175,6 +175,7 @@ check_claim_script() {
 # a slug that prefixes another's, a missing and a doubled slug refused with
 # the file untouched, a line not yet in the index, CRLF endings. The error
 # of 2026-10-18 and 2026-10-26: a script that wrote docs/06 whole left it empty.
+# A second [*] or [~] on one line refused: two /apply of one slug, 2026-10-26.
 check_mark_script() {
   say "check: mark.sh on a trunk queue with two sessions"
   local t script out; t=$(mktemp -d); script="$t/mark.sh"
@@ -186,6 +187,10 @@ check_mark_script() {
   sed 's/^\[>\] login/[*] login/' docs/06-Queue.md > q && cat q > docs/06-Queue.md && rm q && git add docs/06-Queue.md
   out=$(m x . card '[*]') && grep -q '^marked: \[\*\] card' <<< "$out" && ok "card [*] in the tree" || fail "card [*]: $out"
   assert_true "the index still has card [>]" bash -c "git show :docs/06-Queue.md | grep -q '^\[>\] card '"
+  cp docs/06-Queue.md "$t/before"
+  out=$(m x . card '[*]') && fail "a second [*] on card was marked" || { grep -q 'card is \[\*\], not \[>\]' <<< "$out" && cmp -s "$t/before" docs/06-Queue.md && ok "a second session's [*] on card is refused, the file untouched" || fail "second [*]: $out"; }
+  out=$(m x . card-fix '[*]') && fail "[*] on a [ ] line was marked" || ok "[*] on a line not yet [>] is refused"
+  out=$(m x . login '[~]') && fail "[~] on a [>] line was marked" || ok "[~] on a line already past [ ] is refused"
   mkdir -p sub
   out=$(m x sub card '[x]' stage) && grep -q '^staged:' <<< "$out" && ok "card [x] staged, from a subfolder" || fail "card [x] stage: $out"
   out=$(git diff --cached | grep '^[-+]\[' | tr '\n' '|')

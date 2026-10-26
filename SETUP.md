@@ -7,7 +7,7 @@ repository the session works in, never in the folder this file was read
 from. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.26
+Version: 2026.10.27
 
 ## 1. What to do
 
@@ -238,7 +238,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.26"
+  version: "2026.10.27"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -313,7 +313,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.26"
+  version: "2026.10.27"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -399,7 +399,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.26"
+  version: "2026.10.27"
 ---
 You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`.
 None: show what may run now as docs/05 §4 says and ask. Several: one
@@ -457,7 +457,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.26"
+  version: "2026.10.27"
 ---
 The slugs are `$ARGUMENTS`. None: show what may run now as docs/05 §4
 says and ask. Several: one subagent per slug, opened at once where
@@ -1537,7 +1537,9 @@ one line in each.
 # file is written beside itself and renamed over it, only when the result
 # keeps its size and differs in at most that byte. With "stage", the same
 # line changes in the index and nothing else there does, so another
-# session's staged lines stay as they are. Exit 0 marked, 2 refused.
+# session's staged lines stay as they are. A "[~]" goes only on a "[ ]" line
+# and a "[*]" only on a "[>]" one, so two sessions that started one line
+# cannot both mark it: the second is refused. Exit 0 marked, 2 refused.
 set -eu
 
 die() { printf 'error: %s\n' "$1"; exit 2; }
@@ -1588,6 +1590,9 @@ replace() {
 
 cp -p "$queue" "$tmp"
 replace "$queue" "$rel" "$tmp"
+was=$(awk -v slug="$slug" "$find"' mine($0) { print substr($0, 1, 3) }' "$queue")
+case $mark in '[~]') from='[ ]' ;; '[*]') from='[>]' ;; *) from=$was ;; esac
+[ "$was" = "$from" ] || die "$slug is $was, not $from; docs/05 §4 says how it moves, and a [~] or [*] is another session's, resumed only on the person's word; nothing written"
 mv "$tmp" "$queue"
 printf 'marked: %s %s in %s\n' "$mark" "$slug" "$rel"
 
