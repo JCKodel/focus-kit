@@ -10,6 +10,8 @@ the same mark; and compares with `expected-worktree.txt`. Then it merges
 `colors` into main and runs from the worktree of `card`, whose copy is
 stale, against `expected-stale.txt`; and runs the file with CRLF endings
 against `expected-trunk.txt`. The `notes` line is wrapped on purpose.
+`tooltips` is dropped, so `m2-review`'s `after all` leaves it out, while
+`revive` names the dropped `old-idea` and waits for the person.
 
 ## M1. Done
 
@@ -39,6 +41,7 @@ When this milestone closes, the board shows cards.
 [ ] pong        a cycle, other half · after ping
 [ ] revive      bring the idea back · after old-idea
 [ ] selfish     waits on itself · after selfish
+[x] tooltips    tips on hover · dropped: no longer wanted
 [ ] m2-review   the review of M2 · after all
 ```
 

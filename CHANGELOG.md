@@ -8,6 +8,20 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.10.27.1
+
+- `· after all` leaves out the milestone's dropped lines, in `queue.sh`
+  and in docs/05 §4 and §8. A line whose `after` names a dropped line
+  still waits for the person to re-decide it. On 2026-10-26 one
+  project's Milestone 1 review waited on a line the person had dropped:
+  `queue.sh` answered `after <slug>, dropped: re-decide`, nothing the
+  person could write cleared it, and the review's `after all` was
+  replaced by a list of the other 27 slugs. This displaces "every line
+  above it in its milestone" in §4 and "every line above" in §8. A rerun
+  rewrites the script and reports the three sentences of docs/05 §4 and
+  §8 as a migration. `test/fixture/queue/` gains a dropped `tooltips`
+  line above `m2-review`.
+
 ## 2026.10.27
 
 - `mark.sh` puts a `[~]` only on a `[ ]` line and a `[*]` only on a

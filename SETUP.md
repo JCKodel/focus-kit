@@ -7,7 +7,7 @@ repository the session works in, never in the folder this file was read
 from. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.27
+Version: 2026.10.27.1
 
 ## 1. What to do
 
@@ -69,8 +69,9 @@ Version: 2026.10.27
      block;
    * docs/05 §4. When each mark changes, and resumption. Order as
      priority and `after`, read per command, `after all` on the review
-     line, no `(PA)` token. Integrated as what frees a build. A line on
-     one line. What may run now answered by `queue.sh` and offered as
+     line and leaving the dropped lines out, no `(PA)` token. Integrated
+     as what frees a build. A line on one line. What may run now
+     answered by `queue.sh` and offered as
      one command, with its cost. A mark changed by `mark.sh`, and docs/06
      never written whole by a program. The file check before /apply's first
      edit. A line no clause of the milestone needs going to the next
@@ -102,8 +103,9 @@ Version: 2026.10.27
      naming paths; the one index of a tree; what a revert does not undo,
      in the Git slot;
    * docs/05 §7: its exception for the reviews' agents;
-   * docs/05 §8: the slow tests; the range from the previous review's
-     commit, or the one the page names, to the commit the reading started
+   * docs/05 §8: the review's start, which waits on no dropped line; the
+     slow tests; the range from the previous review's commit, or the one
+     the page names, to the commit the reading started
      at; who reads, as the slot says; the checker, what seen means and
      the paths read;
    * docs/04: the pointer to docs/05 §6 and its tests by level;
@@ -238,7 +240,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.27"
+  version: "2026.10.27.1"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -313,7 +315,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.27"
+  version: "2026.10.27.1"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -399,7 +401,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.27"
+  version: "2026.10.27.1"
 ---
 You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`.
 None: show what may run now as docs/05 §4 says and ask. Several: one
@@ -457,7 +459,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.27"
+  version: "2026.10.27.1"
 ---
 The slugs are `$ARGUMENTS`. None: show what may run now as docs/05 §4
 says and ask. Several: one subagent per slug, opened at once where
@@ -797,9 +799,9 @@ conversation. A line is the mark, the slug, one sentence and its
 suffixes, on one line; what happened goes on the page, because /propose
 reads the whole queue. A line that needs another first ends with
 `· after <slug>`, written when the line is added, or `· after all`,
-every line above it in its milestone, which is how the review is
-written. `after` is read per command: /propose starts when every line
-it names is `[>]` or beyond, because the definition needs their pages;
+every line above it in its milestone but the dropped ones, which is how
+the review is written. `after` is read per command: /propose starts
+when every line it names is `[>]` or beyond, because the definition needs their pages;
 /apply starts when every line it names is integrated, because the build
 needs their code. Integrated is `[x]` on trunk; with a branch or a
 worktree per delivery it is the delivery merged into the main branch,
@@ -868,6 +870,7 @@ before editing. A delivery the person cancels, because it is impossible,
 refused or no longer wanted, ends `[x]` with `· dropped: <reason>` at the
 end of the line, its page in `work/done/` saying what was built and
 undone; a line whose `after` names it is the person's to re-decide.
+`after all` names none and leaves it out.
 
 <Written when §5's Git slot is a branch or a worktree per delivery, or
 when the person says sessions will run at the same time: the two
@@ -1016,9 +1019,9 @@ answer names an error that happened.
 
 A milestone is planned with its review as its last line,
 `<milestone>-review · after all`, a delivery like the others: /propose
-writes its page when every line above is defined, /apply runs it when
-every line above is integrated. It takes the milestone's paragraph clause by clause
-and writes, for each, which delivery answers it and how a person tests it.
+writes its page when every line above but the dropped ones is defined,
+/apply runs it when every one of those is integrated. It takes the
+milestone's paragraph clause by clause and writes, for each, which delivery answers it and how a person tests it.
 It fixes nothing. It runs §5's slow tests, when the slot names them; a
 failing one is a finding. The person tests each clause by hand: a clause
 no delivery answers, or one that fails in the person's hands, is a finding.
@@ -1266,6 +1269,8 @@ a merge the integration. It edits nothing.
 # its branch on origin, which is its own copy until the delivery is
 # integrated; a branch on origin is a claim; a [?] on any copy blocks. A
 # line goes under the last line it waits on; "+ after" names the others.
+# "after all" leaves out the milestone's dropped lines; a line that
+# names a dropped one waits for the person to re-decide.
 # A wrapped line is read whole. Edits nothing.
 set -eu
 
@@ -1376,7 +1381,7 @@ function done(k) { return mark[k] == "x" && integrated[k] }
 function deps(k, i,   j, n) {
   n = 0
   for (j = 1; j <= nafter[k]; j++) dep[k, ++n] = after[k, j]
-  if (all[k]) for (j = 1; j < k; j++) if (mstone[j] == mstone[k]) dep[k, ++n] = slug[j]
+  if (all[k]) for (j = 1; j < k; j++) if (mstone[j] == mstone[k] && !dropped[j]) dep[k, ++n] = slug[j]
   ndep[k] = n
 }
 function few(list, n, what) { return ((n <= 3) ? list : list " and " (n - 3) " more") (what == "" ? "" : " " what) }

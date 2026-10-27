@@ -8,6 +8,21 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.10.27.1
+
+- O `· after all` deixa de fora as linhas descartadas do milestone, no
+  `queue.sh` e no docs/05 §4 e §8. Uma linha cujo `after` nomeia uma
+  linha descartada continua esperando a pessoa decidir de novo. Em
+  2026-10-26 a revisão do Milestone 1 de um projeto esperava uma linha
+  que a pessoa tinha descartado: o `queue.sh` respondia
+  `after <slug>, dropped: re-decide`, nada que a pessoa escrevesse
+  limpava isso, e o `after all` da revisão foi trocado por uma lista dos
+  outros 27 slugs. Isso substitui "every line above it in its milestone"
+  no §4 e "every line above" no §8. Rodar de novo reescreve o script e
+  relata as três frases do docs/05 §4 e §8 como migração. O
+  `test/fixture/queue/` ganha uma linha `tooltips` descartada acima do
+  `m2-review`.
+
 ## 2026.10.27
 
 - O `mark.sh` põe um `[~]` só numa linha `[ ]` e um `[*]` só numa
