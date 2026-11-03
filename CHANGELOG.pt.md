@@ -8,6 +8,25 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.11.03
+
+- O `/apply` termina rodando o `queue.sh` mesmo sem ninguém pedir, e
+  mostra a árvore com o comando de `next:` escrito como o host chama os
+  comandos. Em 2026-11-03 uma pessoa relatou que o `/apply` tinha
+  deixado de dizer o próximo comando depois de uma atualização. Desde a
+  2026.10.24 o último passo dizia "what may run next, as docs/05 §4
+  says", e o §4 roda o script quando alguém pergunta o que pode rodar
+  agora; no fim do `/apply` ninguém tinha perguntado. Isso substitui
+  aquela frase e não acrescenta regra. Rodar de novo reescreve o
+  `/apply`; nenhum documento do projeto muda.
+- Os passos do `/apply` para a pessoa abrem cada um com "Tell the
+  person" ou "Tell them": usar o que a entrega mudou, revisar o diff
+  staged, fazer o commit. Desde a 2026.10.25 eram frases soltas, "Review
+  the staged diff. Commit with the suggested message", lidas como ordens
+  ao agente; o "Commit" contradizia o "Never commit" duas frases antes, e
+  o agente podia descartar a lista inteira. Os passos são os mesmos;
+  nenhuma regra é acrescentada.
+
 ## 2026.10.27.1
 
 - O `· after all` deixa de fora as linhas descartadas do milestone, no

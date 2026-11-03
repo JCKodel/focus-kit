@@ -7,7 +7,7 @@ repository the session works in, never in the folder this file was read
 from. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.10.27.1
+Version: 2026.11.03
 
 ## 1. What to do
 
@@ -240,7 +240,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.10.27.1"
+  version: "2026.11.03"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -315,7 +315,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.10.27.1"
+  version: "2026.11.03"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -401,7 +401,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.27.1"
+  version: "2026.11.03"
 ---
 You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`.
 None: show what may run now as docs/05 §4 says and ask. Several: one
@@ -459,7 +459,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.10.27.1"
+  version: "2026.11.03"
 ---
 The slugs are `$ARGUMENTS`. None: show what may run now as docs/05 §4
 says and ask. Several: one subagent per slug, opened at once where
@@ -515,13 +515,15 @@ any earlier one; stage only this delivery's changes as that section says;
 show the same message in the conversation in a `commit` block. Your last
 edit marks the line `[x]`, staged, as docs/05 §4 says. Never commit or
 merge unless the person asks. Files and message in the documentation
-language; talk in the person's language. Give the person's next steps,
-each command written as this host invokes commands. Use what the delivery changed, as its user
-would, and ask here for what is wrong. Review the staged diff. Commit
+language; talk in the person's language. Then tell the person their
+next steps, each command written as this host invokes commands. Tell
+them to use what the delivery changed, as its user would, and to say
+here what is wrong. Tell them to review the staged diff, then to commit
 with the suggested message, merging a delivery branch as docs/05 §5
-says. Then what may run next, as docs/05 §4 says. End saying which
-environment is at which version and the command that updates the
-others; never end silent.
+says. Then run the queue script of docs/05 §4, though no one asked, and
+show its tree as §4 says, its `next:` command written for this host.
+End saying which environment is at which version and the command that
+updates the others; never end silent.
 ````
 
 ### 3.5 `brainstorm/references/documents.md` and `analyze/references/documents.md`

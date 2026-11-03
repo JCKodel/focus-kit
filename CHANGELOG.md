@@ -8,6 +8,24 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.11.03
+
+- `/apply` ends by running `queue.sh` though no one asked, and shows its
+  tree with its `next:` command written as the host invokes commands.
+  On 2026-11-03 a person reported that `/apply` had stopped naming the
+  next command after an update. Since 2026.10.24 its last step said
+  "what may run next, as docs/05 §4 says", and §4 runs the script when
+  someone asks what may run now; at the end of `/apply` no one had
+  asked. This displaces that sentence and adds no rule. A rerun rewrites
+  `/apply`; no project document changes.
+- `/apply`'s steps for the person each open with "Tell the person" or
+  "Tell them": use what the delivery changed, review the staged diff,
+  commit. Since 2026.10.25 they stood as bare sentences, "Review the
+  staged diff. Commit with the suggested message", read as orders to the
+  agent; "Commit" contradicted "Never commit" two sentences earlier, and
+  the agent could drop the whole list. The steps are the same ones; no
+  rule is added.
+
 ## 2026.10.27.1
 
 - `· after all` leaves out the milestone's dropped lines, in `queue.sh`
