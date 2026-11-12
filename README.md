@@ -175,9 +175,12 @@ OpenCode and Zed all read. What belongs to a single host:
    whole range, or by the kit's readers, the range since the previous
    review split into areas, one read-only agent each, in any host that
    runs agents; either way every candidate is checked against its file
-   before you see it. What is missing, fails in your hands or you confirm from
-   the code reading becomes a line in the same milestone, under the review, ready
-   for `/propose` and `/apply`. Those lines get no second review: your
+   before you see it. What each delivery's review left over waits
+   there too, as notes, instead of becoming queue lines along the way.
+   The review grades what is missing, fails in your hands or you confirm:
+   a grave finding becomes a line each, the medium ones share one line,
+   and a small one becomes a line only when you pick it, all under the
+   review, ready for `/propose` and `/apply`. Those lines get no second review: your
    commit is the review.
 
 How to run the product from a fresh clone, what you do by hand outside a

@@ -8,6 +8,88 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.11.12
+
+- O `/apply` corrige na própria entrega o que a revisão, a prova ou a
+  construção dela acham de errado no que ela construiu ou mudou, mesmo
+  um caso que a página não nomeou, e registra cada correção no Outcome,
+  por mais que a página cresça. A página continua sendo o escopo, e
+  corrigir o que a entrega construiu não é ampliá-lo. Uma correção que
+  ampliaria a página, ou que precisa de uma decisão que nenhum documento
+  responde, não é feita: o Outcome e a última mensagem dizem o problema
+  e sugerem o que a pessoa pode fazer. Isso substitui o "Fix what
+  breaks the page, docs/04 or the text this delivery wrote": uma falha
+  que a página não tinha nomeado virava uma linha nova, com página,
+  prova e revisão próprias.
+- Um achado em algo que a entrega não tocou não vira mais linha da fila
+  sozinho. Só o grave vira: ele quebra uma cláusula do parágrafo do
+  marco no caminho usual de uma pessoa, perde ou expõe dado, ou deixa o
+  verify vermelho. A linha dele termina com `· from <slug>` e só fica
+  acima das linhas planejadas quando o verify está vermelho ou uma delas
+  precisa dele. Todo outro achado é uma nota no rascunho da página da
+  revisão do marco. Num projeto, em 2026-11-12, 32 das 130 linhas do
+  Marco 1 tinham vindo de um achado, 22 delas de uma revisão de entrega.
+  Vinte e seis seguidas eram sobre uma tela só, cada uma uma falha no
+  que a entrega anterior tinha acabado de construir, a revisão de cada
+  correção acrescentando a linha seguinte, por sete gerações, todas
+  acima da linha que responde à primeira cláusula do marco. Isso
+  substitui o "anything else becomes a `[ ]` line" do `/apply`.
+- A revisão do marco lê essas notas primeiro e classifica cada achado
+  confirmado. O grave é uma linha cada. Os médios dividem uma linha só,
+  `<milestone>-fixes`. Os pequenos ficam listados na página da revisão,
+  e um só vira linha quando a pessoa o escolhe. Um achado encontrado
+  depois de a revisão rodar é uma nota na revisão do marco seguinte, e
+  assim uma correção não gera mais linhas no próprio marco. Isso
+  substitui o "Each finding becomes a `[ ]` line" do §8; no repositório
+  do livro essa frase tinha acrescentado 21 linhas numa revisão.
+- O `/apply` abre a última mensagem com os achados: `🚨` antes de cada
+  grave e da linha nova dele, `⚠️` antes da contagem de notas deixadas
+  para a revisão e antes de um verify acima do teto, `✅` quando não há
+  nenhum. Quem confia no agente e lê só o fim ainda os vê. Nenhuma regra é substituída: a última
+  mensagem não tinha abertura fixa.
+- O `queue.sh` imprime `findings:` abaixo do marco, quantas linhas
+  vieram de um achado e quantas planejadas estão abertas, e uma linha
+  `⚠️` com os nomes das linhas de achado que estão à frente de
+  planejadas. O `/apply` roda o script no fim, então o desvio aparece
+  sem ninguém pedir. Uma correção que é pré-requisito, achada no meio
+  de um `/apply`, ainda vira uma linha acima dele, agora terminando com
+  `· from <slug>` para ser contada. O script ganha duas linhas de saída
+  e não substitui nenhuma.
+- O `/apply` escreve os testes que o docs/04 pede para o que a página
+  diz, Behaviour e Contract, e nenhum outro; isso substitui o "Write
+  docs/04's tests". O slot Verify do docs/05 §5 nomeia
+  um teto, cinco minutos se a pessoa não disser outro; o `/apply` diz
+  quanto o verify levou e, acima do teto, mantém uma nota só para a revisão; isso estreita
+  o "fast enough to run on every delivery" do slot, que não dizia
+  número.
+  Uma linha que entrega um teste, uma ferramenta de prova ou uma mudança
+  no processo, e não é um achado grave, só entra com a palavra da
+  pessoa; isso estreita o "Add a missing queue line where it belongs
+  and say so" do §2. O autor já viu suítes crescerem até o verify levar
+  trinta minutos e atrasar toda entrega, e o projeto acima pôs na fila
+  uma prova em paralelo, uma prova dividida por estado e ajudantes de
+  teste enquanto as funcionalidades esperavam.
+- O slot Verify do docs/05 §5 diz o que cada teste lento cobre e o
+  comando que o roda sozinho, e o `/apply` roda os que cobrem o que a
+  entrega mudou, e só esses. Antes, um teste lento só rodava na revisão
+  do marco, longe da entrega que o quebrou, e por isso um projeto
+  mantinha os testes lentos dentro do verify por segurança. Em
+  2026-11-12 o verify de quatro projetos foi medido: 29, 48 e 95
+  segundos em três deles, e 357 no quarto, 322 deles uma suíte de ponta
+  a ponta de 414 testes que toda entrega rodava inteira. Isso acrescenta
+  uma regra ao slot e não substitui nenhuma.
+- Três alarmes de linhas foram cruzados: o corpo do `/apply` com 73
+  linhas, o modelo do docs/05 com 334 e o `documents.md` com 622. A
+  classificação, as três marcas da última mensagem e os dois parágrafos
+  do §4 e do §8 são frases que os comandos leem toda vez; nenhum outro
+  lugar as guardaria.
+- Rodar de novo reescreve o `/apply` e o `queue.sh` e relata migrações
+  para o docs/05 §4, o slot Verify do §5 e o §8, e para o docs/06, onde
+  a linha que diz em prosa qual entrega a achou ganha `· from <slug>`.
+  O `test/fixture/queue/` ganha uma linha `card-lost` vinda de um
+  achado, e a `card-fix` do harness termina com `· from card`. O
+  `README.pt.md` §4 diz o mesmo.
+
 ## 2026.11.03
 
 - O `/apply` termina rodando o `queue.sh` mesmo sem ninguém pedir, e

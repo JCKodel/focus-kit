@@ -1,7 +1,10 @@
 milestone: M2. Board
+findings: 2 open of 2 from a finding · 13 planned open
+⚠️ ahead of planned lines: card-lost
 [>] board · apply now
  └[*] card · in flight: apply
    └[ ] filter + after board · propose now
+[ ] card-lost · propose now
 [x] colors · built, awaiting integration
  └[ ] notes · propose now
 [ ] search + after board, card · claimed, progress unknown: propose in flight
@@ -12,11 +15,11 @@ milestone: M2. Board
  └[ ] pong · waits: ping not defined
 [ ] revive · waits: after old-idea, dropped: re-decide
 [ ] selfish + after selfish · waits: after itself
- └[ ] m2-review + after board, card, filter and 9 more · waits: filter, search, login and 5 more not defined
+ └[ ] m2-review + after board, card, filter and 10 more · waits: filter, card-lost, search and 6 more not defined
 [ ] card-fix (only on branch card) · propose now
 
 free for /apply, in order: board
-free for /propose, in order: filter notes card-fix
+free for /propose, in order: filter card-lost notes card-fix
 next: /apply board
 errors:
   search waits on missing-slug, which is not in the queue

@@ -178,10 +178,13 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
    leitores do kit, o intervalo desde a revisão anterior dividido em
    áreas, um agente somente leitura em cada uma, em qualquer host que
    rode agentes; de um jeito ou de outro, cada candidato é conferido no
-   seu arquivo antes de chegar a você. O que falta,
-   falha nas suas mãos ou você confirma da leitura do código vira uma
-   linha no mesmo milestone, abaixo
-   da revisão, pronta para `/propose` e `/apply`. Essas linhas não passam
+   seu arquivo antes de chegar a você. O que a
+   revisão de cada entrega deixou de sobra espera ali também, como
+   notas, em vez de virar linhas da fila pelo caminho. A revisão
+   classifica o que falta, falha nas suas mãos ou você confirma: um
+   achado grave vira uma linha cada, os médios dividem uma linha só, e um
+   pequeno só vira linha quando você o escolhe, todas abaixo da revisão,
+   prontas para `/propose` e `/apply`. Essas linhas não passam
    por segunda revisão: o seu commit é a revisão.
 
 Como rodar o produto a partir de um clone, o que você faz à mão fora de

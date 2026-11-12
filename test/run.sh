@@ -116,7 +116,7 @@ check_queue_script() {
       tgit commit -q --allow-empty -am "$1" && git push -q origin "focus-kit/$1" 2>/dev/null && git switch -q main
     )
   }
-  edit_branch card '{ if ($0 ~ /^\[ \] card  /) { sub(/^\[ \]/, "[*]"); print; print "[ ] card-fix    a fix found while building card"; next } print }'
+  edit_branch card '{ if ($0 ~ /^\[ \] card  /) { sub(/^\[ \]/, "[*]"); print; print "[ ] card-fix    a fix found while building card · from card"; next } print }'
   edit_branch login '{ print }'
   edit_branch export '{ if ($0 ~ /^\[>\] export/) $0 = "[?] export      export the board · resume: apply · blocked: which format, asked"; print }'
   edit_branch colors '{ if ($0 ~ /^\[>\] colors/) sub(/^\[>\]/, "[x]"); print }'

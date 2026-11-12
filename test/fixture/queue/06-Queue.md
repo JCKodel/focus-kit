@@ -12,6 +12,8 @@ stale, against `expected-stale.txt`; and runs the file with CRLF endings
 against `expected-trunk.txt`. The `notes` line is wrapped on purpose.
 `tooltips` is dropped, so `m2-review`'s `after all` leaves it out, while
 `revive` names the dropped `old-idea` and waits for the person.
+`card-lost` ends `· from board`: a finding line above open planned lines,
+so `findings:` and its warning are printed.
 
 ## M1. Done
 
@@ -30,6 +32,7 @@ When this milestone closes, the board shows cards.
 [>] board       the board · after base
 [ ] card        a card on the board · after board
 [ ] filter      filter the cards · after board, card
+[ ] card-lost   a card is lost on reload · from board
 [>] colors      colors for the lanes
 [ ] search      search the cards · after board, card, missing-slug
 [ ] login       log in
