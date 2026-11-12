@@ -133,6 +133,26 @@ check_queue_script() {
   awk '{ printf "%s\r\n", $0 }' "$FIXTURE/queue/06-Queue.md" > "$t/crlf/docs/06-Queue.md"
   (cd "$t/crlf" && sh "$script" trunk) > "$t/crlf.txt" 2>&1 || true
   assert_true "CRLF endings match expected-trunk.txt" diff -u "$FIXTURE/queue/expected-trunk.txt" "$t/crlf.txt"
+  # A fix line /apply wrote in its worktree, above its own line, which now
+  # waits on it: only the local file has it, and it is the first open line.
+  git init -q --bare "$t/pay.git"
+  git clone -q "$t/pay.git" "$t/pay" 2>/dev/null
+  (
+    cd "$t/pay" && git switch -q -c main && mkdir docs
+    printf '# Queue\n\n## M1. Pay\n\nWhen it closes, people pay.\n\n[x] base  the base\n[>] pay  pay a bill\n[ ] list  list the bills\n[ ] m1-review  the review of M1 · after all\n' > docs/06-Queue.md
+    tgit add docs && tgit commit -q -m queue && git push -q -u origin main && git remote set-head origin -a >/dev/null 2>&1
+    git branch -q focus-kit/pay main && git push -q origin focus-kit/pay 2>/dev/null
+    mkdir -p "$t/payc/.focus-kit/worktrees" && git worktree add -q "$t/payc/.focus-kit/worktrees/pay" focus-kit/pay
+  )
+  (
+    cd "$t/payc/.focus-kit/worktrees/pay"
+    awk '{ if ($0 ~ /^\[>\] pay /) { print "[ ] pay-fix  the total is wrong · from pay"; print "[?] pay  pay a bill · resume: apply · blocked: after pay-fix"; next } print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    sh "$script" worktree .focus-kit focus-kit/
+  ) > "$t/pay.txt" 2>&1 || true
+  assert_true "a fix line only the worktree has: the milestone stays open" grep -q '^milestone: M1\. Pay$' "$t/pay.txt"
+  assert_true "a fix line only the worktree has: shown, free for /propose" grep -q '^\[ \] pay-fix · propose now$' "$t/pay.txt"
+  assert_true "a fix line only the worktree has: counted" grep -q '^findings: 1 open of 1 from a finding · 2 planned open$' "$t/pay.txt"
+  assert_false "a fix its line waits on is not named ahead of planned lines" grep -q 'ahead of planned lines' "$t/pay.txt"
   rm -rf "$t"
 }
 

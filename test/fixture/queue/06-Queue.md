@@ -12,8 +12,13 @@ stale, against `expected-stale.txt`; and runs the file with CRLF endings
 against `expected-trunk.txt`. The `notes` line is wrapped on purpose.
 `tooltips` is dropped, so `m2-review`'s `after all` leaves it out, while
 `revive` names the dropped `old-idea` and waits for the person.
-`card-lost` ends `· from board`: a finding line above open planned lines,
-so `findings:` and its warning are printed.
+Four lines end `· from <slug>` and are counted by `findings:`. `card-lost`
+stands ahead of open planned lines, so the warning names it. `sync-fix`
+stands ahead too, but `sync` names it in `blocked: after`, a fix it
+waits on, so the warning leaves it out. `lane-gap` is done, counted and
+not open. `tip-wrap` sits below the planned lines, above the review,
+where a finding that blocks nothing goes. `import`'s `· from CSV files`
+is prose, not one slug, so it is a planned line.
 
 ## M1. Done
 
@@ -36,15 +41,20 @@ When this milestone closes, the board shows cards.
 [>] colors      colors for the lanes
 [ ] search      search the cards · after board, card, missing-slug
 [ ] login       log in
+[ ] import      import the cards · from CSV files
 [>] export      export the board
+[x] lane-gap    a gap between two lanes · from colors
 [ ] notes       free notes beside the board, kept in the browser and
                 shown under the lanes · after colors
 [*] sound       a sound when a card moves
+[ ] sync-fix    the sync drops the last card · from sync
+[?] sync        sync the board between tabs · resume: apply · blocked: after sync-fix
 [ ] ping        a cycle, one half · after pong
 [ ] pong        a cycle, other half · after ping
 [ ] revive      bring the idea back · after old-idea
 [ ] selfish     waits on itself · after selfish
 [x] tooltips    tips on hover · dropped: no longer wanted
+[ ] tip-wrap    a tip wraps over two lines · from board
 [ ] m2-review   the review of M2 · after all
 ```
 

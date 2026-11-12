@@ -12,83 +12,118 @@ In English: [CHANGELOG.md](CHANGELOG.md).
 
 - O `/apply` corrige na própria entrega o que a revisão, a prova ou a
   construção dela acham de errado no que ela construiu ou mudou, mesmo
-  um caso que a página não nomeou, e registra cada correção no Outcome,
-  por mais que a página cresça. A página continua sendo o escopo, e
-  corrigir o que a entrega construiu não é ampliá-lo. Uma correção que
-  ampliaria a página, ou que precisa de uma decisão que nenhum documento
-  responde, não é feita: o Outcome e a última mensagem dizem o problema
-  e sugerem o que a pessoa pode fazer. Isso substitui o "Fix what
-  breaks the page, docs/04 or the text this delivery wrote": uma falha
-  que a página não tinha nomeado virava uma linha nova, com página,
-  prova e revisão próprias.
-- Um achado em algo que a entrega não tocou não vira mais linha da fila
-  sozinho. Só o grave vira: ele quebra uma cláusula do parágrafo do
-  marco no caminho usual de uma pessoa, perde ou expõe dado, ou deixa o
-  verify vermelho. A linha dele termina com `· from <slug>` e só fica
-  acima das linhas planejadas quando o verify está vermelho ou uma delas
-  precisa dele. Todo outro achado é uma nota no rascunho da página da
-  revisão do marco. Num projeto, em 2026-11-12, 32 das 130 linhas do
-  Marco 1 tinham vindo de um achado, 22 delas de uma revisão de entrega.
-  Vinte e seis seguidas eram sobre uma tela só, cada uma uma falha no
-  que a entrega anterior tinha acabado de construir, a revisão de cada
-  correção acrescentando a linha seguinte, por sete gerações, todas
-  acima da linha que responde à primeira cláusula do marco. Isso
-  substitui o "anything else becomes a `[ ]` line" do `/apply`.
-- A revisão do marco lê essas notas primeiro e classifica cada achado
-  confirmado. O grave é uma linha cada. Os médios dividem uma linha só,
-  `<milestone>-fixes`. Os pequenos ficam listados na página da revisão,
-  e um só vira linha quando a pessoa o escolhe. Um achado encontrado
-  depois de a revisão rodar é uma nota na revisão do marco seguinte, e
-  assim uma correção não gera mais linhas no próprio marco. Isso
-  substitui o "Each finding becomes a `[ ]` line" do §8; no repositório
-  do livro essa frase tinha acrescentado 21 linhas numa revisão.
-- O `/apply` abre a última mensagem com os achados: `🚨` antes de cada
-  grave e da linha nova dele, `⚠️` antes da contagem de notas deixadas
-  para a revisão e antes de um verify acima do teto, `✅` quando não há
-  nenhum. Quem confia no agente e lê só o fim ainda os vê. Nenhuma regra é substituída: a última
-  mensagem não tinha abertura fixa.
-- O `queue.sh` imprime `findings:` abaixo do marco, quantas linhas
-  vieram de um achado e quantas planejadas estão abertas, e uma linha
-  `⚠️` com os nomes das linhas de achado que estão à frente de
-  planejadas. O `/apply` roda o script no fim, então o desvio aparece
-  sem ninguém pedir. Uma correção que é pré-requisito, achada no meio
-  de um `/apply`, ainda vira uma linha acima dele, agora terminando com
-  `· from <slug>` para ser contada. O script ganha duas linhas de saída
-  e não substitui nenhuma.
-- O `/apply` escreve os testes que o docs/04 pede para o que a página
-  diz, Behaviour e Contract, e nenhum outro; isso substitui o "Write
-  docs/04's tests". O slot Verify do docs/05 §5 nomeia
-  um teto, cinco minutos se a pessoa não disser outro; o `/apply` diz
-  quanto o verify levou e, acima do teto, mantém uma nota só para a revisão; isso estreita
-  o "fast enough to run on every delivery" do slot, que não dizia
-  número.
-  Uma linha que entrega um teste, uma ferramenta de prova ou uma mudança
+  um caso que a página não nomeou, e escreve um teste para cada
+  correção dessas. A página continua sendo o escopo, e corrigir o que a
+  entrega construiu não é ampliá-lo. Isso substitui o "Fix what breaks
+  the page, docs/04 or the text this delivery wrote and run verify
+  again; anything else becomes a `[ ]` line". Num projeto, em 2026-11-12, 32 das 130 linhas
+  do Marco 1 tinham vindo de um achado, 22 delas de uma revisão de
+  entrega. Vinte e quatro seguidas eram achados ou a linha de design de
+  um, a maioria sobre uma tela só e várias uma falha no que a entrega
+  anterior tinha acabado de construir. Cada uma teve página, prova e
+  revisão próprias, que achava a seguinte, por sete gerações, todas
+  acima da linha que responde à primeira cláusula do marco.
+- O que uma entrega não consegue corrigir sem ampliar a página, ou sem
+  uma decisão que nenhum documento responde, não é corrigido nem
+  adivinhado: é uma nota, com o que a pessoa pode fazer. Quando é grave,
+  ou deixa um item do Done when sem marcar, a linha espera em `[?]` pela
+  resposta da pessoa, pelo segundo caso do docs/05 §4. Nenhuma regra é
+  substituída: antes, uma falha assim virava uma linha como qualquer
+  outra.
+- Um achado é uma falha que um comando descobre em qualquer coisa que a
+  entrega dele não construiu nem mudou, inclusive o `/propose` enquanto
+  define. Uma falha mais velha que a entrega é um achado, mesmo num
+  arquivo que a entrega edita. Só o achado grave vira linha da fila: ele
+  quebra uma cláusula do parágrafo do marco no caminho usual de uma
+  pessoa, perde ou expõe dado, ou deixa o verify vermelho. A linha dele
+  termina com `· from <slug>` e só fica acima das linhas planejadas
+  quando o verify está vermelho ou uma delas precisa dele. Todo outro
+  achado é uma nota na página da entrega que o achou, sob o título
+  `## For the review`. Isso estreita o "Add a missing queue line where
+  it belongs and say so" do docs/05 §2.
+- A revisão do marco começa copiando essas notas para a página dela, de
+  toda página entregue desde a revisão anterior, e classifica cada
+  achado confirmado. O grave é uma linha cada. Os outros ficam listados
+  na página dela, os médios primeiro. A pessoa diz quais médios entram
+  na linha única do marco, `<milestone>-fixes`, cuja página é a lista
+  deles e não é dividida. Um pequeno só vira linha quando a pessoa o
+  escolhe. Isso substitui o "Each finding becomes a `[ ]` line" do §8;
+  no repositório do livro essa frase tinha acrescentado 21 linhas numa
+  revisão.
+- O `/apply` abre a última mensagem, feita ou bloqueada, com o que a
+  entrega deixou: `🚨` antes de cada linha nova e de cada falha que a
+  bloqueou, `⚠️` antes de cada nota e de um verify acima do teto, `✅`
+  quando está feita e não deixou nada. No projeto acima o processo
+  fazia cada comando nomear as linhas que acrescentava, numa última
+  mensagem igual a todas as outras, e a pessoa só viu o desvio depois
+  das vinte e quatro. Nenhuma regra é substituída: a última mensagem
+  não tinha abertura fixa.
+- O `queue.sh` imprime `findings:` abaixo do marco: quantas linhas dele
+  vieram de um achado, quantas dessas estão abertas e quantas linhas
+  planejadas estão abertas. Uma linha `⚠️` nomeia as linhas de achado
+  abertas que estão à frente de uma planejada, deixando de fora a
+  correção que uma linha aberta nomeia em `after` ou `blocked: after`.
+  O `/apply` roda o script no fim, então o desvio aparece sem ninguém
+  pedir. Uma correção que é pré-requisito, achada no meio de um
+  `/apply`, ainda vira uma linha acima dele, agora terminando com
+  `· from <slug>`. O script ganha duas linhas de saída e não substitui
+  nenhuma.
+- O `queue.sh`, rodado do worktree ou do branch de uma entrega, lê a
+  linha que só o arquivo local tem, como a correção que o `/apply`
+  acabou de escrever ali. Antes, essa linha era lida como vazia: sumia
+  da árvore, e quando ficava acima da primeira linha aberta o script
+  respondia `milestone: none open; every line is [x]`. O defeito é mais
+  velho que esta versão, que agora depende de essa linha ser vista; uma
+  revisão destas mudanças o achou em 2026-11-12, rodando o script num
+  worktree assim.
+- O slot Verify do docs/05 §5 nomeia um teto, cinco minutos se a pessoa
+  não disser outro. O `/apply` diz quanto o verify levou; acima do teto,
+  isso é uma nota para a revisão, que diz quais testes vão para os
+  lentos. Isso estreita o "fast enough to run on every delivery" do
+  slot, que não dizia número. O `/apply` escreve os testes que o docs/04
+  pede para o que a página diz e para cada falha que ele corrige, e
+  nenhum outro; isso substitui o "Write docs/04's tests". O autor já viu
+  suítes crescerem até o verify levar trinta minutos e atrasar toda
+  entrega.
+- O slot Verify lista os testes lentos um por linha, o comando e o que
+  ele cobre. O `/apply` roda os que cobrem o que a entrega mudou, e só
+  esses; a revisão do marco continua rodando todos. Antes, um teste
+  lento só rodava na revisão do marco, longe da entrega que o quebrou, e
+  por isso um projeto mantinha os testes lentos dentro do verify por
+  segurança. Em 2026-11-12 o verify de quatro projetos foi medido: 29,
+  48 e 95 segundos em três deles, e 357 no quarto, 322 deles uma suíte
+  de ponta a ponta de 414 testes que toda entrega rodava inteira. Isso
+  acrescenta uma regra ao slot e não substitui nenhuma.
+- Uma linha que entrega um teste, uma ferramenta de prova ou uma mudança
   no processo, e não é um achado grave, só entra com a palavra da
-  pessoa; isso estreita o "Add a missing queue line where it belongs
-  and say so" do §2. O autor já viu suítes crescerem até o verify levar
-  trinta minutos e atrasar toda entrega, e o projeto acima pôs na fila
-  uma prova em paralelo, uma prova dividida por estado e ajudantes de
-  teste enquanto as funcionalidades esperavam.
-- O slot Verify do docs/05 §5 diz o que cada teste lento cobre e o
-  comando que o roda sozinho, e o `/apply` roda os que cobrem o que a
-  entrega mudou, e só esses. Antes, um teste lento só rodava na revisão
-  do marco, longe da entrega que o quebrou, e por isso um projeto
-  mantinha os testes lentos dentro do verify por segurança. Em
-  2026-11-12 o verify de quatro projetos foi medido: 29, 48 e 95
-  segundos em três deles, e 357 no quarto, 322 deles uma suíte de ponta
-  a ponta de 414 testes que toda entrega rodava inteira. Isso acrescenta
-  uma regra ao slot e não substitui nenhuma.
-- Três alarmes de linhas foram cruzados: o corpo do `/apply` com 73
-  linhas, o modelo do docs/05 com 334 e o `documents.md` com 622. A
-  classificação, as três marcas da última mensagem e os dois parágrafos
-  do §4 e do §8 são frases que os comandos leem toda vez; nenhum outro
-  lugar as guardaria.
-- Rodar de novo reescreve o `/apply` e o `queue.sh` e relata migrações
-  para o docs/05 §4, o slot Verify do §5 e o §8, e para o docs/06, onde
-  a linha que diz em prosa qual entrega a achou ganha `· from <slug>`.
-  O `test/fixture/queue/` ganha uma linha `card-lost` vinda de um
-  achado, e a `card-fix` do harness termina com `· from card`. O
-  `README.pt.md` §4 diz o mesmo.
+  pessoa; sem ela, é uma nota. Isso também estreita o "Add a missing
+  queue line where it belongs and say so" do §2. O projeto acima pôs na
+  fila uma prova em paralelo, uma prova dividida por estado e ajudantes
+  de teste enquanto as funcionalidades esperavam.
+- Três alarmes de linhas foram cruzados: o corpo do `/apply` com 71
+  linhas, o modelo do docs/05 com 344 e o `documents.md` com 632. O
+  `/apply` guarda só o que precisa decidir sozinho: o que ele corrige,
+  que nada mais vira linha a não ser que o §4 chame de grave, e as três
+  marcas. As definições estão no §4 e no §8, lidos também pelo
+  `/propose` e pela revisão.
+- Aplique as migrações do docs/05 na sessão que atualiza o kit. Rodar de
+  novo reescreve os quatro comandos, a referência deles e o `queue.sh`,
+  e só relata as migrações: o ponteiro do docs/05 §2 para o §4, o título
+  `## For the review` do §3, o §4, o slot Verify do §5 e o §8, e no docs/06 um `· from <slug>` em
+  cada linha que diz em prosa qual entrega a achou. Enquanto o §4 não
+  disser o que é grave, o `/apply` novo deixa todo achado que não é
+  correção pré-requisito como nota, diz
+  na última mensagem que o docs/05 espera a migração, e nenhuma revisão
+  recolhe a nota; o relatório nomeia essa migração como o próximo passo,
+  antes de qualquer comando.
+- O `test/fixture/queue/` ganha seis linhas: um achado à frente de
+  linhas planejadas, uma correção e a linha bloqueada que a nomeia, um
+  achado feito, um abaixo das linhas planejadas, e um `· from` que é
+  prosa. O harness acrescenta um worktree em que só a fila local tem
+  uma linha de correção. Um arquivo esperado que muda é conferido
+  linha a linha contra o §4 antes de ser aceito, como o `test/README.md`
+  agora diz. O `README.pt.md` §4 diz o que a
+  revisão faz com as notas.
 
 ## 2026.11.03
 

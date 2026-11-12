@@ -36,7 +36,12 @@ a line only its branch has, a claimed line with no mark yet, a blocked
 copy, a built and unmerged one, a new `after` at the same mark) and
 compares with `expected-worktree.txt`; then merges one and runs from a
 stale worktree against `expected-stale.txt`; then runs the file with
-CRLF endings. It runs the `claim.sh` of §3.6 on two clones of a local
+CRLF endings; then, in a worktree whose local queue alone has a fix line
+above its own blocked line, checks that the line is shown and counted
+and that no warning names it. A changed expected file is checked line by
+line against docs/05 §4 before it is accepted, never taken from the
+script's output as it comes: on 2026-11-12 an `expected-stale.txt` taken
+that way had accepted a `card-fix` line missing from the tree. It runs the `claim.sh` of §3.6 on two clones of a local
 bare remote: new, taken, resumed, existing, here, refused from another
 slug's worktree, the create-only push losing a race, and a worktree cut
 from origin's main when local main is behind. It runs the `mark.sh` of

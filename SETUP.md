@@ -61,12 +61,12 @@ Version: 2026.11.12
      /apply in a fresh one, a subagent being one. The person using a
      delivery before committing. The agent committing or merging only
      when asked. The claim by `claim.sh`, another clone's line opened
-     only with `resume`;
+     only with `resume`. A flaw /propose finds graded as §4 says;
    * docs/05 §3: why the Contract is exact; Behaviour scenarios with
      concrete input and failure cases; a screen's reference before `[>]`,
      as the Design slot says; the page complete before `[>]`; the
      `## Outcome` heading before what /apply appends; the final `commit`
-     block;
+     block. The `## For the review` heading that holds a page's notes;
    * docs/05 §4. When each mark changes, and resumption. Order as
      priority and `after`, read per command, `after all` on the review
      line and leaving the dropped lines out, no `(PA)` token. Integrated
@@ -75,16 +75,20 @@ Version: 2026.11.12
      one command, with its cost. A mark changed by `mark.sh`, and docs/06
      never written whole by a program. The file check before /apply's first
      edit. A line no clause of the milestone needs going to the next
-     one. A flaw in what a delivery built fixed in it. What a finding is, the grave one a line ending `· from`, the
-     others notes on the review's page, and a test or process line only
-     on the person's word. The four cases a line waits in. A line whose session ended,
+     one. A flaw in what a delivery built fixed in it. What a finding
+     is. The grave one a line ending `· from`, and where it goes. The
+     others notes on the page of the delivery that found them. A test or
+     process line only on the person's word. Until §4 says what a
+     finding is and §8 collects the notes, the next step is that
+     migration, not a command: the new /apply leaves every finding as a
+     note nobody reads. The four cases a line waits in. A line whose session ended,
      and a dropped line. The claim, the current copy of a line and a
      `[?]` on any copy. The parallel paragraphs present only where
      sessions overlap;
    * docs/05 §5, what each slot says. Every slot present, Context,
      Manuals, Design, Delivery review and Milestone review included. The
-     Publish policy's last sentence. The Verify slot's slow tests, what
-     each covers and its ceiling. A
+     Publish policy's last sentence. The Verify slot's ceiling, and its slow
+     tests one line each with what each covers. A
      Manuals slot naming the manual of running it, owed or written. A
      Delivery review that reads `git diff HEAD` and the branch's
      commits, not a bare `git diff`, and the files the delivery created.
@@ -110,8 +114,9 @@ Version: 2026.11.12
      slow tests; the range from the previous review's commit, or the one
      the page names, to the commit the reading started
      at; who reads, as the slot says; the checker, what seen means and
-     the paths read. The notes read first, and findings graded grave,
-     medium on one `-fixes` line, small on the page;
+     the paths read. The notes copied first. Findings graded: a grave
+     one a line, the medium ones the person picks on one `-fixes` line,
+     the rest listed;
    * docs/04: the pointer to docs/05 §6 and its tests by level;
    * docs/06: a line that carries history, what happened beyond the one
      sentence of what it delivers. It keeps the mark, the slug, that
@@ -337,8 +342,8 @@ commit subjects. Any agent rules file already there: CLAUDE.md,
 AGENTS.md, .github/copilot-instructions.md, .cursorrules.
 
 From that, infer the stack, how the code is organized, where business rules
-live, how errors travel, what the verify command is and how long it
-takes, which tests are slow enough to leave out of it, and which environments exist. What the code
+live, how errors travel, what the verify command is, which tests are slow
+enough to leave out of it, and which environments exist. What the code
 says, you do not ask.
 
 ## Ask
@@ -495,16 +500,16 @@ edit. docs/05 §§4 and 6 say what a conflict is.
 When work cannot go on, record what was built and what it waits on, leave
 the page in `work/` and block it with `resume: apply` as docs/05 §4 says.
 A prerequisite fix becomes a `[ ]` line above this one, ending
-`· from <slug>`. End the page with
-the partial message, show it in the conversation in the same `commit`
-block, and follow docs/05 §6's blocked-work staging rule; report verify
-and environments, and stop without claiming completion.
+`· from <slug>`. End the page with the partial message, show it in the
+conversation in the same `commit` block, and follow docs/05 §6's
+blocked-work staging rule; report verify and environments, and stop
+without claiming completion.
 
 Build where docs/01 says, with its error convention and docs/03's
-identifiers. Write the tests docs/04 asks for what the page says,
-Behaviour and Contract, and no others; one too slow for verify goes with docs/05's slow tests and
-you say so, never into verify silently. Add no dependency, layer or tool
-the page did not name.
+identifiers. Write the tests docs/04 asks for what the page says and for
+each flaw this delivery fixes, and no others. One too slow for verify
+goes with docs/05's slow tests and you say so, never into verify
+silently. Add no dependency, layer or tool the page did not name.
 
 Run verify until green. Prove the delivery as docs/05 says, fixing
 divergences until only what you can justify remains. Update the documents
@@ -514,28 +519,26 @@ by its paths and no other delivery's, reviewed as docs/05 §5's Delivery
 review says by a context that did not write them. Fix in this delivery
 whatever the review, the proof or the build finds wrong in what it built
 or changed, a case the page did not name included, and run verify again.
-Record each fix under Outcome, however long the page grows. A fix that
-would widen the page, or needs a decision no document answers, is not
-made. Outcome and the last message then state the problem and suggest
-what the person may do. Only what is
-wrong in something this delivery did not touch is graded as docs/05 §4
-says: a grave finding becomes a `[ ]` line ending `· from <slug>`, and
-every other one is a note on the milestone review's page, never a line. A later edit to anything verify covers runs it once
-more. Leave environments as required. Record divergences, omissions, proof,
-the review and decisions on the page; tick every Done when item, move the
-page to `work/done/` and resolve dependent lines as docs/05 §4 says.
+What it cannot fix without widening the page, or without a decision no
+document answers, is not fixed. That, and anything wrong in what it did
+not build or change, is a note on the page, never a new line, unless
+docs/05 §4 calls it grave. Where §4 is silent, only a prerequisite fix
+is grave, the note goes under Outcome, and the last message says docs/05
+awaits its migration. A later edit to anything verify covers runs it once more. Leave
+environments as required. Record divergences, omissions, proof, the
+review, each fix and the decisions on the page, however long it grows.
+Tick every Done when item, move the page to `work/done/` and resolve
+dependent lines as docs/05 §4 says.
 
 End the page with one final `commit` block in docs/05 §6's format, replacing
 any earlier one; stage only this delivery's changes as that section says;
 show the same message in the conversation in a `commit` block. Your last
 edit marks the line `[x]`, staged, as docs/05 §4 says. Never commit or
 merge unless the person asks. Files and message in the documentation
-language; talk in the person's language. Open the last message with the
-findings. Write `🚨` before each grave one, with its new line and where
-it went in the queue. Write `⚠️` before the count of notes left for the
-review, before a problem left for the person to decide and before a
-verify over its ceiling. Write `✅` when there is
-none. Then tell the person their
+language; talk in the person's language. Open the last message, done or
+blocked, with what the delivery left: `🚨` before each new line and each
+flaw that blocked it, `⚠️` before each note and a verify over its
+ceiling, `✅` when it is done and left none. Then tell the person their
 next steps, each command written as this host invokes commands. Tell
 them to use what the delivery changed, as its user would, and to say
 here what is wrong. Tell them to review the staged diff, then to commit
@@ -764,7 +767,8 @@ Before /propose changes the queue or the page, claim the line as §5's
 Git slot says: `claim.sh` creates the branch or worktree on origin, or
 reopens the one this clone already has; one another clone created opens
 only on the person's word, with `resume`. Bring into it any draft left
-for the slug. Add a missing queue line where it belongs and say so.
+for the slug. Add a missing queue line where it belongs and say so; a
+flaw found on the way is a finding, and §4 says whether it is a line.
 Start defining with `[~]`; start building only a completely defined `[>]`
 page, with `[*]`. Follow §4 for blocked lines and §6 before changing code
 or staging. Keep project slots and rules current before using them; report
@@ -803,7 +807,9 @@ After /apply the page also records what happened, under a heading
 read: what diverged, what was dropped, what the proof found, the
 decisions taken. It ends with the commit message /apply suggested, in a
 fenced block whose info string is `commit`. There is one final block: a
-resumed /apply replaces the earlier suggestion.
+resumed /apply replaces the earlier suggestion. Above that block a page
+may hold a heading `## For the review`: the notes §4 defines, one line
+each, written by the command that found them.
 
 A draft with open scope questions is not ready for /apply, even when its
 file exists: before `[>]`, every section above is filled or explicitly
@@ -832,24 +838,30 @@ and a `[x]` on its branch is built, awaiting integration. A line that
 no clause of the current milestone's paragraph needs, whoever adds it,
 goes under the next milestone, created when missing with a paragraph
 that line answers and its review last; a finding of the milestone's own
-review stays in it (§8).
+review stays in it (§8), and so does a grave finding, below.
 
-What a delivery's review, proof or build discovers in what that delivery
-built or changed is fixed in it, as /apply says, and is no finding here.
-A finding is what they discover in anything else. It is grave when it breaks a clause of the milestone's paragraph
-for a person on its usual path, loses or exposes data, or leaves verify
-red. So is a fix a delivery in flight cannot go on without. A grave
-finding becomes a `[ ]` line ending `· from <slug>`, the
-delivery that found it. The line goes above the open planned lines only
-when verify is red or one of them needs it; otherwise below them, above
-the review. Every other finding is one note on the draft of the
-milestone's review page, `work/<milestone>-review.md`: the delivery, the
-file and line, and what a person would see. A note is not a line and
-waits for §8. A finding nobody can say is grave is a note. One found
-after the milestone's review ran is a note on the next milestone's. A
-line that delivers a test, a proof tool or a change to this process, and
-is not a grave finding, enters only on the person's word; without it, it
-is a note.
+What /apply's review, proof or build discovers in what its delivery
+built or changed is fixed in that delivery, as /apply says, and is no
+finding here. A finding is a flaw a command discovers in anything else,
+/propose while it defines included. A flaw older than the delivery is
+one, even in a file the delivery edits. A finding is grave when it
+breaks a clause of the milestone's paragraph for a person on its usual
+path, loses or exposes data, or leaves verify red. So is a fix a
+delivery in flight cannot go on without. A grave finding becomes a `[ ]`
+line ending `· from <slug>`, the delivery that found it. The line goes
+above the open planned lines only when verify is red or one of them
+needs it. Otherwise it goes below them, above the review, or under the
+review once it ran. Every other finding is a note on the page of the
+delivery that found it, under `## For the review` (§3): the file and
+line, and what a person would see. A note is not a line and waits for
+the next milestone review to run (§8). A finding nobody can say is grave
+is a note. A flaw in what a delivery built, whose fix would widen its
+page or needs a decision no document answers, is a note too, with what
+the person may do. When that flaw is grave, or leaves a Done when item
+unticked, the line waits for the person's answer instead, the second
+case below. A line that delivers a test, a proof tool or a change to
+this process, and is not a grave finding, enters only on the person's
+word; without it, it is a note.
 
 Asked what may run now, run
 `git -c "alias.fq=!sh .agents/skills/propose/scripts/queue.sh" fq <strategy>`,
@@ -957,12 +969,10 @@ The project may add slots of its own; a slot that names /propose or
 * **Verify:** `<command>`, which runs <what>, fast enough to run on every
   delivery. Green before anything is declared done. <Or: created by the
   first delivery.> Its ceiling: <minutes, five unless the person says>.
-  /apply says how long verify took; over the ceiling it keeps one note
-  on the review's page (§4), updated and not repeated, and the review
-  says which tests go to the slow ones. Slow
-  tests: `<command>`, which runs <what>, run by the
-  milestone review (§8); <or: none>. Each slow test says what it covers
-  and the command that runs it alone. /apply runs the ones that cover
+  /apply says how long verify took. Over the ceiling, that is a note for
+  the review (§4). The review says which tests go to the slow ones. Slow
+  tests, one line each: `<command>` and what it covers; <or: none>. The
+  milestone review runs them all (§8). /apply runs the ones that cover
   what its delivery changed, and only those, before the delivery ends.
 * **Environments:** one line each: name, what runs there, what a delivery
   must leave up to date there, and the command that does it, or its
@@ -1101,17 +1111,20 @@ some of the range's, the page says which and the line waits as `[?]` with
 `· resume: apply` and `· blocked: <what was read>` (§4). A candidate the
 person confirms is a finding like the others.
 
-The review's page opens with the notes the deliveries left (§4), and the
-checker marks each as it marks a candidate. The review grades every
-confirmed finding. A grave one, as §4 defines it, becomes a `[ ]` line,
-one each. The medium ones, which a person meets in ordinary use while
-the clause still holds, share one line, `<milestone>-fixes`, each an
-item of its page. What does not fit that page is small. The small ones
-stay listed on the review's page: a rare case, a latent or weak
-candidate, a cost nobody measured. A small one becomes a line only when
-the person picks it. These lines end `· from <milestone>-review`, sit
-under the review line and wait for /propose; the milestone closes when
-they are `[x]`. They
+The review opens by copying onto its page the notes left since the
+previous review, from the `## For the review` heading of every page the
+range delivered (§4). The checker marks each as it marks a candidate.
+The review grades every confirmed finding. A grave one, as §4 defines
+it, becomes a `[ ]` line, one each. The others stay listed on the
+review's page. First come the medium ones, which a person meets in
+ordinary use while the clause still holds. Then come the small ones: a
+rare case, a latent or weak candidate, a cost nobody measured. The
+person says which medium ones enter the milestone's one line,
+`<milestone>-fixes`, each an item of its page. That page is their list
+and is not split, whatever its length. A small one becomes a line only
+when the person picks it. These lines end `· from <milestone>-review`,
+sit under the review line and wait for /propose; the milestone closes
+when they are `[x]`. They
 get no second review: each passes through its own page, its proof and the
 person's commit, which is the review; a finding is never a fix in the
 middle of the next milestone.
@@ -1329,7 +1342,10 @@ a merge the integration. It edits nothing.
 # "after all" leaves out the milestone's dropped lines; a line that
 # names a dropped one waits for the person to re-decide.
 # "findings:" counts the milestone's lines that end "from <slug>", and a
-# warning names the open ones that stand ahead of an open planned line.
+# warning names the open ones that stand ahead of an open planned line,
+# but not one an open line names in its "after" or "blocked: after".
+# A line only the local file has, as a fix written in a delivery's
+# worktree, is read from it.
 # A wrapped line is read whole. Edits nothing.
 set -eu
 
@@ -1425,7 +1441,7 @@ function parse(line, k,   rest, n, parts, i, p, deps, j, m) {
     } else if (p ~ /^resume: /) { sub(/^resume: /, "", p); resume[k] = p }
     else if (p ~ /^blocked: /) { sub(/^blocked: /, "", p); blocked[k] = p }
     else if (p ~ /^dropped: /) dropped[k] = 1
-    else if (p ~ /^from /) found[k] = 1
+    else if (p ~ /^from [a-zA-Z0-9._-]+[ \t]*$/) found[k] = 1
   }
 }
 function add(s, line, ms, src,   k) {
@@ -1524,7 +1540,8 @@ END {
     s = order[i]
     if ((s in own) && !(s in integ)) { line = own[s]; ms = ownms[s] }
     else if (s in base) { line = base[s]; ms = basems[s] }
-    else { line = own[s]; ms = ownms[s] }
+    else if (s in own) { line = own[s]; ms = ownms[s] }
+    else { line = local[s]; ms = localms[s] }
     if (ms == "" && (s in base)) ms = basems[s]
     add(s, line, ms, "")
   }
@@ -1556,16 +1573,24 @@ END {
     else root[k] = 1
   }
   print "milestone: " cur
-  nf = 0; nfo = 0; npo = 0; last = 0; above = 0; al = ""; as = ""
+  nf = 0; nfo = 0; npo = 0; last = 0; above = 0; al = ""; asep = ""
   for (i = 1; i <= n; i++) {
     k = ord[i]
     if (mstone[k] != cur || dropped[k]) continue
     if (found[k]) { nf++; if (!done(k)) nfo++ }
     else if (!done(k) && !all[k]) { npo++; last = i }
+    if (done(k)) continue
+    for (j = 1; j <= nafter[k]; j++) wanted[after[k, j]] = 1
+    if (blocked[k] ~ /^after /) {
+      w = blocked[k]; sub(/^after /, "", w)
+      nw = split(w, wl, /, */)
+      for (j = 1; j <= nw; j++) wanted[wl[j]] = 1
+    }
   }
   for (i = 1; i < last; i++) {
     k = ord[i]
-    if (mstone[k] == cur && found[k] && !dropped[k] && !done(k)) { above++; if (above <= 3) { al = al as slug[k]; as = ", " } }
+    if (mstone[k] != cur || !found[k] || dropped[k] || done(k) || (slug[k] in wanted)) continue
+    above++; if (above <= 3) { al = al asep slug[k]; asep = ", " }
   }
   if (nf > 0) print "findings: " nfo " open of " nf " from a finding \302\267 " npo " planned open"
   if (above > 0) print "\342\232\240\357\270\217 ahead of planned lines: " few(al, above, "")

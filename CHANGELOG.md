@@ -12,77 +12,111 @@ Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
 - `/apply` fixes in the delivery whatever its review, proof or build
   finds wrong in what that delivery built or changed, a case the page
-  did not name included, and records each fix under Outcome, however
-  long the page grows. The page is still the scope, and fixing what
-  the delivery built is not widening it. A fix that would widen the
-  page, or needs a decision no document answers, is not made: Outcome
-  and the last message state the problem and suggest what the person
-  may do. This displaces "Fix what breaks the page, docs/04 or the
-  text this delivery wrote": a flaw the page had not named became a new
-  line, with its own page, proof and review.
-- A finding in something the delivery did not touch no longer becomes a
-  queue line by itself. Only a grave one does: it breaks a clause of the milestone's
-  paragraph on a person's usual path, loses or exposes data, or leaves
-  verify red. Its line ends `· from <slug>` and goes above the planned
-  lines only when verify is red or one of them needs it. Every other
-  finding is a note on the draft of the milestone's review page. In one
-  project, on 2026-11-12, 32 of the 130 lines of Milestone 1 had come
-  from a finding, 22 of them from a delivery review. Twenty-six in a row
-  were about one screen, each a flaw in what the delivery before it had
-  just built, each fix's review adding the next line, seven generations
-  deep, all above the line that answers the milestone's
-  first clause. This displaces `/apply`'s "anything else becomes a `[ ]`
-  line".
-- The milestone review reads those notes first and grades every
-  confirmed finding. A grave one is a line each. The medium ones share
-  one line, `<milestone>-fixes`. The small ones stay listed on the
-  review's page, and one becomes a line only when the person picks it.
-  A finding met after the review ran is a note on the next milestone's,
-  so a fix no longer breeds lines in its own milestone. This displaces
-  §8's "Each finding becomes a `[ ]` line"; in the book's repository
-  that sentence had added 21 lines in one review.
-- `/apply` opens its last message with the findings: `🚨` before each
-  grave one and its new line, `⚠️` before the count of notes left for
-  the review and before a verify over its ceiling, `✅` when there is
-  none. A person who trusts the agent and reads only the end still sees
-  them. No rule is displaced: the last message had no fixed opening.
-- `queue.sh` prints `findings:` under the milestone, how many lines came
-  from a finding and how many planned ones are open, and a `⚠️` line
-  naming the finding lines that stand ahead of planned ones. `/apply`
-  runs the script at its end, so the drift shows without anyone asking.
-  A prerequisite fix found in the middle of an `/apply` still becomes a
-  line above it, now ending `· from <slug>` so it is counted. The script
-  gains two lines of output and displaces none.
-- `/apply` writes the tests docs/04 asks for what the page says,
-  Behaviour and Contract, and no others; this displaces "Write docs/04's
-  tests". docs/05 §5's Verify slot names a ceiling, five minutes
-  unless the person says; `/apply` says how long verify took and, over
-  the ceiling, keeps one note for the review; this narrows the slot's
-  "fast enough to run on every delivery", which named no number. A line that delivers a
-  test, a proof tool or a change to the process, and is not a grave
-  finding, enters only on the person's word; this narrows §2's "Add a
-  missing queue line where it belongs and say so". The author has seen
-  suites grow until verify took thirty minutes and delayed every
-  delivery, and the project above queued a proof run in parallel, a
-  proof split by state and test helpers while its features waited.
-- docs/05 §5's Verify slot says what each slow test covers and the
-  command that runs it alone, and `/apply` runs the ones that cover what
-  its delivery changed, and only those. Before, a slow test ran only in
-  the milestone review, far from the delivery that broke it, so a
-  project kept its slow tests inside verify to be safe. On 2026-11-12
-  the verify of four projects was timed: 29, 48 and 95 seconds in three
-  of them, and 357 in the fourth, 322 of them an end-to-end suite of 414
-  tests that every delivery ran whole. This adds a rule to the slot and
-  displaces none.
-- Three line alarms are crossed: `/apply`'s body at 73 lines, the docs/05
-  template at 334 and `documents.md` at 622. The grading, the three
-  marks of the last message and the two paragraphs of §4 and §8 are
-  sentences the commands read each time; nothing else could hold them.
-- A rerun rewrites `/apply` and `queue.sh` and reports migrations to
-  docs/05 §4, §5's Verify slot and §8, and to docs/06, where a line that
-  says in prose which delivery found it gains `· from <slug>`.
-  `test/fixture/queue/` gains a `card-lost` line from a finding, and the
-  harness's `card-fix` ends `· from card`. `README.md` §4 says the same.
+  did not name included, and writes a test for each such fix. The page
+  is still the scope, and fixing what the delivery built is not widening
+  it. This displaces "Fix what breaks the page, docs/04 or the text this
+  delivery wrote and run verify again; anything else becomes a `[ ]`
+  line". In one project,
+  on 2026-11-12, 32 of the 130 lines of Milestone 1 had come from a
+  finding, 22 of them from a delivery review. Twenty-four in a row were
+  findings or the design line of one, most about one screen and several
+  a flaw in what the delivery before had just built. Each had its own
+  page, proof and review, which found the next, seven generations deep,
+  all above the line that answers the milestone's first clause.
+- What a delivery cannot fix without widening its page, or without a
+  decision no document answers, is not fixed and not guessed: it is a
+  note, with what the person may do. When it is grave, or leaves a Done
+  when item unticked, the line waits as `[?]` for the person's answer,
+  by docs/05 §4's second case. No rule is displaced: before, such a flaw
+  became a line like any other.
+- A finding is a flaw a command discovers in anything its delivery did
+  not build or change, `/propose` while it defines included. A flaw
+  older than the delivery is one, even in a file the delivery edits.
+  Only a grave finding becomes a queue line: it breaks a clause of the
+  milestone's paragraph on a person's usual path, loses or exposes data,
+  or leaves verify red. Its line ends `· from <slug>` and goes above the
+  planned lines only when verify is red or one of them needs it. Every
+  other finding is a note on the page of the delivery that found it,
+  under a `## For the review` heading. This narrows docs/05 §2's "Add a
+  missing queue line where it belongs and say so".
+- The milestone review opens by copying those notes onto its page, from
+  every page delivered since the previous review, and grades every
+  confirmed finding. A grave one is a line each. The others stay listed
+  on its page, the medium ones first. The person says which medium ones
+  enter the milestone's one line, `<milestone>-fixes`, whose page is
+  their list and is not split. A small one becomes a line only when the
+  person picks it. This displaces §8's "Each finding becomes a `[ ]`
+  line"; in the book's repository that sentence had added 21 lines in
+  one review.
+- `/apply` opens its last message, done or blocked, with what the
+  delivery left: `🚨` before each new line and each flaw that blocked
+  it, `⚠️` before each note and a verify over its ceiling, `✅` when it is
+  done and left none. In the project above the process had each command
+  name the lines it added, in a last message shaped like every other,
+  and the person saw the drift only after the twenty-four. No rule is
+  displaced: the last message had no fixed opening.
+- `queue.sh` prints `findings:` under the milestone: how many of its
+  lines came from a finding, how many of those are open and how many
+  planned lines are open. A `⚠️` line names the open finding lines that
+  stand ahead of a planned one, leaving out a fix an open line names in
+  `after` or `blocked: after`. `/apply` runs the script at its end, so
+  the drift shows without anyone asking. A prerequisite fix found in the
+  middle of an `/apply` still becomes a line above it, now ending
+  `· from <slug>`. The script gains two lines of output and displaces
+  none.
+- `queue.sh`, run from a delivery's worktree or branch, reads a line
+  only the local file has, such as the fix `/apply` just wrote there.
+  Before, that line was read as empty: it vanished from the tree, and
+  when it stood above the first open line the script answered
+  `milestone: none open; every line is [x]`. The defect is older than
+  this version, which now depends on that line being seen; a review of
+  these changes found it on 2026-11-12 by running the script in such a
+  worktree.
+- docs/05 §5's Verify slot names a ceiling, five minutes unless the
+  person says. `/apply` says how long verify took; over the ceiling,
+  that is a note for the review, which says which tests go to the slow
+  ones. This narrows the slot's "fast enough to run on every delivery",
+  which named no number. `/apply` writes the tests docs/04 asks for what
+  the page says and for each flaw it fixes, and no others; this
+  displaces "Write docs/04's tests". The author has seen suites grow
+  until verify took thirty minutes and delayed every delivery.
+- The Verify slot lists the slow tests one line each, the command and
+  what it covers. `/apply` runs the ones that cover what its delivery
+  changed, and only those; the milestone review still runs them all.
+  Before, a slow test ran only in the milestone review, far from the
+  delivery that broke it, so a project kept its slow tests inside verify
+  to be safe. On 2026-11-12 the verify of four projects was timed: 29,
+  48 and 95 seconds in three of them, and 357 in the fourth, 322 of them
+  an end-to-end suite of 414 tests that every delivery ran whole. This
+  adds a rule to the slot and displaces none.
+- A line that delivers a test, a proof tool or a change to the process,
+  and is not a grave finding, enters only on the person's word; without
+  it, it is a note. This too narrows §2's "Add a missing queue line
+  where it belongs and say so". The project above queued a proof run in
+  parallel, a proof split by state and test helpers while its features
+  waited.
+- Three line alarms are crossed: `/apply`'s body at 71 lines, the docs/05
+  template at 344 and `documents.md` at 632. `/apply` keeps only what it
+  must decide alone: what it fixes, that nothing else becomes a line
+  unless §4 calls it grave, and the three marks. The definitions are in
+  §4 and §8, read by `/propose` and the review as well.
+- Apply the docs/05 migrations in the session that updates the kit. A
+  rerun rewrites the four commands, their reference and `queue.sh`, and
+  only reports the migrations: docs/05 §2's pointer to §4, §3's
+  `## For the review` heading, §4, §5's Verify slot and §8, and in docs/06 a `· from <slug>` on each
+  line that says in prose which delivery found it. Until §4 says what
+  is grave, the new `/apply` leaves every finding but a prerequisite fix
+  as a note, says in its
+  last message that docs/05 awaits its migration, and no review collects
+  the note; the report names that migration as the next step, before any
+  command.
+- `test/fixture/queue/` gains six lines: a finding ahead of planned
+  lines, a fix and the blocked line that names it, a done finding, one
+  below the planned lines, and a `· from` that is prose. The harness adds a
+  worktree whose local queue alone has a fix line. A changed
+  expected file is checked line by line against §4 before it is
+  accepted, as `test/README.md` now says. `README.md` §4 says
+  what the review does with the notes.
 
 ## 2026.11.03
 
