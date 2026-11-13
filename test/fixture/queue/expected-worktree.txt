@@ -7,7 +7,7 @@ findings: 4 open of 5 from a finding · 15 planned open
 [ ] card-lost · propose now
 [x] colors · built, awaiting integration
  └[ ] notes · propose now
-[ ] search + after board, card · claimed, progress unknown: propose in flight
+[ ] search + after board, card · waits: missing-slug is not in the queue; login not defined
 [ ] login · claimed, progress unknown: propose in flight
 [ ] import · propose now
 [?] export · blocked: which format, asked, then apply

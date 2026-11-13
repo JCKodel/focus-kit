@@ -145,15 +145,17 @@ OpenCode and Zed all read. What belongs to a single host:
    next command. New ideas become new lines in the
    queue, by conversation, in any session, and `/propose` for one can run
    right there or in a fresh session; a line the current milestone does
-   not need goes under the next one. A line that waits on an answer,
-   on another line, or on anything you name becomes `[?]`, with the reason
+   not need goes under the next one. A line that waits on an answer
+   or on anything you name becomes `[?]`, with the reason
    at its end, until the reason is resolved. It also records whether to
    resume `/propose` or `/apply`: a partial proposal must finish definition
    before it can be built. The order of the queue is the priority: the
    next delivery is the first free line, and you reorder by conversation.
    A line that needs another first says so at its end, `· after
    <slug>`: its `/propose` may start once that one has its page, its
-   `/apply` once that one is integrated. The review of a milestone says
+   `/apply` once that one is integrated. It is never `[?]`, even when
+   the need shows up mid-work: it keeps `[ ]` or `[>]`, so its mark
+   still names the next command. The review of a milestone says
    `· after all`. Type `/propose` or `/apply` with no slug and the agent
    draws the queue as a tree, with the lines free for each command and
    the next one. Free lines can run at the same time, one session each;

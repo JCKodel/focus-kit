@@ -8,6 +8,55 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.11.13
+
+- Uma linha que precisa de outra antes nunca é `[?]`. Ela termina em
+  `· after <slug>` e mantém a marca que diz o seu próximo comando, seja
+  a necessidade conhecida quando a linha é acrescentada, seja descoberta
+  por um trabalho já começado. No segundo caso a sessão acrescenta o
+  sufixo e devolve a linha a `[ ]`, se estava `[~]`, mantendo o
+  rascunho, ou a `[>]`, se estava `[*]`, com a página dizendo o que foi
+  construído. Isso substitui o terceiro caso de espera do docs/05 §4,
+  "work already started finds it needs another line done first", e o
+  sufixo `· blocked: after <slug>`. Uma linha agora espera em três
+  casos, nenhum deles outra linha. Num projeto, em 2026-11-13, uma
+  sessão que descobriu que duas linhas precisavam de outra antes
+  deixou as duas em `[?]`, terminando em
+  `· after <slug> · resume: propose · blocked: after <slug>`. Lendo o
+  docs/06, a pessoa não conseguia saber pela marca se o próximo era o
+  `/propose` ou o `/apply`, e uma linha dizia "after" de dois jeitos. A
+  fila de outro projeto tinha quatro linhas assim.
+- O custo: o `after` é lido por comando. Uma linha devolvida a `[ ]`
+  pode voltar a ser definida assim que a outra tem página, onde o
+  `blocked: after` a segurava até a outra estar integrada. Onde uma
+  definição precisa da outra linha construída, o docs/05 do projeto diz
+  isso, e o `queue.sh` não sabe.
+- O `/apply` não resolve mais as linhas dependentes no fim, porque um
+  `after` não precisa ser limpo. Isso substitui o "resolve dependent
+  lines as docs/05 §4 says".
+- O `queue.sh` mostra como `waits` uma linha `[ ]` reivindicada cujo
+  `after` ainda espera, e como `claimed, progress unknown` só quando não
+  resta nada a esperar. Rodado na worktree ou no ramo de uma entrega,
+  ele lê a linha dessa entrega do arquivo local enquanto o ramo está
+  onde a reivindicação o criou; antes, só um `[?]` ali era lido. Um
+  `[x]` lido assim é construído, não integrado. Sem as
+  duas mudanças, uma linha devolvida a `[ ]` ou `[>]` no seu ramo
+  apareceria em andamento ou livre. Ele continua lendo o
+  `· blocked: after` de uma fila escrita antes desta versão.
+- Três alarmes de linhas continuam cruzados: o corpo do `/apply` com 71
+  linhas, o modelo do docs/05 com 346 e o `documents.md` com 635. O §4
+  agora diz num parágrafo o que faz a linha que precisa de outra nos
+  dois momentos, o que o terceiro caso e o seu sufixo diziam em menos
+  palavras e de duas formas.
+- Aplique as migrações na sessão que atualiza o kit. Uma nova execução
+  reporta os três casos do docs/05 §4 e o parágrafo dele sobre o
+  `after`, e cada linha `[?]` do docs/06 que termina em
+  `· blocked: after <slug>`. Essa linha passa a terminar em
+  `· after <slug>`, em `[ ]` onde dizia `resume: propose` e em `[>]`
+  onde dizia `resume: apply`. Até ser reescrita, nenhum comando a
+  libera: o `/apply` não faz mais isso, e o `queue.sh` a mostra
+  bloqueada.
+
 ## 2026.11.12
 
 - O `/apply` corrige na própria entrega o que a revisão, a prova ou a

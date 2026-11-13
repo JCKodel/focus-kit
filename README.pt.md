@@ -147,15 +147,17 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
    `work/`, com o próximo comando. Ideias novas viram linhas novas na fila,
    por conversa, em qualquer sessão, e o `/propose` de uma pode rodar ali
    mesmo ou numa sessão nova; uma linha de que o milestone atual não
-   precisa vai para o próximo. Uma linha que espera uma resposta,
-   outra linha ou qualquer motivo que você diga vira `[?]`, com o motivo no
+   precisa vai para o próximo. Uma linha que espera uma resposta
+   ou qualquer motivo que você diga vira `[?]`, com o motivo no
    fim, até ele se resolver. Ela também registra se deve retomar o
    `/propose` ou o `/apply`: uma proposta parcial precisa terminar a
    definição antes de ser construída. A ordem da fila é a prioridade: a
    próxima entrega é a primeira linha livre, e você reordena por
    conversa. Uma linha que precisa de outra antes diz isso no fim,
    `· after <slug>`: o seu `/propose` pode começar quando aquela tem
-   página, o seu `/apply` quando aquela está integrada. A revisão de um
+   página, o seu `/apply` quando aquela está integrada. Ela nunca é
+   `[?]`, nem quando a necessidade aparece no meio do trabalho: continua
+   `[ ]` ou `[>]`, e a marca segue dizendo o próximo comando. A revisão de um
    milestone diz `· after all`. Digite `/propose` ou `/apply` sem slug e
    o agente desenha a fila como uma árvore, com as linhas livres para
    cada comando e a próxima. Linhas livres podem rodar ao mesmo tempo,

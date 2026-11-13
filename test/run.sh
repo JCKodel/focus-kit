@@ -146,13 +146,23 @@ check_queue_script() {
   )
   (
     cd "$t/payc/.focus-kit/worktrees/pay"
-    awk '{ if ($0 ~ /^\[>\] pay /) { print "[ ] pay-fix  the total is wrong · from pay"; print "[?] pay  pay a bill · resume: apply · blocked: after pay-fix"; next } print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    awk '{ if ($0 ~ /^\[>\] pay /) { print "[ ] pay-fix  the total is wrong · from pay"; print "[>] pay  pay a bill · after pay-fix"; next } print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
     sh "$script" worktree .focus-kit focus-kit/
   ) > "$t/pay.txt" 2>&1 || true
   assert_true "a fix line only the worktree has: the milestone stays open" grep -q '^milestone: M1\. Pay$' "$t/pay.txt"
   assert_true "a fix line only the worktree has: shown, free for /propose" grep -q '^\[ \] pay-fix · propose now$' "$t/pay.txt"
   assert_true "a fix line only the worktree has: counted" grep -q '^findings: 1 open of 1 from a finding · 2 planned open$' "$t/pay.txt"
   assert_false "a fix its line waits on is not named ahead of planned lines" grep -q 'ahead of planned lines' "$t/pay.txt"
+  assert_true "a line that waits on its fix keeps [>] and waits on it" grep -q '\[>\] pay · waits: after pay-fix$' "$t/pay.txt"
+  # The same worktree with pay finished and not pushed: built, and a line
+  # after it still waits.
+  (
+    cd "$t/payc/.focus-kit/worktrees/pay"
+    awk '{ if ($0 ~ /^\[>\] pay /) { print "[x] pay  pay a bill · after pay-fix"; print "[>] receipt  a receipt · after pay"; next } if ($0 ~ /pay-fix /) sub(/^\[ \]/, "[x]"); print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    sh "$script" worktree .focus-kit focus-kit/
+  ) > "$t/pay.txt" 2>&1 || true
+  assert_true "a [x] only the worktree has is built, not integrated" grep -q '\[x\] pay · built, awaiting integration$' "$t/pay.txt"
+  assert_true "a line after it waits for the integration" grep -q '\[>\] receipt · waits: pay built, not integrated$' "$t/pay.txt"
   rm -rf "$t"
 }
 

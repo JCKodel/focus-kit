@@ -6,7 +6,7 @@ remote, it pushes branches: `card` at `[*]` with a `card-fix` line only
 that branch has, `login` with no change (claimed, progress unknown),
 `export` at `[?]` while main says `[>]` (blocked wins), `colors` at `[x]`
 unmerged (built, awaiting integration), `search` with a new `after` at
-the same mark; and compares with `expected-worktree.txt`. Then it merges
+the same mark, which it waits on though claimed; and compares with `expected-worktree.txt`. Then it merges
 `colors` into main and runs from the worktree of `card`, whose copy is
 stale, against `expected-stale.txt`; and runs the file with CRLF endings
 against `expected-trunk.txt`. The `notes` line is wrapped on purpose.
@@ -15,7 +15,9 @@ against `expected-trunk.txt`. The `notes` line is wrapped on purpose.
 Four lines end `· from <slug>` and are counted by `findings:`. `card-lost`
 stands ahead of open planned lines, so the warning names it. `sync-fix`
 stands ahead too, but `sync` names it in `blocked: after`, a fix it
-waits on, so the warning leaves it out. `lane-gap` is done, counted and
+waits on, so the warning leaves it out. That is how a queue written
+before 2026.11.13 says it, and it is still read; `test/run.sh` writes
+today's form, `[>]` with `· after`, in its `pay` case. `lane-gap` is done, counted and
 not open. `tip-wrap` sits below the planned lines, above the review,
 where a finding that blocks nothing goes. `import`'s `· from CSV files`
 is prose, not one slug, so it is a planned line.

@@ -7,7 +7,7 @@ repository the session works in, never in the folder this file was read
 from. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.11.12
+Version: 2026.11.13
 
 ## 1. What to do
 
@@ -81,7 +81,9 @@ Version: 2026.11.12
      process line only on the person's word. Until §4 says what a
      finding is and §8 collects the notes, the next step is that
      migration, not a command: the new /apply leaves every finding as a
-     note nobody reads. The four cases a line waits in. A line whose session ended,
+     note nobody reads. The three cases a line waits in, none of them
+     another line. A line that needs another ending `· after` and
+     keeping `[ ]` or `[>]`, never `[?]`. A line whose session ended,
      and a dropped line. The claim, the current copy of a line and a
      `[?]` on any copy. The parallel paragraphs present only where
      sessions overlap;
@@ -125,6 +127,9 @@ Version: 2026.11.12
      hold it. A `(PA)` token leaves the line; a `-` becomes an `after`
      only where the page says so. A review line ends `· after all`. A
      line that says in prose which delivery found it ends `· from <slug>`. A
+     `[?]` line ending `· blocked: after <slug>` ends `· after <slug>`
+     instead, at `[ ]` where it said `resume: propose` and `[>]` where
+     it said `resume: apply`. A
      line wrapped over several lines is joined. The report names those
      lines and rewrites one as the example;
    * AGENTS.md: the process rules, including the lines on committing, on
@@ -250,7 +255,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.11.12"
+  version: "2026.11.13"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -325,7 +330,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.11.12"
+  version: "2026.11.13"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -411,7 +416,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.11.12"
+  version: "2026.11.13"
 ---
 You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`.
 None: show what may run now as docs/05 §4 says and ask. Several: one
@@ -446,8 +451,9 @@ Write `work/<slug>.md` as docs/05 §3 defines, using docs/03's terms; add a
 new concept there first. Draft the Behaviour scenarios yourself from the
 documents, failures and edges included; the person corrects them and does
 not write them. Mark `[>]` only when the definition is complete.
-If an answer or a dependency is missing, save the draft and block it as
-docs/05 §4 says, with `resume: propose`.
+If an answer is missing, save the draft and block it as docs/05 §4
+says, with `resume: propose`. If another line must come first, save the
+draft and add its `after` as §4 says.
 
 Files in docs/05's documentation language; talk in the person's language.
 Write no code, migration, test or configuration. End by showing the
@@ -469,7 +475,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.11.12"
+  version: "2026.11.13"
 ---
 The slugs are `$ARGUMENTS`. None: show what may run now as docs/05 §4
 says and ask. Several: one subagent per slug, opened at once where
@@ -497,10 +503,11 @@ only a fully defined `[>]` line whose `after` is integrated, as §4 says,
 and whose files no in-flight build touches, becomes `[*]`, your first
 edit. docs/05 §§4 and 6 say what a conflict is.
 
-When work cannot go on, record what was built and what it waits on, leave
-the page in `work/` and block it with `resume: apply` as docs/05 §4 says.
-A prerequisite fix becomes a `[ ]` line above this one, ending
-`· from <slug>`. End the page with the partial message, show it in the
+When work cannot go on, record what was built and what it waits on and
+leave the page in `work/`. A line that waits on another takes it as its
+`after` and returns to `[>]`, as docs/05 §4 says; any other is blocked
+with `resume: apply`. A prerequisite fix becomes a `[ ]` line above this
+one, ending `· from <slug>`. End the page with the partial message, show it in the
 conversation in the same `commit` block, and follow docs/05 §6's
 blocked-work staging rule; report verify and environments, and stop
 without claiming completion.
@@ -527,8 +534,7 @@ is grave, the note goes under Outcome, and the last message says docs/05
 awaits its migration. A later edit to anything verify covers runs it once more. Leave
 environments as required. Record divergences, omissions, proof, the
 review, each fix and the decisions on the page, however long it grows.
-Tick every Done when item, move the page to `work/done/` and resolve
-dependent lines as docs/05 §4 says.
+Tick every Done when item and move the page to `work/done/`.
 
 End the page with one final `commit` block in docs/05 §6's format, replacing
 any earlier one; stage only this delivery's changes as that section says;
@@ -827,7 +833,7 @@ delivery is the first free line, and the person reorders by
 conversation. A line is the mark, the slug, one sentence and its
 suffixes, on one line; what happened goes on the page, because /propose
 reads the whole queue. A line that needs another first ends with
-`· after <slug>`, written when the line is added, or `· after all`,
+`· after <slug>`, or `· after all`,
 every line above it in its milestone but the dropped ones, which is how
 the review is written. `after` is read per command: /propose starts
 when every line it names is `[>]` or beyond, because the definition needs their pages;
@@ -882,7 +888,7 @@ work changes, so the queue shows what is happening while it happens:
 | `[>]` | completely defined, page ready for /apply | /propose, when §3 is complete |
 | `[*]` | being built | /apply, when it starts |
 | `[x]` | done, page in `work/done/`; on a branch, built until merged; with `· dropped:`, cancelled | /apply, with verify green; the person, when cancelling |
-| `[?]` | waiting | any session, in the four cases below |
+| `[?]` | waiting, never on another line | any session, in the three cases below |
 
 A board may read the queue, and people pull work from it, so a mark
 changes at once: `[~]` is /propose's first edit, `[*]` is /apply's first,
@@ -900,22 +906,25 @@ any copy blocks; a line only a branch has belongs to its milestone.
 `queue.sh` reads them so; whoever reads by hand, a board or a session,
 reads the same way after `git fetch`.
 
-A line waits in four cases:
+A line waits in three cases, never on another line:
 
 * the person says it is blocked;
 * it needs an answer that was asked and not given;
-* work already started finds it needs another line done first, such as a
-  fix found in the middle of an /apply;
 * a milestone review's code reading missed part of its range (§8).
 
 The line ends with the command that picks it up, `· resume: propose` or
-`· resume: apply`, then the reason, `· blocked: <reason>` or
-`· blocked: after <slug>, <slug>`. A dependency known when the line is
-added is `· after <slug>` alone, without `[?]`: an order, not an
-interruption. When the reason is resolved (the person says so, the
-session that records the answer clears it, or the last line of an
-`after` is integrated), remove both suffixes: `resume: propose` returns
-to `[ ]`, keeping any draft, and `resume: apply` to `[>]`.
+`· resume: apply`, then the reason, `· blocked: <reason>`. When the
+reason is resolved (the person says so, or the session that records the
+answer clears it), remove both suffixes: `resume: propose` returns to
+`[ ]`, keeping any draft, and `resume: apply` to `[>]`.
+
+A line that needs another line first is not waiting. It ends
+`· after <slug>` and keeps the mark that names its next command. Known
+when the line is added, the suffix is written then. Found by work
+already started, such as a fix in the middle of an /apply, the session
+adds the suffix and returns the line to `[ ]` from `[~]`, keeping the
+draft, or to `[>]` from `[*]`. Its page says what was built and what it
+waits on, and /apply continues from there.
 
 A `[~]` or `[*]` line whose session ended without blocking it (the host
 closed, the connection or its limit) keeps its mark; its command resumes
@@ -1420,8 +1429,12 @@ awk "$join" "$queue" | awk -F '\t' -v strategy="$strategy" -v here="$here" '
 # delivery branch on origin holds its own slug'"'"'s copy, and the local file
 # is the own copy of the slug whose worktree or branch this is. The own copy
 # wins for its slug until the delivery is integrated, then the base wins.
+# A branch still where the claim created it is an ancestor of the base
+# without being integrated: there the local copy wins until the base says
+# [x], and its own [x] is built, awaiting integration.
 # Any copy at [?] shows the line blocked unless the winner is [x]. A branch
-# on origin whose winning copy is still [ ] is claimed, progress unknown.
+# on origin whose winning copy is still [ ] is claimed, progress unknown,
+# once nothing in its after is left to wait on.
 function sl(line,   s) { s = line; sub(/^\[.\][ \t]+/, "", s); sub(/[ \t].*/, "", s); return s }
 function isline(s) { return s ~ /^\[[ ~>*x?]\][ \t]+[^ \t]/ }
 function parse(line, k,   rest, n, parts, i, p, deps, j, m) {
@@ -1448,7 +1461,7 @@ function add(s, line, ms, src,   k) {
   k = ++nq; parse(line, k); at[s] = k; mstone[k] = ms; from[k] = src
   if (s in blockedcopy && mark[k] != "x") { parse(blockedcopy[s], k); mstone[k] = ms }
   if (strategy == "trunk") integrated[k] = (mark[k] == "x")
-  else integrated[k] = ((s in basemark) && basemark[s] == "x") || (s in integ)
+  else integrated[k] = ((s in basemark) && basemark[s] == "x") || ((s in integ) && s != here)
   if (mark[k] == "x" && !integrated[k]) built[k] = 1
   if (mark[k] == " " && (s in claimed)) claimedk[k] = 1
 }
@@ -1466,7 +1479,6 @@ function state(k,   i, s, d, why, sep, ok, nd, dl, ds, nb, bl, bs, nw, wl, ws) {
   if (mark[k] == "*") return "in flight: apply"
   if (mark[k] == "?") return "blocked: " blocked[k] (resume[k] != "" ? ", then " resume[k] : "")
   if (built[k]) return "built, awaiting integration"
-  if (claimedk[k]) return "claimed, progress unknown: propose in flight"
   cmd[k] = (mark[k] == ">") ? "apply" : "propose"
   why = ""; sep = ""; nd = 0; dl = ""; ds = ""; nb = 0; bl = ""; bs = ""; nw = 0; wl = ""; ws = ""
   for (i = 1; i <= ndep[k]; i++) {
@@ -1485,6 +1497,7 @@ function state(k,   i, s, d, why, sep, ok, nd, dl, ds, nb, bl, bs, nw, wl, ws) {
   if (nb > 0) { why = why sep few(bl, nb, "built, not integrated"); sep = "; " }
   if (nd > 0) { why = why sep few(dl, nd, "not defined"); sep = "; " }
   if (why != "") { cmd[k] = ""; return "waits: " why }
+  if (claimedk[k]) { cmd[k] = ""; return "claimed, progress unknown: propose in flight" }
   return cmd[k] " now"
 }
 function show(k, depth,   pad, i, c, extra, sep, line, n) {
@@ -1538,7 +1551,7 @@ END {
   if (here != "") for (s in obase) if (!(s in local)) order[++no] = s
   for (i = 1; i <= no; i++) {
     s = order[i]
-    if ((s in own) && !(s in integ)) { line = own[s]; ms = ownms[s] }
+    if ((s in own) && (!(s in integ) || (s == here && basemark[s] != "x"))) { line = own[s]; ms = ownms[s] }
     else if (s in base) { line = base[s]; ms = basems[s] }
     else if (s in own) { line = own[s]; ms = ownms[s] }
     else { line = local[s]; ms = localms[s] }

@@ -8,6 +8,52 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.11.13
+
+- A line that needs another line first is never `[?]`. It ends
+  `· after <slug>` and keeps the mark that names its next command,
+  whether the need is known when the line is added or found by work
+  already started. In the second case the session adds the suffix and
+  returns the line to `[ ]` from `[~]`, keeping the draft, or to `[>]`
+  from `[*]`, its page saying what was built. This displaces docs/05
+  §4's third case of waiting, "work already started finds it needs
+  another line done first", and the suffix `· blocked: after <slug>`. A
+  line now waits in three cases, none of them another line. In one
+  project, on 2026-11-13, a session that found two lines needed
+  another first left both at `[?]`, ending
+  `· after <slug> · resume: propose · blocked: after <slug>`. Reading
+  docs/06, the person could not tell from the mark whether `/propose` or
+  `/apply` came next, and one line said "after" in two ways. Another
+  project's queue held four such lines.
+- The cost: `after` is read per command. A line returned to `[ ]` may be
+  defined again once the other has its page, where `blocked: after` held
+  it until the other was integrated. Where a definition needs the other
+  line built, the project's docs/05 says so, and `queue.sh` does not
+  know it.
+- `/apply` no longer resolves dependent lines at its end, because an
+  `after` needs no clearing. This displaces "resolve dependent lines as
+  docs/05 §4 says".
+- `queue.sh` shows a claimed `[ ]` line whose `after` still waits as
+  `waits`, and as `claimed, progress unknown` only once nothing is left
+  to wait on. Run in a delivery's worktree or on its branch, it reads
+  that delivery's line from the local file while the branch is still
+  where the claim created it; before, only a `[?]` there was read. A
+  `[x]` read that way is built, not integrated.
+  Without the two, a line returned to `[ ]` or `[>]` on its branch would
+  show as in flight or free. It still reads `· blocked: after` in a
+  queue written before this version.
+- Three line alarms stay crossed: `/apply`'s body at 71 lines, the
+  docs/05 template at 346 and `documents.md` at 635. §4 now says in one
+  paragraph what a line that needs another does in both moments, which
+  the third case and its suffix said in fewer words and two forms.
+- Apply the migrations in the session that updates the kit. A rerun
+  reports docs/05 §4's three cases and its paragraph on `after`, and
+  each `[?]` line of docs/06 ending `· blocked: after <slug>`. That line
+  ends `· after <slug>` instead, at `[ ]` where it said
+  `resume: propose` and `[>]` where it said `resume: apply`. Until it is
+  rewritten no command clears it: `/apply` no longer does, and
+  `queue.sh` shows it blocked.
+
 ## 2026.11.12
 
 - `/apply` fixes in the delivery whatever its review, proof or build

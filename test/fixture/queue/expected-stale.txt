@@ -6,7 +6,7 @@ findings: 4 open of 5 from a finding · 14 planned open
    └[ ] filter + after board · propose now
 [ ] card-fix · propose now
 [ ] card-lost · propose now
-[ ] search + after board, card · claimed, progress unknown: propose in flight
+[ ] search + after board, card · waits: missing-slug is not in the queue; login not defined
 [ ] login · claimed, progress unknown: propose in flight
 [ ] import · propose now
 [?] export · blocked: which format, asked, then apply
