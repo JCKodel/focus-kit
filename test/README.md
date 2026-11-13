@@ -38,7 +38,13 @@ compares with `expected-worktree.txt`; then merges one and runs from a
 stale worktree against `expected-stale.txt`; then runs the file with
 CRLF endings; then, in a worktree whose local queue alone has a fix line
 above its own line, now `[>]` with `· after` it, checks that the fix is
-shown and counted, that no warning names it and that its line waits. A changed expected file is checked line by
+shown and counted, that no warning names it and that its line waits.
+Three more cases have their own queue. A first milestone whose only open
+line is blocked: the next one is drawn and its free line is the next. A
+branch that reworded its milestone's heading and added a line: read from
+main and from its worktree, the milestone keeps main's wording and every
+line. A `[?]` a branch inherited and main cleared: it blocks nothing,
+while one a branch put does. A changed expected file is checked line by
 line against docs/05 §4 before it is accepted, never taken from the
 script's output as it comes: on 2026-11-12 an `expected-stale.txt` taken
 that way had accepted a `card-fix` line missing from the tree. It runs the `claim.sh` of §3.6 on two clones of a local

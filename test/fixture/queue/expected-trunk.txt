@@ -21,6 +21,9 @@ findings: 3 open of 4 from a finding · 15 planned open
 [ ] tip-wrap · propose now
  └[ ] m2-review + after board, card, filter and 14 more · waits: card, filter, card-lost and 10 more not defined
 
+milestone: M3. Later
+[ ] later · waits: m2-review not defined
+
 free for /apply, in order: board colors export
 free for /propose, in order: card card-lost login import notes sync-fix tip-wrap
 next: /apply board

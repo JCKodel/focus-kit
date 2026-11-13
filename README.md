@@ -157,8 +157,8 @@ OpenCode and Zed all read. What belongs to a single host:
    the need shows up mid-work: it keeps `[ ]` or `[>]`, so its mark
    still names the next command. The review of a milestone says
    `· after all`. Type `/propose` or `/apply` with no slug and the agent
-   draws the queue as a tree, with the lines free for each command and
-   the next one. Free lines can run at the same time, one session each;
+   draws each open milestone of the queue as a tree, with the lines free
+   for each command and the next one. Free lines can run at the same time, one session each;
    before its first edit, `/apply` checks that no build in flight
    touches its files. Several at once: type
    `/propose` or `/apply` with several slugs, and the session opens one

@@ -159,8 +159,8 @@ Antigravity, Devin Desktop, OpenCode e Zed leem. O que pertence a um host só:
    `[?]`, nem quando a necessidade aparece no meio do trabalho: continua
    `[ ]` ou `[>]`, e a marca segue dizendo o próximo comando. A revisão de um
    milestone diz `· after all`. Digite `/propose` ou `/apply` sem slug e
-   o agente desenha a fila como uma árvore, com as linhas livres para
-   cada comando e a próxima. Linhas livres podem rodar ao mesmo tempo,
+   o agente desenha cada milestone aberto da fila como uma árvore, com as
+   linhas livres para cada comando e a próxima. Linhas livres podem rodar ao mesmo tempo,
    uma sessão cada; antes da primeira edição, o `/apply` confere que
    nenhuma construção em andamento toca os seus arquivos. Várias de uma
    vez: digite `/propose` ou `/apply` com vários slugs, e a sessão abre um

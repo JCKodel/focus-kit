@@ -20,7 +20,8 @@ before 2026.11.13 says it, and it is still read; `test/run.sh` writes
 today's form, `[>]` with `· after`, in its `pay` case. `lane-gap` is done, counted and
 not open. `tip-wrap` sits below the planned lines, above the review,
 where a finding that blocks nothing goes. `import`'s `· from CSV files`
-is prose, not one slug, so it is a planned line.
+is prose, not one slug, so it is a planned line. `later` is in the next
+milestone, which is open too and is drawn under M2's tree.
 
 ## M1. Done
 

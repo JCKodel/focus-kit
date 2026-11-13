@@ -95,7 +95,9 @@ tgit() { git -c user.name=test -c user.email=test@test "$@"; }
 # queue.sh on test/fixture/queue: trunk; then with delivery branches on a
 # local bare remote (card at [*] with a card-fix line, login unchanged,
 # export blocked, colors built and unmerged, search with a new after);
-# then from a stale worktree after colors is merged; then with CRLF.
+# then from a stale worktree after colors is merged; then with CRLF. Then
+# the cases with their own queue: a fix line only a worktree has, a
+# blocked first milestone, a reworded heading, an inherited [?].
 check_queue_script() {
   say "check: queue.sh on test/fixture/queue"
   local t script; t=$(mktemp -d); script="$t/queue.sh"
@@ -163,6 +165,60 @@ check_queue_script() {
   ) > "$t/pay.txt" 2>&1 || true
   assert_true "a [x] only the worktree has is built, not integrated" grep -q '\[x\] pay · built, awaiting integration$' "$t/pay.txt"
   assert_true "a line after it waits for the integration" grep -q '\[>\] receipt · waits: pay built, not integrated$' "$t/pay.txt"
+  # A milestone whose only open line is blocked hides no line of the next.
+  mkdir -p "$t/stuck/docs" && (cd "$t/stuck" && git init -q)
+  printf '# Queue\n\n## M1. Pay\n\nWhen it closes, people pay.\n\n[x] base  the base\n[?] m1-review  the review of M1 · after all · resume: apply · blocked: the person tests by hand\n\n## M2. Later\n\nWhen it closes, more.\n\n[ ] more  more\n' > "$t/stuck/docs/06-Queue.md"
+  (cd "$t/stuck" && sh "$script" trunk) > "$t/stuck.txt" 2>&1 || true
+  assert_true "a blocked milestone is drawn" grep -q '^\[?\] m1-review · blocked: the person tests by hand, then apply$' "$t/stuck.txt"
+  assert_true "the next milestone is drawn under it" grep -q '^milestone: M2\. Later$' "$t/stuck.txt"
+  assert_true "its free line is the next one" grep -q '^next: /propose more$' "$t/stuck.txt"
+  # A branch rewords its milestone's heading, takes its line and adds a fix:
+  # read from main and from its worktree, the milestone keeps main's
+  # wording and every line.
+  git init -q --bare "$t/head.git"
+  git clone -q "$t/head.git" "$t/head" 2>/dev/null
+  (
+    cd "$t/head" && git switch -q -c main && mkdir docs
+    printf '# Queue\n\n## M1. Pay (until the 19th)\n\nWhen it closes, people pay.\n\n[x] base  the base\n[>] pay  pay a bill\n[ ] list  list the bills\n[ ] m1-review  the review of M1 · after all\n' > docs/06-Queue.md
+    tgit add docs && tgit commit -q -m queue && git push -q -u origin main && git remote set-head origin -a >/dev/null 2>&1
+    git switch -q -c focus-kit/pay main
+    awk '{ if ($0 ~ /^## M1/) $0 = "## M1. Pay (until the 20th)"; if ($0 ~ /^\[>\] pay /) { print "[ ] pay-fix  the total is wrong · from pay"; sub(/^\[>\]/, "[*]") } print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    tgit commit -q -am pay && git push -q origin focus-kit/pay 2>/dev/null && git switch -q main
+    sh "$script" worktree .focus-kit focus-kit/ > "$t/head.txt" 2>&1 || true
+    mkdir -p "$t/headc/.focus-kit/worktrees" && git worktree add -q "$t/headc/.focus-kit/worktrees/pay" focus-kit/pay
+  )
+  (cd "$t/headc/.focus-kit/worktrees/pay" && sh "$script" worktree .focus-kit focus-kit/) > "$t/headw.txt" 2>&1 || true
+  assert_true "a reworded heading: main's wording, once" test "$(grep -c '^milestone: ' "$t/head.txt")$(grep -c '^milestone: M1\. Pay (until the 19th)$' "$t/head.txt")" = 11
+  assert_true "a reworded heading: the branch's line stays" grep -q '^\[\*\] pay · in flight: apply$' "$t/head.txt"
+  assert_true "a reworded heading: the other lines stay" grep -q '^\[ \] list · propose now$' "$t/head.txt"
+  assert_true "a reworded heading: a line only the branch has stays" grep -q '^\[ \] pay-fix (only on branch pay) · propose now$' "$t/head.txt"
+  assert_true "a reworded heading, from its worktree: main's wording, once" test "$(grep -c '^milestone: ' "$t/headw.txt")$(grep -c '^milestone: M1\. Pay (until the 19th)$' "$t/headw.txt")" = 11
+  assert_true "a reworded heading, from its worktree: every line stays" test "$(grep -c -e '^\[ \] pay-fix · propose now$' -e '^\[\*\] pay · in flight: apply$' -e '^\[ \] list · propose now$' "$t/headw.txt")" = 3
+  # A [?] blocks on the copy that put it. Main clears ask, which x and b
+  # inherited; b's own branch takes b, which main still has at [?]; x's
+  # branch puts c at [?].
+  git init -q --bare "$t/ask.git"
+  git clone -q "$t/ask.git" "$t/ask" 2>/dev/null
+  (
+    cd "$t/ask" && git switch -q -c main && mkdir docs
+    printf '# Queue\n\n## M1. Pay\n\nWhen it closes, people pay.\n\n[?] ask  needs an answer · resume: propose · blocked: question 3\n[?] b  b · resume: propose · blocked: question 5\n[ ] c  c\n[ ] x  x\n' > docs/06-Queue.md
+    tgit add docs && tgit commit -q -m queue && git push -q -u origin main && git remote set-head origin -a >/dev/null 2>&1
+    git switch -q -c focus-kit/x main
+    awk '{ if ($0 ~ /^\[ \] x /) sub(/^\[ \]/, "[~]"); if ($0 ~ /^\[ \] c /) $0 = "[?] c  c · resume: propose · blocked: question 7"; print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    tgit commit -q -am x && git push -q origin focus-kit/x 2>/dev/null
+    git switch -q -c focus-kit/b main
+    awk '{ if ($0 ~ /^\[\?\] b /) $0 = "[~] b  b"; print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    tgit commit -q -am b && git push -q origin focus-kit/b 2>/dev/null && git switch -q main
+    awk '{ if ($0 ~ /^\[\?\] ask /) $0 = "[ ] ask  needs an answer"; print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    tgit commit -q -am "ask answered" && git push -q origin main
+    sh "$script" worktree .focus-kit focus-kit/ > "$t/ask.txt" 2>&1 || true
+    mkdir -p "$t/askc/.focus-kit/worktrees" && git worktree add -q "$t/askc/.focus-kit/worktrees/x" focus-kit/x
+  )
+  (cd "$t/askc/.focus-kit/worktrees/x" && sh "$script" worktree .focus-kit focus-kit/) > "$t/askw.txt" 2>&1 || true
+  assert_true "a [?] a branch inherited and main cleared does not block" grep -q '^\[ \] ask · propose now$' "$t/ask.txt"
+  assert_true "the same, read from that branch's worktree" grep -q '^\[ \] ask · propose now$' "$t/askw.txt"
+  assert_true "main's [?] does not block the line its own branch took" grep -q '^\[~\] b · in flight: propose$' "$t/ask.txt"
+  assert_true "a [?] another branch put blocks" grep -q '^\[?\] c · blocked: question 7, then propose$' "$t/ask.txt"
   rm -rf "$t"
 }
 

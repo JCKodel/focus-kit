@@ -43,11 +43,42 @@ In English: [CHANGELOG.md](CHANGELOG.md).
   duas mudanças, uma linha devolvida a `[ ]` ou `[>]` no seu ramo
   apareceria em andamento ou livre. Ele continua lendo o
   `· blocked: after` de uma fila escrita antes desta versão.
+- O `queue.sh` desenha todo milestone aberto, cada um sob a sua linha
+  `milestone:`. As linhas livres e o `next:` atravessam todos, na ordem
+  da fila. Isso substitui o "draws docs/06's current milestone", da
+  2026.10.24. Num projeto, em 2026-11-13, as únicas linhas abertas do
+  primeiro milestone eram a revisão dele, esperando em `[?]` um aceite
+  de fora do time, e uma linha depois dela. O script desenhou só esse
+  milestone e respondeu `next: none`, com sete linhas do milestone
+  seguinte livres para o `/propose`. O docs/05 §4 já dizia que a próxima
+  entrega é a primeira linha livre. O custo: uma linha estacionada no
+  próximo milestone é oferecida quando está livre, depois das linhas do
+  anterior. Uma fila com um só milestone aberto sai como antes.
+- O `queue.sh` reconhece um milestone pelo título da main, não pela
+  redação de cada cópia. Uma linha que só um ramo tem fica com o título
+  da main das linhas que dividem o título com ela naquele ramo. No mesmo
+  projeto, o ramo de uma entrega tinha mudado as datas no título do seu
+  milestone, e a linha dela saiu da árvore. No teste do kit, a mesma
+  edição, na primeira linha aberta, escondeu todas as outras linhas do
+  milestone. Nenhuma regra é substituída: o docs/05 §4 já dizia que essa
+  linha pertence ao seu milestone.
+- Um `[?]` bloqueia na cópia que o pôs. O de um ramo bloqueia quando o
+  ramo mudou a linha depois de sair da main. O da main bloqueia, salvo
+  quando o ramo da própria linha a mudou. Nenhum bloqueia uma linha cuja
+  cópia atual é `[x]`. Isso substitui o "a `[?]` on any copy blocks" do
+  docs/05 §4. Naquele projeto, em 2026-11-09, um ramo aberto antes de a
+  main liberar perguntas respondidas guardou o `[?]` antigo. O script
+  mostrou duas linhas esperando perguntas já respondidas, e aquela cópia
+  tinha outras duas em `[?]` que a main tinha em `[ ]`. O projeto
+  corrigiu o script instalado nesse dia. O kit recebe essa correção, e
+  rodar o `SETUP.md` de novo deixa de desfazê-la.
 - Três alarmes de linhas continuam cruzados: o corpo do `/apply` com 71
-  linhas, o modelo do docs/05 com 346 e o `documents.md` com 635. O §4
+  linhas, o modelo do docs/05 com 352 e o `documents.md` com 641. O §4
   agora diz num parágrafo o que faz a linha que precisa de outra nos
   dois momentos, o que o terceiro caso e o seu sufixo diziam em menos
-  palavras e de duas formas.
+  palavras e de duas formas. Das seis linhas novas dele, cinco dizem qual
+  cópia bloqueia com o seu `[?]` e de quem é o título da linha de um
+  ramo, e uma diz que as árvores são uma por milestone aberto.
 - Aplique as migrações na sessão que atualiza o kit. Uma nova execução
   reporta os três casos do docs/05 §4 e o parágrafo dele sobre o
   `after`, e cada linha `[?]` do docs/06 que termina em
@@ -55,7 +86,9 @@ In English: [CHANGELOG.md](CHANGELOG.md).
   `· after <slug>`, em `[ ]` onde dizia `resume: propose` e em `[>]`
   onde dizia `resume: apply`. Até ser reescrita, nenhum comando a
   libera: o `/apply` não faz mais isso, e o `queue.sh` a mostra
-  bloqueada.
+  bloqueada. Uma nova execução também reporta as frases do §4 sobre qual
+  cópia bloqueia com o seu `[?]`, sobre a linha de um ramo sob o título
+  da main e sobre as árvores, uma por milestone aberto.
 
 ## 2026.11.12
 

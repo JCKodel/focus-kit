@@ -22,6 +22,9 @@ findings: 4 open of 5 from a finding · 15 planned open
  └[ ] m2-review + after board, card, filter and 14 more · waits: filter, card-lost, search and 9 more not defined
 [ ] card-fix (only on branch card) · propose now
 
+milestone: M3. Later
+[ ] later · waits: m2-review not defined
+
 free for /apply, in order: board
 free for /propose, in order: filter card-lost import notes sync-fix tip-wrap card-fix
 next: /apply board

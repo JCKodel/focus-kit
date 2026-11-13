@@ -42,17 +42,51 @@ Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
   Without the two, a line returned to `[ ]` or `[>]` on its branch would
   show as in flight or free. It still reads `· blocked: after` in a
   queue written before this version.
+- `queue.sh` draws every open milestone, each under its own `milestone:`
+  line. The free lines and `next:` run across them in the queue's order.
+  This displaces "draws docs/06's current milestone", of 2026.10.24. In
+  one project, on 2026-11-13, the first milestone's only open lines were
+  its review, waiting as `[?]` on an acceptance outside the team, and a
+  line after it. The script drew that milestone alone and answered
+  `next: none`, while seven lines of the next milestone were free for
+  `/propose`. docs/05 §4 already said the next delivery is the first
+  free line. The cost: a line parked under the next milestone is offered
+  when free, after the lines of the one before. A queue with one open
+  milestone prints as before.
+- `queue.sh` tells a milestone by main's heading, not by each copy's
+  wording of it. A line only a branch has takes main's heading of the
+  lines that share its heading on that branch. In the same project a
+  delivery's branch had moved the dates in its milestone's heading, and
+  its line left the tree. In the kit's test the same edit, on the first
+  open line, hid every other line of the milestone. No rule is
+  displaced: docs/05 §4 already said such a line belongs to its
+  milestone.
+- A `[?]` blocks on the copy that put it. A branch's blocks when the
+  branch changed the line after it left main. Main's blocks unless the
+  line's own branch changed the line. None blocks a line whose current
+  copy is `[x]`. This displaces docs/05 §4's "a `[?]` on any copy
+  blocks". In that project, on 2026-11-09, a branch opened before main
+  cleared answered questions kept the old `[?]`. The script showed two
+  lines waiting on questions already answered, and that copy held two
+  more at `[?]` that main had at `[ ]`. The project fixed its installed
+  script that day. The kit takes that fix, so a rerun of `SETUP.md` no
+  longer undoes it.
 - Three line alarms stay crossed: `/apply`'s body at 71 lines, the
-  docs/05 template at 346 and `documents.md` at 635. §4 now says in one
+  docs/05 template at 352 and `documents.md` at 641. §4 now says in one
   paragraph what a line that needs another does in both moments, which
-  the third case and its suffix said in fewer words and two forms.
+  the third case and its suffix said in fewer words and two forms. Of
+  its six new lines, five say which copy's `[?]` blocks and whose
+  heading a branch's line takes, and one that the trees are one per
+  open milestone.
 - Apply the migrations in the session that updates the kit. A rerun
   reports docs/05 §4's three cases and its paragraph on `after`, and
   each `[?]` line of docs/06 ending `· blocked: after <slug>`. That line
   ends `· after <slug>` instead, at `[ ]` where it said
   `resume: propose` and `[>]` where it said `resume: apply`. Until it is
   rewritten no command clears it: `/apply` no longer does, and
-  `queue.sh` shows it blocked.
+  `queue.sh` shows it blocked. A rerun also reports §4's sentences on
+  which copy's `[?]` blocks, on a branch's line under main's heading and
+  on the trees, one per open milestone.
 
 ## 2026.11.12
 
