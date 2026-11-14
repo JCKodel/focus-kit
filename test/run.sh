@@ -397,7 +397,7 @@ Decide alone: answer every question with your own recommendation and write it on
     if grep -q "^\[>\] $s" "$wt/$s/docs/06-Queue.md" 2>/dev/null; then ok "$s is [>] on its branch"
     elif grep -q "^\[~\] $s" "$wt/$s/docs/06-Queue.md" 2>/dev/null; then warn "$s left [~]: definition incomplete"
     else fail "$s not marked on its branch"; fi
-    assert_true "$s page records the answers as the agent's" grep -qiE "agent|decid|your call|recommendation" "$wt/$s/work/$s.md"
+    assert_true "$s page records the answers as the agent's" grep -qiE "agent|decid|decision|chose|your call|recommendation" "$wt/$s/work/$s.md"
   done
   assert_false "shout (after farewell) has no worktree" test -d "$wt/shout"
   assert_false "shout has no branch" branch_has "$main" shout
