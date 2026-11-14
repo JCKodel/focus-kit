@@ -8,6 +8,78 @@ migrations its report identifies.
 
 Em português: [CHANGELOG.pt.md](CHANGELOG.pt.md).
 
+## 2026.11.14
+
+- The base of a milestone review's range is the end named by the page
+  of the last review that ran, the commit its reading started at. This
+  displaces "the commit of the previous milestone's review". A delivery
+  committed after a review's end and before that review's own commit
+  was in neither range, so no review would copy its notes or read its
+  code. The book's chapter 15 delivery found the gap on 2026-11-14,
+  reading §8 to teach it. It has not happened there: every review's end
+  was the parent of its commit, and the next review checked for it by
+  hand. With the base at the previous end the ranges touch. The range
+  also holds the previous review's own commit, which is a page.
+- "The last review that ran" also names the base after a dropped
+  review. On 2026-10-19 a milestone of the book followed a review that
+  was dropped while an earlier one existed, and no case of docs/05 §8
+  fit it.
+- docs/05 §8 says what a Milestone review slot that says none means: no
+  code reading, the page still naming the range, the person still
+  testing each clause. The slot's template ended "Or: none" while §8
+  named two answers. The book's review of 2026-10-19 found its own
+  docs/03 and chapters counting three. No rule is displaced.
+- A resumed `/propose` keeps its line's mark. The command said "your
+  first edit there marks it `[~]`" after the claim, resumed or not,
+  while `mark.sh` puts `[~]` only on a `[ ]` line and refuses it on a
+  line already `[~]`. It now says the first edit marks a `[ ]` line,
+  which displaces that sentence. The book's review of 2026-11-14 found
+  it: chapter 12 had taught the sentence as the kit wrote it.
+- `/propose` reads the page of each delivery in flight in `work/` or on
+  its own branch. This displaces "the deliveries in flight in `work/`",
+  true on trunk only. With a branch or a worktree per delivery, the main
+  branch's `work/` lacks every page not yet merged. The book's chapter
+  12 delivery and its milestone review found it on 2026-10-19.
+- A line held by `after` is no longer told as waiting. 2026.11.13 said
+  "A line that needs another line first is not waiting" and kept six
+  sentences that said it waits: three in docs/05 §4, one in the Git
+  slot's worktree answer and two in `/apply`. They now say the line
+  comes after the other, needs it, or is held by its `after`. "Wait"
+  stays for a `[?]` line, and `waits:` stays the tree's word. The book's
+  review of 2026-11-14 found the two wordings side by side, in the kit's
+  text and in three chapters that had followed it.
+- `queue.sh`'s two error lines change with them. They say "names itself
+  in its after" and "names <slug> in its after, which is not in the
+  queue", where they said "waits on".
+- `queue.sh` no longer shows a `[?]` that a line's own branch inherited
+  and main cleared. docs/05 §4 already said a branch's `[?]` blocks only
+  when the branch changed the line, so no rule is displaced. The script
+  applied that to other lines' branches and took the line's own branch
+  copy whole. The book's review of 2026-11-14 reproduced it on a scratch
+  repository, and the kit's test now holds three readings of it: from
+  main, from the line's worktree, and from the worktree of a branch
+  still where the claim created it. It is rare, since no command starts
+  a `[?]` line, and no project's queue has shown it.
+- The texts tell both phases of Ninjobs. It required FOCUS whole on
+  every feature until its restart on 2026-08-29 and kept the two
+  principles after it. `SETUP.md`'s "FOCUS whole" answer said "Ninjobs
+  chose this" and the READMEs "Ninjobs took it whole", the earlier
+  phase alone and with no date. The book's chapter 7 found it on
+  2026-10-18.
+- The READMEs say who reviews when the agent commits. "Reviews the
+  staged diff and commits" holds for the Git slot's default. Where the
+  slot has the agent commit, the person reviews the commit. The book's
+  review of 2026-10-19 found the sentence true of one form only.
+- Three line alarms stay crossed: `/apply`'s body at 71 lines, the
+  docs/05 template at 357 and `documents.md` at 648. The template's five
+  new lines are §8's: two say the base, which one clause said wrong, and
+  three the slot that says none. `documents.md` has two more, on Ninjobs.
+- Apply the migrations in the session that updates the kit. A rerun
+  reports docs/05 §8's base and its sentence on a slot that says none,
+  and any sentence of §4 that says a line held by `after` waits. A
+  review already written keeps its range. The next one takes as its base
+  the end that review's page names.
+
 ## 2026.11.13
 
 - A line that needs another line first is never `[?]`. It ends

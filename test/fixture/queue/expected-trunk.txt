@@ -28,7 +28,7 @@ free for /apply, in order: board colors export
 free for /propose, in order: card card-lost login import notes sync-fix tip-wrap
 next: /apply board
 errors:
-  search waits on missing-slug, which is not in the queue
+  search names missing-slug in its after, which is not in the queue
   ping is in a cycle of after
   pong is in a cycle of after
-  selfish waits on itself
+  selfish names itself in its after

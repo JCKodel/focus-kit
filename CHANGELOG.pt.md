@@ -8,6 +8,85 @@ migrações dos documentos do projeto que o relatório identificar.
 
 In English: [CHANGELOG.md](CHANGELOG.md).
 
+## 2026.11.14
+
+- A base do intervalo de uma revisão de milestone é o fim que a página
+  da última revisão que rodou nomeia, o commit em que a leitura dela
+  começou. Isso substitui "the commit of the previous milestone's
+  review". Uma entrega commitada depois do fim de uma revisão e antes
+  do commit dessa revisão não ficava em nenhum dos dois intervalos,
+  então nenhuma revisão copiaria as notas dela nem leria o código dela.
+  A entrega do capítulo 15 do livro encontrou o buraco em 2026-11-14,
+  lendo o §8 para ensiná-lo. Ele não aconteceu lá: o fim de toda
+  revisão era o pai do commit dela, e a revisão seguinte conferiu isso
+  à mão. Com a base no fim anterior, os intervalos se tocam. O intervalo
+  também contém o commit da própria revisão anterior, que é uma página.
+- "A última revisão que rodou" também diz a base depois de uma revisão
+  cancelada. Em 2026-10-19, um milestone do livro veio depois de uma
+  revisão cancelada quando existia uma anterior, e nenhum caso do
+  docs/05 §8 servia.
+- O docs/05 §8 diz o que significa um slot Milestone review que diz
+  none: nenhuma leitura do código, a página ainda nomeando o intervalo,
+  a pessoa ainda testando cada cláusula. O modelo do slot terminava em
+  "Or: none" enquanto o §8 nomeava duas respostas. A revisão do livro de
+  2026-10-19 encontrou o docs/03 e os capítulos dele contando três.
+  Nenhuma regra é substituída.
+- Um `/propose` retomado mantém a marca da sua linha. O comando dizia
+  "your first edit there marks it `[~]`" depois da reivindicação,
+  retomada ou não, enquanto o `mark.sh` só põe `[~]` numa linha `[ ]` e
+  o recusa numa linha que já está `[~]`. Agora ele diz que a primeira
+  edição marca uma linha `[ ]`, o que substitui aquela frase. A revisão
+  do livro de 2026-11-14 a encontrou: o capítulo 12 tinha ensinado a
+  frase como o kit a escreveu.
+- O `/propose` lê a página de cada entrega em andamento em `work/` ou no
+  ramo dela. Isso substitui "the deliveries in flight in `work/`", que
+  só vale na trunk. Com um ramo ou uma worktree por entrega, o `work/`
+  do ramo principal não tem nenhuma página ainda não mesclada. A entrega
+  do capítulo 12 do livro e a revisão do milestone dela encontraram isso
+  em 2026-10-19.
+- Uma linha presa por `after` deixa de ser contada como espera. A
+  2026.11.13 dizia "A line that needs another line first is not waiting"
+  e manteve seis frases dizendo que ela espera: três no docs/05 §4, uma
+  na resposta de worktree do slot Git e duas no `/apply`. Agora elas
+  dizem que a linha vem depois da outra, precisa dela, ou está presa
+  pelo seu `after`. "Wait" continua valendo para uma linha `[?]`, e
+  `waits:` continua sendo a palavra da árvore. A revisão do livro de
+  2026-11-14 encontrou as duas redações lado a lado, no texto do kit e
+  em três capítulos que o tinham seguido.
+- As duas linhas de erro do `queue.sh` mudam junto. Elas dizem "names
+  itself in its after" e "names <slug> in its after, which is not in the
+  queue", onde diziam "waits on".
+- O `queue.sh` deixa de mostrar um `[?]` que o ramo da própria linha
+  herdou e a main liberou. O docs/05 §4 já dizia que o `[?]` de um ramo
+  só bloqueia quando o ramo mudou a linha, então nenhuma regra é
+  substituída. O script aplicava isso aos ramos das outras linhas e
+  tomava inteira a cópia do ramo da própria linha. A revisão do livro de
+  2026-11-14 reproduziu o caso num repositório de rascunho, e o teste do
+  kit agora guarda três leituras dele: da main, da worktree da linha, e
+  da worktree de um ramo que ainda está onde a reivindicação o criou. É
+  raro, porque nenhum comando começa uma linha `[?]`, e a fila de nenhum
+  projeto o mostrou.
+- Os textos contam as duas fases do Ninjobs. Ele exigiu o FOCUS inteiro
+  em toda feature até o seu recomeço em 2026-08-29 e manteve os dois
+  princípios depois dele. A resposta "FOCUS whole" do `SETUP.md` dizia
+  "Ninjobs chose this" e os READMEs "Ninjobs took it whole", só a fase
+  anterior e sem data. O capítulo 7 do livro encontrou isso em
+  2026-10-18.
+- Os READMEs dizem quem revisa quando o agente commita. "Revisa o diff
+  em stage e commita" vale para o padrão do slot Git. Onde o slot manda
+  o agente commitar, a pessoa revisa o commit. A revisão do livro de
+  2026-10-19 encontrou a frase valendo para uma forma só.
+- Três alarmes de linhas continuam cruzados: o corpo do `/apply` com 71
+  linhas, o modelo do docs/05 com 357 e o `documents.md` com 648. As
+  cinco linhas novas do modelo são do §8: duas dizem a base, que uma
+  oração dizia errado, e três o slot que diz none. O `documents.md` tem
+  mais duas, sobre o Ninjobs.
+- Aplique as migrações na sessão que atualiza o kit. Uma nova execução
+  reporta a base do docs/05 §8 e a frase dele sobre um slot que diz
+  none, e qualquer frase do §4 que diga que uma linha presa por `after`
+  espera. Uma revisão já escrita mantém o seu intervalo. A seguinte toma
+  como base o fim que a página dessa revisão nomeia.
+
 ## 2026.11.13
 
 - Uma linha que precisa de outra antes nunca é `[?]`. Ela termina em

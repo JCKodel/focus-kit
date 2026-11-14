@@ -196,8 +196,10 @@ and the first delivery after which a person can run the product writes
 the manual of running it.
 
 The kit assumes one person who proposes, uses the delivery, reviews the
-staged diff and commits. On a team, whoever commits is that reviewer;
-the kit does not split the roles further. A person who does not read
+staged diff and commits. Where the project has the agent commit, that
+person reviews the commit instead. On a team, whoever commits, or
+reviews that commit, is the reviewer; the kit does not split the roles
+further. A person who does not read
 code takes part in `/propose`, where the page is written in user
 language, tests the delivery as its user, and asks any session where
 things stand or what a page decided.
@@ -281,7 +283,8 @@ a recommendation for your stack, and record what you choose:
   as values, code organized by feature. You can take it whole, take only
   the two principles (vertical slices and exceptions as values) with the
   structure your stack favors, or keep your own conventions. Ninjobs took
-  it whole. FOCUS is chapter 4 of the book
+  it whole until its restart on 2026-08-29 and kept the two principles
+  after it. FOCUS is chapter 4 of the book
   (https://jckodel.github.io/focus-kit-book/04-focus/).
 * **Git**: everything on trunk, for one person, alone or with several
   sessions on free lines that touch different files, each staging only

@@ -7,7 +7,7 @@ repository the session works in, never in the folder this file was read
 from. A person reading it finds what the kit
 is in section 2 and the whole of it in section 3.
 
-Version: 2026.11.13
+Version: 2026.11.14
 
 ## 1. What to do
 
@@ -83,7 +83,8 @@ Version: 2026.11.13
      migration, not a command: the new /apply leaves every finding as a
      note nobody reads. The three cases a line waits in, none of them
      another line. A line that needs another ending `· after` and
-     keeping `[ ]` or `[>]`, never `[?]`. A line whose session ended,
+     keeping `[ ]` or `[>]`, never `[?]`. No sentence saying such a
+     line waits, a word kept for `[?]`. A line whose session ended,
      and a dropped line. The claim and the current copy of a line. A
      `[?]` blocking on the copy that put it, not on any copy. A line
      only a branch has under main's wording of its milestone. The trees
@@ -114,10 +115,11 @@ Version: 2026.11.13
      naming paths; the one index of a tree; what a revert does not undo,
      in the Git slot;
    * docs/05 §7: its exception for the reviews' agents;
-   * docs/05 §8: the review's start, which waits on no dropped line; the
-     slow tests; the range from the previous review's commit, or the one
-     the page names, to the commit the reading started
-     at; who reads, as the slot says; the checker, what seen means and
+   * docs/05 §8: the review's start, which needs no dropped line; the
+     slow tests. The range from the commit the last review's reading
+     started at, not that review's own commit, or from the one the page
+     names, to the commit this reading started at. Who reads, as the
+     slot says, none included; the checker, what seen means and
      the paths read. The notes copied first. Findings graded: a grave
      one a line, the medium ones the person picks on one `-fixes` line,
      the rest listed;
@@ -257,7 +259,7 @@ description: >-
   delivered. Ends by writing docs/00 to 06, docs/adr/ and AGENTS.md.
   Writes no code.
 metadata:
-  version: "2026.11.13"
+  version: "2026.11.14"
 ---
 You are the thinking partner of someone starting a product. The outcome is
 the set of documents `references/documents.md` describes, which every later
@@ -332,7 +334,7 @@ description: >-
   docs/adr/ and AGENTS.md describing what is there, and asks only what the
   code cannot answer. Writes no code.
 metadata:
-  version: "2026.11.13"
+  version: "2026.11.14"
 ---
 You are documenting a repository so that every later session can act on it
 without rereading it. Read `references/documents.md` first, whole: it says
@@ -418,7 +420,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.11.13"
+  version: "2026.11.14"
 ---
 You are the stakeholder's thinking partner. The slugs are `$ARGUMENTS`.
 None: show what may run now as docs/05 §4 says and ask. Several: one
@@ -427,19 +429,19 @@ its slug from the message that opens it. They run on the word of the
 person who typed the command, which names them all.
 
 Read docs/00 (product), docs/03 (domain), docs/01 (architecture), docs/05
-(process) and docs/06 (queue), and the deliveries in flight in `work/`.
-docs/05 may open with a line mapping the kit's section numbers to its
-own; read by it. Do not start a blocked line until its recorded reason
-is resolved, nor a line whose `after` docs/05 §4 says is not yet
-defined; a `[~]` line is resumed only on the person's word that its
-session ended. Otherwise claim the line as docs/05 §2 says: run
+(process) and docs/06 (queue), and the page of each delivery in flight, in
+`work/` or on its own branch. docs/05 may open with a line mapping the
+kit's section numbers to its own; read by it. Do not start a blocked line
+until its recorded reason is resolved, nor a line whose `after` docs/05 §4
+says is not yet defined; a `[~]` line is resumed only on the person's word
+that its session ended. Otherwise claim the line as docs/05 §2 says: run
 `git -c "alias.fk=!sh .agents/skills/propose/scripts/claim.sh" fk <slug> <strategy>`,
 the strategy being what docs/05 §5's Git slot says, `trunk`, `branch` or
 `worktree <hidden> <prefix>`. `claim: taken` is another clone's line:
 stop, unless the person says to resume it, then add `resume` at the end.
-Continue at the path it prints; your first edit there marks it `[~]` as
-docs/05 §4 says. If git cannot find `sh`, Git for Windows was installed
-without its shell: say so and stop.
+Continue at the path it prints. Your first edit there marks a `[ ]` line
+`[~]` as docs/05 §4 says. A resumed line keeps its mark. If git cannot
+find `sh`, Git for Windows was installed without its shell: say so and stop.
 Follow every slot of docs/05 §5 that names this command, the project's own
 included. Another line changing mark meanwhile is another session's work.
 
@@ -477,7 +479,7 @@ description: >-
 argument-hint: <slug>...
 allowed-tools: Bash(git:*)
 metadata:
-  version: "2026.11.13"
+  version: "2026.11.14"
 ---
 The slugs are `$ARGUMENTS`. None: show what may run now as docs/05 §4
 says and ask. Several: one subagent per slug, opened at once where
@@ -505,8 +507,8 @@ only a fully defined `[>]` line whose `after` is integrated, as §4 says,
 and whose files no in-flight build touches, becomes `[*]`, your first
 edit. docs/05 §§4 and 6 say what a conflict is.
 
-When work cannot go on, record what was built and what it waits on and
-leave the page in `work/`. A line that waits on another takes it as its
+When work cannot go on, record what was built and what it needs and
+leave the page in `work/`. A line that needs another first takes it as its
 `after` and returns to `[>]`, as docs/05 §4 says; any other is blocked
 with `resume: apply`. A prerequisite fix becomes a `[ ]` line above this
 one, ending `· from <slug>`. End the page with the partial message, show it in the
@@ -677,9 +679,11 @@ is chapter 4 of the book One Page at a Time by J.C. Ködel
 
 * **FOCUS whole:** the four pieces, exceptions as values, vertical slices.
   docs/01 gets the responsibility table below and names the pieces a slice
-  has in this stack. Ninjobs chose this;
+  has in this stack. Ninjobs required this on every feature until its
+  restart on 2026-08-29;
 * **the two principles only:** vertical slices and exceptions as values,
-  with whatever structure the stack favors;
+  with whatever structure the stack favors. Ninjobs kept these after its
+  restart, without the four pieces on every feature;
 * **neither:** the project's own conventions, written in docs/01.
 
 On a repository with code the default is what the code already does.
@@ -731,7 +735,7 @@ that it is not. The agent never commits or merges on its own:
   `main/`; the container's manual lets a session in `main/` edit
   `<hidden>/worktrees/`. The branch reaches the
   main branch in one merge, as above, and only then is the delivery
-  integrated for the lines that wait on it. For parallel work by several
+  integrated for the lines that come after it. For parallel work by several
   people, or by one person whose deliveries touch the same files: one
   branch does not touch another. `queue.sh` says which lines are free,
   and `/apply` checks before its first edit that no in-flight build
@@ -874,7 +878,7 @@ word; without it, it is a note.
 Asked what may run now, run
 `git -c "alias.fq=!sh .agents/skills/propose/scripts/queue.sh" fq <strategy>`,
 the strategy as for the claim, and show its trees, one per open
-milestone: each line under the last line it waits on, with its state.
+milestone: each line under the last line it comes after, with its state.
 Then come the lines free for /apply and for /propose, in the queue's
 order across the milestones, and the next one. Offer the free lines as
 one command with several slugs, saying each slug is one more agent and
@@ -931,8 +935,8 @@ A line that needs another line first is not waiting. It ends
 when the line is added, the suffix is written then. Found by work
 already started, such as a fix in the middle of an /apply, the session
 adds the suffix and returns the line to `[ ]` from `[~]`, keeping the
-draft, or to `[>]` from `[*]`. Its page says what was built and what it
-waits on, and /apply continues from there.
+draft, or to `[>]` from `[*]`. Its page says what was built and which
+line it needs, and /apply continues from there.
 
 A `[~]` or `[*]` line whose session ended without blocking it (the host
 closed, the connection or its limit) keeps its mark; its command resumes
@@ -965,7 +969,7 @@ A command typed with several slugs opens one subagent per slug, each
 following the command's file with one slug, sent to the slug's worktree
 where §5's Git slot has one (/propose creates it). The subagents `after`
 lets run at once are opened at once, not one after another; a line
-still waiting when the others end is reported, not waited for. The session edits nothing itself. A subagent cannot ask the person: it reports the question
+its `after` still holds when the others end is reported, not waited for. The session edits nothing itself. A subagent cannot ask the person: it reports the question
 with the context to answer it and stops; the session asks and sends the
 answer back, resuming it where the host can, else opening it again on the
 slug, whose `[~]` or `[*]` it resumes on the command's word. A command that
@@ -1103,12 +1107,14 @@ no delivery answers, or one that fails in the person's hands, is a finding.
 
 The review also reads the code, the one look at the whole instead of a
 delivery: every page can be right and the whole wrong. Its page names
-the base and the end of the range. The base is the commit of the
-previous milestone's review, so the range holds the fixes of its
-findings, which get no second review; for a first milestone, the first
-commit; where no earlier review exists, a commit the page names and
-says why. The end is the commit HEAD was when the reading started, so
-the range stays fixed while readers work. The paths are what
+the base and the end of the range. The base is the end named by the
+page of the last review that ran, the commit its reading started at,
+not that review's own commit. So the range holds what was committed
+while that review read, and the fixes of its findings, which get no
+second review. For a first milestone the base is the first commit;
+where no earlier review ran, a commit the page names and says why. The
+end is the commit HEAD was when the reading started, so the range stays
+fixed while readers work. The paths are what
 `git diff --stat <base>..<end>` shows: always the range, since a bare
 commit reads that one commit. It costs, so the session says
 it is time and starts it only on the person's word. §5's Milestone review
@@ -1126,7 +1132,10 @@ each candidate's file and marks it seen (true in the file today), latent
 before the person sees it. They fix nothing. When the paths read miss
 some of the range's, the page says which and the line waits as `[?]` with
 `· resume: apply` and `· blocked: <what was read>` (§4). A candidate the
-person confirms is a finding like the others.
+person confirms is a finding like the others. A slot that says none has
+no code reading: the page still names the range, its end the commit
+HEAD was when the review started, and the person still tests each
+clause.
 
 The review opens by copying onto its page the notes left since the
 previous review, from the `## For the review` heading of every page the
@@ -1140,7 +1149,7 @@ person says which medium ones enter the milestone's one line,
 `<milestone>-fixes`, each an item of its page. That page is their list
 and is not split, whatever its length. A small one becomes a line only
 when the person picks it. These lines end `· from <milestone>-review`,
-sit under the review line and wait for /propose; the milestone closes
+sit under the review line and go through /propose; the milestone closes
 when they are `[x]`. They
 get no second review: each passes through its own page, its proof and the
 person's commit, which is the review; a finding is never a fix in the
@@ -1350,8 +1359,8 @@ draws every open milestone and edits nothing.
 
 ````sh
 #!/bin/sh
-# focus-kit: draw every open milestone of docs/06 as a tree of what waits
-# on what, and say what may run now, as docs/05 §4 says. Run it through git:
+# focus-kit: draw every open milestone of docs/06 as a tree of what comes
+# after what, and say what may run now, as docs/05 §4 says. Run it through git:
 #   git -c "alias.fq=!sh .agents/skills/propose/scripts/queue.sh" fq <strategy>
 # <strategy> is the Git slot of docs/05: trunk | branch | worktree <hidden> <prefix>
 # With a branch or worktree per delivery, each delivery's line is read from
@@ -1364,13 +1373,14 @@ draws every open milestone and edits nothing.
 # default branch's blocks unless the copy of the line's own slug changed
 # the line. None blocks a winning [x]. When several hold, the reason shown
 # is the default branch's, then the other branches' by name, then the own
-# copy's.
+# copy's. A [?] the own copy left the default branch with, which no copy
+# put, is cleared when the default branch clears it: its line is read there.
 # A milestone is the base's heading. A line only a branch or a worktree
 # has takes the base's heading of the lines that share its heading in
 # that copy, so a copy that rewords a heading keeps its lines in place.
-# A line goes under the last line it waits on; "+ after" names the others.
-# "after all" leaves out the milestone's dropped lines; a line that
-# names a dropped one waits for the person to re-decide.
+# A line goes under the last open line it comes after; "+ after" names
+# the others. "after all" leaves out the milestone's dropped lines; a line
+# that names a dropped one is the person's to re-decide.
 # "findings:" counts the milestone's lines that end "from <slug>", and a
 # warning names the open ones that stand ahead of an open planned line,
 # but not one an open line names in its "after" or "blocked: after".
@@ -1472,7 +1482,7 @@ awk "$join" "$queue" | awk -F '\t' -v strategy="$strategy" -v here="$here" '
 # A [?] shows the line blocked unless the winner is [x], when the copy that
 # holds it put it there (docs/05 §4; see blocking() below). A branch
 # on origin whose winning copy is still [ ] is claimed, progress unknown,
-# once nothing in its after is left to wait on.
+# once nothing in its after holds it.
 function sl(line,   s) { s = line; sub(/^\[.\][ \t]+/, "", s); sub(/[ \t].*/, "", s); return s }
 function isline(s) { return s ~ /^\[[ ~>*x?]\][ \t]+[^ \t]/ }
 function parse(line, k,   rest, n, parts, i, p, deps, j, m) {
@@ -1637,7 +1647,12 @@ END {
   if (here != "") for (s in obase) if (!(s in local)) order[++no] = s
   for (i = 1; i <= no; i++) {
     s = order[i]
-    if ((s in own) && (!(s in integ) || (s == here && basemark[s] != "x"))) { line = own[s]; ms = home(s, ownms[s]) }
+    if ((s in own) && (!(s in integ) || (s == here && basemark[s] != "x"))) {
+      line = own[s]; ms = home(s, ownms[s])
+      # A [?] the own copy holds and no copy put is the one it left the
+      # base with, cleared there since: the base'"'"'s line is the current one.
+      if (asks(line) && !(s in blockedcopy) && (s in base)) line = base[s]
+    }
     else if (s in base) line = base[s]
     else if (s in own) { line = own[s]; ms = home(s, ownms[s]) }
     else { line = local[s]; ms = home(here, localms[s]) }
@@ -1718,8 +1733,8 @@ END {
     if (done(k)) continue
     for (j = 1; j <= ndep[k]; j++) {
       s = dep[k, j]
-      if (s == slug[k]) { nerr++; err[nerr] = slug[k] " waits on itself" }
-      else if (!(s in at)) { nerr++; err[nerr] = slug[k] " waits on " s ", which is not in the queue" }
+      if (s == slug[k]) { nerr++; err[nerr] = slug[k] " names itself in its after" }
+      else if (!(s in at)) { nerr++; err[nerr] = slug[k] " names " s " in its after, which is not in the queue" }
     }
     if (cycle(k, k)) { nerr++; err[nerr] = slug[k] " is in a cycle of after" }
   }

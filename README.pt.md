@@ -200,8 +200,10 @@ muda isso, e a primeira entrega depois da qual uma pessoa consegue rodar o
 produto escreve o manual de rodá-lo.
 
 O kit supõe uma pessoa que propõe, usa a entrega, revisa o diff em stage
-e commita. Numa equipe, quem commita é esse revisor; o kit não divide os
-papéis além disso. Quem não lê código participa do `/propose`, onde a
+e commita. Onde o projeto manda o agente commitar, essa pessoa revisa o
+commit. Numa equipe, quem commita, ou revisa esse commit, é o revisor; o
+kit não divide os papéis além disso. Quem não lê código participa do
+`/propose`, onde a
 página é escrita em linguagem de usuário, testa a entrega como seu
 usuário e pergunta a qualquer sessão em que ponto as coisas estão ou o
 que uma página decidiu.
@@ -287,7 +289,8 @@ uma recomendação para a sua stack, e registram o que você escolher:
   valores, código organizado por feature. Você pode adotar inteira, adotar
   só os dois princípios (vertical slices e exceções como valores) com a
   estrutura que a sua stack favorece, ou manter as suas convenções. O
-  Ninjobs adotou inteira. O FOCUS é o capítulo 4 do livro
+  Ninjobs adotou inteira até o seu recomeço em 2026-08-29 e manteve os
+  dois princípios depois dele. O FOCUS é o capítulo 4 do livro
   (https://jckodel.github.io/focus-kit-book/pt/04-focus/).
 * **Git**: tudo na trunk, para uma pessoa, sozinha ou com várias sessões
   em linhas livres que tocam arquivos diferentes, cada uma fazendo o stage

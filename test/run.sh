@@ -97,7 +97,8 @@ tgit() { git -c user.name=test -c user.email=test@test "$@"; }
 # export blocked, colors built and unmerged, search with a new after);
 # then from a stale worktree after colors is merged; then with CRLF. Then
 # the cases with their own queue: a fix line only a worktree has, a
-# blocked first milestone, a reworded heading, an inherited [?].
+# blocked first milestone, a reworded heading, an inherited [?], one a
+# line's own branch inherited.
 check_queue_script() {
   say "check: queue.sh on test/fixture/queue"
   local t script; t=$(mktemp -d); script="$t/queue.sh"
@@ -196,29 +197,41 @@ check_queue_script() {
   assert_true "a reworded heading, from its worktree: every line stays" test "$(grep -c -e '^\[ \] pay-fix · propose now$' -e '^\[\*\] pay · in flight: apply$' -e '^\[ \] list · propose now$' "$t/headw.txt")" = 3
   # A [?] blocks on the copy that put it. Main clears ask, which x and b
   # inherited; b's own branch takes b, which main still has at [?]; x's
-  # branch puts c at [?].
+  # branch puts c at [?]. Main also clears own and anc, each claimed at
+  # [?] by its own branch, which never changed the line: own's branch
+  # has a commit of its own, anc's is still where the claim created it.
   git init -q --bare "$t/ask.git"
   git clone -q "$t/ask.git" "$t/ask" 2>/dev/null
   (
     cd "$t/ask" && git switch -q -c main && mkdir docs
-    printf '# Queue\n\n## M1. Pay\n\nWhen it closes, people pay.\n\n[?] ask  needs an answer · resume: propose · blocked: question 3\n[?] b  b · resume: propose · blocked: question 5\n[ ] c  c\n[ ] x  x\n' > docs/06-Queue.md
+    printf '# Queue\n\n## M1. Pay\n\nWhen it closes, people pay.\n\n[?] ask  needs an answer · resume: propose · blocked: question 3\n[?] b  b · resume: propose · blocked: question 5\n[ ] c  c\n[ ] x  x\n[?] own  own · resume: propose · blocked: question 9\n[?] anc  anc · resume: propose · blocked: question 8\n' > docs/06-Queue.md
     tgit add docs && tgit commit -q -m queue && git push -q -u origin main && git remote set-head origin -a >/dev/null 2>&1
+    git switch -q -c focus-kit/own main
+    tgit commit -q --allow-empty -m own && git push -q origin focus-kit/own 2>/dev/null
+    git branch -q focus-kit/anc main && git push -q origin focus-kit/anc 2>/dev/null
     git switch -q -c focus-kit/x main
     awk '{ if ($0 ~ /^\[ \] x /) sub(/^\[ \]/, "[~]"); if ($0 ~ /^\[ \] c /) $0 = "[?] c  c · resume: propose · blocked: question 7"; print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
     tgit commit -q -am x && git push -q origin focus-kit/x 2>/dev/null
     git switch -q -c focus-kit/b main
     awk '{ if ($0 ~ /^\[\?\] b /) $0 = "[~] b  b"; print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
     tgit commit -q -am b && git push -q origin focus-kit/b 2>/dev/null && git switch -q main
-    awk '{ if ($0 ~ /^\[\?\] ask /) $0 = "[ ] ask  needs an answer"; print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
+    awk '{ if ($0 ~ /^\[\?\] ask /) $0 = "[ ] ask  needs an answer"; if ($0 ~ /^\[\?\] own /) $0 = "[ ] own  own"; if ($0 ~ /^\[\?\] anc /) $0 = "[ ] anc  anc"; print }' docs/06-Queue.md > docs/q && mv docs/q docs/06-Queue.md
     tgit commit -q -am "ask answered" && git push -q origin main
     sh "$script" worktree .focus-kit focus-kit/ > "$t/ask.txt" 2>&1 || true
     mkdir -p "$t/askc/.focus-kit/worktrees" && git worktree add -q "$t/askc/.focus-kit/worktrees/x" focus-kit/x
+    git worktree add -q "$t/askc/.focus-kit/worktrees/own" focus-kit/own
+    git worktree add -q "$t/askc/.focus-kit/worktrees/anc" focus-kit/anc
   )
   (cd "$t/askc/.focus-kit/worktrees/x" && sh "$script" worktree .focus-kit focus-kit/) > "$t/askw.txt" 2>&1 || true
+  (cd "$t/askc/.focus-kit/worktrees/own" && sh "$script" worktree .focus-kit focus-kit/) > "$t/askown.txt" 2>&1 || true
+  (cd "$t/askc/.focus-kit/worktrees/anc" && sh "$script" worktree .focus-kit focus-kit/) > "$t/askanc.txt" 2>&1 || true
   assert_true "a [?] a branch inherited and main cleared does not block" grep -q '^\[ \] ask · propose now$' "$t/ask.txt"
   assert_true "the same, read from that branch's worktree" grep -q '^\[ \] ask · propose now$' "$t/askw.txt"
   assert_true "main's [?] does not block the line its own branch took" grep -q '^\[~\] b · in flight: propose$' "$t/ask.txt"
   assert_true "a [?] another branch put blocks" grep -q '^\[?\] c · blocked: question 7, then propose$' "$t/ask.txt"
+  assert_true "a [?] a line's own branch inherited and main cleared does not block" grep -q '^\[ \] own · claimed, progress unknown: propose in flight$' "$t/ask.txt"
+  assert_true "the same, read from that line's worktree" grep -q '^\[ \] own · claimed, progress unknown: propose in flight$' "$t/askown.txt"
+  assert_true "the same, from the worktree of a branch still where the claim created it" grep -q '^\[ \] anc · claimed, progress unknown: propose in flight$' "$t/askanc.txt"
   rm -rf "$t"
 }
 
